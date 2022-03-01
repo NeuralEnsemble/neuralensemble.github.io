@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title> HBP CodeJam Workshop #8 - NeuralEnsemble</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/css/neuralensemble_new.css" rel="stylesheet">
+    <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="shortcut icon" href="/static/images/neurens.gif">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top navbar-inverse">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">NeuralEnsemble</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="dropdown">
+                <a href="/projects/" class="dropdown-toggle" data-toggle="dropdown">
+                Software
+                <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="/brian/">Brian</a></li>
+                  <li><a href="/elephant/">Elephant</a></li>
+                  <li><a href="/libNeuroML/">libNeuroML</a></li>
+                  <li><a href="mozaik/">Mozaik</a></li>
+                  <li><a href="/neo/">Neo</a></li>
+                  <li><a href="/NEST/">NEST</a></li>
+                  <li><a href="/nestml/">NESTML</a></li>
+                  <li><a href="/neurotic/">neurotic</a></li>
+                  <li><a href="/ode-toolbox/">ODE-toolbox</a></li>
+                  <li><a href="/OpenElectrophy/">OpenElectrophy</a></li>
+                  <li><a href="/PyNN/">PyNN</a></li>
+                  <li><a href="/SpykeViewer/">SpykeViewer</a></li>
+                  <li><a href="/sumatra/">Sumatra</a></li>
+                </ul>
+              </li>
+              <li class="active"><a href="/meetings/">Meetings</a></li>
+              <li><a href="http://neuralensemble.blogspot.com/">Blog</a></li>
+              <li><a href="https://groups.google.com/forum/#!forum/neuralensemble">Community</a></li>
+              <!-- <li><a href="/jobs/">Jobs</a></li> -->
+              <li><a href="/about/">About</a></li>
+              <li><a href="/contact/">Contact</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="row">
+          <div class="span9">
+          
+                        
+            <h2>HBP CodeJam Workshop #8</h2>
+            <p>13th-15th September 2017, Lausanne, Switzerland<br/><br/></p>
+            
+            <p><img src="/media/images/800px-LausanneLeman.JPG" alt="Le Centre-ville de Lausanne (Suisse) vu depuis le Lac Léman." /><br/>
+	    <small><p>Lausanne seen from Lake Léman. Copyright Freeze750, CC-BY-SA licence.</p>
+</small></p>
+	    
+
+            <p>The goal of the CodeJam workshops is to catalyze open-source, collaborative software development in computational and systems neuroscience and neuroinformatics, by bringing together researchers, students and engineers to share ideas, present their work, and write code together.</p>
+<p>The general format of the workshops is to dedicate the mornings to invited and contributed talks, leaving the afternoons free for discussions, tutorials and code sprints.</p>
+<p><a class="reference external" href="https://mycore.core-cloud.net/index.php/s/mDGFVFigLc6Svwp">Final programme</a></p>
+<p>The 8th CodeJam was sponsored by the Human Brain Project. This year the CodeJam was preceded by the HBP Young Researcher Event in nearby Geneva.</p>
+
+
+
+	    <h3>Organization</h3>
+	    <p>The meeting was held at the <a href="https://plan.epfl.ch/">EPFL</a>, located 
+               
+               in Lausanne, Switzerland. 
+               The meeting was organised by Alessandro Ambrosano, Luca Leonardo Bologna, Andrew Davison, Jeffrey Muller, Eric Müller, Lena Oden, Martina Schmalholz and Axel von Arnim.</p>
+
+	
+
+	
+        
+            <h3>Participants</h3>
+	    <ul class="inline">
+		
+		<li class="inline">
+		    Morteza&nbsp;Abbaszadeh<sup></sup></li>
+		
+		<li class="inline">
+		    Mahmoud&nbsp;Akl<sup></sup></li>
+		
+		<li class="inline">
+		    Alessandro&nbsp;Ambrosano<sup></sup></li>
+		
+		<li class="inline">
+		    Emmanouil&nbsp;Angelidis<sup></sup></li>
+		
+		<li class="inline">
+		    Shailesh&nbsp;Appukuttan<sup>1</sup></li>
+		
+		<li class="inline">
+		    Onur&nbsp;Ates<sup>1</sup></li>
+		
+		<li class="inline">
+		    Arthur-Ervin&nbsp;Avramiea<sup></sup></li>
+		
+		<li class="inline">
+		    Harri&nbsp;Bendi<sup></sup></li>
+		
+		<li class="inline">
+		    Cristian Rodríguez&nbsp;Bernal<sup></sup></li>
+		
+		<li class="inline">
+		    Petrut&nbsp;Bogdan<sup>2</sup></li>
+		
+		<li class="inline">
+		    Luca Leonardo&nbsp;Bologna<sup>3</sup></li>
+		
+		<li class="inline">
+		    Stefano&nbsp;Casali<sup></sup></li>
+		
+		<li class="inline">
+		    Jean-Denis&nbsp;Courcol<sup></sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.andrewdavison.info/">Andrew&nbsp;Davison</a><sup>1</sup></li>
+		
+		<li class="inline">
+		    Michael&nbsp;Denker<sup></sup></li>
+		
+		<li class="inline">
+		    Jonathan&nbsp;Duperrier<sup>1</sup></li>
+		
+		<li class="inline">
+		    Michael&nbsp;Dupont<sup></sup></li>
+		
+		<li class="inline">
+		    Matt&nbsp;Earnshaw<sup></sup></li>
+		
+		<li class="inline">
+		    Hélissande&nbsp;Fragnaud<sup>1</sup></li>
+		
+		<li class="inline">
+		    Allan&nbsp;Francani<sup>4</sup></li>
+		
+		<li class="inline">
+		    Fabrice&nbsp;Gaillard<sup></sup></li>
+		
+		<li class="inline">
+		    Andrew&nbsp;Gait<sup>2</sup></li>
+		
+		<li class="inline">
+		    Jie&nbsp;Gao<sup></sup></li>
+		
+		<li class="inline">
+		    Pedro&nbsp;Garcia-Rodriguez<sup>1</sup></li>
+		
+		<li class="inline">
+		    Joffrey&nbsp;Gonin<sup>1</sup></li>
+		
+		<li class="inline">
+		    Luc&nbsp;Guyot<sup></sup></li>
+		
+		<li class="inline">
+		    Akos&nbsp;Hencz<sup></sup></li>
+		
+		<li class="inline">
+		    Diana&nbsp;Hoffmann<sup></sup></li>
+		
+		<li class="inline">
+		    Julius&nbsp;Imbery<sup></sup></li>
+		
+		<li class="inline">
+		    Jérémie&nbsp;Kalfon<sup></sup></li>
+		
+		<li class="inline">
+		    Zhiqi&nbsp;Kang<sup></sup></li>
+		
+		<li class="inline">
+		    Iurii&nbsp;Katkov<sup></sup></li>
+		
+		<li class="inline">
+		    Samuel&nbsp;Kerrien<sup>5</sup></li>
+		
+		<li class="inline">
+		    Johann&nbsp;Klähn<sup></sup></li>
+		
+		<li class="inline">
+		    Pramod&nbsp;Kumbhar<sup></sup></li>
+		
+		<li class="inline">
+		    Daniel&nbsp;Kutny<sup></sup></li>
+		
+		<li class="inline">
+		    Yan&nbsp;Lavryushev<sup></sup></li>
+		
+		<li class="inline">
+		    Elodie&nbsp;Legouée<sup>1</sup></li>
+		
+		<li class="inline">
+		    Tianlin&nbsp;Liu<sup></sup></li>
+		
+		<li class="inline">
+		    Carmen Alina&nbsp;Lupascu<sup>3</sup></li>
+		
+		<li class="inline">
+		    Kevin&nbsp;Mader<sup></sup></li>
+		
+		<li class="inline">
+		    Hossain&nbsp;Mahmud<sup></sup></li>
+		
+		<li class="inline">
+		    Stefano&nbsp;Masoli<sup>6</sup></li>
+		
+		<li class="inline">
+		    Christian&nbsp;Mauch<sup></sup></li>
+		
+		<li class="inline">
+		    Robert&nbsp;McDougal<sup>7</sup></li>
+		
+		<li class="inline">
+		    <a href="http://neuralensemble.org/people/eilifmuller/">Eilif&nbsp;Muller</a><sup>5</sup></li>
+		
+		<li class="inline">
+		    Jeffrey&nbsp;Muller<sup>4</sup></li>
+		
+		<li class="inline">
+		    Susie&nbsp;Murphy<sup></sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.kip.uni-heidelberg.de/people/gruppe/index.php?action=details&amp;amp;num=2011">Eric&nbsp;Müller</a><sup></sup></li>
+		
+		<li class="inline">
+		    Lena&nbsp;Oden<sup>8</sup></li>
+		
+		<li class="inline">
+		    Sanja&nbsp;Pajic<sup></sup></li>
+		
+		<li class="inline">
+		    Michael von&nbsp;Papen<sup></sup></li>
+		
+		<li class="inline">
+		    Martin&nbsp;Pearson<sup></sup></li>
+		
+		<li class="inline">
+		    Christian&nbsp;Pehle<sup></sup></li>
+		
+		<li class="inline">
+		    Martina&nbsp;Rizza<sup></sup></li>
+		
+		<li class="inline">
+		    Bogdan&nbsp;Roman<sup></sup></li>
+		
+		<li class="inline">
+		    Armando&nbsp;Romani<sup></sup></li>
+		
+		<li class="inline">
+		    Andrew&nbsp;Rowley<sup>9</sup></li>
+		
+		<li class="inline">
+		    Annapaola Iolanda&nbsp;Santarsiero<sup></sup></li>
+		
+		<li class="inline">
+		    Martina&nbsp;Schmalholz<sup></sup></li>
+		
+		<li class="inline">
+		    B. Lungsi&nbsp;Sharma<sup>1</sup></li>
+		
+		<li class="inline">
+		    Kenny&nbsp;Sharma<sup></sup></li>
+		
+		<li class="inline">
+		    Terry&nbsp;Stewart<sup></sup></li>
+		
+		<li class="inline">
+		    Alan&nbsp;Stokes<sup>2</sup></li>
+		
+		<li class="inline">
+		    Sara&nbsp;Summerton<sup>2</sup></li>
+		
+		<li class="inline">
+		    Mohameth François&nbsp;Sy<sup></sup></li>
+		
+		<li class="inline">
+		    Matthieu&nbsp;Sénoville<sup>1</sup></li>
+		
+		<li class="inline">
+		    Werner&nbsp;Van Geit<sup>5</sup></li>
+		
+		<li class="inline">
+		    Marmaduke&nbsp;Woodman<sup></sup></li>
+		
+		<li class="inline">
+		    Alper&nbsp;Yegenoglu<sup>10</sup></li>
+		
+		<li class="inline">
+		    Lyuba&nbsp;Zehl<sup>10</sup></li>
+		
+		<li class="inline-last">
+		    Axel&nbsp;von Arnim<sup></sup></li>
+		
+            </ul>
+
+            <div id="affiliations">
+            <ul class="inline">
+		
+		<li class="inline">
+		    <sup>1</sup><a href="http://www.unic.cnrs-gif.fr/">UNIC,  CNRS, Gif sur Yvette, France</a></li>
+		
+		<li class="inline">
+		    <sup>2</sup><a href="http://apt.cs.man.ac.uk/projects/SpiNNaker/">University of Manchester, Manchester, United Kingdom</a></li>
+		
+		<li class="inline">
+		    <sup>3</sup>CNR, Palermo, Italy</li>
+		
+		<li class="inline">
+		    <sup>4</sup>EPFL - Human Brain Project</li>
+		
+		<li class="inline">
+		    <sup>5</sup><a href="http://bluebrain.epfl.ch/">Blue Brain Project, EPFL, Switzerland</a></li>
+		
+		<li class="inline">
+		    <sup>6</sup>University of Pavia, Pavia, Italy</li>
+		
+		<li class="inline">
+		    <sup>7</sup><a href="http://www.neuron.yale.edu/">Yale University, New Haven, USA</a></li>
+		
+		<li class="inline">
+		    <sup>8</sup>Forschungszentrum Jülich GmbH</li>
+		
+		<li class="inline">
+		    <sup>9</sup>The University of Manchester, Manchester, UK</li>
+		
+		<li class="inline-last">
+		    <sup>10</sup><a href="http://www.csn.fz-juelich.de/">Forschungszentrum Juelich GmbH, Juelich, Germany</a></li>
+		
+            </ul>
+            </div>
+
+            <br/><br/>
+	    
+           <img src="/media/images/codejam8_participants_sm.jpeg" alt="Group photo from the HBP CodeJam Workshop #8" width=1024/>
+	   
+        
+        
+	
+    
+            <h3>Meeting Program</h3>
+	    
+            <table class="programme">
+	      
+	      <tr class="header"><td colspan="3"><h4><b>Wed. 13th Sept.</b></h4></td></tr>
+	      
+	        <tr class="session">
+		    <td>09:30</td>
+		    <td colspan="2"><b>Welcome and introduction</b></td></tr>
+		
+		
+		  <tr><td>09:30</td><td>Jeffrey Muller</td>
+		      <td>Welcome and introduction
+                          </td></tr>
+		
+		
+	      
+	        <tr class="session">
+		    <td>09:40</td>
+		    <td colspan="2"><b>From experiments to data repositories</b></td></tr>
+		
+		
+		  <tr><td>09:40</td><td>Samuel Kerrien</td>
+		      <td>Blue Brain Nexus: a provenance based, semantic data management platform
+                          </td></tr>
+		
+		
+		
+		  <tr><td>10:05</td><td>Lyuba Zehl</td>
+		      <td>Tracking complex workflows in neuroscience <a href="/media/slides/HBP8CodeJam_LyubaZehl-TrackingComplexWorkflows.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>10:30</td>
+		    <td colspan="2"><i>Break</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>11:00</td>
+		    <td colspan="2"><b>Data-driven modelling and validation</b></td></tr>
+		
+		
+		  <tr><td>11:00</td><td>B. Lungsi Sharma</td>
+		      <td>What - Why - How of Validation
+                          <a href="https://lungsi.github.io/validation-codejam8/#/" class="download">[link to slides]</a></td></tr>
+		
+		
+		
+		  <tr><td>11:25</td><td>Luca Leonardo Bologna and Carmen Alina Lupascu</td>
+		      <td>Optimization, Neuron Builder Pipeline
+                          </td></tr>
+		
+		
+		
+		  <tr><td>11:50</td><td>Stefano Masoli</td>
+		      <td>Neuron Modeling: What&#39;s New?
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>12:15</td>
+		    <td colspan="2"><i>Lunch</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>13:30</td>
+		    <td colspan="2"><b>Parallel tracks: tutorials and code sprints</b></td></tr>
+		
+		
+		  <tr><td>13:30</td><td>Allan Francani and Jeffrey Muller</td>
+		      <td>Tutorial: Collaboratory app development
+                          </td></tr>
+		
+		
+		
+		  <tr><td>13:30</td><td></td>
+		      <td>Code sprints and discussions
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>15:00</td>
+		    <td colspan="2"><i>Break</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>15:30-18:30</td>
+		    <td colspan="2"><b>Parallel tracks: tutorials and code sprints</b></td></tr>
+		
+		
+		  <tr><td>15:30</td><td>Lena Oden</td>
+		      <td>Tutorial: the HBP HPAC platform
+                          </td></tr>
+		
+		
+		
+		  <tr><td>15:30</td><td></td>
+		      <td>Code sprints and discussions
+                          </td></tr>
+		
+		
+		
+		  <tr><td>17:00</td><td>Robert McDougal</td>
+		      <td>Tutorial: NEURON + Python
+                          </td></tr>
+		
+		
+		
+		  <tr><td>17:00</td><td></td>
+		      <td>Code sprints and discussions
+                          </td></tr>
+		
+		
+	      
+	      <tr><td>&nbsp;</td><td></td><td></td></tr>
+	    
+	      <tr class="header"><td colspan="3"><h4><b>Thu. 14th Sept.</b></h4></td></tr>
+	      
+	        <tr class="session">
+		    <td>09:00</td>
+		    <td colspan="2"><b>Welcome for participants coming from the Young Researchers Event</b></td></tr>
+		
+		
+		  <tr><td>09:00</td><td>Andrew Davison</td>
+		      <td>Welcome for participants coming from the Young Researchers Event
+                          </td></tr>
+		
+		
+	      
+	        <tr class="session">
+		    <td>09:15</td>
+		    <td colspan="2"><b>Building Bodies for Brains and Brains for Bodies</b></td></tr>
+		
+		
+		  <tr><td>09:15</td><td>Kenny Sharma and Axel von Arnim</td>
+		      <td>The Neurorobotics Platform: the simulator to give brains a body and bodies a brain
+                          </td></tr>
+		
+		
+		
+		  <tr><td>09:40</td><td>Martin Pearson</td>
+		      <td>Integrating Shrewbot and Miro in the NRP <a href="/media/slides/SP3_NRP-integration.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>10:05</td><td>Terry Stewart</td>
+		      <td>Using Nengo in the Neurorobotics Platform <a href="/media/slides/2017-HBP_Stewart.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>10:30</td>
+		    <td colspan="2"><i>Break</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>11:00</td>
+		    <td colspan="2"><b>Next-generation simulation tools and hardware</b></td></tr>
+		
+		
+		  <tr><td>11:00</td><td>Andrew Rowley</td>
+		      <td>The SpiNNaker Platform <a href="/media/slides/HBP_codejam_2017_EPFL_SpiNNaker.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>11:25</td><td>Marmaduke Woodman</td>
+		      <td>TheVirtualBrain
+                          </td></tr>
+		
+		
+		
+		  <tr><td>11:50</td><td>Christian Mauch</td>
+		      <td>BrainScaleS Hardware — Resource Management and Monitoring <a href="/media/slides/mauch_presi.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>12:15</td><td>Johann Klähn</td>
+		      <td>Mapping PyNN to BrainScaleS Hardware
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>12:40</td>
+		    <td colspan="2"><i>Lunch</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>13:30</td>
+		    <td colspan="2"><b>Parallel tracks: tutorials and code sprints</b></td></tr>
+		
+		
+		  <tr><td>13:30</td><td>Akos Hencz and Carmen Alina Lupascu</td>
+		      <td>Tutorial: Getting the most from the Jupyter notebook
+                          </td></tr>
+		
+		
+		
+		  <tr><td>13:30</td><td>Andrew Rowley and Alan Stokes</td>
+		      <td>Tutorial: SpiNNaker
+                          </td></tr>
+		
+		
+		
+		  <tr><td>13:30</td><td></td>
+		      <td>Code sprints and discussions
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>15:00</td>
+		    <td colspan="2"><i>Break</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>15:30-18:30</td>
+		    <td colspan="2"><b>Parallel tracks: tutorials and code sprints</b></td></tr>
+		
+		
+		  <tr><td>15:30</td><td>Emmanouil Angelidis and Hossain Mahmud</td>
+		      <td>Tutorial: Neurorobotics Platform - setting up an experiment
+                          </td></tr>
+		
+		
+		
+		  <tr><td>15:30</td><td>Jean-Denis Courcol</td>
+		      <td>Tutorial: Brain Simulation Platform
+                          </td></tr>
+		
+		
+		
+		  <tr><td>15:30</td><td></td>
+		      <td>Code sprints and discussions
+                          </td></tr>
+		
+		
+		
+		  <tr><td>17:00</td><td>Kenny Sharma</td>
+		      <td>Tutorial: Neurorobotics Platform - using tensor flow in your experiment
+                          </td></tr>
+		
+		
+		
+		  <tr><td>17:00</td><td></td>
+		      <td>Code sprints and discussions
+                          </td></tr>
+		
+		
+	      
+	      <tr><td>&nbsp;</td><td></td><td></td></tr>
+	    
+	      <tr class="header"><td colspan="3"><h4><b>Fri. 15th Sept.</b></h4></td></tr>
+	      
+	        <tr class="session">
+		    <td>09:00</td>
+		    <td colspan="2"><b>Putting it all together - web portals and collaboration tools</b></td></tr>
+		
+		
+		  <tr><td>09:00</td><td>Matt Earnshaw</td>
+		      <td>Open Source Brain and its Ecosystem <a href="/media/slides/earnshaw-codejam17.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>09:25</td><td>Fabrice Gaillard and Jeffrey Muller</td>
+		      <td>Under the hood of the Collaboratory platform <a href="/media/slides/UnderTheHoodOfTheCollabPlatform_Gaillard.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>09:50</td><td>Susie Murphy and Axel von Arnim</td>
+		      <td>Neurorobotics Platform collaboratory features
+                          </td></tr>
+		
+		
+		
+		  <tr><td>10:15</td><td>Werner Van Geit</td>
+		      <td>BluePyMM
+                          </td></tr>
+		
+		
+		
+		  <tr><td>10:40</td><td>Kevin Mader</td>
+		      <td>Large scale Image processing with Spark
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>10:40</td>
+		    <td colspan="2"><i>Break</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>11:35</td>
+		    <td colspan="2"><b>Lightning talks</b></td></tr>
+		
+		
+		  <tr><td>11:35</td><td>Martina Rizza</td>
+		      <td>A Biophysically Detailed Cerebellar Stellate Neuron Model Optimized with Particle Swarm Optimization Algorithm
+                          </td></tr>
+		
+		
+		
+		  <tr><td>11:50</td><td>Alper Yegenoglu</td>
+		      <td>Building packages with Conda <a href="/media/slides/conda_deployment_yegenoglu.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>12:30</td>
+		    <td colspan="2"><i>Lunch</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>13:30</td>
+		    <td colspan="2"><b>Parallel tracks: tutorials and code sprints</b></td></tr>
+		
+		
+		  <tr><td>13:30</td><td>Johann Klähn, Christian Mauch and Eric Müller</td>
+		      <td>Tutorial: BrainScaleS Neuromorphic Hardware — the DLS Prototype Chip
+                          </td></tr>
+		
+		
+		
+		  <tr><td>13:30</td><td>Mahmoud Akl</td>
+		      <td>Tutorial: Neurorobotics Platform - Virtual Coach: running batch experiments pools and post-processing with Jupyter Notebook
+                          </td></tr>
+		
+		
+		
+		  <tr><td>13:30</td><td></td>
+		      <td>Code sprints and discussions
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>15:00</td>
+		    <td colspan="2"><i>Break</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>15:30-18:30</td>
+		    <td colspan="2"><b>Parallel tracks: tutorials and code sprints</b></td></tr>
+		
+		
+		  <tr><td>15:30</td><td>Michael Denker and Alper Yegenoglu</td>
+		      <td>Tutorial: Data analysis with Elephant <a href="/media/slides/2017_-_Denker_-_Code_Jam_-_Elephant_Tutorial_Slides.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>15:30</td><td>Alessandro Ambrosano and Luc Guyot</td>
+		      <td>Tutorial: Neurorobotics Platform - using multiple robots
+                          </td></tr>
+		
+		
+		
+		  <tr><td>15:30</td><td></td>
+		      <td>Code sprints and discussions
+                          </td></tr>
+		
+		
+		
+		  <tr><td>17:00</td><td></td>
+		      <td>Code sprints and discussions
+                          </td></tr>
+		
+		
+	      
+	      <tr><td>&nbsp;</td><td></td><td></td></tr>
+	    
+	    </table>
+
+                <p><small><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://creativecommons.org/images/public/somerights20.png"/></a><br/>Unless mentioned otherwise, all the downloadable talks are licenced under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/">Creative Commons Attribution-Noncommercial-No Derivative Works License</a>.</small></p>
+ 
+
+	
+
+            <h3>Support</h3>
+            <p>The meeting organizers gratefully acknowledge the support of the European Union through the Human Brain Project. We also wish to express our great appreciation to EPFL for hosting the meeting, to the HBP Education Programme, and to Björn Kindler at Heidelberg University for their considerable assistance with organisation and administration of the workshop.</p>
+
+        
+
+          </div>
+          <div class="span3">
+          
+<ul class="nav nav-tabs nav-stacked">
+   
+  <li><a href="../CodeJam9/">HBP CodeJam Workshop #9</a></li>
+  
+  <li><a href="../Hippocamp2017/">HBP Hippocamp 2017: Collaborative and Integrative Modeling of Hippocampus</a></li>
+  
+  <li><a href="../CodeJam7/">HBP CodeJam Workshop #7</a></li>
+  
+  <li><a href="../HippocampCA1/">HBP Hippocamp CA1: Collaborative and Integrative Modeling of Hippocampal Area CA1</a></li>
+  
+  <li><a href="../CodeJam6/">BrainScaleS CodeJam Workshop #6</a></li>
+  
+  <li><a href="../CodeJam5/">BrainScaleS CodeJam Workshop #5</a></li>
+  
+  <li><a href="../CodeJam4/">FACETS CodeJam Workshop #4</a></li>
+  
+  <li><a href="../CodeJam3/">FACETS CodeJam Workshop #3</a></li>
+  
+  <li><a href="../CNS09/">CNS*09 Workshop: Python in Neuroscience</a></li>
+  
+  <li><a href="../CodeJam2/">FACETS CodeJam Workshop #2</a></li>
+  
+  <li><a href="../CodeJam1/">FACETS CodeJam Workshop #1</a></li>
+  
+</ul>
+
+
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <p class="text-info">&copy; The NeuralEnsemble Initiative, 2020.</p>
+      </footer>
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+
+  </body>
+</html>

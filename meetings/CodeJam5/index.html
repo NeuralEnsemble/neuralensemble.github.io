@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title> BrainScaleS CodeJam Workshop #5 - NeuralEnsemble</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/css/neuralensemble_new.css" rel="stylesheet">
+    <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="shortcut icon" href="/static/images/neurens.gif">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top navbar-inverse">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">NeuralEnsemble</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="dropdown">
+                <a href="/projects/" class="dropdown-toggle" data-toggle="dropdown">
+                Software
+                <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="/brian/">Brian</a></li>
+                  <li><a href="/elephant/">Elephant</a></li>
+                  <li><a href="/libNeuroML/">libNeuroML</a></li>
+                  <li><a href="mozaik/">Mozaik</a></li>
+                  <li><a href="/neo/">Neo</a></li>
+                  <li><a href="/NEST/">NEST</a></li>
+                  <li><a href="/nestml/">NESTML</a></li>
+                  <li><a href="/neurotic/">neurotic</a></li>
+                  <li><a href="/ode-toolbox/">ODE-toolbox</a></li>
+                  <li><a href="/OpenElectrophy/">OpenElectrophy</a></li>
+                  <li><a href="/PyNN/">PyNN</a></li>
+                  <li><a href="/SpykeViewer/">SpykeViewer</a></li>
+                  <li><a href="/sumatra/">Sumatra</a></li>
+                </ul>
+              </li>
+              <li class="active"><a href="/meetings/">Meetings</a></li>
+              <li><a href="http://neuralensemble.blogspot.com/">Blog</a></li>
+              <li><a href="https://groups.google.com/forum/#!forum/neuralensemble">Community</a></li>
+              <!-- <li><a href="/jobs/">Jobs</a></li> -->
+              <li><a href="/about/">About</a></li>
+              <li><a href="/contact/">Contact</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="row">
+          <div class="span9">
+          
+                        
+            <h2>BrainScaleS CodeJam Workshop #5</h2>
+            <p>14th-16th March 2012, Edinburgh, UK<br/><br/></p>
+            
+            <p><img src="/media/images/400px-Edinburgh_Castle_seen_from_Salisbury_Crags.jpg" alt="Edinburgh Castle seen from Salisbury Crags" /><br/>
+	    <small><p>Edinburgh Castle seen from Salisbury Crags, copyright Kim Traynor, licensed under the Creative Commons Attribution-Share Alike 3.0 Unported license.</p>
+</small></p>
+	    
+
+            <p>The goal of the CodeJam workshops is to catalyze open-source, collaborative software development in computational and systems neuroscience and neuroinformatics, by bringing together researchers, students and engineers to share ideas, present their work, and write code together. The general format of the workshops is to dedicate the mornings to invited and contributed talks, leaving the afternoons free for discussions and code sprints.</p>
+<p>The 5th BrainScaleS/FACETS CodeJam took place as a joint meeting with the <a class="reference external" href="http://www.neuroml.org/workshop2012.php">NeuroML Development Workshop</a>, with the theme &quot;Convergence in Computational Neuroscience&quot;.</p>
+<p>The NeuroML workshop was on 12th and 13th March with 14th March as a joint NeuroML-CodeJam day, including a Mini-workshop on Convergence, Interoperability and Reuse in Neuroscience Modelling Software.</p>
+
+
+
+	    <h3>Organization</h3>
+	    <p>The meeting was held at the <a href="http://www.ed.ac.uk/schools-departments/informatics/about/forum/about">Informatics Forum, University of Edinburgh</a>, located 
+               at 10 Crichton Street
+               in Edinburgh, UK. 
+               The meeting was organised by Andrew Davison, Mike Hull, Abigail Morrison, Eilif Muller, Miha Pelko and Laurent Perrinet.</p>
+
+	
+
+	
+        
+            <h3>Participants</h3>
+	    <ul class="inline">
+		
+		<li class="inline">
+		    Jan&nbsp;Antolik<sup>14</sup></li>
+		
+		<li class="inline">
+		    James&nbsp;Bednar<sup></sup></li>
+		
+		<li class="inline">
+		    Sandra&nbsp;Berger<sup>33</sup></li>
+		
+		<li class="inline">
+		    <a href="http://krasnow1.gmu.edu/CENlab/index.html">Avrama&nbsp;Blackwell</a><sup>42</sup></li>
+		
+		<li class="inline">
+		    Robert&nbsp;Cannon<sup>29</sup></li>
+		
+		<li class="inline">
+		    <a href="http://math.asu.edu/~crook">Sharon&nbsp;Crook</a><sup>8</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.andrewdavison.info/">Andrew&nbsp;Davison</a><sup>1</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.nada.kth.se/~mdj/">Mikael&nbsp;Djurfeldt</a><sup>16</sup></li>
+		
+		<li class="inline">
+		    Damien&nbsp;Drix<sup>32</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.fz-juelich.de/SharedDocs/Personen/INM/INM-6/EN/Eppler_Jochen.html?nn=724694">Jochen Martin&nbsp;Eppler</a><sup>26</sup></li>
+		
+		<li class="inline">
+		    Matteo&nbsp;Farinella<sup>7</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.cs.man.ac.uk/~galluppf/">Francesco&nbsp;Galluppi</a><sup>30</sup></li>
+		
+		<li class="inline">
+		    Samuel&nbsp;Garcia<sup>28</sup></li>
+		
+		<li class="inline">
+		    Stephan&nbsp;Gerhard<sup></sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.opensourcebrain.org/users/4">Padraig&nbsp;Gleeson</a><sup>7</sup></li>
+		
+		<li class="inline">
+		    Lyle&nbsp;Graham<sup>24</sup></li>
+		
+		<li class="inline">
+		    Domenico&nbsp;Guarino<sup>22</sup></li>
+		
+		<li class="inline">
+		    <a href="http://mih.voxindeserto.de/">Michael&nbsp;Hanke</a><sup>21</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.mhlab.net/">Moritz&nbsp;Helmstaedter</a><sup>40</sup></li>
+		
+		<li class="inline">
+		    Sean&nbsp;Hill<sup>45</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.cs.yale.edu/people/hines.html">Michael&nbsp;Hines</a><sup>44</sup></li>
+		
+		<li class="inline">
+		    Mike&nbsp;Hull<sup>3</sup></li>
+		
+		<li class="inline">
+		    Valentin&nbsp;Hänel<sup>2</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.linkedin.com/in/giovanniidili">Giovanni&nbsp;Idili</a><sup>46</sup></li>
+		
+		<li class="inline">
+		    Roshini&nbsp;Johri<sup>23</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.kip.uni-heidelberg.de/people/gruppe/index.php?action=details&amp;amp;num=2096">Bernhard&nbsp;Kaplan</a><sup>35</sup></li>
+		
+		<li class="inline">
+		    Sarah&nbsp;Keating<sup>12</sup></li>
+		
+		<li class="inline">
+		    Christoph&nbsp;Koke<sup>25</sup></li>
+		
+		<li class="inline">
+		    <a href="http://domino.watson.ibm.com/comm/research_people.nsf/pages/kozloski.index.html">James&nbsp;Kozloski</a><sup>41</sup></li>
+		
+		<li class="inline">
+		    Birgit&nbsp;Kriener<sup>20</sup></li>
+		
+		<li class="inline">
+		    <a href="http://slars0n.com/">Stephen&nbsp;Larson</a><sup>15</sup></li>
+		
+		<li class="inline">
+		    Yann&nbsp;Le Franc<sup>18</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.ebi.ac.uk/~mattioni">Michele&nbsp;Mattioni</a><sup>10</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.fz-juelich.de/SharedDocs/Personen/INM/INM-6/EN/Morrison_Abigail.html">Abigail&nbsp;Morrison</a><sup>5,6</sup></li>
+		
+		<li class="inline">
+		    <a href="http://neuralensemble.org/people/eilifmuller/">Eilif&nbsp;Muller</a><sup>2</sup></li>
+		
+		<li class="inline">
+		    Lyle&nbsp;Muller<sup>36</sup></li>
+		
+		<li class="inline">
+		    Miha&nbsp;Pelko<sup>3</sup></li>
+		
+		<li class="inline">
+		    Laurent&nbsp;Perrinet<sup>4</sup></li>
+		
+		<li class="inline">
+		    Eugenio&nbsp;Piasini<sup>7</sup></li>
+		
+		<li class="inline">
+		    <a href="http://neuro.paedia.info/">Philipp&nbsp;Rautenberg</a><sup>37</sup></li>
+		
+		<li class="inline">
+		    Subhasis&nbsp;Ray<sup>27</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.incf.org/">Raphael&nbsp;Ritz</a><sup>17</sup></li>
+		
+		<li class="inline">
+		    Armando&nbsp;Rodriguez<sup>13</sup></li>
+		
+		<li class="inline">
+		    Malin&nbsp;Sandström<sup>17</sup></li>
+		
+		<li class="inline">
+		    <a href="http://tomsharp.info/">Thomas&nbsp;Sharp</a><sup>47</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.ucl.ac.uk/silverlab">Angus&nbsp;Silver</a><sup>7</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www-3.unipv.it/dsffcm/pagine/labs/dangelo/">Sergio&nbsp;Solinas</a><sup>43</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.anc.ed.ac.uk/dtc/index.php?option=com_people&amp;func=showall&amp;userid=392">Thomas&nbsp;Suslak</a><sup>39</sup></li>
+		
+		<li class="inline">
+		    Balazs&nbsp;Szigeti<sup>38</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.biological-networks.org/">Richard&nbsp;Tomsett</a><sup>19</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.neuroscience.cam.ac.uk/directory/profile.php?vellamike">Michael&nbsp;Vella</a><sup>34</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.sbi.uni-rostock.de/team/single/dagmar-waltemath/">Dagmar&nbsp;Waltemath</a><sup>11</sup></li>
+		
+		<li class="inline">
+		    Pierre&nbsp;Yger <sup>9</sup></li>
+		
+		<li class="inline">
+		    <a href="http://yury.zaytsev.net/">Yury V.&nbsp;Zaytsev</a><sup>5</sup></li>
+		
+		<li class="inline">
+		    Marc&nbsp;de Kamps<sup>31</sup></li>
+		
+		<li class="inline-last">
+		    <a href="http://www.ebi.ac.uk/compneur-srv/">Nicolas&nbsp;le Novere</a><sup>10</sup></li>
+		
+            </ul>
+
+            <div id="affiliations">
+            <ul class="inline">
+		
+		<li class="inline">
+		    <sup>1</sup><a href="http://www.unic.cnrs-gif.fr/">UNIC, CNRS, Gif sur Yvette, France</a></li>
+		
+		<li class="inline">
+		    <sup>2</sup><a href="http://bluebrain.epfl.ch/">Blue Brain Project, EPFL, Switzerland</a></li>
+		
+		<li class="inline">
+		    <sup>3</sup>Institute for Adaptive and Neural Computation, University of Edinburgh, Edinburgh, UK</li>
+		
+		<li class="inline">
+		    <sup>4</sup><a href="http://www.incm.cnrs-mrs.fr/equipedyva.php">INCM, Marseille, France</a></li>
+		
+		<li class="inline">
+		    <sup>5</sup><a href="http://www.bccn.uni-freiburg.de/">Bernstein Centre for Computational Neuroscience, Albert-Ludwigs-Universität, Freiburg, Germany</a></li>
+		
+		<li class="inline">
+		    <sup>6</sup><a href="http://www.bcf.uni-freiburg.de/">Bernstein Center Freiburg, Freiburg, Germanz</a></li>
+		
+		<li class="inline">
+		    <sup>7</sup><a href="http://www.ucl.ac.uk/">UCL, London, UK</a></li>
+		
+		<li class="inline">
+		    <sup>8</sup><a href="http://asu.edu/">Arizona State University, Tempe, AZ, USA</a></li>
+		
+		<li class="inline">
+		    <sup>9</sup><a href="http://imperial.ac.uk/">Imperial College, London, UK</a></li>
+		
+		<li class="inline">
+		    <sup>10</sup><a href="http://www.ebi.ac.uk/compneur-srv/">EBI, Cambridge, UK</a></li>
+		
+		<li class="inline">
+		    <sup>11</sup><a href="http://www.sbi.uni-rostock.de/">Systems Biology and Bioinformatics, Rostock University, Rostock, Germany</a></li>
+		
+		<li class="inline">
+		    <sup>12</sup><a href="http://ebi.ac.uk/">EMBL_EBI, Hinxton, UK</a></li>
+		
+		<li class="inline">
+		    <sup>13</sup><a href="http://www.barshop.uthscsa.edu/">University of Texas Health Science Center at San Antonio, San Antonio, USA</a></li>
+		
+		<li class="inline">
+		    <sup>14</sup><a href="http://www.unic.cnrs-gif.fr/">UNIC,  CNRS, Gif sur Yvette, France</a></li>
+		
+		<li class="inline">
+		    <sup>15</sup><a href="http://crbs.ucsd.edu/">UCSD, La Jolla, CA, USA</a></li>
+		
+		<li class="inline">
+		    <sup>16</sup>KTH/INCF, Sweden</li>
+		
+		<li class="inline">
+		    <sup>17</sup><a href="http://www.incf.org/">INCF Secretariat, Stockholm, Sweden</a></li>
+		
+		<li class="inline">
+		    <sup>18</sup>University of Antwerp, Wilrijk, Belgium</li>
+		
+		<li class="inline">
+		    <sup>19</sup><a href="http://www.ncl.ac.uk/">Newcastle University, Newcastle upon Tyne, UK</a></li>
+		
+		<li class="inline">
+		    <sup>20</sup><a href="http://compneuro.umb.no/">IMT UMB , Aas, Norway</a></li>
+		
+		<li class="inline">
+		    <sup>21</sup><a href="http://www.ovgu.de/">Otto-von-Guericke University, Magdeburg, Germany</a></li>
+		
+		<li class="inline">
+		    <sup>22</sup><a href="http://cns.iaf.cnrs-gif.fr/Main.html">UNIC, Gif-sur-Yvette, France</a></li>
+		
+		<li class="inline">
+		    <sup>23</sup>Pitney Bowes Software, United Kingdom</li>
+		
+		<li class="inline">
+		    <sup>24</sup><a href="http://www.neurophys.biomedicale.univ-paris5.fr/~graham/">CNRS, U. Paris Descartes, Paris, France</a></li>
+		
+		<li class="inline">
+		    <sup>25</sup><a href="http://www.kip.uni-heidelberg.de/">Universität Heidelberg - Kirchhoff-Institut für Physik , Heidelberg, Germany</a></li>
+		
+		<li class="inline">
+		    <sup>26</sup><a href="http://www.csn.fz-juelich.de/">Forschungszentrum Juelich GmbH, Juelich, Germany</a></li>
+		
+		<li class="inline">
+		    <sup>27</sup><a href="http://www.ncbs.res.in/~bhalla/index.html">NCBS, Bangalore, India</a></li>
+		
+		<li class="inline">
+		    <sup>28</sup><a href="http://olfac.univ-lyon1.fr/">Université Claude Bernard Lyon 1, France</a></li>
+		
+		<li class="inline">
+		    <sup>29</sup><a href="http://www.textensor.com/">Textensor Limited, Edinburgh, UK</a></li>
+		
+		<li class="inline">
+		    <sup>30</sup><a href="http://apt.cs.man.ac.uk/projects/SpiNNaker/">University of Manchester, Manchester, United Kingdom</a></li>
+		
+		<li class="inline">
+		    <sup>31</sup><a href="http://www.comp.leeds.ac.uk/dekamps">University of Leeds, Leeds, UK</a></li>
+		
+		<li class="inline">
+		    <sup>32</sup>EPFL, Switzerland</li>
+		
+		<li class="inline">
+		    <sup>33</sup><a href="http://www.asu.edu/">ASU, Tempe, USA</a></li>
+		
+		<li class="inline">
+		    <sup>34</sup>University of Cambridge, Cambridge, UK</li>
+		
+		<li class="inline">
+		    <sup>35</sup>Royal Institute of Technology, Stockholm, Sweden</li>
+		
+		<li class="inline">
+		    <sup>36</sup><a href="http://www.unic.cnrs-gif.fr/">UNIC, CNRS, Gif-sur-Yvette, FRANCE</a></li>
+		
+		<li class="inline">
+		    <sup>37</sup><a href="http://www.g-node.org/">German Neuroinformatics Node, Department Biologie II, Ludwig-Maximilians-Universität München, München, Germany</a></li>
+		
+		<li class="inline">
+		    <sup>38</sup><a href="http://www.anc.ed.ac.uk/dtc/index.php?option=com_people&amp;func=showall&amp;userid=432">University of Edinburgh Neuroinformatics Doctoral Training Centre, Edinburgh, United Kingdom</a></li>
+		
+		<li class="inline">
+		    <sup>39</sup><a href="http://www.ed.ac.uk/">University of Edinburgh, Edinburgh, UK</a></li>
+		
+		<li class="inline">
+		    <sup>40</sup><a href="http://www.mhlab.net/">Max Planck Institute of Neurobiology, Munich, Germany</a></li>
+		
+		<li class="inline">
+		    <sup>41</sup>IBM, ., USA</li>
+		
+		<li class="inline">
+		    <sup>42</sup><a href="http://krasnow1.gmu.edu/CENlab/index.html">Krasnow Institute for Advanced Study, USA</a></li>
+		
+		<li class="inline">
+		    <sup>43</sup>University of Pavia, Italy</li>
+		
+		<li class="inline">
+		    <sup>44</sup><a href="http://www.neuron.yale.edu/">Yale University, New Haven, USA</a></li>
+		
+		<li class="inline">
+		    <sup>45</sup><a href="http://www.incf.org/">INCF, Stockholm, Sweden</a></li>
+		
+		<li class="inline">
+		    <sup>46</sup><a href="http://www.openworm.org/">OpenWorm, US / Ireland / Italy / Russia</a></li>
+		
+		<li class="inline-last">
+		    <sup>47</sup>The University of Manchester, Manchester, UK</li>
+		
+            </ul>
+            </div>
+
+            <br/><br/>
+	    
+           <img src="/media/images/codejam5_group_photo.jpg" alt="Group photo from the BrainScaleS CodeJam Workshop #5" width=1024/>
+	   
+        
+        
+	
+    
+            <h3>Meeting Program</h3>
+	    
+            <table class="programme">
+	      
+	      <tr class="header"><td colspan="3"><h4><b>Wed. 14th March</b></h4></td></tr>
+	      
+	        <tr class="session">
+		    <td>09:00</td>
+		    <td colspan="2"><b>Welcome</b></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>09:15</td>
+		    <td colspan="2"><b>Describing networks I</b></td></tr>
+		
+		
+		  <tr><td>09:15</td><td>Birgit Kriener</td>
+		      <td>Description and testing of network connectivity <a href="/media/slides/Kriener_DescriptionAndTestingOfNetworks_CodeJam5.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>09:45</td><td>Mikael Djurfeldt</td>
+		      <td>Specifying connectivity using CSA <a href="/media/slides/Djurfeldt_CSA_CodeJam5.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>10:15</td><td>James Bednar</td>
+		      <td>Semi-declarative model specification in Python <a href="/media/slides/Bednar_SemiDeclarative_CodeJam5.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>10:45</td>
+		    <td colspan="2"><i>Break</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>11:15</td>
+		    <td colspan="2"><b>Describing networks II</b></td></tr>
+		
+		
+		  <tr><td>11:15</td><td>Padraig Gleeson</td>
+		      <td>Integrating NeuroML 2 with PyNN, Brian &amp; CSA <a href="/media/slides/Gleeson_NeuroML_Networks_CodeJam5.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>11:40</td><td>Jan Antolik</td>
+		      <td>Mozaik - a framework for large-scale spiking model development <a href="/media/slides/Antolik_Mozaik_CodeJam5.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>12:05</td><td>Francesco Galluppi</td>
+		      <td>PyNN on SpiNNaker
+                          <a href="http://www.cs.man.ac.uk/~galluppf/codejam_fg_pynn_on_spinnaker.pdf" class="download">[link to slides]</a></td></tr>
+		
+		
+		
+		  <tr><td>12:30</td><td>Stephan Gerhard</td>
+		      <td>Neural circuit reconstruction with CATMAID
+                          <a href="http://www.unidesign.ch/pdf/CodeJam5_CATMAID.pdf" class="download">[link to slides]</a></td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>13:00</td>
+		    <td colspan="2"><i>Lunch</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>14:00</td>
+		    <td colspan="2"><b>Code sprints, tutorials and discussions</b></td></tr>
+		
+		
+		
+	      
+	        <tr class="session">
+		    <td>14:00-17:40</td>
+		    <td colspan="2"><b>Mini-workshop on Convergence, Interoperability and Reuse in Neuroscience Modelling Software</b></td></tr>
+		
+		
+		  <tr><td>14:00</td><td>Michael Vella</td>
+		      <td>Running multicompartment models on a grid <a href="/media/slides/Vella_gridcomputing_CodeJam5.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>14:30</td><td>Marc de Kamps</td>
+		      <td>Modelling the population level and beyond <a href="/media/slides/deKamps_ClamVis-MIIND_CodeJam.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>15:00</td><td></td>
+		      <td>Discussion
+                          </td></tr>
+		
+		
+	      
+	      <tr><td>&nbsp;</td><td></td><td></td></tr>
+	    
+	      <tr class="header"><td colspan="3"><h4><b>Thu. 15th March</b></h4></td></tr>
+	      
+	        <tr class="session">
+		    <td>09:00</td>
+		    <td colspan="2"><b>Running an open-source scientific software project</b></td></tr>
+		
+		
+		  <tr><td>09:00</td><td>Michael Hanke</td>
+		      <td>The how and why of getting packaged
+                          <a href="http://neuro.debian.net/_files/Hanke_GetPackaged_CodeJam5_2012.pdf" class="download">[link to slides]</a></td></tr>
+		
+		
+		
+		  <tr><td>09:30</td><td>Yury V. Zaytsev</td>
+		      <td>Continuous integration
+                          </td></tr>
+		
+		
+		
+		  <tr><td>10:00</td><td>Valentin Hänel</td>
+		      <td>Open source project management <a href="/media/slides/haenel-open-source-pm-edinburgh-2012-03-10-g2cc65c5.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>10:20</td><td>Pierre Yger </td>
+		      <td>Current status and future plans for NeuroTools <a href="/media/slides/Yger_NeuroTools_CodeJam5.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>10:45</td>
+		    <td colspan="2"><i>Break</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>11:15</td>
+		    <td colspan="2"><b>Compartmental neural modelling in Python</b></td></tr>
+		
+		
+		  <tr><td>11:15</td><td>Subhasis Ray</td>
+		      <td>Multi-compartmental and multi-scale modeling in MOOSE via Python <a href="/media/slides/Ray_MOOSE_and_Python_CodeJam5.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>11:45</td><td>Armando Rodriguez</td>
+		      <td>GENESIS &amp; Neurospaces in Python
+                          <a href="http://repo-genesis3.cbi.utsa.edu/python_g3.pdf" class="download">[link to slides]</a></td></tr>
+		
+		
+		
+		  <tr><td>12:15</td><td>Michele Mattioni</td>
+		      <td>Neuronvisio: a Graphical User Interface with 3D capabilities for NEURON
+                          <a href="http://www.slideshare.net/mattions/neuronvisio-codejam5" class="download">[link to slides]</a></td></tr>
+		
+		
+		
+		  <tr><td>12:35</td><td>Mike Hull</td>
+		      <td>Morphforge: A Python library for modelling small networks of multicompartmental neurons
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>12:55</td>
+		    <td colspan="2"><i>Lunch</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>14:00</td>
+		    <td colspan="2"><b>Code sprints, tutorials and discussions</b></td></tr>
+		
+		
+		
+	      
+	        <tr class="break">
+		    <td>20:00-</td>
+		    <td colspan="2"><i>Banquet</i></td></tr>
+		
+	      
+	      <tr><td>&nbsp;</td><td></td><td></td></tr>
+	    
+	      <tr class="header"><td colspan="3"><h4><b>Fri. 16th March</b></h4></td></tr>
+	      
+	        <tr class="session">
+		    <td>09:00</td>
+		    <td colspan="2"><b>Code generation for neuronal simulation</b></td></tr>
+		
+		
+		  <tr><td>09:00</td><td>Damien Drix</td>
+		      <td>A domain-specific language for optimised GPU code generation
+                          </td></tr>
+		
+		
+		
+		  <tr><td>09:30</td><td>Jochen Martin Eppler</td>
+		      <td>The NEST code generation roadmap: Rationale and methods <a href="/media/slides/Eppler_CodeGeneration_CodeJam5.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>10:00</td><td>Andrew Davison</td>
+		      <td>Using NineML models in PyNN <a href="/media/slides/pyNN_CodeJam5.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>10:20</td>
+		    <td colspan="2"><i>Break</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>10:50</td>
+		    <td colspan="2"><b>Neuroscience data analysis with Python</b></td></tr>
+		
+		
+		  <tr><td>10:50</td><td>Stephan Gerhard</td>
+		      <td>NeuroHDF
+                          <a href="http://www.unidesign.ch/pdf/CodeJam5_NeuroHDF.pdf" class="download">[link to slides]</a></td></tr>
+		
+		
+		
+		  <tr><td>11:15</td><td>Samuel Garcia</td>
+		      <td>Neo <a href="/media/slides/Garcia_Neo_CodeJam5.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>11:45</td><td>Raphael Ritz</td>
+		      <td>The INCF Cyberinfrastructure <a href="/media/slides/Ritz_INCFcyberinfrastructure_CodeJam5.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>12:05</td><td>Philipp Rautenberg</td>
+		      <td>Datajongleur - A pyToolkit for Dataobjects <a href="/media/slides/Rautenberg_Datajongleur_CodeJam.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>12:30</td>
+		    <td colspan="2"><i>Lunch</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>14:00-18:00</td>
+		    <td colspan="2"><b>Code sprints, tutorials and discussions</b></td></tr>
+		
+		
+		
+	      
+	      <tr><td>&nbsp;</td><td></td><td></td></tr>
+	    
+	    </table>
+
+                <p><small><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://creativecommons.org/images/public/somerights20.png"/></a><br/>Unless mentioned otherwise, all the downloadable talks are licenced under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/">Creative Commons Attribution-Noncommercial-No Derivative Works License</a>.</small></p>
+ 
+
+	
+
+            <h3>Support</h3>
+            <p>The meeting organizers gratefully acknowledge the support of the European Union through the <a class="reference external" href="http://brainscales.eu">BrainScaleS Project</a> (&quot;Brain-inspired multiscale computation in neuromorphic hybrid systems&quot;; grant no. FP7-ICT-2009 269921) and of the <a class="reference external" href="http://incf.org">INCF</a>. We also wish to express our great appreciation to the School of Informatics at the University of Edinburgh for providing us with a great location and much assistance.</p>
+
+        
+
+          </div>
+          <div class="span3">
+          
+<ul class="nav nav-tabs nav-stacked">
+   
+  <li><a href="../CodeJam9/">HBP CodeJam Workshop #9</a></li>
+  
+  <li><a href="../CodeJam8/">HBP CodeJam Workshop #8</a></li>
+  
+  <li><a href="../Hippocamp2017/">HBP Hippocamp 2017: Collaborative and Integrative Modeling of Hippocampus</a></li>
+  
+  <li><a href="../CodeJam7/">HBP CodeJam Workshop #7</a></li>
+  
+  <li><a href="../HippocampCA1/">HBP Hippocamp CA1: Collaborative and Integrative Modeling of Hippocampal Area CA1</a></li>
+  
+  <li><a href="../CodeJam6/">BrainScaleS CodeJam Workshop #6</a></li>
+  
+  <li><a href="../CodeJam4/">FACETS CodeJam Workshop #4</a></li>
+  
+  <li><a href="../CodeJam3/">FACETS CodeJam Workshop #3</a></li>
+  
+  <li><a href="../CNS09/">CNS*09 Workshop: Python in Neuroscience</a></li>
+  
+  <li><a href="../CodeJam2/">FACETS CodeJam Workshop #2</a></li>
+  
+  <li><a href="../CodeJam1/">FACETS CodeJam Workshop #1</a></li>
+  
+</ul>
+
+
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <p class="text-info">&copy; The NeuralEnsemble Initiative, 2020.</p>
+      </footer>
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+
+  </body>
+</html>

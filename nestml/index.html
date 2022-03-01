@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title> NESTML - NeuralEnsemble</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/css/neuralensemble_new.css" rel="stylesheet">
+    <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="shortcut icon" href="/static/images/neurens.gif">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top navbar-inverse">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">NeuralEnsemble</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="active" class="dropdown">
+                <a href="/projects/" class="dropdown-toggle" data-toggle="dropdown">
+                Software
+                <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="/brian/">Brian</a></li>
+                  <li><a href="/elephant/">Elephant</a></li>
+                  <li><a href="/libNeuroML/">libNeuroML</a></li>
+                  <li><a href="mozaik/">Mozaik</a></li>
+                  <li><a href="/neo/">Neo</a></li>
+                  <li><a href="/NEST/">NEST</a></li>
+                  <li><a href="/nestml/">NESTML</a></li>
+                  <li><a href="/neurotic/">neurotic</a></li>
+                  <li><a href="/ode-toolbox/">ODE-toolbox</a></li>
+                  <li><a href="/OpenElectrophy/">OpenElectrophy</a></li>
+                  <li><a href="/PyNN/">PyNN</a></li>
+                  <li><a href="/SpykeViewer/">SpykeViewer</a></li>
+                  <li><a href="/sumatra/">Sumatra</a></li>
+                </ul>
+              </li>
+              <li><a href="/meetings/">Meetings</a></li>
+              <li><a href="http://neuralensemble.blogspot.com/">Blog</a></li>
+              <li><a href="https://groups.google.com/forum/#!forum/neuralensemble">Community</a></li>
+              <!-- <li><a href="/jobs/">Jobs</a></li> -->
+              <li><a href="/about/">About</a></li>
+              <li><a href="/contact/">Contact</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="row">
+          <div class="span9">
+          
+        <div class="row" id="businesscard">
+            <div class="span2">
+                
+                <img src="/static/photos/nestml-logo.png" class="thumbnail">
+                
+            </div>
+            <div class="span7">
+                <h2>NESTML</h2>
+                NESTML is a domain-specific language that supports the specification of neuron models in a precise and concise syntax. It comes with an automatic source-code generation toolchain, allowing highly performant simulation code to be generated for any model.
+            </div>
+        </div> <!-- /businesscard -->
+        <p>NESTML is a domain-specific language that supports the specification of neuron models in a precise and concise syntax. It was developed to address the maintainability issues that follow from an increasing number of models, model variants, and an increased model complexity in computational neuroscience. Our aim is to ease the modelling process for neuroscientists both with and without prior training in computer science. This is achieved without compromising on performance by automatic source-code generation, allowing the same model file to target different hardware or software platforms by changing only a command-line parameter. While originally developed in the context of NEST Simulator, the language itself as well as the associated toolchain are lightweight, modular and extensible, by virtue of using a parser generator and internal abstract syntax tree (AST) representation, which can be operated on using well-known patterns such as visitors and rewriting. Model equations can either be given as a simple string of mathematical notation or as an algorithm written in the built-in procedural language. The equations are analyzed by the associated toolchain ODE-toolbox, to compute an exact solution if possible or to invoke an appropriate numeric solver otherwise.</p>
+
+
+
+          </div>
+          <div class="span3">
+          
+
+
+<ul class="nav nav-tabs nav-stacked">
+    
+    <li><a href="https://nestml.readthedocs.io/">Documentation</a></li>
+    <li><a href="https://github.com/nest/nestml">Download</a></li>
+    <li><a href="https://github.com/nest/nestml">Source code</a></li>
+    <li><a href="https://nestml.readthedocs.io/en/latest/getting_help.html#mailing-list">Mailing list</a></li>
+    <li><a href="https://github.com/nest/nestml/issues">Issue tracker</a></li>
+</ul>
+
+<p class="text-info pagination-centered"><b>Licence: GPL-2.0</b></p>
+
+<!--
+    
+    <button class="btn btn-block disabled">Licence: GPL-2.0</button>
+    <a class="btn btn-block" href="https://nestml.readthedocs.io/">Documentation</a>
+    <a class="btn btn-block" href="https://github.com/nest/nestml">Download</a>
+    <a class="btn btn-block" href="https://github.com/nest/nestml">Source code</a>
+    <a class="btn btn-block" href="https://nestml.readthedocs.io/en/latest/getting_help.html#mailing-list">Mailing list</a>
+    <a class="btn btn-block" href="https://github.com/nest/nestml/issues">Issue tracker</a>
+-->
+
+
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <p class="text-info">&copy; The NeuralEnsemble Initiative, 2020.</p>
+      </footer>
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title> NEST - NeuralEnsemble</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/css/neuralensemble_new.css" rel="stylesheet">
+    <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="shortcut icon" href="/static/images/neurens.gif">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top navbar-inverse">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">NeuralEnsemble</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="active" class="dropdown">
+                <a href="/projects/" class="dropdown-toggle" data-toggle="dropdown">
+                Software
+                <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="/brian/">Brian</a></li>
+                  <li><a href="/elephant/">Elephant</a></li>
+                  <li><a href="/libNeuroML/">libNeuroML</a></li>
+                  <li><a href="mozaik/">Mozaik</a></li>
+                  <li><a href="/neo/">Neo</a></li>
+                  <li><a href="/NEST/">NEST</a></li>
+                  <li><a href="/nestml/">NESTML</a></li>
+                  <li><a href="/neurotic/">neurotic</a></li>
+                  <li><a href="/ode-toolbox/">ODE-toolbox</a></li>
+                  <li><a href="/OpenElectrophy/">OpenElectrophy</a></li>
+                  <li><a href="/PyNN/">PyNN</a></li>
+                  <li><a href="/SpykeViewer/">SpykeViewer</a></li>
+                  <li><a href="/sumatra/">Sumatra</a></li>
+                </ul>
+              </li>
+              <li><a href="/meetings/">Meetings</a></li>
+              <li><a href="http://neuralensemble.blogspot.com/">Blog</a></li>
+              <li><a href="https://groups.google.com/forum/#!forum/neuralensemble">Community</a></li>
+              <!-- <li><a href="/jobs/">Jobs</a></li> -->
+              <li><a href="/about/">About</a></li>
+              <li><a href="/contact/">Contact</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="row">
+          <div class="span9">
+          
+        <div class="row" id="businesscard">
+            <div class="span2">
+                
+                <img src="/static/photos/nest-logo.png" class="thumbnail">
+                
+            </div>
+            <div class="span7">
+                <h2>NEST</h2>
+                NEST is a simulator for spiking neural network models from small-scale
+microcircuits to brain-scale networks of the order of 10^8 neurons and
+10^12 synapses. The same code can be used on a large range of
+architectures from laptops and workstations to HPC clusters and
+supercomputer.
+            </div>
+        </div> <!-- /businesscard -->
+        <p>The development of NEST is driven by the demands of the
+neuroscientific community and carried out by the NEST Initiative, a
+collaboration between the members of different academic institutes.</p>
+<p>NEST is free and open source software. To learn more about NEST and
+download the source code, visit the homepage of the NEST Initiative at
+<a class="reference external" href="http://www.nest-initiative.org/">http://www.nest-initiative.org/</a>.</p>
+<div class="section" id="main-features">
+<h3>Main features:</h3>
+<ul class="simple">
+<li>Integrate-and-fire neuron models with current- and conductance-based synapses</li>
+<li>Adaptive threshold integrate-and-fire neuron models (AdEx, MAT2)</li>
+<li>Hodgkin-Huxley type neuron models with one compartment</li>
+<li>Simple multi-compartmental neuron models</li>
+<li>Static and plastic synapse models (STDP, short-term plasticity, neuromodulation)</li>
+<li>Grid based spike interaction and interaction in continuous time</li>
+<li>Exact Integration for linear neuron models and appropriate solvers for others</li>
+<li>Topology Module and support for CSA for creating complex networks</li>
+<li>Python based user interfaces (PyNEST, PyNN)</li>
+<li>Interface to MUSIC for simulator-simulator interaction at run-time</li>
+<li>Extensive testsuite to ensure reliability and reproducibility</li>
+<li>Continuous integration to support agile development</li>
+<li>OpenMP and MPI parallelism for efficient simulation</li>
+</ul>
+</div>
+
+
+
+          </div>
+          <div class="span3">
+          
+
+
+<ul class="nav nav-tabs nav-stacked">
+    <li><a href="http://www.nest-simulator.org/">Home page</a></li>
+    <li><a href="http://www.nest-simulator.org/index.php/Software:Documentation">Documentation</a></li>
+    <li><a href="http://www.nest-simulator.org/index.php/Software:Download">Download</a></li>
+    <li><a href="http://www.nest-simulator.org/index.php/Software:Download">Source code</a></li>
+    <li><a href="http://www.nest-simulator.org/index.php/Software:Community">Mailing list</a></li>
+    <li><a href="http://www.nest-simulator.org/index.php/Software:Community">Issue tracker</a></li>
+</ul>
+
+<p class="text-info pagination-centered"><b>Licence: GPL v2</b></p>
+
+<!--
+    <a class="btn btn-block" href="http://www.nest-simulator.org/">Home page</a>
+    <button class="btn btn-block disabled">Licence: GPL v2</button>
+    <a class="btn btn-block" href="http://www.nest-simulator.org/index.php/Software:Documentation">Documentation</a>
+    <a class="btn btn-block" href="http://www.nest-simulator.org/index.php/Software:Download">Download</a>
+    <a class="btn btn-block" href="http://www.nest-simulator.org/index.php/Software:Download">Source code</a>
+    <a class="btn btn-block" href="http://www.nest-simulator.org/index.php/Software:Community">Mailing list</a>
+    <a class="btn btn-block" href="http://www.nest-simulator.org/index.php/Software:Community">Issue tracker</a>
+-->
+
+
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <p class="text-info">&copy; The NeuralEnsemble Initiative, 2020.</p>
+      </footer>
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+
+  </body>
+</html>

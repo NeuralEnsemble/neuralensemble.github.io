@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title> FACETS CodeJam Workshop #1 - NeuralEnsemble</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/css/neuralensemble_new.css" rel="stylesheet">
+    <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="shortcut icon" href="/static/images/neurens.gif">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top navbar-inverse">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">NeuralEnsemble</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="dropdown">
+                <a href="/projects/" class="dropdown-toggle" data-toggle="dropdown">
+                Software
+                <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="/brian/">Brian</a></li>
+                  <li><a href="/elephant/">Elephant</a></li>
+                  <li><a href="/libNeuroML/">libNeuroML</a></li>
+                  <li><a href="mozaik/">Mozaik</a></li>
+                  <li><a href="/neo/">Neo</a></li>
+                  <li><a href="/NEST/">NEST</a></li>
+                  <li><a href="/nestml/">NESTML</a></li>
+                  <li><a href="/neurotic/">neurotic</a></li>
+                  <li><a href="/ode-toolbox/">ODE-toolbox</a></li>
+                  <li><a href="/OpenElectrophy/">OpenElectrophy</a></li>
+                  <li><a href="/PyNN/">PyNN</a></li>
+                  <li><a href="/SpykeViewer/">SpykeViewer</a></li>
+                  <li><a href="/sumatra/">Sumatra</a></li>
+                </ul>
+              </li>
+              <li class="active"><a href="/meetings/">Meetings</a></li>
+              <li><a href="http://neuralensemble.blogspot.com/">Blog</a></li>
+              <li><a href="https://groups.google.com/forum/#!forum/neuralensemble">Community</a></li>
+              <!-- <li><a href="/jobs/">Jobs</a></li> -->
+              <li><a href="/about/">About</a></li>
+              <li><a href="/contact/">Contact</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="row">
+          <div class="span9">
+          
+                        
+            <h2>FACETS CodeJam Workshop #1</h2>
+            <p>2nd-5th April 2007, Heidelberg, Germany<br/><br/></p>
+            
+            <p><img src="/media/images/Jam.png" alt="CodeJam 2007" /><br/>
+	    <small></small></p>
+	    
+
+            <p>Trends in programming language development and adoption point to Python as the high-level systems integration language of choice. Python leverages a vast developer-base external to the Neuroscience community, and promises leaps in simulation complexity and maintainability to any neural simulator which adopts it. As more and more simulators support Python, model development times can be drastically reduced by promoting code sharing and reuse across simulator communities. As a result, modelers can devote their software development time to innovating new simulation tools such as network topology databases, stimulus programming, analysis and visualization tools, and simulation accounting, to name a few. A multilateral effort to coordinate and organize these development efforts into a larger meta-simulator software system is a natural and alternate approach to incrementally address what is known as the <a class="reference external" href="http://pespmc1.vub.ac.be/Papers/IEEE.Self-organization.pdf">complexity bottleneck</a>, presently a major roadblock for neural modeling. While a solution here is arguably a necessary condition for resolving the present stalemate for understanding the complexities of brain-like computing, a successful initiative could also end up being a major innovation of the field for the larger computing community.</p>
+<p>The goal of the CodeJam meeting was to bring together the core group of developers and modelers presently working towards such a common set of meta-simulator tools implemented in Python. As there was much to discuss, the meeting was partly parallelized into &quot;Focus Groups&quot;. Code sprints were scheduled to address outstanding developer issues. A small number of technical talks were scheduled to promote discussion on recent innovations. We discussed how software already implemented can be improved and adopted, while trying to avoid arguing about specifications of unimplemented software, leaving this honor to the volunteer who risks to prototype it first. The focus of the meeting was on innovation, communication, convergence, multilateralism, and realization (from the german: Umsetzung).</p>
+<p>The original meeting webpage: <a class="reference external" href="https://facets.kip.uni-heidelberg.de/tmp_course/course_wiki/index.php/CodeJam_Heidelberg_April2007">https://facets.kip.uni-heidelberg.de/tmp_course/course_wiki/index.php/CodeJam_Heidelberg_April2007</a></p>
+
+
+
+	    <h3>Organization</h3>
+	    <p>The meeting was held at the <a href="http://www.kip.uni-heidelberg.de/">Kirchhoff Institute for Physics</a>, located 
+               at Im Neuenheimer Feld 227
+               in Heidelberg, Germany. 
+               The meeting was organised by Andrew Davison and Eilif Muller.</p>
+
+	
+
+	
+        
+            <h3>Participants</h3>
+	    <ul class="inline">
+		
+		<li class="inline">
+		    James&nbsp;Bednar<sup>7</sup></li>
+		
+		<li class="inline">
+		    Thierry&nbsp;Brizzi<sup>8</sup></li>
+		
+		<li class="inline">
+		    Daniel&nbsp;Brüderle<sup>1</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.andrewdavison.info/">Andrew&nbsp;Davison</a><sup>5</sup></li>
+		
+		<li class="inline">
+		    Nicolas&nbsp;Debeissat<sup>9</sup></li>
+		
+		<li class="inline">
+		    Markus&nbsp;Diesmann<sup>12</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.fz-juelich.de/SharedDocs/Personen/INM/INM-6/EN/Eppler_Jochen.html?nn=724694">Jochen Martin&nbsp;Eppler</a><sup>11,3</sup></li>
+		
+		<li class="inline">
+		    Johannes&nbsp;Fieres<sup>1</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.incf.org/community/people/gewaltig/">Marc-Oliver&nbsp;Gewaltig</a><sup>3</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.opensourcebrain.org/users/4">Padraig&nbsp;Gleeson</a><sup>4</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.cs.yale.edu/people/hines.html">Michael&nbsp;Hines</a><sup>2</sup></li>
+		
+		<li class="inline">
+		    Jens&nbsp;Kremkow<sup>11,8</sup></li>
+		
+		<li class="inline">
+		    Karlheinz&nbsp;Meier<sup>1</sup></li>
+		
+		<li class="inline">
+		    <a href="http://neuralensemble.org/people/eilifmuller/">Eilif&nbsp;Muller</a><sup>1</sup></li>
+		
+		<li class="inline">
+		    Dejan&nbsp;Pecevski<sup>6</sup></li>
+		
+		<li class="inline">
+		    Laurent&nbsp;Perrinet<sup>8</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.incf.org/">Raphael&nbsp;Ritz</a><sup>10</sup></li>
+		
+		<li class="inline">
+		    Olivier&nbsp;Rochel<sup>9</sup></li>
+		
+		<li class="inline">
+		    Michelle&nbsp;Rudolph<sup>5</sup></li>
+		
+		<li class="inline">
+		    Klaus&nbsp;Schuch<sup>6</sup></li>
+		
+		<li class="inline">
+		    Thierry&nbsp;Viéville<sup>9</sup></li>
+		
+		<li class="inline-last">
+		    <a href="http://www.unic.cnrs-gif.fr/people/Pierre_Yger/">Pierre&nbsp;Yger</a><sup>5</sup></li>
+		
+            </ul>
+
+            <div id="affiliations">
+            <ul class="inline">
+		
+		<li class="inline">
+		    <sup>1</sup><a href="http://wwwasic.kip.uni-heidelberg.de/asicnew/vision/">Kirchoff-Institut für Physik, Ruprecht-Karls-Universität, Heidelberg, Germany</a></li>
+		
+		<li class="inline">
+		    <sup>2</sup><a href="http://www.neuron.yale.edu/">Yale University, New Haven, USA</a></li>
+		
+		<li class="inline">
+		    <sup>3</sup><a href="http://www.honda-ri.de/">Honda Research Institute Europe GmbH, Germany</a></li>
+		
+		<li class="inline">
+		    <sup>4</sup><a href="http://www.physiol.ucl.ac.uk/research/silver_a/">Dept. of Physiology, UCL, London, UK</a></li>
+		
+		<li class="inline">
+		    <sup>5</sup><a href="http://www.unic.cnrs-gif.fr/">UNIC,  CNRS, Gif sur Yvette, France</a></li>
+		
+		<li class="inline">
+		    <sup>6</sup><a href="http://www.igi.tugraz.at/maass/">Institute for Theoretical Computer Science, Technische Universität Graz, Austria</a></li>
+		
+		<li class="inline">
+		    <sup>7</sup>Institute for Adaptive and Neural Computation, University of Edinburgh, Edinburgh, UK</li>
+		
+		<li class="inline">
+		    <sup>8</sup><a href="http://www.incm.cnrs-mrs.fr/equipedyva.php">INCM, Marseille, France</a></li>
+		
+		<li class="inline">
+		    <sup>9</sup>INRIA, Sophia Antipolis, France</li>
+		
+		<li class="inline">
+		    <sup>10</sup><a href="http://www.incf.org/">INCF Secretariat, Stockholm, Sweden</a></li>
+		
+		<li class="inline">
+		    <sup>11</sup><a href="http://www.bccn.uni-freiburg.de/">Bernstein Centre for Computational Neuroscience, Albert-Ludwigs-Universität, Freiburg, Germany</a></li>
+		
+		<li class="inline-last">
+		    <sup>12</sup><a href="http://www.brain.riken.jp/en/m_diesmann.html">Diesmann Research Unit, RIKEN, Japan</a></li>
+		
+            </ul>
+            </div>
+
+            <br/><br/>
+	    
+           <img src="/media/images/Codejam.jpg" alt="Group photo from the FACETS CodeJam Workshop #1" width=1024/>
+	   
+        
+        
+	
+    
+            <h3>Meeting Program</h3>
+	    
+            <table class="programme">
+	      
+	      <tr class="header"><td colspan="3"><h4><b>Mon. 2nd April</b></h4></td></tr>
+	      
+	        <tr class="session">
+		    <td>09:15</td>
+		    <td colspan="2"><b>Oral Sessions I: Wisdom Foundations</b></td></tr>
+		
+		
+		  <tr><td>09:15</td><td>Karlheinz Meier</td>
+		      <td>Opening remarks
+                          </td></tr>
+		
+		
+		
+		  <tr><td>09:30</td><td>Michael Hines</td>
+		      <td>NEURON + Python
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>10:15</td>
+		    <td colspan="2"><i>Stimulating Beverages</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>11:00</td>
+		    <td colspan="2"><b>Oral Sessions I (continued)</b></td></tr>
+		
+		
+		  <tr><td>11:00</td><td>Marc-Oliver Gewaltig</td>
+		      <td>NEST + Python
+                          </td></tr>
+		
+		
+		
+		  <tr><td>11:45</td><td>Padraig Gleeson</td>
+		      <td>NeuroML, neuroConstruct and Python
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>12:30</td>
+		    <td colspan="2"><i>Lunch</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>14:00</td>
+		    <td colspan="2"><b>Jam Sessions I</b></td></tr>
+		
+		
+		  <tr><td>14:00</td><td></td>
+		      <td>Focus Group A: Python interfaces and wrapping (NEST, NEURON, PCSIM,  Hardware, SPLIT, MONSTER, MVASPIKE) 
+                          </td></tr>
+		
+		
+		
+		  <tr><td>14:00</td><td></td>
+		      <td>Focus Group B: PyNN/Python model port sprint
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>15:30</td>
+		    <td colspan="2"><i>Stimulating Beverages</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>16:15-18:15</td>
+		    <td colspan="2"><b>Jam Sessions I</b></td></tr>
+		
+		
+		  <tr><td>16:15</td><td></td>
+		      <td>Focus Group A: Software Carpentry crash course
+                          </td></tr>
+		
+		
+		
+		  <tr><td>16:15</td><td></td>
+		      <td>Focus Group B: Freestyle discussion and coding
+                          </td></tr>
+		
+		
+		
+		  <tr><td>17:45</td><td></td>
+		      <td>Single track recap of Focus Groups by Chairs
+                          </td></tr>
+		
+		
+	      
+	      <tr><td>&nbsp;</td><td></td><td></td></tr>
+	    
+	      <tr class="header"><td colspan="3"><h4><b>Tue. 3rd April</b></h4></td></tr>
+	      
+	        <tr class="session">
+		    <td>09:15</td>
+		    <td colspan="2"><b>Oral Sessions II: Insight frameworks</b></td></tr>
+		
+		
+		  <tr><td>09:15</td><td>James Bednar</td>
+		      <td>Large-scale modeling of topographic maps in Python
+                          </td></tr>
+		
+		
+		
+		  <tr><td>10:00</td><td>Andrew Davison</td>
+		      <td>PyNN
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>10:45</td>
+		    <td colspan="2"><i>Stimulating Beverages</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>11:15</td>
+		    <td colspan="2"><b>Oral Sessions II (continued)</b></td></tr>
+		
+		
+		  <tr><td>11:15</td><td>Nicolas Debeissat</td>
+		      <td>Using a declarative formalism for meta-data
+                          </td></tr>
+		
+		
+		
+		  <tr><td>12:00</td><td>Olivier Rochel</td>
+		      <td>Hierarchical representation in DEVS: from neuron, to cortical  maps and beyond
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>12:30</td>
+		    <td colspan="2"><i>Lunch</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>14:00</td>
+		    <td colspan="2"><b>Jam Sessions II</b></td></tr>
+		
+		
+		  <tr><td>14:00</td><td></td>
+		      <td>Focus Group A: PyNN backends development
+                          </td></tr>
+		
+		
+		
+		  <tr><td>14:00</td><td></td>
+		      <td>Focus Group B: Freestyle discussion and coding
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>15:30</td>
+		    <td colspan="2"><i>Stimulating Beverages</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>16:15</td>
+		    <td colspan="2"><b>Jam Sessions II</b></td></tr>
+		
+		
+		  <tr><td>16:15</td><td></td>
+		      <td>Focus Group A: Distributed PyNN
+                          </td></tr>
+		
+		
+		
+		  <tr><td>16:15</td><td></td>
+		      <td>Focus Group B: Freestyle discussion and coding
+                          </td></tr>
+		
+		
+		
+		  <tr><td>17:45</td><td></td>
+		      <td>Single track recap of Focus Groups by Chairs
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>19:30-</td>
+		    <td colspan="2"><i>Banquet dinner</i></td></tr>
+		
+	      
+	      <tr><td>&nbsp;</td><td></td><td></td></tr>
+	    
+	      <tr class="header"><td colspan="3"><h4><b>Wed. 4th April</b></h4></td></tr>
+	      
+	        <tr class="session">
+		    <td>09:15</td>
+		    <td colspan="2"><b>Oral Sessions III: Towards a Meta-Simulator</b></td></tr>
+		
+		
+		  <tr><td>09:15</td><td>Thierry Viéville</td>
+		      <td>Meta-Simulator Wisdom
+                          </td></tr>
+		
+		
+		
+		  <tr><td>09:30</td><td>Eilif Muller</td>
+		      <td>http://neuralensemble.org - A place to build a multilateral meta-simulator toolchain
+                          </td></tr>
+		
+		
+		
+		  <tr><td>10:00</td><td>Raphael Ritz</td>
+		      <td>Developments from Python/Zope regarding packaging/setup/installations
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>10:45</td>
+		    <td colspan="2"><i>Stimulating Beverages</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>11:15</td>
+		    <td colspan="2"><b>Oral Sessions III (continued)</b></td></tr>
+		
+		
+		  <tr><td>11:15</td><td>Jens Kremkow and Laurent Perrinet</td>
+		      <td>Projectfunk
+                          </td></tr>
+		
+		
+		
+		  <tr><td>11:40</td><td>Daniel Brüderle</td>
+		      <td>FACETS hardware + Python
+                          </td></tr>
+		
+		
+		
+		  <tr><td>12:05</td><td>Dejan Pecevski</td>
+		      <td>PCSIM + Python
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>12:30</td>
+		    <td colspan="2"><i>Lunch</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>14:00</td>
+		    <td colspan="2"><b>Jam Sessions III</b></td></tr>
+		
+		
+		  <tr><td>14:00</td><td></td>
+		      <td>Focus Group A: Collaborative development tools + software normalization
+                          </td></tr>
+		
+		
+		
+		  <tr><td>14:00</td><td></td>
+		      <td>Focus Group B: Freestyle discussion and coding
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>15:30</td>
+		    <td colspan="2"><i>Stimulating Beverages</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>16:15-18:00</td>
+		    <td colspan="2"><b>Jam Sessions III</b></td></tr>
+		
+		
+		  <tr><td>16:15</td><td></td>
+		      <td>Group discussion: where do we go from here?
+                          </td></tr>
+		
+		
+	      
+	      <tr><td>&nbsp;</td><td></td><td></td></tr>
+	    
+	    </table>
+
+                <p><small><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://creativecommons.org/images/public/somerights20.png"/></a><br/>Unless mentioned otherwise, all the downloadable talks are licenced under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/">Creative Commons Attribution-Noncommercial-No Derivative Works License</a>.</small></p>
+ 
+
+	
+
+            <h3>Support</h3>
+            <p>The meeting organizers gratefully acknowledge the support of the European Union through the FACETS Project (grant no. IST-2005-15879)</p>
+
+        
+
+          </div>
+          <div class="span3">
+          
+<ul class="nav nav-tabs nav-stacked">
+   
+  <li><a href="../CodeJam9/">HBP CodeJam Workshop #9</a></li>
+  
+  <li><a href="../CodeJam8/">HBP CodeJam Workshop #8</a></li>
+  
+  <li><a href="../Hippocamp2017/">HBP Hippocamp 2017: Collaborative and Integrative Modeling of Hippocampus</a></li>
+  
+  <li><a href="../CodeJam7/">HBP CodeJam Workshop #7</a></li>
+  
+  <li><a href="../HippocampCA1/">HBP Hippocamp CA1: Collaborative and Integrative Modeling of Hippocampal Area CA1</a></li>
+  
+  <li><a href="../CodeJam6/">BrainScaleS CodeJam Workshop #6</a></li>
+  
+  <li><a href="../CodeJam5/">BrainScaleS CodeJam Workshop #5</a></li>
+  
+  <li><a href="../CodeJam4/">FACETS CodeJam Workshop #4</a></li>
+  
+  <li><a href="../CodeJam3/">FACETS CodeJam Workshop #3</a></li>
+  
+  <li><a href="../CNS09/">CNS*09 Workshop: Python in Neuroscience</a></li>
+  
+  <li><a href="../CodeJam2/">FACETS CodeJam Workshop #2</a></li>
+  
+</ul>
+
+
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <p class="text-info">&copy; The NeuralEnsemble Initiative, 2020.</p>
+      </footer>
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+
+  </body>
+</html>

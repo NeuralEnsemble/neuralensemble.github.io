@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title> PyNN - NeuralEnsemble</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/css/neuralensemble_new.css" rel="stylesheet">
+    <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="shortcut icon" href="/static/images/neurens.gif">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top navbar-inverse">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">NeuralEnsemble</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="active" class="dropdown">
+                <a href="/projects/" class="dropdown-toggle" data-toggle="dropdown">
+                Software
+                <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="/brian/">Brian</a></li>
+                  <li><a href="/elephant/">Elephant</a></li>
+                  <li><a href="/libNeuroML/">libNeuroML</a></li>
+                  <li><a href="mozaik/">Mozaik</a></li>
+                  <li><a href="/neo/">Neo</a></li>
+                  <li><a href="/NEST/">NEST</a></li>
+                  <li><a href="/nestml/">NESTML</a></li>
+                  <li><a href="/neurotic/">neurotic</a></li>
+                  <li><a href="/ode-toolbox/">ODE-toolbox</a></li>
+                  <li><a href="/OpenElectrophy/">OpenElectrophy</a></li>
+                  <li><a href="/PyNN/">PyNN</a></li>
+                  <li><a href="/SpykeViewer/">SpykeViewer</a></li>
+                  <li><a href="/sumatra/">Sumatra</a></li>
+                </ul>
+              </li>
+              <li><a href="/meetings/">Meetings</a></li>
+              <li><a href="http://neuralensemble.blogspot.com/">Blog</a></li>
+              <li><a href="https://groups.google.com/forum/#!forum/neuralensemble">Community</a></li>
+              <!-- <li><a href="/jobs/">Jobs</a></li> -->
+              <li><a href="/about/">About</a></li>
+              <li><a href="/contact/">Contact</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="row">
+          <div class="span9">
+          
+        <div class="row" id="businesscard">
+            <div class="span2">
+                
+                <img src="/static/photos/pynn_logo.png" class="thumbnail">
+                
+            </div>
+            <div class="span7">
+                <h2>PyNN</h2>
+                A Python package for simulator-independent specification of neuronal network models.
+            </div>
+        </div> <!-- /businesscard -->
+        <p>PyNN (<em>pronounced 'pine'</em>) is a simulator-independent language for building neuronal network models.</p>
+<p>In other words, you can write the code for a model once, using the PyNN API and the Python programming language, and then run it without modification on any simulator that PyNN supports (currently  <a class="reference external" href="http://www.neuron.yale.edu/neuron/">NEURON</a>,  <a class="reference external" href="http://www.nest-initiative.org/?page=Software">NEST</a>,  and  <a class="reference external" href="http://briansimulator.org/">Brian</a>), and on the <a class="reference external" href="http://apt.cs.manchester.ac.uk/projects/SpiNNaker/">SpiNNaker</a> and <a class="reference external" href="https://www.humanbrainproject.eu/en/silicon-brains/">BrainScaleS</a> neuromorphic hardware systems.</p>
+<p>The PyNN API aims to support modelling at a high-level of abstraction (populations of neurons, layers, columns and the connections between them) while still allowing access to the details of individual neurons and synapses when required. PyNN provides a library of standard neuron, synapse and synaptic plasticity models, which have been verified to work the same on the different supported simulators. PyNN also provides a set of commonly-used connectivity algorithms (e.g. all-to-all, random, distance-dependent, small-world) but makes it easy to provide your own connectivity in a simulator-independent way, either using the Connection Set Algebra (<a class="reference external" href="http://software.incf.org/software/csa/">Djurfeldt, 2010</a>) or by writing your own Python code.</p>
+<p>The low-level API is good for small networks, and perhaps gives more flexibility. The high-level API is good for hiding the details and the book-keeping, allowing you to concentrate on the overall structure of your model.</p>
+<p>The other thing that is required to write a model once and run it on multiple simulators is standard cell models. PyNN translates standard cell-model names and parameter names into simulator-specific names, e.g. standard model <tt class="docutils literal">IF_curr_alpha</tt> is <tt class="docutils literal">iaf_neuron</tt> in NEST and <tt class="docutils literal">StandardIF</tt> in NEURON, while <tt class="docutils literal">SpikeSourcePoisson</tt> is a <tt class="docutils literal">poisson_generator</tt> in NEST and a <tt class="docutils literal">NetStim</tt> in NEURON.</p>
+<p>Even if you don't wish to run simulations on multiple simulators, you may benefit from writing your simulation code using PyNN's powerful, high-level interface. In this case, you can use any neuron or synapse model supported by your simulator, and are not restricted to the standard models.</p>
+<p>PyNN is a work in progress, but is already being used for several large-scale simulation projects.</p>
+<div class="section" id="citing-pynn">
+<h3>Citing PyNN</h3>
+<p>If you publish work using or mentioning PyNN, we would appreciate it if you would cite the following paper:</p>
+<p>Davison AP, Brüderle D, Eppler JM, Kremkow J, Muller E, Pecevski DA, Perrinet L and Yger P (2009) PyNN: a common interface for neuronal network simulators. <em>Front. Neuroinform.</em> <strong>2</strong>:11 doi:10.3389/neuro.11.011.2008
+[<a class="reference external" href="http://dx.doi.org/10.3389/neuro.11.011.2008">pdf</a>]</p>
+</div>
+<div class="section" id="presentations-and-posters">
+<h3>Presentations and Posters</h3>
+<ul class="simple">
+<li><a class="reference external" href="https://neuralensemble.org/trac/PyNN/browser/doc/poster/tags/INCF2008/poster_PyNN_incf2008.pdf?format=raw">Poster presented at  Neuroinformatics 2008</a></li>
+<li><a class="reference external" href="https://neuralensemble.org/media/slides/CodeJam2_Davison_PyNN.pdf">Presentation given at  FACETS CodeJam #2</a></li>
+</ul>
+<p>also see the <a class="reference external" href="http://neuralensemble.org/trac/PyNN/wiki/Publications">list of publications</a> about, relating to or using PyNN.</p>
+</div>
+
+
+
+          </div>
+          <div class="span3">
+          
+
+
+<ul class="nav nav-tabs nav-stacked">
+    
+    <li><a href="http://neuralensemble.org/docs/PyNN/">Documentation</a></li>
+    <li><a href="http://pypi.python.org/pypi/PyNN/">Download</a></li>
+    <li><a href="https://github.com/NeuralEnsemble/PyNN/">Source code</a></li>
+    <li><a href="https://groups.google.com/forum/#!forum/neuralensemble">Mailing list</a></li>
+    <li><a href="https://github.com/NeuralEnsemble/PyNN/issues">Issue tracker</a></li>
+</ul>
+
+<p class="text-info pagination-centered"><b>Licence: CeCILL</b></p>
+
+<!--
+    
+    <button class="btn btn-block disabled">Licence: CeCILL</button>
+    <a class="btn btn-block" href="http://neuralensemble.org/docs/PyNN/">Documentation</a>
+    <a class="btn btn-block" href="http://pypi.python.org/pypi/PyNN/">Download</a>
+    <a class="btn btn-block" href="https://github.com/NeuralEnsemble/PyNN/">Source code</a>
+    <a class="btn btn-block" href="https://groups.google.com/forum/#!forum/neuralensemble">Mailing list</a>
+    <a class="btn btn-block" href="https://github.com/NeuralEnsemble/PyNN/issues">Issue tracker</a>
+-->
+
+
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <p class="text-info">&copy; The NeuralEnsemble Initiative, 2020.</p>
+      </footer>
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,49 @@
+body {
+  padding-top: 60px; /* 40 px = bottom of the topbar */
+}
+.container > footer p {
+  text-align: center; /* center align footer */
+}
+
+#businesscard {
+  margin-bottom: 36px;
+}
+
+footer {
+  margin-top: 24px;
+}
+
+ul.inline {
+	display: inline;
+}
+
+li.inline {
+	display: inline;
+	margin-left: 0;
+}
+
+li.inline-last {
+	display: inline;
+	margin-left: 0;
+}
+
+li.inline:after {
+	content: ", ";	
+}
+
+li.inline-last:after {
+	content: ". ";
+}
+
+#affiliations {
+	margin-top: 1ex;
+	font-size: 0.8em;	
+}
+
+.download {
+	font-size: 0.8em;
+}
+
+#quotation {
+  margin-top: 48px;
+}

@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title> FACETS CodeJam Workshop #3 - NeuralEnsemble</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/css/neuralensemble_new.css" rel="stylesheet">
+    <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="shortcut icon" href="/static/images/neurens.gif">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top navbar-inverse">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">NeuralEnsemble</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="dropdown">
+                <a href="/projects/" class="dropdown-toggle" data-toggle="dropdown">
+                Software
+                <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="/brian/">Brian</a></li>
+                  <li><a href="/elephant/">Elephant</a></li>
+                  <li><a href="/libNeuroML/">libNeuroML</a></li>
+                  <li><a href="mozaik/">Mozaik</a></li>
+                  <li><a href="/neo/">Neo</a></li>
+                  <li><a href="/NEST/">NEST</a></li>
+                  <li><a href="/nestml/">NESTML</a></li>
+                  <li><a href="/neurotic/">neurotic</a></li>
+                  <li><a href="/ode-toolbox/">ODE-toolbox</a></li>
+                  <li><a href="/OpenElectrophy/">OpenElectrophy</a></li>
+                  <li><a href="/PyNN/">PyNN</a></li>
+                  <li><a href="/SpykeViewer/">SpykeViewer</a></li>
+                  <li><a href="/sumatra/">Sumatra</a></li>
+                </ul>
+              </li>
+              <li class="active"><a href="/meetings/">Meetings</a></li>
+              <li><a href="http://neuralensemble.blogspot.com/">Blog</a></li>
+              <li><a href="https://groups.google.com/forum/#!forum/neuralensemble">Community</a></li>
+              <!-- <li><a href="/jobs/">Jobs</a></li> -->
+              <li><a href="/about/">About</a></li>
+              <li><a href="/contact/">Contact</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="row">
+          <div class="span9">
+          
+                        
+            <h2>FACETS CodeJam Workshop #3</h2>
+            <p>7th-9th October 2009, Freiburg, Germany<br/><br/></p>
+            
+            <p><img src="/media/images/Freiburg_Rathaus.jpeg" alt="" /><br/>
+	    <small><p>Freiburger Rathaus - source: <a class="reference external" href="http://en.wikipedia.org/wiki/File:Freiburg_Rathaus.jpg">Luidger</a> with permission under terms of <a class="reference external" href="http://en.wikipedia.org/wiki/GNU_Free_Documentation_License">GFDL</a></p>
+</small></p>
+	    
+
+            <p>The <a class="reference external" href="http://neuralensemble.org/meetings/CodeJam1/">first CodeJam</a> focused on adding or improving Python support for different neuroscience simulators, and on the <a class="reference external" href="http://neuralensemble.org/PyNN/">PyNN common simulator API</a>.</p>
+<p>The focus for the second CodeJam was expanded to include the next stages in the simulation workflow - analysis and visualisation of simulation results, and management of simulation projects to promote reproducibility and reliability.</p>
+<p>The third CodeJam, aimed to catalyze development on a broad range of topics, including simulator interoperability, modeling langauge standardization, parallelizaion, Python tool-chain &amp; abstraction development to further erode the complexity barrier facing computational neuroscientists, and much more ...</p>
+<p>The general format of the workshop was to dedicate the mornings to invited and contributed talks on topics relating to simulation and collaborative software development in computational and systems neuroscience, leaving the afternoons free for discussions and code sprints.</p>
+
+
+
+	    <h3>Organization</h3>
+	    <p>The meeting was held at the <a href="http://www.bccn.uni-freiburg.de/">Bernstein Center for Computational Neuroscience</a>, located 
+               at Hansastr. 9A
+               in Freiburg, Germany. 
+               The meeting was organised by Andrew Davison, Abigail Morrison, Eilif Muller and Bernd Wiebelt.</p>
+
+	
+
+	
+        
+            <h3>Participants</h3>
+	    <ul class="inline">
+		
+		<li class="inline">
+		    Larissa&nbsp;Albantakis<sup>1</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.cmpe.boun.edu.tr/~ari">Ismail&nbsp;Ari</a><sup>2</sup></li>
+		
+		<li class="inline">
+		    <a href="http://homepages.inf.ed.ac.uk/v1cball/">Chris&nbsp;Ball</a><sup></sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.behnel.de/">Stefan&nbsp;Behnel</a><sup></sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.unic.cnrs-gif.fr/people/David_Colliaux/">David&nbsp;Colliaux</a><sup>3</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.andrewdavison.info/">Andrew&nbsp;Davison</a><sup>3</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.bccn.uni-freiburg.de/People/members/deger">Moritz&nbsp;Deger</a><sup>4</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.nada.kth.se/~mdj/">Mikael&nbsp;Djurfeldt</a><sup>5</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.fz-juelich.de/SharedDocs/Personen/INM/INM-6/EN/Eppler_Jochen.html?nn=724694">Jochen Martin&nbsp;Eppler</a><sup>4,6</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.unic.cnrs-gif.fr/people/Luc_Estebanez/">Luc&nbsp;Estebanez</a><sup>3</sup></li>
+		
+		<li class="inline">
+		    Christian&nbsp;Garbers<sup>4</sup></li>
+		
+		<li class="inline">
+		    Samuel&nbsp;Garcia<sup>7</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.incf.org/community/people/gewaltig/">Marc-Oliver&nbsp;Gewaltig</a><sup>6</sup></li>
+		
+		<li class="inline">
+		    Jose&nbsp;Guzman<sup></sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.cs.yale.edu/people/hines.html">Michael&nbsp;Hines</a><sup>8</sup></li>
+		
+		<li class="inline">
+		    Mike&nbsp;Hull<sup>9</sup></li>
+		
+		<li class="inline">
+		    Kay&nbsp;Inagaki<sup></sup></li>
+		
+		<li class="inline">
+		    Sarah&nbsp;Jarvis<sup></sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.kip.uni-heidelberg.de/people/gruppe/index.php?action=details&amp;amp;num=2096">Bernhard&nbsp;Kaplan</a><sup>10</sup></li>
+		
+		<li class="inline">
+		    <a href="http://mathema.tician.de/aboutme">Andreas&nbsp;Klöckner</a><sup>11</sup></li>
+		
+		<li class="inline">
+		    Jens&nbsp;Kremkow<sup>4,12</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.bccn.uni-freiburg.de/People/members/Kunkel">Susanne&nbsp;Kunkel</a><sup>4</sup></li>
+		
+		<li class="inline">
+		    Stefan&nbsp;Lang<sup></sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.fz-juelich.de/SharedDocs/Personen/INM/INM-6/EN/Morrison_Abigail.html">Abigail&nbsp;Morrison</a><sup>13</sup></li>
+		
+		<li class="inline">
+		    <a href="http://neuralensemble.org/people/eilifmuller/">Eilif&nbsp;Muller</a><sup>14</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.kip.uni-heidelberg.de/people/gruppe/index.php?action=details&amp;amp;num=2011">Eric&nbsp;Müller</a><sup>10</sup></li>
+		
+		<li class="inline">
+		    Dejan&nbsp;Pecevski<sup>15</sup></li>
+		
+		<li class="inline">
+		    Mihai&nbsp;Petrovici<sup>10</sup></li>
+		
+		<li class="inline">
+		    <a href="http://arken.umb.no/~plesser/">Hans Ekkehard&nbsp;Plesser</a><sup>16</sup></li>
+		
+		<li class="inline">
+		    <a href="http://neuro.paedia.info/">Philipp&nbsp;Rautenberg</a><sup></sup></li>
+		
+		<li class="inline">
+		    Moritz&nbsp;Schilling<sup>10</sup></li>
+		
+		<li class="inline">
+		    Sven&nbsp;Schrader<sup></sup></li>
+		
+		<li class="inline">
+		    Klaus&nbsp;Schuch<sup>15</sup></li>
+		
+		<li class="inline">
+		    Yuedong&nbsp;Song<sup></sup></li>
+		
+		<li class="inline">
+		    Bartosz&nbsp;Telenczuk<sup></sup></li>
+		
+		<li class="inline">
+		    Christian&nbsp;Tomm<sup></sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.bccn.uni-freiburg.de/People/cv/wiebelt">Bernd&nbsp;Wiebelt</a><sup>4</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.unic.cnrs-gif.fr/people/Pierre_Yger/">Pierre&nbsp;Yger</a><sup>3</sup></li>
+		
+		<li class="inline-last">
+		    <a href="http://yury.zaytsev.net/">Yury V.&nbsp;Zaytsev</a><sup>4,17</sup></li>
+		
+            </ul>
+
+            <div id="affiliations">
+            <ul class="inline">
+		
+		<li class="inline">
+		    <sup>1</sup><a href="http://cns.upf.edu/">Computational Neuroscience Group, UPF, Barcelona, Spain</a></li>
+		
+		<li class="inline">
+		    <sup>2</sup><a href="http://www.cmpe.boun.edu.tr/">Boğaziçi University, Computer Engineering Department, Istanbul, Turkey</a></li>
+		
+		<li class="inline">
+		    <sup>3</sup><a href="http://www.unic.cnrs-gif.fr/">UNIC,  CNRS, Gif sur Yvette, France</a></li>
+		
+		<li class="inline">
+		    <sup>4</sup><a href="http://www.bccn.uni-freiburg.de/">Bernstein Centre for Computational Neuroscience, Albert-Ludwigs-Universität, Freiburg, Germany</a></li>
+		
+		<li class="inline">
+		    <sup>5</sup><a href="http://www.incf.org/">INCF, Stockholm, Sweden</a></li>
+		
+		<li class="inline">
+		    <sup>6</sup><a href="http://www.honda-ri.de/">Honda Research Institute Europe GmbH, Germany</a></li>
+		
+		<li class="inline">
+		    <sup>7</sup><a href="http://olfac.univ-lyon1.fr/">Université Claude Bernard Lyon 1, France</a></li>
+		
+		<li class="inline">
+		    <sup>8</sup><a href="http://www.neuron.yale.edu/">Yale University, New Haven, USA</a></li>
+		
+		<li class="inline">
+		    <sup>9</sup>Institute for Adaptive and Neural Computation, University of Edinburgh, Edinburgh, UK</li>
+		
+		<li class="inline">
+		    <sup>10</sup><a href="http://wwwasic.kip.uni-heidelberg.de/asicnew/vision/">Kirchoff-Institut für Physik, Ruprecht-Karls-Universität, Heidelberg, Germany</a></li>
+		
+		<li class="inline">
+		    <sup>11</sup><a href="http://www.dam.brown.edu/">Divison of Applied Mathematics, Brown University, USA</a></li>
+		
+		<li class="inline">
+		    <sup>12</sup><a href="http://www.incm.cnrs-mrs.fr/equipedyva.php">INCM, Marseille, France</a></li>
+		
+		<li class="inline">
+		    <sup>13</sup><a href="http://www.brain.riken.jp/en/m_diesmann.html">Diesmann Research Unit, RIKEN, Japan</a></li>
+		
+		<li class="inline">
+		    <sup>14</sup><a href="http://lcn.epfl.ch/">Laboratory of Computational Neuroscience, EPFL, Lausanne, Switzerland</a></li>
+		
+		<li class="inline">
+		    <sup>15</sup><a href="http://www.igi.tugraz.at/maass/">Institute for Theoretical Computer Science, Technische Universität Graz, Austria</a></li>
+		
+		<li class="inline">
+		    <sup>16</sup><a href="http://www.umb.no/imt">Dept. of Mathematical Sciences and Technology, Norwegian University of Life Sciences, Ås, Norway</a></li>
+		
+		<li class="inline-last">
+		    <sup>17</sup><a href="http://www.imtek.de/biomikrotechnik/">Institut für Mikrosystemtechnik, Freiburg, Germany</a></li>
+		
+            </ul>
+            </div>
+
+            <br/><br/>
+	    
+           <img src="/media/images/codejam3_group_photo_large.jpeg" alt="Group photo from the FACETS CodeJam Workshop #3" width=1024/>
+	   
+        
+        
+	
+    
+            <h3>Meeting Program</h3>
+	    
+            <table class="programme">
+	      
+	      <tr class="header"><td colspan="3"><h4><b>Wed. 7th Oct.</b></h4></td></tr>
+	      
+	        <tr class="session">
+		    <td>09:00</td>
+		    <td colspan="2"><b>Welcome</b></td></tr>
+		
+		
+		
+	      
+	        <tr class="session">
+		    <td>09:10</td>
+		    <td colspan="2"><b>NeuroTools I</b></td></tr>
+		
+		
+		  <tr><td>09:10</td><td>Andrew Davison</td>
+		      <td>An overview of NeuroTools
+                          </td></tr>
+		
+		
+		
+		  <tr><td>09:15</td><td>Luc Estebanez and Pierre Yger</td>
+		      <td>Data analysis with the &quot;signals&quot; and &quot;analysis&quot; modules
+                          </td></tr>
+		
+		
+		
+		  <tr><td>09:50</td><td>Luc Estebanez and Jens Kremkow</td>
+		      <td>Importing data in text, NEX and Spike2 formats
+                          </td></tr>
+		
+		
+		
+		  <tr><td>10:05</td><td>Eilif Muller</td>
+		      <td>Generating spike sequences with the &quot;stgen&quot; module
+                          </td></tr>
+		
+		
+		
+		  <tr><td>10:10</td><td>Andrew Davison</td>
+		      <td>Managing model parameters with the &quot;parameters&quot; module
+                          </td></tr>
+		
+		
+		
+		  <tr><td>10:15</td><td>Andrew Davison</td>
+		      <td>Caching intermediate results with the datastore module
+                          </td></tr>
+		
+		
+	      
+	        <tr class="session">
+		    <td>10:20</td>
+		    <td colspan="2"><b>Parallel Computation I</b></td></tr>
+		
+		
+		  <tr><td>10:20</td><td>Mikael Djurfeldt</td>
+		      <td>MUSIC <a href="/media/slides/CodeJam3_Djurfeldt_MUSIC.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>11:10</td>
+		    <td colspan="2"><i>Coffee break</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>11:40</td>
+		    <td colspan="2"><b>Simulator updates I</b></td></tr>
+		
+		
+		  <tr><td>11:40</td><td>Jochen Martin Eppler</td>
+		      <td>NEST <a href="/media/slides/CodeJam3_Eppler_NEST.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>12:00</td><td>Michael Hines</td>
+		      <td>NEURON <a href="/media/slides/CodeJam3_Hines_NEURON.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+	      
+	        <tr class="session">
+		    <td>12:20</td>
+		    <td colspan="2"><b>Parallel Computation II</b></td></tr>
+		
+		
+		  <tr><td>12:20</td><td>Eilif Muller</td>
+		      <td>mpi4py tutorial I
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>12:50</td>
+		    <td colspan="2"><i>Lunch</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>14:10-18:30</td>
+		    <td colspan="2"><b>Code sprints and discussions</b></td></tr>
+		
+		
+		
+	      
+	      <tr><td>&nbsp;</td><td></td><td></td></tr>
+	    
+	      <tr class="header"><td colspan="3"><h4><b>Thu. 8th Oct.</b></h4></td></tr>
+	      
+	        <tr class="session">
+		    <td>09:00</td>
+		    <td colspan="2"><b>Parallel Computation III</b></td></tr>
+		
+		
+		  <tr><td>09:00</td><td>Andreas Klöckner</td>
+		      <td>PyOpenCl <a href="/media/slides/CodeJam3_Kloeckner_PyOpenCL_.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>10:00</td><td>Eilif Muller</td>
+		      <td>mpi4py tutorial II
+                          </td></tr>
+		
+		
+	      
+	        <tr class="session">
+		    <td>10:30</td>
+		    <td colspan="2"><b>Reproducible Research I</b></td></tr>
+		
+		
+		  <tr><td>10:30</td><td>Marc-Oliver Gewaltig</td>
+		      <td>Reproducible network descriptions
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>11:10</td>
+		    <td colspan="2"><i>Coffee Break</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>11:40</td>
+		    <td colspan="2"><b>Reproducible Research II</b></td></tr>
+		
+		
+		  <tr><td>11:40</td><td>Andrew Davison</td>
+		      <td>Sumatra, an electronic lab book for  simulation projects <a href="/media/slides/CodeJam3_Davison_Sumatra.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>12:10</td><td>Philipp Rautenberg</td>
+		      <td>Python, Neuron and the SQLdatabase
+                          </td></tr>
+		
+		
+		
+		  <tr><td>12:25</td><td>Hans Ekkehard Plesser</td>
+		      <td>Graphical network descriptions <a href="/media/slides/CodeJam3_Plesser_CPT.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>12:50</td>
+		    <td colspan="2"><i>Lunch</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>14:10</td>
+		    <td colspan="2"><b>Code sprints and discussions</b></td></tr>
+		
+		
+		  <tr><td>14:10</td><td>Andreas Klöckner</td>
+		      <td>PyOpenCl Hands-on Exercises <a href="/media/slides/CodeJam3_Kloeckner_PyOpenCL_hands-on.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>16:00</td><td></td>
+		      <td>code sprints and discussions
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>19:00-</td>
+		    <td colspan="2"><i>Banquet</i></td></tr>
+		
+	      
+	      <tr><td>&nbsp;</td><td></td><td></td></tr>
+	    
+	      <tr class="header"><td colspan="3"><h4><b>Fri. 9th Oct.</b></h4></td></tr>
+	      
+	        <tr class="session">
+		    <td>09:00</td>
+		    <td colspan="2"><b>Faster and better Python</b></td></tr>
+		
+		
+		  <tr><td>09:00</td><td>Stefan Behnel</td>
+		      <td>Using the Cython compiler to write fast Python code
+                          <a href="http://behnel.de/cython200910/talk.html" class="download">[link to slides]</a></td></tr>
+		
+		
+		
+		  <tr><td>10:00</td><td>Chris Ball</td>
+		      <td>Parameters and traits: extending Python attributes
+                          </td></tr>
+		
+		
+	      
+	        <tr class="session">
+		    <td>10:20</td>
+		    <td colspan="2"><b>NeuroTools II</b></td></tr>
+		
+		
+		  <tr><td>10:20</td><td>Moritz Schilling</td>
+		      <td>Development status of the &quot;plotting&quot; and &quot;utilities&quot; modules <a href="/media/slides/CodeJam3_Schilling_Neurotools_plotting_and_utilities.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>10:30</td><td>Samuel Garcia</td>
+		      <td>The architecture of OpenElectrophy and coordination with NeuroTools <a href="/media/slides/CodeJam3_Garcia_OpenElectrophy.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>10:45</td><td>Christian Garbers</td>
+		      <td>FIND - A unified framework for neural data analysis
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>11:00</td>
+		    <td colspan="2"><i>Coffee break</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>11:30</td>
+		    <td colspan="2"><b>Simulator updates II</b></td></tr>
+		
+		
+		  <tr><td>11:30</td><td>Dejan Pecevski</td>
+		      <td>PCSIM <a href="/media/slides/CodeJam3_Pecevski_PCSIM.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>11:45</td><td>Stefan Lang</td>
+		      <td>NeuroDune
+                          </td></tr>
+		
+		
+		
+		  <tr><td>12:00</td><td>Andrew Davison</td>
+		      <td>PyNN
+                          </td></tr>
+		
+		
+	      
+	        <tr class="session">
+		    <td>12:10</td>
+		    <td colspan="2"><b>Hardware</b></td></tr>
+		
+		
+		  <tr><td>12:10</td><td>Eric Müller</td>
+		      <td>The PyNN module for the FACETS wafer- scale neuromorphic hardware system <a href="/media/slides/CodeJam3_Mueller_hardware.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>12:30</td><td>Mihai Petrovici</td>
+		      <td>The FACETS Demonstrator <a href="/media/slides/CodeJam3_Petrovici_FACETSDemonstrator.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>13:00</td>
+		    <td colspan="2"><i>Lunch</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>14:20-18:30</td>
+		    <td colspan="2"><b>Code sprints and discussions</b></td></tr>
+		
+		
+		
+		
+		  <tr><td>16:50</td><td>Stefan Behnel</td>
+		      <td>Cython Hands-on Exercises
+                          </td></tr>
+		
+		
+	      
+	      <tr><td>&nbsp;</td><td></td><td></td></tr>
+	    
+	    </table>
+
+                <p><small><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://creativecommons.org/images/public/somerights20.png"/></a><br/>Unless mentioned otherwise, all the downloadable talks are licenced under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/">Creative Commons Attribution-Noncommercial-No Derivative Works License</a>.</small></p>
+ 
+
+	
+
+            <h3>Support</h3>
+            <p>The meeting organizers gratefully acknowledge the support of the European Union through the <a class="reference external" href="http://www.facets-project.org/">FACETS Project</a> (grant no. IST-2005-15879) and the <a class="reference external" href="http://www.incf.org/">INCF</a>. We also wish to express our great appreciation to the <a class="reference external" href="http://www.bcf.uni-freiburg.de/">Bernstein Center for Computational Neuroscience in Freiburg</a> for providing us with a great location and much assistance.</p>
+
+        
+
+          </div>
+          <div class="span3">
+          
+<ul class="nav nav-tabs nav-stacked">
+   
+  <li><a href="../CodeJam9/">HBP CodeJam Workshop #9</a></li>
+  
+  <li><a href="../CodeJam8/">HBP CodeJam Workshop #8</a></li>
+  
+  <li><a href="../Hippocamp2017/">HBP Hippocamp 2017: Collaborative and Integrative Modeling of Hippocampus</a></li>
+  
+  <li><a href="../CodeJam7/">HBP CodeJam Workshop #7</a></li>
+  
+  <li><a href="../HippocampCA1/">HBP Hippocamp CA1: Collaborative and Integrative Modeling of Hippocampal Area CA1</a></li>
+  
+  <li><a href="../CodeJam6/">BrainScaleS CodeJam Workshop #6</a></li>
+  
+  <li><a href="../CodeJam5/">BrainScaleS CodeJam Workshop #5</a></li>
+  
+  <li><a href="../CodeJam4/">FACETS CodeJam Workshop #4</a></li>
+  
+  <li><a href="../CNS09/">CNS*09 Workshop: Python in Neuroscience</a></li>
+  
+  <li><a href="../CodeJam2/">FACETS CodeJam Workshop #2</a></li>
+  
+  <li><a href="../CodeJam1/">FACETS CodeJam Workshop #1</a></li>
+  
+</ul>
+
+
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <p class="text-info">&copy; The NeuralEnsemble Initiative, 2020.</p>
+      </footer>
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+
+  </body>
+</html>

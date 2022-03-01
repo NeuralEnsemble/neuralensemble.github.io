@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title> FACETS CodeJam Workshop #4 - NeuralEnsemble</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/css/neuralensemble_new.css" rel="stylesheet">
+    <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="shortcut icon" href="/static/images/neurens.gif">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top navbar-inverse">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">NeuralEnsemble</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="dropdown">
+                <a href="/projects/" class="dropdown-toggle" data-toggle="dropdown">
+                Software
+                <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="/brian/">Brian</a></li>
+                  <li><a href="/elephant/">Elephant</a></li>
+                  <li><a href="/libNeuroML/">libNeuroML</a></li>
+                  <li><a href="mozaik/">Mozaik</a></li>
+                  <li><a href="/neo/">Neo</a></li>
+                  <li><a href="/NEST/">NEST</a></li>
+                  <li><a href="/nestml/">NESTML</a></li>
+                  <li><a href="/neurotic/">neurotic</a></li>
+                  <li><a href="/ode-toolbox/">ODE-toolbox</a></li>
+                  <li><a href="/OpenElectrophy/">OpenElectrophy</a></li>
+                  <li><a href="/PyNN/">PyNN</a></li>
+                  <li><a href="/SpykeViewer/">SpykeViewer</a></li>
+                  <li><a href="/sumatra/">Sumatra</a></li>
+                </ul>
+              </li>
+              <li class="active"><a href="/meetings/">Meetings</a></li>
+              <li><a href="http://neuralensemble.blogspot.com/">Blog</a></li>
+              <li><a href="https://groups.google.com/forum/#!forum/neuralensemble">Community</a></li>
+              <!-- <li><a href="/jobs/">Jobs</a></li> -->
+              <li><a href="/about/">About</a></li>
+              <li><a href="/contact/">Contact</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="row">
+          <div class="span9">
+          
+                        
+            <h2>FACETS CodeJam Workshop #4</h2>
+            <p>22nd-24th June 2010, Marseille, France<br/><br/></p>
+            
+            <p><img src="/media/images/cite_radieuse.jpg" alt="la Cité Radieuse" /><br/>
+	    <small><p>la Cité Radieuse, Le Corbusier's vision of a high-rise residential building as a &quot;vertical city&quot; in Marseille. <a class="reference external" href="http://www.flickr.com/photos/76283035&#64;N00/37458905">Image</a> by <a class="reference external" href="http://www.flickr.com/photos/ogil/">Dom Dada</a> (<a class="reference external" href="http://creativecommons.org/licenses/by-nc-nd/2.0/deed.en">Creative Commons Licence</a>)</p>
+</small></p>
+	    
+
+            <p>The goal of the FACETS CodeJam workshops is to catalyze open-source, collaborative software development in computational and systems neuroscience and neuroinformatics, by bringing together researchers, students and engineers to share ideas, present their work, and write code together. The general format of the workshops is to dedicate the mornings to invited and contributed talks, leaving the afternoons free for discussions and code sprints.</p>
+<p>For the 4th FACETS CodeJam, the main theme of the meeting was workflows: what are the best practices for combining different tools (simulators, analysis tools, visualization tools, databases etc.) to ensure the efficient and reproducible flow of data and information from experiment conception to publication and archiving?</p>
+
+
+
+	    <h3>Organization</h3>
+	    <p>The meeting was held at the <a href="http://www.cirm.univ-mrs.fr/index.html/">International Center for Mathematical Research</a>, located 
+               
+               in Marseille, France. 
+               The meeting was organised by Andrew Davison, Abigail Morrison, Eilif Muller and Laurent Perrinet.</p>
+
+	
+
+	
+        
+            <h3>Participants</h3>
+	    <ul class="inline">
+		
+		<li class="inline">
+		    <a href="http://www.sci.utah.edu/~eranders">Erik&nbsp;Anderson</a><sup>4</sup></li>
+		
+		<li class="inline">
+		    Javier&nbsp;Baladron<sup>6</sup></li>
+		
+		<li class="inline">
+		    Thierry&nbsp;Brizzi<sup>1</sup></li>
+		
+		<li class="inline">
+		    Hugo&nbsp;Cornelis<sup></sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.andrewdavison.info/">Andrew&nbsp;Davison</a><sup>1</sup></li>
+		
+		<li class="inline">
+		    Diego&nbsp;Fasoli<sup>6</sup></li>
+		
+		<li class="inline">
+		    Samuel&nbsp;Garcia<sup>7</sup></li>
+		
+		<li class="inline">
+		    Mike&nbsp;Hull<sup>8</sup></li>
+		
+		<li class="inline">
+		    Florent&nbsp;Jaillet<sup>3</sup></li>
+		
+		<li class="inline">
+		    Sebastian&nbsp;Jeltsch<sup>9</sup></li>
+		
+		<li class="inline">
+		    Philippe&nbsp;Katz<sup>3</sup></li>
+		
+		<li class="inline">
+		    John&nbsp;Kenyon<sup></sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.cs.utah.edu/~dakoop/">David&nbsp;Koop</a><sup></sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.bccn.uni-freiburg.de/People/members/Kunkel">Susanne&nbsp;Kunkel</a><sup>10</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.ebi.ac.uk/~mattioni">Michele&nbsp;Mattioni</a><sup>11</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.fz-juelich.de/SharedDocs/Personen/INM/INM-6/EN/Morrison_Abigail.html">Abigail&nbsp;Morrison</a><sup>12</sup></li>
+		
+		<li class="inline">
+		    Simon&nbsp;Moré<sup>16</sup></li>
+		
+		<li class="inline">
+		    <a href="http://grimaag.univ-ag.fr/~amouraud">Anthony&nbsp;Mouraud</a><sup>5</sup></li>
+		
+		<li class="inline">
+		    <a href="http://neuralensemble.org/people/eilifmuller/">Eilif&nbsp;Muller</a><sup>2</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.kip.uni-heidelberg.de/people/gruppe/index.php?action=details&amp;amp;num=2011">Eric&nbsp;Müller</a><sup>9</sup></li>
+		
+		<li class="inline">
+		    Laurent&nbsp;Perrinet<sup>3</sup></li>
+		
+		<li class="inline">
+		    Laurent&nbsp;Pezard<sup>13</sup></li>
+		
+		<li class="inline">
+		    <a href="http://neuro.paedia.info/">Philipp&nbsp;Rautenberg</a><sup>14</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.incf.org/">Raphael&nbsp;Ritz</a><sup>15</sup></li>
+		
+		<li class="inline">
+		    Paula&nbsp;Sanz Leon<sup>3</sup></li>
+		
+		<li class="inline">
+		    Tom&nbsp;Schaul<sup>17</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.g-node.org/">Andrey&nbsp;Sobolev</a><sup>14</sup></li>
+		
+		<li class="inline">
+		    Sylvain&nbsp;Takerkart<sup>3</sup></li>
+		
+		<li class="inline">
+		    Gaël&nbsp;Varoquaux<sup></sup></li>
+		
+		<li class="inline">
+		    Liang&nbsp;Wang<sup></sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.bccn.uni-freiburg.de/People/cv/wiebelt">Bernd&nbsp;Wiebelt</a><sup>10</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.incm.cnrs-mrs.fr/">Sarah&nbsp;Wirtssohn</a><sup>3</sup></li>
+		
+		<li class="inline">
+		    <a href="http://www.unic.cnrs-gif.fr/people/Pierre_Yger/">Pierre&nbsp;Yger</a><sup>1</sup></li>
+		
+		<li class="inline-last">
+		    <a href="http://yury.zaytsev.net/">Yury V.&nbsp;Zaytsev</a><sup>10</sup></li>
+		
+            </ul>
+
+            <div id="affiliations">
+            <ul class="inline">
+		
+		<li class="inline">
+		    <sup>1</sup><a href="http://www.unic.cnrs-gif.fr/">UNIC,  CNRS, Gif sur Yvette, France</a></li>
+		
+		<li class="inline">
+		    <sup>2</sup><a href="http://lcn.epfl.ch/">Laboratory of Computational Neuroscience, EPFL, Lausanne, Switzerland</a></li>
+		
+		<li class="inline">
+		    <sup>3</sup><a href="http://www.incm.cnrs-mrs.fr/equipedyva.php">INCM, Marseille, France</a></li>
+		
+		<li class="inline">
+		    <sup>4</sup>SCI Institute, University of Utah, Salt Lake City, UT, USA</li>
+		
+		<li class="inline">
+		    <sup>5</sup>INRIA Saclay, Orsay, France</li>
+		
+		<li class="inline">
+		    <sup>6</sup>Neuromathcomp Group, INRIA, Sophia Antipolis, France</li>
+		
+		<li class="inline">
+		    <sup>7</sup><a href="http://olfac.univ-lyon1.fr/">Université Claude Bernard Lyon 1, France</a></li>
+		
+		<li class="inline">
+		    <sup>8</sup>Institute for Adaptive and Neural Computation, University of Edinburgh, Edinburgh, UK</li>
+		
+		<li class="inline">
+		    <sup>9</sup><a href="http://wwwasic.kip.uni-heidelberg.de/asicnew/vision/">Kirchoff-Institut für Physik, Ruprecht-Karls-Universität, Heidelberg, Germany</a></li>
+		
+		<li class="inline">
+		    <sup>10</sup><a href="http://www.bccn.uni-freiburg.de/">Bernstein Centre for Computational Neuroscience, Albert-Ludwigs-Universität, Freiburg, Germany</a></li>
+		
+		<li class="inline">
+		    <sup>11</sup>EMBL-EBI, Hinxton, Cambridge, UK</li>
+		
+		<li class="inline">
+		    <sup>12</sup><a href="http://www.brain.riken.jp/en/m_diesmann.html">Diesmann Research Unit, RIKEN, Japan</a></li>
+		
+		<li class="inline">
+		    <sup>13</sup>LNIA - UMR 6149 - CNRS, Université de Provence, Marseille, France</li>
+		
+		<li class="inline">
+		    <sup>14</sup>Ludwig-Maximilians-Universität, Munich, Germany</li>
+		
+		<li class="inline">
+		    <sup>15</sup><a href="http://www.incf.org/">INCF Secretariat, Stockholm, Sweden</a></li>
+		
+		<li class="inline">
+		    <sup>16</sup>Laboratoire Neurobiologie Cognitive, Marseille, France</li>
+		
+		<li class="inline-last">
+		    <sup>17</sup>IDSIA, Lugano, Switzerland</li>
+		
+            </ul>
+            </div>
+
+            <br/><br/>
+	    
+           <img src="/media/images/codejam4_group_photo.jpg" alt="Group photo from the FACETS CodeJam Workshop #4" width=1024/>
+	   
+        
+        
+	
+    
+            <h3>Meeting Program</h3>
+	    
+            <table class="programme">
+	      
+	      <tr class="header"><td colspan="3"><h4><b>Tue. 22nd June</b></h4></td></tr>
+	      
+	        <tr class="session">
+		    <td>08:30</td>
+		    <td colspan="2"><b>Session 1</b></td></tr>
+		
+		
+		  <tr><td>08:30</td><td>Laurent Perrinet</td>
+		      <td>Welcome
+                          </td></tr>
+		
+		
+		
+		  <tr><td>08:45</td><td>Gaël Varoquaux</td>
+		      <td>Analyzing and modelling spontaneous brain activity in neuroimaging with Python <a href="/media/slides/CodeJam4_Gael_Neuroimaging.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>09:30</td><td>David Koop</td>
+		      <td>VisTrails: Using Provenance for Scientific Exploration through Workflows
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>10:15</td>
+		    <td colspan="2"><i>Coffee Break</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>11:00</td>
+		    <td colspan="2"><b>Session 2</b></td></tr>
+		
+		
+		  <tr><td>11:00</td><td>Michele Mattioni</td>
+		      <td>Sumatra and Neuronvisio. Run, Store, Search, Locate and Reload simulations&#39; results <a href="/media/slides/CodeJam4_Mattioni_Neuronvisio_sumatra_workflow.odp" class="download">[ODP]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>11:30</td><td>Mike Hull</td>
+		      <td>Morphforge - Biophysical Simulation In Python <a href="/media/slides/CodeJam4_MikeHull_morphforge.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>12:00</td><td>Tom Schaul</td>
+		      <td>PyBrain: a machine learning perspective on neural networks and learning tools <a href="/media/slides/CodeJam4_Schaul_PyBrain.pptx" class="download">[PPTX]</a>
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>12:30</td>
+		    <td colspan="2"><i>Lunch</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>14:00</td>
+		    <td colspan="2"><b>Code sprints, tutorials and discussions</b></td></tr>
+		
+		
+		
+	      
+	        <tr class="break">
+		    <td>20:00-</td>
+		    <td colspan="2"><i>Banquet</i></td></tr>
+		
+	      
+	      <tr><td>&nbsp;</td><td></td><td></td></tr>
+	    
+	      <tr class="header"><td colspan="3"><h4><b>Wed. 23rd June</b></h4></td></tr>
+	      
+	        <tr class="session">
+		    <td>09:00</td>
+		    <td colspan="2"><b>Session 3</b></td></tr>
+		
+		
+		  <tr><td>09:00</td><td>Raphael Ritz</td>
+		      <td>INCF Digital Atlasing Infrastructure Initiative
+                          </td></tr>
+		
+		
+		
+		  <tr><td>09:45</td><td>Hugo Cornelis</td>
+		      <td>GENESIS 3/Neurospaces
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>10:30</td>
+		    <td colspan="2"><i>Coffee Break</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>11:00</td>
+		    <td colspan="2"><b>Session 4</b></td></tr>
+		
+		
+		  <tr><td>11:00</td><td>Philipp Rautenberg and Andrey Sobolev</td>
+		      <td>Development of tools for neurophysiology data management and sharing at the German Neuroinformatics Node <a href="/media/slides/CodeJam4_Rautenberg_GNode.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+	      
+	        <tr class="session">
+		    <td>11:30</td>
+		    <td colspan="2"><b>Lightning Talks</b></td></tr>
+		
+		
+		  <tr><td>11:30</td><td>Samuel Garcia</td>
+		      <td>NEO : base and integration in OpenElectrophy <a href="/media/slides/CodeJam4_Garcia_NEO.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>11:50</td><td>John Kenyon</td>
+		      <td>PLY (Python Lex-Yacc)
+                          </td></tr>
+		
+		
+		
+		  <tr><td>12:10</td><td>Anthony Mouraud</td>
+		      <td>Spiking Neuron Networks Distributed Simulations with DAMNED <a href="/media/slides/CodeJam4_Mouraud_Damned.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>12:30</td>
+		    <td colspan="2"><i>Lunch</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>14:00-18:00</td>
+		    <td colspan="2"><b>Code sprints, tutorials and discussions</b></td></tr>
+		
+		
+		
+	      
+	      <tr><td>&nbsp;</td><td></td><td></td></tr>
+	    
+	      <tr class="header"><td colspan="3"><h4><b>Thu. 24th June</b></h4></td></tr>
+	      
+	        <tr class="session">
+		    <td>09:00</td>
+		    <td colspan="2"><b>Session 5</b></td></tr>
+		
+		
+		  <tr><td>09:00</td><td>Mihai Petrovici</td>
+		      <td>Neuroscientific modeling with large-scale and highly accelerated neuromorphic hardware devices: methods, problems and perspectives <a href="/media/slides/CodeJam4_Mihai_hardware.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>09:45</td><td>Erik Anderson</td>
+		      <td>Using VisTrails to Analyze and Visualize MRI and EEG Data
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>10:30</td>
+		    <td colspan="2"><i>Coffee Break</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>11:00</td>
+		    <td colspan="2"><b>Session 6</b></td></tr>
+		
+		
+		  <tr><td>11:00</td><td>Andrew Davison</td>
+		      <td>What&#39;s new with PyNN, what&#39;s new with Sumatra? <a href="/media/slides/CodeJam4_Davison_whats_new_with.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+	      
+	        <tr class="session">
+		    <td>11:30</td>
+		    <td colspan="2"><b>Lightning Talks</b></td></tr>
+		
+		
+		  <tr><td>11:30</td><td>Laurent Perrinet</td>
+		      <td>Hooking together the pieces to build a neuroscience demo
+                          <a href="http://www.incm.cnrs-mrs.fr/LaurentPerrinet/Presentations/2010-06-24_CodeJamNr4" class="download">[link to slides]</a></td></tr>
+		
+		
+		
+		  <tr><td>11:50</td><td>Sebastian Jeltsch</td>
+		      <td>The WAF build system <a href="/media/slides/CodeJam4_Jeltsch_WAF.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+		
+		  <tr><td>12:10</td><td>Eilif Muller</td>
+		      <td>Working with neuroscience ontologies using Python &amp; rdflib <a href="/media/slides/CodeJam4_Eilif_rdflib.pdf" class="download">[PDF]</a>
+                          </td></tr>
+		
+		
+	      
+	        <tr class="break">
+		    <td>12:30</td>
+		    <td colspan="2"><i>Lunch</i></td></tr>
+		
+	      
+	        <tr class="session">
+		    <td>14:00-18:00</td>
+		    <td colspan="2"><b>Code sprints, tutorials and discussions</b></td></tr>
+		
+		
+		
+	      
+	      <tr><td>&nbsp;</td><td></td><td></td></tr>
+	    
+	    </table>
+
+                <p><small><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://creativecommons.org/images/public/somerights20.png"/></a><br/>Unless mentioned otherwise, all the downloadable talks are licenced under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/">Creative Commons Attribution-Noncommercial-No Derivative Works License</a>.</small></p>
+ 
+
+	
+
+            <h3>Support</h3>
+            <p>The meeting organizers gratefully acknowledge the support of the European Union through the FACETS Project (grant no. IST-2005-15879), and the International Neuroinformatics Co-ordinating Facility (INCF). We also wish to express our great appreciation to the DyVA team at the Institut de Neurosciences Cognitives de la Méditerranée for providing us with a great location and much assistance.</p>
+
+        
+
+          </div>
+          <div class="span3">
+          
+<ul class="nav nav-tabs nav-stacked">
+   
+  <li><a href="../CodeJam9/">HBP CodeJam Workshop #9</a></li>
+  
+  <li><a href="../CodeJam8/">HBP CodeJam Workshop #8</a></li>
+  
+  <li><a href="../Hippocamp2017/">HBP Hippocamp 2017: Collaborative and Integrative Modeling of Hippocampus</a></li>
+  
+  <li><a href="../CodeJam7/">HBP CodeJam Workshop #7</a></li>
+  
+  <li><a href="../HippocampCA1/">HBP Hippocamp CA1: Collaborative and Integrative Modeling of Hippocampal Area CA1</a></li>
+  
+  <li><a href="../CodeJam6/">BrainScaleS CodeJam Workshop #6</a></li>
+  
+  <li><a href="../CodeJam5/">BrainScaleS CodeJam Workshop #5</a></li>
+  
+  <li><a href="../CodeJam3/">FACETS CodeJam Workshop #3</a></li>
+  
+  <li><a href="../CNS09/">CNS*09 Workshop: Python in Neuroscience</a></li>
+  
+  <li><a href="../CodeJam2/">FACETS CodeJam Workshop #2</a></li>
+  
+  <li><a href="../CodeJam1/">FACETS CodeJam Workshop #1</a></li>
+  
+</ul>
+
+
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <p class="text-info">&copy; The NeuralEnsemble Initiative, 2020.</p>
+      </footer>
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+
+  </body>
+</html>

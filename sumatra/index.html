@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title> Sumatra - NeuralEnsemble</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/css/neuralensemble_new.css" rel="stylesheet">
+    <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="shortcut icon" href="/static/images/neurens.gif">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top navbar-inverse">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">NeuralEnsemble</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="active" class="dropdown">
+                <a href="/projects/" class="dropdown-toggle" data-toggle="dropdown">
+                Software
+                <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="/brian/">Brian</a></li>
+                  <li><a href="/elephant/">Elephant</a></li>
+                  <li><a href="/libNeuroML/">libNeuroML</a></li>
+                  <li><a href="mozaik/">Mozaik</a></li>
+                  <li><a href="/neo/">Neo</a></li>
+                  <li><a href="/NEST/">NEST</a></li>
+                  <li><a href="/nestml/">NESTML</a></li>
+                  <li><a href="/neurotic/">neurotic</a></li>
+                  <li><a href="/ode-toolbox/">ODE-toolbox</a></li>
+                  <li><a href="/OpenElectrophy/">OpenElectrophy</a></li>
+                  <li><a href="/PyNN/">PyNN</a></li>
+                  <li><a href="/SpykeViewer/">SpykeViewer</a></li>
+                  <li><a href="/sumatra/">Sumatra</a></li>
+                </ul>
+              </li>
+              <li><a href="/meetings/">Meetings</a></li>
+              <li><a href="http://neuralensemble.blogspot.com/">Blog</a></li>
+              <li><a href="https://groups.google.com/forum/#!forum/neuralensemble">Community</a></li>
+              <!-- <li><a href="/jobs/">Jobs</a></li> -->
+              <li><a href="/about/">About</a></li>
+              <li><a href="/contact/">Contact</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="row">
+          <div class="span9">
+          
+        <div class="row" id="businesscard">
+            <div class="span2">
+                
+                <img src="/static/photos/sumatra_logo.png" class="thumbnail">
+                
+            </div>
+            <div class="span7">
+                <h2>Sumatra</h2>
+                Sumatra is a tool for managing and tracking projects based on numerical simulation or analysis, with the aim of supporting reproducible research. It can be thought of as an &#39;&#39;automated electronic lab notebook&#39;&#39; for simulation/analysis projects.
+            </div>
+        </div> <!-- /businesscard -->
+        <p>Do any of these sound familiar?</p>
+<ul class="simple">
+<li><em>I thought I used the same parameters but I'm getting different results</em></li>
+<li><em>I can't remember which version of the code I used to generate figure 6</em></li>
+<li><em>The new student wants to reuse that model I published three years ago but he can't reproduce the figures</em></li>
+<li><em>It worked yesterday</em></li>
+<li><em>Why did I do that?</em></li>
+</ul>
+<p>Why isn't it easy to reproduce a computational experiment exactly? Especially months or years later, or in a different lab. The answer is probably related to the complexity of our code and our computing environments, and the difficulty of capturing every essential piece of information about our simulation or analysis. Using version control tools for your source code is an excellent starting point. Sumatra aims to take the next step. For more detail on the motivation behind Sumatra, see <a class="reference external" href="http://packages.python.org/Sumatra/introduction.html">the documentation</a>.</p>
+<p>Sumatra consists of:</p>
+<ul class="simple">
+<li><strong>a command-line interface</strong>, <tt class="docutils literal">smt</tt>, for launching simulations/analyses with automatic recording of information about the context, annotating these records, linking to data files, etc.</li>
+<li><strong>a web interface</strong> with a built-in web-server, <tt class="docutils literal">smtweb</tt>, for browsing and annotating simulation/analysis results.</li>
+<li>a <strong>Python API</strong>, on which <tt class="docutils literal">smt</tt> and <tt class="docutils literal">smtweb</tt> are based, that can be used in your own scripts in place of using <tt class="docutils literal">smt</tt>.</li>
+<li>a <strong>LaTeX package</strong> and <strong>Sphinx extension</strong> for including Sumatra-tracked figures and links to provenance information in papers and other documents.</li>
+</ul>
+<div class="section" id="papers-presentations-and-posters">
+<h3>Papers, Presentations and Posters</h3>
+<p>If you publish work using or mentioning Sumatra, we would appreciate it if you would cite the following paper:</p>
+<p>Davison A.P. (2012) Automated capture of experiment context for easier reproducibility in computational research. <em>Computing in Science and Engineering</em> <strong>14</strong>: 48-56. [<a class="reference external" href="http://doi.ieeecomputersociety.org/10.1109/MCSE.2012.41">CiSE</a>] [<a class="reference external" href="http://andrewdavison.info/media/files/reproducible_research_CiSE.pdf">preprint</a>]</p>
+<ul class="simple">
+<li><a class="reference external" href="http://fgrz.ro/SnvSHa">Poster presented at  Neuroinformatics 2011</a></li>
+<li><a class="reference external" href="http://www.andrewdavison.info/media/slides/sumatra_euroscipy2010_small.pdf">Slides from a presentation at EuroSciPy2010 (2 MB)</a> <a class="reference external" href="http://www.andrewdavison.info/media/slides/sumatra_euroscipy2010.pdf">(hi-res 26 MB)</a></li>
+</ul>
+</div>
+<div class="section" id="licence">
+<h3>Licence</h3>
+<p>The code is released under a 2-clause BSD licence.</p>
+</div>
+
+
+
+          </div>
+          <div class="span3">
+          
+
+
+<ul class="nav nav-tabs nav-stacked">
+    
+    <li><a href="http://sumatra.readthedocs.org/">Documentation</a></li>
+    <li><a href="http://pypi.python.org/pypi/sumatra">Download</a></li>
+    <li><a href="https://github.com/open-research/sumatra">Source code</a></li>
+    <li><a href="http://groups.google.com/group/sumatra-users">Mailing list</a></li>
+    <li><a href="https://github.com/open-research/sumatra/issues">Issue tracker</a></li>
+</ul>
+
+<p class="text-info pagination-centered"><b>Licence: BSD</b></p>
+
+<!--
+    
+    <button class="btn btn-block disabled">Licence: BSD</button>
+    <a class="btn btn-block" href="http://sumatra.readthedocs.org/">Documentation</a>
+    <a class="btn btn-block" href="http://pypi.python.org/pypi/sumatra">Download</a>
+    <a class="btn btn-block" href="https://github.com/open-research/sumatra">Source code</a>
+    <a class="btn btn-block" href="http://groups.google.com/group/sumatra-users">Mailing list</a>
+    <a class="btn btn-block" href="https://github.com/open-research/sumatra/issues">Issue tracker</a>
+-->
+
+
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <p class="text-info">&copy; The NeuralEnsemble Initiative, 2020.</p>
+      </footer>
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+
+  </body>
+</html>
