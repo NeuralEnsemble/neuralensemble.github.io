@@ -1,0 +1,203 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>An example to illustrate random number handling in PyNN &#8212; PyNN 2.0.0.alpha.1 documentation</title>
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.0.alpha.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 2.0.0.alpha.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="an-example-to-illustrate-random-number-handling-in-pynn">
+<h1>An example to illustrate random number handling in PyNN<a class="headerlink" href="#an-example-to-illustrate-random-number-handling-in-pynn" title="Permalink to this headline">¶</a></h1>
+<img alt="../_images/random_numbers_neuron_20151005-081153.png" src="../_images/random_numbers_neuron_20151005-081153.png" />
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">An example to illustrate random number handling in PyNN</span>
+
+<span class="sd">In particular, this shows the difference between &quot;native&quot; and Python random number generators.</span>
+<span class="sd">If you run this script with two different simulators, e.g. NEST and NEURON,</span>
+<span class="sd">the weight matrix created with the Python RNG will be the same for both simulations,</span>
+<span class="sd">the weights created with the native RNG will be different in the two cases.</span>
+
+<span class="sd">The potential advantage of using a native RNG is speed: for large networks, using</span>
+<span class="sd">the `NativeRNG` class can reduce network construction time, but at the expense of</span>
+<span class="sd">cross-simulator repeatability.</span>
+
+
+<span class="sd">Usage: random_numbers.py [-h] [--plot-figure] [--debug DEBUG] simulator</span>
+
+<span class="sd">positional arguments:</span>
+<span class="sd">  simulator      neuron, nest, brian or another backend simulator</span>
+
+<span class="sd">optional arguments:</span>
+<span class="sd">  -h, --help     show this help message and exit</span>
+<span class="sd">  --plot-figure  plot the simulation results to a file</span>
+<span class="sd">  --debug DEBUG  print debugging information</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">pyNN.random</span> <span class="k">import</span> <span class="n">NumpyRNG</span><span class="p">,</span> <span class="n">RandomDistribution</span>
+<span class="kn">from</span> <span class="nn">pyNN.utility</span> <span class="k">import</span> <span class="n">get_simulator</span>
+
+
+<span class="c1"># === Configure the simulator ================================================</span>
+
+<span class="n">sim</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="n">get_simulator</span><span class="p">(</span>
+                    <span class="p">(</span><span class="s2">&quot;--plot-figure&quot;</span><span class="p">,</span> <span class="s2">&quot;plot the simulation results to a file&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;store_true&quot;</span><span class="p">}),</span>
+                    <span class="p">(</span><span class="s2">&quot;--debug&quot;</span><span class="p">,</span> <span class="s2">&quot;print debugging information&quot;</span><span class="p">))</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+
+<span class="c1"># === Create random number generators ========================================</span>
+
+<span class="n">python_rng</span> <span class="o">=</span> <span class="n">NumpyRNG</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">98497627</span><span class="p">)</span>
+<span class="n">native_rng</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">NativeRNG</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">87354762</span><span class="p">)</span>
+
+<span class="c1"># === Define the neuron model and initial conditions =========================</span>
+
+<span class="n">cell_type</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">IF_cond_exp</span><span class="p">(</span><span class="n">tau_m</span><span class="o">=</span><span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;normal&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mf">15.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">),</span> <span class="n">rng</span><span class="o">=</span><span class="n">python_rng</span><span class="p">))</span>  <span class="c1"># not possible with NEST to use NativeRNG here</span>
+<span class="n">v_init</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;uniform&#39;</span><span class="p">,</span>
+                            <span class="p">(</span><span class="n">cell_type</span><span class="o">.</span><span class="n">default_parameters</span><span class="p">[</span><span class="s1">&#39;v_rest&#39;</span><span class="p">],</span> <span class="n">cell_type</span><span class="o">.</span><span class="n">default_parameters</span><span class="p">[</span><span class="s1">&#39;v_thresh&#39;</span><span class="p">]),</span>
+                            <span class="n">rng</span><span class="o">=</span><span class="n">python_rng</span><span class="p">)</span>  <span class="c1"># not possible with NEST to use NativeRNG here</span>
+
+<span class="c1"># === Create populations of neurons, and record from them ====================</span>
+
+<span class="n">p1</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Population</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">sim</span><span class="o">.</span><span class="n">SpikeSourcePoisson</span><span class="p">(</span><span class="n">rate</span><span class="o">=</span><span class="mf">100.0</span><span class="p">))</span>  <span class="c1"># in the current version, can&#39;t specify the RNG - it is always native</span>
+<span class="n">p2</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Population</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">cell_type</span><span class="p">,</span> <span class="n">initial_values</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="n">v_init</span><span class="p">})</span>
+
+<span class="n">p1</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s2">&quot;spikes&quot;</span><span class="p">)</span>
+<span class="n">p2</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s2">&quot;spikes&quot;</span><span class="p">)</span>
+<span class="n">p2</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">python_rng</span><span class="p">)</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s2">&quot;v&quot;</span><span class="p">)</span>  <span class="c1"># can&#39;t use native RNG here</span>
+
+
+<span class="c1"># === Create two sets of synaptic connections, one for each RNG ==============</span>
+
+<span class="n">connector_native</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">FixedProbabilityConnector</span><span class="p">(</span><span class="n">p_connect</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">native_rng</span><span class="p">)</span>
+<span class="n">connector_python</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">FixedProbabilityConnector</span><span class="p">(</span><span class="n">p_connect</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">python_rng</span><span class="p">)</span>
+
+<span class="n">synapse_type_native</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">StaticSynapse</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;gamma&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">native_rng</span><span class="p">),</span>
+                                        <span class="n">delay</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">synapse_type_python</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">StaticSynapse</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;gamma&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">python_rng</span><span class="p">),</span>
+                                        <span class="n">delay</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="n">projection_native</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Projection</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">connector_native</span><span class="p">,</span> <span class="n">synapse_type_native</span><span class="p">)</span>
+<span class="n">projection_python</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Projection</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">connector_python</span><span class="p">,</span> <span class="n">synapse_type_python</span><span class="p">)</span>
+
+<span class="c1"># === Print the synaptic weight matrices =====================================</span>
+
+<span class="n">weights_python</span> <span class="o">=</span> <span class="n">projection_python</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;weight&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;array&quot;</span><span class="p">)</span>
+<span class="n">weights_native</span> <span class="o">=</span> <span class="n">projection_native</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;weight&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;array&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">weights_python</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">weights_native</span><span class="p">)</span>
+
+<span class="c1"># === Run the simulation =====================================================</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mf">100.0</span><span class="p">)</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+
+<span class="c1"># === Optionally, plot the synaptic weight matrices ==========================</span>
+
+<span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">plot_figure</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">pyNN.utility</span> <span class="k">import</span> <span class="n">normalized_filename</span>
+    <span class="kn">from</span> <span class="nn">pyNN.utility.plotting</span> <span class="k">import</span> <span class="n">Figure</span><span class="p">,</span> <span class="n">Panel</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">normalized_filename</span><span class="p">(</span><span class="s2">&quot;Results&quot;</span><span class="p">,</span> <span class="s2">&quot;random_numbers&quot;</span><span class="p">,</span> <span class="s2">&quot;png&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">simulator</span><span class="p">)</span>
+    <span class="c1"># where there is no connection, the weight matrix contains NaN</span>
+    <span class="c1"># for plotting purposes, we replace NaN with zero.</span>
+    <span class="n">weights_python</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">weights_python</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">weights_native</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">weights_native</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">Figure</span><span class="p">(</span>
+        <span class="n">Panel</span><span class="p">(</span><span class="n">weights_python</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray_r&#39;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Python RNG&quot;</span><span class="p">),</span>
+        <span class="n">Panel</span><span class="p">(</span><span class="n">weights_native</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray_r&#39;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Native RNG&quot;</span><span class="p">),</span>
+        <span class="n">annotations</span><span class="o">=</span><span class="s2">&quot;Simulated with </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/examples/random_numbers.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 2.0.0.alpha.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2017, the PyNN community.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

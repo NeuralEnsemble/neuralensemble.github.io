@@ -1,0 +1,391 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Spatial structure &#8212; PyNN 2.0.0.alpha.1 documentation</title>
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.0.alpha.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 2.0.0.alpha.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pyNN.space">
+<span id="spatial-structure"></span><h1>Spatial structure<a class="headerlink" href="#module-pyNN.space" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="structure-classes">
+<h2>Structure classes<a class="headerlink" href="#structure-classes" title="Permalink to this headline">¶</a></h2>
+<p><code class="xref py py-class docutils literal"><span class="pre">Structure</span></code> classes all inherit from the following base class, and
+inherit its methods:</p>
+<dl class="class">
+<dt id="pyNN.space.BaseStructure">
+<em class="property">class </em><code class="descname">BaseStructure</code><a class="reference internal" href="../_modules/pyNN/space.html#BaseStructure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.space.BaseStructure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="pyNN.space.BaseStructure.get_parameters">
+<code class="descname">get_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/space.html#BaseStructure.get_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.space.BaseStructure.get_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dict containing the parameters of the <code class="xref py py-class docutils literal"><span class="pre">Structure</span></code>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyNN.space.BaseStructure.describe">
+<code class="descname">describe</code><span class="sig-paren">(</span><em>template='structure_default.txt'</em>, <em>engine='default'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/space.html#BaseStructure.describe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.space.BaseStructure.describe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a human-readable description of the network structure.</p>
+<p>The output may be customized by specifying a different template
+togther with an associated template engine (see <code class="docutils literal"><span class="pre">pyNN.descriptions</span></code>).</p>
+<p>If template is None, then a dictionary containing the template context
+will be returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyNN.space.BaseStructure.generate_positions">
+<code class="descname">generate_positions</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/space.html#BaseStructure.generate_positions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.space.BaseStructure.generate_positions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate and return the positions of <cite>n</cite> neurons positioned according
+to this structure.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyNN.space.Line">
+<em class="property">class </em><code class="descname">Line</code><span class="sig-paren">(</span><em>dx=1.0</em>, <em>x0=0.0</em>, <em>y=0.0</em>, <em>z=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/space.html#Line"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.space.Line" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.space.BaseStructure" title="pyNN.space.BaseStructure"><code class="xref py py-class docutils literal"><span class="pre">pyNN.space.BaseStructure</span></code></a></p>
+<p>Represents a structure with neurons distributed evenly on a straight line.</p>
+<dl class="docutils">
+<dt>Arguments:</dt>
+<dd><dl class="first last docutils">
+<dt><cite>dx</cite>:</dt>
+<dd>distance between points in the line.</dd>
+<dt><cite>y</cite>, <cite>z</cite>,:</dt>
+<dd>y- and z-coordinates of all points in the line.</dd>
+<dt><cite>x0</cite>:</dt>
+<dd>x-coordinate of the first point in the line.</dd>
+</dl>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="pyNN.space.Line.parameter_names">
+<code class="descname">parameter_names</code><em class="property"> = ('dx', 'x0', 'y', 'z')</em><a class="headerlink" href="#pyNN.space.Line.parameter_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyNN.space.Line.generate_positions">
+<code class="descname">generate_positions</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/space.html#Line.generate_positions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.space.Line.generate_positions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate and return the positions of <cite>n</cite> neurons positioned according
+to this structure.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyNN.space.Grid2D">
+<em class="property">class </em><code class="descname">Grid2D</code><span class="sig-paren">(</span><em>aspect_ratio=1.0</em>, <em>dx=1.0</em>, <em>dy=1.0</em>, <em>x0=0.0</em>, <em>y0=0.0</em>, <em>z=0</em>, <em>fill_order='sequential'</em>, <em>rng=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/space.html#Grid2D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.space.Grid2D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.space.BaseStructure" title="pyNN.space.BaseStructure"><code class="xref py py-class docutils literal"><span class="pre">pyNN.space.BaseStructure</span></code></a></p>
+<p>Represents a structure with neurons distributed on a 2D grid.</p>
+<dl class="docutils">
+<dt>Arguments:</dt>
+<dd><dl class="first last docutils">
+<dt><cite>dx</cite>, <cite>dy</cite>:</dt>
+<dd>distances between points in the x, y directions.</dd>
+<dt><cite>x0</cite>, <cite>y0</cite>:</dt>
+<dd>coordinates of the starting corner of the grid.</dd>
+<dt><cite>z</cite>:</dt>
+<dd>the z-coordinate of all points in the grid.</dd>
+<dt><cite>aspect_ratio</cite>:</dt>
+<dd>ratio of the number of grid points per side (not the ratio of the
+side lengths, unless <code class="docutils literal"><span class="pre">dx</span> <span class="pre">==</span> <span class="pre">dy</span></code>)</dd>
+<dt><cite>fill_order</cite>:</dt>
+<dd>may be ‘sequential’ or ‘random’</dd>
+</dl>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="pyNN.space.Grid2D.parameter_names">
+<code class="descname">parameter_names</code><em class="property"> = ('aspect_ratio', 'dx', 'dy', 'x0', 'y0', 'z', 'fill_order')</em><a class="headerlink" href="#pyNN.space.Grid2D.parameter_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyNN.space.Grid2D.calculate_size">
+<code class="descname">calculate_size</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/space.html#Grid2D.calculate_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.space.Grid2D.calculate_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>docstring goes here</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyNN.space.Grid2D.generate_positions">
+<code class="descname">generate_positions</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/space.html#Grid2D.generate_positions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.space.Grid2D.generate_positions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate and return the positions of <cite>n</cite> neurons positioned according
+to this structure.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyNN.space.Grid3D">
+<em class="property">class </em><code class="descname">Grid3D</code><span class="sig-paren">(</span><em>aspect_ratioXY=1.0</em>, <em>aspect_ratioXZ=1.0</em>, <em>dx=1.0</em>, <em>dy=1.0</em>, <em>dz=1.0</em>, <em>x0=0.0</em>, <em>y0=0.0</em>, <em>z0=0</em>, <em>fill_order='sequential'</em>, <em>rng=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/space.html#Grid3D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.space.Grid3D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.space.BaseStructure" title="pyNN.space.BaseStructure"><code class="xref py py-class docutils literal"><span class="pre">pyNN.space.BaseStructure</span></code></a></p>
+<p>Represents a structure with neurons distributed on a 3D grid.</p>
+<dl class="docutils">
+<dt>Arguments:</dt>
+<dd><dl class="first last docutils">
+<dt><cite>dx</cite>, <cite>dy</cite>, <cite>dz</cite>:</dt>
+<dd>distances between points in the x, y, z directions.</dd>
+<dt><cite>x0</cite>, <cite>y0</cite>. <cite>z0</cite>:</dt>
+<dd>coordinates of the starting corner of the grid.</dd>
+<dt><cite>aspect_ratioXY</cite>, <cite>aspect_ratioXZ</cite>:</dt>
+<dd>ratios of the number of grid points per side (not the ratio of the
+side lengths, unless <code class="docutils literal"><span class="pre">dx</span> <span class="pre">==</span> <span class="pre">dy</span> <span class="pre">==</span> <span class="pre">dz</span></code>)</dd>
+<dt><cite>fill_order</cite>:</dt>
+<dd>may be ‘sequential’ or ‘random’.</dd>
+</dl>
+</dd>
+</dl>
+<p>If <cite>fill_order</cite> is ‘sequential’, the z-index will be filled first, then y
+then x, i.e. the first cell will be at (0,0,0) (given default values for
+the other arguments), the second at (0,0,1), etc.</p>
+<dl class="attribute">
+<dt id="pyNN.space.Grid3D.parameter_names">
+<code class="descname">parameter_names</code><em class="property"> = ('aspect_ratios', 'dx', 'dy', 'dz', 'x0', 'y0', 'z0', 'fill_order')</em><a class="headerlink" href="#pyNN.space.Grid3D.parameter_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyNN.space.Grid3D.calculate_size">
+<code class="descname">calculate_size</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/space.html#Grid3D.calculate_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.space.Grid3D.calculate_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>docstring goes here</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyNN.space.Grid3D.generate_positions">
+<code class="descname">generate_positions</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/space.html#Grid3D.generate_positions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.space.Grid3D.generate_positions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate and return the positions of <cite>n</cite> neurons positioned according
+to this structure.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyNN.space.RandomStructure">
+<em class="property">class </em><code class="descname">RandomStructure</code><span class="sig-paren">(</span><em>boundary</em>, <em>origin=(0.0</em>, <em>0.0</em>, <em>0.0)</em>, <em>rng=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/space.html#RandomStructure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.space.RandomStructure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.space.BaseStructure" title="pyNN.space.BaseStructure"><code class="xref py py-class docutils literal"><span class="pre">pyNN.space.BaseStructure</span></code></a></p>
+<p>Represents a structure with neurons distributed randomly within a given
+volume.</p>
+<dl class="docutils">
+<dt>Arguments:</dt>
+<dd><cite>boundary</cite> - a subclass of <code class="xref py py-class docutils literal"><span class="pre">Shape</span></code>.
+<cite>origin</cite> - the coordinates (x,y,z) of the centre of the volume.</dd>
+</dl>
+<dl class="attribute">
+<dt id="pyNN.space.RandomStructure.parameter_names">
+<code class="descname">parameter_names</code><em class="property"> = ('boundary', 'origin', 'rng')</em><a class="headerlink" href="#pyNN.space.RandomStructure.parameter_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyNN.space.RandomStructure.generate_positions">
+<code class="descname">generate_positions</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/space.html#RandomStructure.generate_positions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.space.RandomStructure.generate_positions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate and return the positions of <cite>n</cite> neurons positioned according
+to this structure.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="shape-classes">
+<h2>Shape classes<a class="headerlink" href="#shape-classes" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyNN.space.Cuboid">
+<em class="property">class </em><code class="descname">Cuboid</code><span class="sig-paren">(</span><em>width</em>, <em>height</em>, <em>depth</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/space.html#Cuboid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.space.Cuboid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pyNN.space.Shape</span></code></p>
+<p>Represents a cuboidal volume within which neurons may be distributed.</p>
+<dl class="docutils">
+<dt>Arguments:</dt>
+<dd><dl class="first last docutils">
+<dt>height:</dt>
+<dd>extent in y direction</dd>
+<dt>width:</dt>
+<dd>extent in x direction</dd>
+<dt>depth:</dt>
+<dd>extent in z direction</dd>
+</dl>
+</dd>
+</dl>
+<dl class="method">
+<dt id="pyNN.space.Cuboid.sample">
+<code class="descname">sample</code><span class="sig-paren">(</span><em>n</em>, <em>rng</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/space.html#Cuboid.sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.space.Cuboid.sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <cite>n</cite> points distributed randomly with uniform density within the cuboid.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyNN.space.Sphere">
+<em class="property">class </em><code class="descname">Sphere</code><span class="sig-paren">(</span><em>radius</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/space.html#Sphere"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.space.Sphere" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pyNN.space.Shape</span></code></p>
+<p>Represents a spherical volume within which neurons may be distributed.</p>
+<dl class="method">
+<dt id="pyNN.space.Sphere.sample">
+<code class="descname">sample</code><span class="sig-paren">(</span><em>n</em>, <em>rng</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/space.html#Sphere.sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.space.Sphere.sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <cite>n</cite> points distributed randomly with uniform density within the sphere.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="the-space-class">
+<h2>The Space class<a class="headerlink" href="#the-space-class" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyNN.space.Space">
+<em class="property">class </em><code class="descname">Space</code><span class="sig-paren">(</span><em>axes=None</em>, <em>scale_factor=1.0</em>, <em>offset=0.0</em>, <em>periodic_boundaries=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/space.html#Space"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.space.Space" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class representing a space within distances can be calculated. The space
+is Cartesian, may be 1-, 2- or 3-dimensional, and may have periodic
+boundaries in any of the dimensions.</p>
+<dl class="docutils">
+<dt>Arguments:</dt>
+<dd><dl class="first last docutils">
+<dt>axes:</dt>
+<dd>if not supplied, then the 3D distance is calculated. If supplied,
+axes should be a string containing the axes to be used, e.g. ‘x’, or
+‘yz’. axes=’xyz’ is the same as axes=None.</dd>
+<dt>scale_factor:</dt>
+<dd>it may be that the pre and post populations use
+different units for position, e.g. degrees and µm. In this case,
+<cite>scale_factor</cite> can be specified, which is applied to the positions
+in the post-synaptic population.</dd>
+<dt>offset:</dt>
+<dd>if the origins of the coordinate systems of the pre- and post-
+synaptic populations are different, <cite>offset</cite> can be used to adjust
+for this difference. The offset is applied before any scaling.</dd>
+<dt>periodic_boundaries:</dt>
+<dd>either <cite>None</cite>, or a tuple giving the boundaries for each dimension,
+e.g. <cite>((x_min, x_max), None, (z_min, z_max))</cite>.</dd>
+</dl>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="pyNN.space.Space.AXES">
+<code class="descname">AXES</code><em class="property"> = {'x': [0], 'yz': [1, 2], 'xy': [0, 1], 'xz': [0, 2], 'z': [2], 'xyz': range(0, 3), None: range(0, 3), 'y': [1]}</em><a class="headerlink" href="#pyNN.space.Space.AXES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyNN.space.Space.distances">
+<code class="descname">distances</code><span class="sig-paren">(</span><em>A</em>, <em>B</em>, <em>expand=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/space.html#Space.distances"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.space.Space.distances" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the distance matrix between two sets of coordinates, given
+the topology of the current space.
+From <a class="reference external" href="http://projects.scipy.org/pipermail/numpy-discussion/2007-April/027203.html">http://projects.scipy.org/pipermail/numpy-discussion/2007-April/027203.html</a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyNN.space.Space.distance_generator">
+<code class="descname">distance_generator</code><span class="sig-paren">(</span><em>f</em>, <em>g</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/space.html#Space.distance_generator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.space.Space.distance_generator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="implementing-your-own-shape">
+<h2>Implementing your own Shape<a class="headerlink" href="#implementing-your-own-shape" title="Permalink to this headline">¶</a></h2>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">write this</p>
+</div>
+</div>
+<div class="section" id="implementing-your-own-structure">
+<h2>Implementing your own Structure<a class="headerlink" href="#implementing-your-own-structure" title="Permalink to this headline">¶</a></h2>
+<div class="admonition-todo admonition" id="index-1">
+<p class="first admonition-title">Todo</p>
+<p class="last">write this</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Spatial structure</a><ul>
+<li><a class="reference internal" href="#structure-classes">Structure classes</a></li>
+<li><a class="reference internal" href="#shape-classes">Shape classes</a></li>
+<li><a class="reference internal" href="#the-space-class">The Space class</a></li>
+<li><a class="reference internal" href="#implementing-your-own-shape">Implementing your own Shape</a></li>
+<li><a class="reference internal" href="#implementing-your-own-structure">Implementing your own Structure</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/reference/space.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 2.0.0.alpha.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2017, the PyNN community.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

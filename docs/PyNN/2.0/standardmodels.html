@@ -1,0 +1,685 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Standard models &#8212; PyNN 2.0.0.alpha.1 documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2.0.0.alpha.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 2.0.0.alpha.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="standard-models">
+<h1>Standard models<a class="headerlink" href="#standard-models" title="Permalink to this headline">¶</a></h1>
+<p>Standard models are neuron models that are available in at least two of the simulation engines supported by PyNN.
+PyNN performs automatic translation of parameter names, types and units.
+Only a handful of models are currently available, but the list will be expanded in future releases.
+To obtain a list of all the standard models available in a given simulator, use the <code class="docutils literal"><span class="pre">list_standard_models()</span></code> function, e.g.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyNN</span> <span class="kn">import</span> <span class="n">neuron</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">neuron</span><span class="o">.</span><span class="n">list_standard_models</span><span class="p">()</span>
+<span class="go">[&#39;IF_cond_alpha&#39;, &#39;IF_curr_exp&#39;, &#39;IF_cond_exp&#39;, &#39;EIF_cond_exp_isfa_ista&#39;,</span>
+<span class="go"> &#39;SpikeSourceArray&#39;, &#39;HH_cond_exp&#39;, &#39;IF_cond_exp_gsfa_grr&#39;,</span>
+<span class="go"> &#39;IF_facets_hardware1&#39;, &#39;SpikeSourcePoisson&#39;, &#39;EIF_cond_alpha_isfa_ista&#39;,</span>
+<span class="go"> &#39;IF_curr_alpha&#39;]</span>
+</pre></div>
+</div>
+<div class="section" id="neurons">
+<h2>Neurons<a class="headerlink" href="#neurons" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="if-curr-alpha">
+<h3>IF_curr_alpha<a class="headerlink" href="#if-curr-alpha" title="Permalink to this headline">¶</a></h3>
+<p>Leaky integrate and fire model with fixed threshold and alpha-function-shaped post-synaptic current.</p>
+<p>Availability: NEST, NEURON, Brian</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="16%" />
+<col width="6%" />
+<col width="61%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Default value</th>
+<th class="head">Units</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">v_rest</span></code></td>
+<td>-65.0</td>
+<td>mV</td>
+<td>Resting membrane potential</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">cm</span></code></td>
+<td>1.0</td>
+<td>nF</td>
+<td>Capacity of the membrane</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">tau_m</span></code></td>
+<td>20.0</td>
+<td>ms</td>
+<td>Membrane time constant</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">tau_refrac</span></code></td>
+<td>0.0</td>
+<td>ms</td>
+<td>Duration of refractory period</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">tau_syn_E</span></code></td>
+<td>5.0</td>
+<td>ms</td>
+<td>Rise time of the excitatory synaptic alpha function</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">tau_syn_I</span></code></td>
+<td>5.0</td>
+<td>ms</td>
+<td>Rise time of the inhibitory synaptic alpha function</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">i_offset</span></code></td>
+<td>0.0</td>
+<td>nA</td>
+<td>Offset current</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">v_reset</span></code></td>
+<td>-65.0</td>
+<td>mV</td>
+<td>Reset potential after a spike</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">v_thresh</span></code></td>
+<td>-50.0</td>
+<td>mV</td>
+<td>Spike threshold</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="if-curr-exp">
+<h3>IF_curr_exp<a class="headerlink" href="#if-curr-exp" title="Permalink to this headline">¶</a></h3>
+<p>Leaky integrate and fire model with fixed threshold and decaying-exponential post-synaptic current.
+(Separate synaptic currents for excitatory and inhibitory synapses.</p>
+<p>Availability: NEST, NEURON, Brian</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="18%" />
+<col width="7%" />
+<col width="56%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Default value</th>
+<th class="head">Units</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">v_rest</span></code></td>
+<td>-65.0</td>
+<td>mV</td>
+<td>Resting membrane potential</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">cm</span></code></td>
+<td>1.0</td>
+<td>nF</td>
+<td>Capacity of the membrane</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">tau_m</span></code></td>
+<td>20.0</td>
+<td>ms</td>
+<td>Membrane time constant</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">tau_refrac</span></code></td>
+<td>0.0</td>
+<td>ms</td>
+<td>Duration of refractory period</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">tau_syn_E</span></code></td>
+<td>5.0</td>
+<td>ms</td>
+<td>Decay time of excitatory synaptic current</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">tau_syn_I</span></code></td>
+<td>5.0</td>
+<td>ms</td>
+<td>Decay time of inhibitory synaptic current</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">i_offset</span></code></td>
+<td>0.0</td>
+<td>nA</td>
+<td>Offset current</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">v_reset</span></code></td>
+<td>-65.0</td>
+<td>mV</td>
+<td>Reset potential after a spike</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">v_thresh</span></code></td>
+<td>-50.0</td>
+<td>mV</td>
+<td>Spike threshold</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="if-cond-alpha">
+<h4>IF_cond_alpha<a class="headerlink" href="#if-cond-alpha" title="Permalink to this headline">¶</a></h4>
+<p>Leaky integrate and fire model with fixed threshold and alpha-function-shaped post-synaptic conductance.</p>
+<p>Availability: NEST, NEURON, Brian</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="16%" />
+<col width="6%" />
+<col width="61%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Default value</th>
+<th class="head">Units</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">v_rest</span></code></td>
+<td>-65.0</td>
+<td>mV</td>
+<td>Resting membrane potential</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">cm</span></code></td>
+<td>1.0</td>
+<td>nF</td>
+<td>Capacity of the membrane</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">tau_m</span></code></td>
+<td>20.0</td>
+<td>ms</td>
+<td>Membrane time constant</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">tau_refrac</span></code></td>
+<td>0.0</td>
+<td>ms</td>
+<td>Duration of refractory period</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">tau_syn_E</span></code></td>
+<td>5.0</td>
+<td>ms</td>
+<td>Rise time of the excitatory synaptic alpha function</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">tau_syn_I</span></code></td>
+<td>5.0</td>
+<td>ms</td>
+<td>Rise time of the inhibitory synaptic alpha function</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">e_rev_E</span></code></td>
+<td>0.0</td>
+<td>mV</td>
+<td>Reversal potential for excitatory input</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">e_rev_I</span></code></td>
+<td>-70.0</td>
+<td>mV</td>
+<td>Reversal potential for inhibitory input</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">v_thresh</span></code></td>
+<td>-50.0</td>
+<td>mV</td>
+<td>Spike threshold</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">v_reset</span></code></td>
+<td>-65.0</td>
+<td>mV</td>
+<td>Reset potential after a spike</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">i_offset</span></code></td>
+<td>0.0</td>
+<td>nA</td>
+<td>Offset current</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="if-cond-exp">
+<h3>IF_cond_exp<a class="headerlink" href="#if-cond-exp" title="Permalink to this headline">¶</a></h3>
+<p>Leaky integrate and fire model with fixed threshold and decaying-exponential post-synaptic conductance.</p>
+<p>Availability: NEST, NEURON, Brian</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="16%" />
+<col width="6%" />
+<col width="61%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Default value</th>
+<th class="head">Units</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">v_rest</span></code></td>
+<td>-65.0</td>
+<td>mV</td>
+<td>Resting membrane potential</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">cm</span></code></td>
+<td>1.0</td>
+<td>nF</td>
+<td>Capacity of the membrane</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">tau_m</span></code></td>
+<td>20.0</td>
+<td>ms</td>
+<td>Membrane time constant</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">tau_refrac</span></code></td>
+<td>0.0</td>
+<td>ms</td>
+<td>Duration of refractory period</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">tau_syn_E</span></code></td>
+<td>5.0</td>
+<td>ms</td>
+<td>Decay time of the excitatory synaptic conductance</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">tau_syn_I</span></code></td>
+<td>5.0</td>
+<td>ms</td>
+<td>Decay time of the inhibitory synaptic conductance</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">e_rev_E</span></code></td>
+<td>0.0</td>
+<td>mV</td>
+<td>Reversal potential for excitatory input</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">e_rev_I</span></code></td>
+<td>-70.0</td>
+<td>mV</td>
+<td>Reversal potential for inhibitory input</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">v_thresh</span></code></td>
+<td>-50.0</td>
+<td>mV</td>
+<td>Spike threshold</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">v_reset</span></code></td>
+<td>-65.0</td>
+<td>mV</td>
+<td>Reset potential after a spike</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">i_offset</span></code></td>
+<td>0.0</td>
+<td>nA</td>
+<td>Offset current</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="hh-cond-exp">
+<h3>HH_cond_exp<a class="headerlink" href="#hh-cond-exp" title="Permalink to this headline">¶</a></h3>
+<p>Single-compartment Hodgkin-Huxley-type neuron with transient sodium and delayed-rectifier potassium currents using the ion channel models from Traub.</p>
+<p>Availability: NEST, NEURON, Brian</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="16%" />
+<col width="6%" />
+<col width="61%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Default value</th>
+<th class="head">Units</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">gbar_Na</span></code></td>
+<td>20.0</td>
+<td>uS</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">gbar_K</span></code></td>
+<td>6.0</td>
+<td>uS</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">g_leak</span></code></td>
+<td>0.01</td>
+<td>uS</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">cm</span></code></td>
+<td>0.2</td>
+<td>nF</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">v_offset</span></code></td>
+<td>-63.0</td>
+<td>mV</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">e_rev_Na</span></code></td>
+<td>50.0</td>
+<td>mV</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">e_rev_K</span></code></td>
+<td>-90.0</td>
+<td>mV</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">e_rev_leak</span></code></td>
+<td>-65.0</td>
+<td>mV</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">e_rev_E</span></code></td>
+<td>0.0</td>
+<td>mV</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">e_rev_I</span></code></td>
+<td>-80.0</td>
+<td>mV</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">tau_syn_E</span></code></td>
+<td>0.2</td>
+<td>ms</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">tau_syn_I</span></code></td>
+<td>2.0</td>
+<td>ms</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">i_offset</span></code></td>
+<td>0.0</td>
+<td>nA</td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="eif-cond-alpha-isfa-ista">
+<h3>EIF_cond_alpha_isfa_ista<a class="headerlink" href="#eif-cond-alpha-isfa-ista" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>Adaptive exponential integrate and fire neuron according to</dt>
+<dd>Brette R and Gerstner W (2005) Adaptive Exponential Integrate-and-Fire Model as
+an Effective Description of Neuronal Activity. J Neurophysiol 94:3637-3642</dd>
+</dl>
+<p>Availability: NEST, NEURON, Brian</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="13%" />
+<col width="5%" />
+<col width="67%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Default value</th>
+<th class="head">Units</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">cm</span></code></td>
+<td>0.281</td>
+<td>nF</td>
+<td>Capacity of the membrane</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">tau_refrac</span></code></td>
+<td>0.0</td>
+<td>ms</td>
+<td>Duration of refractory period</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">v_spike</span></code></td>
+<td>0.0</td>
+<td>mV</td>
+<td>Spike detection threshold</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">v_reset</span></code></td>
+<td>-70.6</td>
+<td>mV</td>
+<td>Reset value for membrane potential after a spike</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">v_rest</span></code></td>
+<td>-70.6</td>
+<td>mV</td>
+<td>Resting membrane potential (Leak reversal potential)</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">tau_m</span></code></td>
+<td>9.3667</td>
+<td>ms</td>
+<td>Membrane time constant</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">i_offset</span></code></td>
+<td>0.0</td>
+<td>nA</td>
+<td>Offset current</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">a</span></code></td>
+<td>4.0</td>
+<td>nS</td>
+<td>Subthreshold adaptation conductance</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">b</span></code></td>
+<td>0.0805</td>
+<td>nA</td>
+<td>Spike-triggered adaptation</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">delta_T</span></code></td>
+<td>2.0</td>
+<td>mV</td>
+<td>Slope factor</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">tau_w</span></code></td>
+<td>144.0</td>
+<td>ms</td>
+<td>Adaptation time constant</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">v_thresh</span></code></td>
+<td>-50.4</td>
+<td>mV</td>
+<td>Spike initiation threshold</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">e_rev_E</span></code></td>
+<td>0.0</td>
+<td>mV</td>
+<td>Excitatory reversal potential</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">tau_syn_E</span></code></td>
+<td>5.0</td>
+<td>ms</td>
+<td>Rise time of excitatory synaptic conductance (alpha function)</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">e_rev_I</span></code></td>
+<td>-80.0</td>
+<td>mV</td>
+<td>Inhibitory reversal potential</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">tau_syn_I</span></code></td>
+<td>5.0</td>
+<td>ms</td>
+<td>Rise time of the inhibitory synaptic conductance (alpha function)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="spike-sources">
+<h2>Spike sources<a class="headerlink" href="#spike-sources" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="spikesourcepoisson">
+<h3>SpikeSourcePoisson<a class="headerlink" href="#spikesourcepoisson" title="Permalink to this headline">¶</a></h3>
+<p>Spike source, generating spikes according to a Poisson process.</p>
+<p>Availability: NEST, NEURON, Brian</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="21%" />
+<col width="23%" />
+<col width="11%" />
+<col width="46%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Default value</th>
+<th class="head">Units</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">rate</span></code></td>
+<td>0.0</td>
+<td>s^`-1`</td>
+<td>Mean spike frequency</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">start</span></code></td>
+<td>0.0</td>
+<td>ms</td>
+<td>Start time</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">duration</span></code></td>
+<td>10^9</td>
+<td>ms</td>
+<td>Duration of spike sequence</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="spikesourcearray">
+<h3>SpikeSourceArray<a class="headerlink" href="#spikesourcearray" title="Permalink to this headline">¶</a></h3>
+<p>Spike source generating spikes at the times given in the <code class="docutils literal"><span class="pre">spike_times</span></code> array.</p>
+<p>Availability: NEST, NEURON, Brian</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="17%" />
+<col width="8%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Default value</th>
+<th class="head">Units</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">spike_times</span></code></td>
+<td><code class="docutils literal"><span class="pre">[]</span></code></td>
+<td>ms</td>
+<td>list or numpy array containing spike times</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Standard models</a><ul>
+<li><a class="reference internal" href="#neurons">Neurons</a><ul>
+<li><a class="reference internal" href="#if-curr-alpha">IF_curr_alpha</a></li>
+<li><a class="reference internal" href="#if-curr-exp">IF_curr_exp</a><ul>
+<li><a class="reference internal" href="#if-cond-alpha">IF_cond_alpha</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#if-cond-exp">IF_cond_exp</a></li>
+<li><a class="reference internal" href="#hh-cond-exp">HH_cond_exp</a></li>
+<li><a class="reference internal" href="#eif-cond-alpha-isfa-ista">EIF_cond_alpha_isfa_ista</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#spike-sources">Spike sources</a><ul>
+<li><a class="reference internal" href="#spikesourcepoisson">SpikeSourcePoisson</a></li>
+<li><a class="reference internal" href="#spikesourcearray">SpikeSourceArray</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/standardmodels.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 2.0.0.alpha.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2017, the PyNN community.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

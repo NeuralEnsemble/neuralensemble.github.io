@@ -1,0 +1,172 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>A selection of Izhikevich neurons &#8212; PyNN 2.0.0.alpha.1 documentation</title>
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.0.alpha.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 2.0.0.alpha.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="a-selection-of-izhikevich-neurons">
+<h1>A selection of Izhikevich neurons<a class="headerlink" href="#a-selection-of-izhikevich-neurons" title="Permalink to this headline">¶</a></h1>
+<img alt="../_images/Izhikevich_nest_np1_20151005-081145.png" src="../_images/Izhikevich_nest_np1_20151005-081145.png" />
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">A selection of Izhikevich neurons.</span>
+
+<span class="sd">Run as:</span>
+
+<span class="sd">$ python Izhikevich.py &lt;simulator&gt;</span>
+
+<span class="sd">where &lt;simulator&gt; is &#39;neuron&#39;, &#39;nest&#39;, etc.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">arange</span>
+<span class="kn">from</span> <span class="nn">pyNN.utility</span> <span class="k">import</span> <span class="n">get_simulator</span><span class="p">,</span> <span class="n">init_logging</span><span class="p">,</span> <span class="n">normalized_filename</span>
+
+
+<span class="c1"># === Configure the simulator ================================================</span>
+
+<span class="n">sim</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="n">get_simulator</span><span class="p">((</span><span class="s2">&quot;--plot-figure&quot;</span><span class="p">,</span> <span class="s2">&quot;Plot the simulation results to a file.&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;store_true&quot;</span><span class="p">}),</span>
+                             <span class="p">(</span><span class="s2">&quot;--debug&quot;</span><span class="p">,</span> <span class="s2">&quot;Print debugging information&quot;</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+    <span class="n">init_logging</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">min_delay</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+
+<span class="c1"># === Build and instrument the network =======================================</span>
+
+<span class="n">neurons</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Population</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">sim</span><span class="o">.</span><span class="n">Izhikevich</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">c</span><span class="o">=-</span><span class="mi">65</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">i_offset</span><span class="o">=</span><span class="p">[</span><span class="mf">0.014</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]))</span>
+<span class="n">spike_source</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Population</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">sim</span><span class="o">.</span><span class="n">SpikeSourceArray</span><span class="p">(</span><span class="n">spike_times</span><span class="o">=</span><span class="n">arange</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+
+<span class="n">connection</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Projection</span><span class="p">(</span><span class="n">spike_source</span><span class="p">,</span> <span class="n">neurons</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">sim</span><span class="o">.</span><span class="n">OneToOneConnector</span><span class="p">(),</span>
+                            <span class="n">sim</span><span class="o">.</span><span class="n">StaticSynapse</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
+                            <span class="n">receptor_type</span><span class="o">=</span><span class="s1">&#39;excitatory&#39;</span><span class="p">),</span>
+
+<span class="n">electrode</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">DCSource</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mf">92.0</span><span class="p">,</span> <span class="n">amplitude</span><span class="o">=</span><span class="mf">0.014</span><span class="p">)</span>
+<span class="n">electrode</span><span class="o">.</span><span class="n">inject_into</span><span class="p">(</span><span class="n">neurons</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+
+<span class="n">neurons</span><span class="o">.</span><span class="n">record</span><span class="p">([</span><span class="s1">&#39;v&#39;</span><span class="p">])</span>  <span class="c1"># , &#39;u&#39;])</span>
+<span class="n">neurons</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">v</span><span class="o">=-</span><span class="mf">70.0</span><span class="p">,</span> <span class="n">u</span><span class="o">=-</span><span class="mf">14.0</span><span class="p">)</span>
+
+
+<span class="c1"># === Run the simulation =====================================================</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mf">100.0</span><span class="p">)</span>
+
+
+<span class="c1"># === Save the results, optionally plot a figure =============================</span>
+
+<span class="n">filename</span> <span class="o">=</span> <span class="n">normalized_filename</span><span class="p">(</span><span class="s2">&quot;Results&quot;</span><span class="p">,</span> <span class="s2">&quot;Izhikevich&quot;</span><span class="p">,</span> <span class="s2">&quot;pkl&quot;</span><span class="p">,</span>
+                               <span class="n">options</span><span class="o">.</span><span class="n">simulator</span><span class="p">,</span> <span class="n">sim</span><span class="o">.</span><span class="n">num_processes</span><span class="p">())</span>
+<span class="n">neurons</span><span class="o">.</span><span class="n">write_data</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">annotations</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;script_name&#39;</span><span class="p">:</span> <span class="vm">__file__</span><span class="p">})</span>
+
+<span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">plot_figure</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">pyNN.utility.plotting</span> <span class="k">import</span> <span class="n">Figure</span><span class="p">,</span> <span class="n">Panel</span>
+    <span class="n">figure_filename</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;png&quot;</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">neurons</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;v&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1">#u = data.filter(name=&quot;u&quot;)[0]</span>
+    <span class="n">Figure</span><span class="p">(</span>
+        <span class="n">Panel</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Membrane potential (mV)&quot;</span><span class="p">,</span> <span class="n">xticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+              <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Time (ms)&quot;</span><span class="p">,</span> <span class="n">yticks</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+        <span class="c1">#Panel(u, ylabel=&quot;u variable (units?)&quot;),</span>
+        <span class="n">annotations</span><span class="o">=</span><span class="s2">&quot;Simulated with </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">figure_filename</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">figure_filename</span><span class="p">)</span>
+
+
+<span class="c1"># === Clean up and quit ========================================================</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/examples/Izhikevich.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 2.0.0.alpha.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2017, the PyNN community.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

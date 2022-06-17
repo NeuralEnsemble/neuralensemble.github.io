@@ -1,0 +1,541 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pyNN.common.projections &#8212; PyNN 2.0.0.alpha.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.0.alpha.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 2.0.0.alpha.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pyNN.common.projections</h1><div class="highlight"><pre>
+<span></span><span class="c1"># encoding: utf-8</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Common implementation of the Projection class, to be sub-classed by</span>
+<span class="sd">backend-specific Projection classes.</span>
+
+<span class="sd">:copyright: Copyright 2006-2016 by the PyNN team, see AUTHORS.</span>
+<span class="sd">:license: CeCILL, see LICENSE for details.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">basestring</span>
+    <span class="n">reduce</span>
+    <span class="n">xrange</span>
+<span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+    <span class="n">basestring</span> <span class="o">=</span> <span class="nb">str</span>
+    <span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">reduce</span>
+    <span class="n">xrange</span> <span class="o">=</span> <span class="nb">range</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">operator</span>
+<span class="kn">from</span> <span class="nn">pyNN</span> <span class="k">import</span> <span class="n">recording</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">models</span><span class="p">,</span> <span class="n">core</span><span class="p">,</span> <span class="n">descriptions</span>
+<span class="kn">from</span> <span class="nn">pyNN.parameters</span> <span class="k">import</span> <span class="n">ParameterSpace</span><span class="p">,</span> <span class="n">LazyArray</span>
+<span class="kn">from</span> <span class="nn">pyNN.space</span> <span class="k">import</span> <span class="n">Space</span>
+<span class="kn">from</span> <span class="nn">pyNN.standardmodels</span> <span class="k">import</span> <span class="n">StandardSynapseType</span>
+<span class="kn">from</span> <span class="nn">.populations</span> <span class="k">import</span> <span class="n">BasePopulation</span><span class="p">,</span> <span class="n">Assembly</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;PyNN&quot;</span><span class="p">)</span>
+<span class="n">deprecated</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">deprecated</span>
+
+
+<span class="k">class</span> <span class="nc">Projection</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A container for all the connections of a given type (same synapse type and</span>
+<span class="sd">    plasticity mechanisms) between two populations, together with methods to</span>
+<span class="sd">    set the parameters of those connections, including the parameters of</span>
+<span class="sd">    plasticity mechanisms.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        `presynaptic_neurons` and `postsynaptic_neurons`:</span>
+<span class="sd">            Population, PopulationView or Assembly objects.</span>
+<span class="sd">        `source`:</span>
+<span class="sd">            string specifying which attribute of the presynaptic cell signals</span>
+<span class="sd">            action potentials. This is only needed for multicompartmental cells</span>
+<span class="sd">            with branching axons or dendrodendritic synapses. All standard cells</span>
+<span class="sd">            have a single source, and this is the default.</span>
+<span class="sd">        `receptor_type`:</span>
+<span class="sd">            string specifying which synaptic receptor_type type on the postsynaptic cell to connect</span>
+<span class="sd">            to. For standard cells, this can be &#39;excitatory&#39; or &#39;inhibitory&#39;.</span>
+<span class="sd">            For non-standard cells, it could be &#39;NMDA&#39;, etc. If receptor_type is not</span>
+<span class="sd">            given, the default values of &#39;excitatory&#39; is used.</span>
+<span class="sd">        `connector`:</span>
+<span class="sd">            a Connector object, encapsulating the algorithm to use for</span>
+<span class="sd">            connecting the neurons.</span>
+<span class="sd">        `synapse_type`:</span>
+<span class="sd">            a SynapseType object specifying which synaptic connection</span>
+<span class="sd">            mechanisms to use.</span>
+<span class="sd">        `space`:</span>
+<span class="sd">            TO DOCUMENT</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_nProj</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">MULTI_SYNAPSE_OPERATIONS</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;last&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">b</span><span class="p">,</span>
+        <span class="s1">&#39;first&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">a</span><span class="p">,</span>
+        <span class="s1">&#39;sum&#39;</span><span class="p">:</span> <span class="n">operator</span><span class="o">.</span><span class="n">iadd</span><span class="p">,</span>
+        <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="nb">min</span><span class="p">,</span>
+        <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="nb">max</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">presynaptic_neurons</span><span class="p">,</span> <span class="n">postsynaptic_neurons</span><span class="p">,</span> <span class="n">connector</span><span class="p">,</span>
+                 <span class="n">synapse_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">receptor_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">space</span><span class="o">=</span><span class="n">Space</span><span class="p">(),</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new projection, connecting the pre- and post-synaptic neurons.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_simulator&quot;</span><span class="p">):</span>
+            <span class="n">errmsg</span> <span class="o">=</span> <span class="s2">&quot;`common.Projection` should not be instantiated directly. &quot;</span> \
+                     <span class="s2">&quot;You should import Projection from a PyNN backend module, &quot;</span> \
+                     <span class="s2">&quot;e.g. pyNN.nest or pyNN.neuron&quot;</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">pop</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">((</span><span class="s2">&quot;pre&quot;</span><span class="p">,</span> <span class="s2">&quot;post&quot;</span><span class="p">),</span>
+                               <span class="p">(</span><span class="n">presynaptic_neurons</span><span class="p">,</span> <span class="n">postsynaptic_neurons</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pop</span><span class="p">,</span> <span class="p">(</span><span class="n">BasePopulation</span><span class="p">,</span> <span class="n">Assembly</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">synaptic_neurons must be a Population, PopulationView or Assembly, not a </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">pop</span><span class="p">)))</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">postsynaptic_neurons</span><span class="p">,</span> <span class="n">Assembly</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">postsynaptic_neurons</span><span class="o">.</span><span class="n">_homogeneous_synapses</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">(</span><span class="s1">&#39;Projection to an Assembly object can be made only with homogeneous synapses types&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pre</span> <span class="o">=</span> <span class="n">presynaptic_neurons</span>    <span class="c1"># } these really</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="n">source</span>              <span class="c1"># } should be</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">post</span> <span class="o">=</span> <span class="n">postsynaptic_neurons</span>  <span class="c1"># } read-only</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">receptor_type</span> <span class="o">=</span> <span class="n">receptor_type</span> <span class="ow">or</span> <span class="s1">&#39;excitatory&#39;</span>  <span class="c1"># TO FIX: if weights are negative, default should be &#39;inhibitory&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">receptor_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">postsynaptic_neurons</span><span class="o">.</span><span class="n">receptor_types</span><span class="p">:</span>
+            <span class="n">valid_types</span> <span class="o">=</span> <span class="n">postsynaptic_neurons</span><span class="o">.</span><span class="n">receptor_types</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_types</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+            <span class="n">errmsg</span> <span class="o">=</span> <span class="s2">&quot;User gave receptor_types=</span><span class="si">%s</span><span class="s2">, receptor_types must be one of: &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span>
+            <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">(</span><span class="n">errmsg</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">receptor_type</span><span class="p">,</span> <span class="s2">&quot;&#39;, &#39;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">valid_types</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">space</span> <span class="o">=</span> <span class="n">space</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connector</span> <span class="o">=</span> <span class="n">connector</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">synapse_type</span> <span class="o">=</span> <span class="n">synapse_type</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_static_synapse_class</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">synapse_type</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">BaseSynapseType</span><span class="p">),</span> \
+              <span class="s2">&quot;The synapse_type argument must be a models.BaseSynapseType object, not a </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">synapse_type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">label</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">label</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="sa">u</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">→</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
+        <span class="n">Projection</span><span class="o">.</span><span class="n">_nProj</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the total number of local connections.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+<div class="viewcode-block" id="Projection.size"><a class="viewcode-back" href="../../../reference/projections.html#pyNN.neuron.Projection.size">[docs]</a>    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gather</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the total number of connections.</span>
+<span class="sd">            - only local connections, if gather is False,</span>
+<span class="sd">            - all connections, if gather is True (default)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">gather</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">num_processes</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">recording</span><span class="o">.</span><span class="n">mpi_sum</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;Projection(&quot;</span><span class="si">%s</span><span class="s1">&quot;)&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the *i*th connection within the Projection.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+<div class="viewcode-block" id="Projection.__iter__"><a class="viewcode-back" href="../../../reference/projections.html#pyNN.neuron.Projection.__iter__">[docs]</a>    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return an iterator over all connections on the local MPI node.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)):</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="p">[</span><span class="n">i</span><span class="p">]</span></div>
+
+    <span class="c1"># --- Methods for setting connection parameters ---------------------------</span>
+
+<div class="viewcode-block" id="Projection.set"><a class="viewcode-back" href="../../../reference/projections.html#pyNN.neuron.Projection.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">attributes</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set connection attributes for all connections on the local MPI node.</span>
+
+<span class="sd">        Attribute names may be &#39;weight&#39;, &#39;delay&#39;, or the name of any parameter</span>
+<span class="sd">        of a synapse dynamics model (e.g. &#39;U&#39; for TsodyksMarkramSynapse).</span>
+
+<span class="sd">        Each attribute value may be:</span>
+<span class="sd">            (1) a single number</span>
+<span class="sd">            (2) a RandomDistribution object</span>
+<span class="sd">            (3) a 2D array with the same dimensions as the connectivity matrix</span>
+<span class="sd">                (as returned by `get(format=&#39;array&#39;)`</span>
+<span class="sd">            (4) a mapping function, which accepts a single float argument (the</span>
+<span class="sd">                distance between pre- and post-synaptic cells) and returns a single value.</span>
+
+<span class="sd">        Weights should be in nA for current-based and µS for conductance-based</span>
+<span class="sd">        synapses. Delays should be in milliseconds.</span>
+
+<span class="sd">        Note that where a projection contains multiple connections between a given pair</span>
+<span class="sd">        of neurons, all these connections will be set to the same value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># should perhaps add a &quot;distribute&quot; argument, for symmetry with &quot;gather&quot; in get()</span>
+
+        <span class="c1"># Note: we have removed the option:</span>
+        <span class="c1">#      &quot;a list/1D array of the same length as the number of local connections&quot;</span>
+        <span class="c1"># because it was proving tricky to implement and was holding up the release.</span>
+        <span class="c1"># The plan is to add this option back at a later date.</span>
+
+        <span class="n">attributes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value_list_to_array</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span>
+        <span class="n">parameter_space</span> <span class="o">=</span> <span class="n">ParameterSpace</span><span class="p">(</span><span class="n">attributes</span><span class="p">,</span>
+                                         <span class="bp">self</span><span class="o">.</span><span class="n">synapse_type</span><span class="o">.</span><span class="n">get_schema</span><span class="p">(),</span>
+                                         <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">size</span><span class="p">))</span>
+        <span class="n">parameter_space</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_distance_expressions</span><span class="p">(</span><span class="n">parameter_space</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">synapse_type</span><span class="p">,</span> <span class="n">StandardSynapseType</span><span class="p">):</span>
+            <span class="n">parameter_space</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">synapse_type</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">parameter_space</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_attributes</span><span class="p">(</span><span class="n">parameter_space</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_value_list_to_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributes</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert a list of connection parameters/attributes to a 2D array.&quot;&quot;&quot;</span>
+        <span class="n">connection_mask</span> <span class="o">=</span> <span class="o">~</span><span class="n">numpy</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;weight&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">,</span> <span class="n">gather</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">and</span> <span class="n">value</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">array_value</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nan</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+                <span class="n">array_value</span><span class="p">[</span><span class="n">connection_mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="n">attributes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">array_value</span>
+        <span class="k">return</span> <span class="n">attributes</span>
+
+    <span class="k">def</span> <span class="nf">_handle_distance_expressions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_space</span><span class="p">):</span>
+        <span class="c1"># also index-based expressions</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="nb">map</span> <span class="ow">in</span> <span class="n">parameter_space</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="nb">map</span><span class="o">.</span><span class="n">base_value</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">map</span><span class="o">.</span><span class="n">base_value</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">IndexBasedExpression</span><span class="p">):</span>
+                    <span class="nb">map</span><span class="o">.</span><span class="n">base_value</span><span class="o">.</span><span class="n">projection</span> <span class="o">=</span> <span class="bp">self</span>
+                    <span class="n">parameter_space</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">map</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Assumes map is a function of distance</span>
+                    <span class="n">position_generators</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">position_generator</span><span class="p">,</span>
+                                           <span class="bp">self</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">position_generator</span><span class="p">)</span>
+                    <span class="n">distance_map</span> <span class="o">=</span> <span class="n">LazyArray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">distance_generator</span><span class="p">(</span><span class="o">*</span><span class="n">position_generators</span><span class="p">),</span>
+                                             <span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+                    <span class="n">parameter_space</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">distance_map</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">parameter_space</span>
+
+    <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;set(weight=w)&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">setWeights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="n">w</span><span class="p">)</span>
+
+    <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;set(weight=rand_distr)&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">randomizeWeights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rand_distr</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="n">rand_distr</span><span class="p">)</span>
+
+    <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;set(delay=d)&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">setDelays</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">delay</span><span class="o">=</span><span class="n">d</span><span class="p">)</span>
+
+    <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;set(delay=rand_distr)&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">randomizeDelays</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rand_distr</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">delay</span><span class="o">=</span><span class="n">rand_distr</span><span class="p">)</span>
+
+    <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;set(parameter_name=value)&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">setSynapseDynamics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">parameter_name</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;set(name=rand_distr)&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">randomizeSynapseDynamics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_name</span><span class="p">,</span> <span class="n">rand_distr</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">parameter_name</span><span class="o">=</span><span class="n">rand_distr</span><span class="p">)</span>
+
+    <span class="c1"># --- Methods for writing/reading information to/from file. ---------------</span>
+
+<div class="viewcode-block" id="Projection.get"><a class="viewcode-back" href="../../../reference/projections.html#pyNN.neuron.Projection.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute_names</span><span class="p">,</span> <span class="nb">format</span><span class="p">,</span> <span class="n">gather</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_address</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">multiple_synapses</span><span class="o">=</span><span class="s1">&#39;sum&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the values of a given attribute (weight or delay) for all</span>
+<span class="sd">        connections in this Projection.</span>
+
+<span class="sd">        `attribute_names`:</span>
+<span class="sd">            name of the attributes whose values are wanted, or a list of such</span>
+<span class="sd">            names.</span>
+<span class="sd">        `format`:</span>
+<span class="sd">            &quot;list&quot; or &quot;array&quot;.</span>
+<span class="sd">        `gather`:</span>
+<span class="sd">            if True, get connection information from all MPI nodes, otherwise</span>
+<span class="sd">            only from connections that exist in this node.</span>
+
+<span class="sd">        With list format, returns a list of tuples. By default, each tuple</span>
+<span class="sd">        contains the indices of the pre- and post-synaptic cell followed by</span>
+<span class="sd">        the attribute values in the order given in `attribute_names`.</span>
+<span class="sd">        Example::</span>
+
+<span class="sd">            &gt;&gt;&gt; prj.get([&quot;weight&quot;, &quot;delay&quot;], format=&quot;list&quot;)[:5]</span>
+<span class="sd">            [(0.0, 0.0, 0.3401892507507171, 0.1),</span>
+<span class="sd">             (0.0, 1.0, 0.7990713166233654, 0.30000000000000004),</span>
+<span class="sd">             (0.0, 2.0, 0.6180841812877726, 0.5),</span>
+<span class="sd">             (0.0, 3.0, 0.6758149775627305, 0.7000000000000001),</span>
+<span class="sd">             (0.0, 4.0, 0.7166906726862953, 0.9)]</span>
+
+<span class="sd">        If `with_address` is set to False, then the tuples will contain only the</span>
+<span class="sd">        attribute values, not the cell indices.</span>
+
+<span class="sd">        With array format, returns a tuple of 2D NumPy arrays, one for each</span>
+<span class="sd">        name in `attribute_names`. The array element X_ij contains the</span>
+<span class="sd">        attribute value for the connection from the ith neuron in the pre-</span>
+<span class="sd">        synaptic Population to the jth neuron in the post-synaptic Population,</span>
+<span class="sd">        if a single such connection exists. If there are no such connections,</span>
+<span class="sd">        X_ij will be NaN. Example::</span>
+
+<span class="sd">            &gt;&gt;&gt; weights, delays = prj.get([&quot;weight&quot;, &quot;delay&quot;], format=&quot;array&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; weights</span>
+<span class="sd">            array([[ 0.66210438,         nan,  0.10744555,  0.54557088],</span>
+<span class="sd">                   [ 0.3676134 ,         nan,  0.41463193,         nan],</span>
+<span class="sd">                   [ 0.57434871,  0.4329354 ,  0.58482943,  0.42863916]])</span>
+
+<span class="sd">        If there are multiple such connections, the action to take is</span>
+<span class="sd">        controlled by the `multiple_synapses` argument, which must be one of</span>
+<span class="sd">        {&#39;last&#39;, &#39;first&#39;, &#39;sum&#39;, &#39;min&#39;, &#39;max&#39;}.</span>
+
+<span class="sd">        Values will be expressed in the standard PyNN units (i.e. millivolts,</span>
+<span class="sd">        nanoamps, milliseconds, microsiemens, nanofarads, event per second).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attribute_names</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
+            <span class="n">attribute_names</span> <span class="o">=</span> <span class="p">(</span><span class="n">attribute_names</span><span class="p">,)</span>
+            <span class="n">return_single</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">return_single</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">synapse_type</span><span class="p">,</span> <span class="n">StandardSynapseType</span><span class="p">):</span>
+            <span class="n">attribute_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">synapse_type</span><span class="o">.</span><span class="n">get_native_names</span><span class="p">(</span><span class="o">*</span><span class="n">attribute_names</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;list&#39;</span><span class="p">:</span>
+            <span class="n">names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">attribute_names</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">with_address</span><span class="p">:</span>
+                <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;presynaptic_index&quot;</span><span class="p">,</span> <span class="s2">&quot;postsynaptic_index&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">names</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_attributes_as_list</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">gather</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">num_processes</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">all_values</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">mpi_rank</span><span class="p">:</span> <span class="n">values</span><span class="p">}</span>
+                <span class="n">all_values</span> <span class="o">=</span> <span class="n">recording</span><span class="o">.</span><span class="n">gather_dict</span><span class="p">(</span><span class="n">all_values</span><span class="p">,</span> <span class="nb">all</span><span class="o">=</span><span class="p">(</span><span class="n">gather</span> <span class="o">==</span> <span class="s1">&#39;all&#39;</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">gather</span> <span class="o">==</span> <span class="s1">&#39;all&#39;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">mpi_rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">values</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">add</span><span class="p">,</span> <span class="n">all_values</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">with_address</span> <span class="ow">and</span> <span class="n">return_single</span><span class="p">:</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">values</span>
+        <span class="k">elif</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;array&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">multiple_synapses</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">Projection</span><span class="o">.</span><span class="n">MULTI_SYNAPSE_OPERATIONS</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`multiple_synapses` argument must be one of </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">Projection</span><span class="o">.</span><span class="n">MULTI_SYNAPSE_OPERATIONS</span><span class="p">)))</span>
+            <span class="k">if</span> <span class="n">gather</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">num_processes</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="c1"># Node 0 is the only one creating a full connection matrix, and returning it (saving memory)</span>
+                <span class="c1"># Slaves nodes are returning list of connections, so this may be inconsistent...</span>
+                <span class="n">names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">attribute_names</span><span class="p">)</span>
+                <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;presynaptic_index&quot;</span><span class="p">,</span> <span class="s2">&quot;postsynaptic_index&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">names</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_attributes_as_list</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+                <span class="n">all_values</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">mpi_rank</span><span class="p">:</span> <span class="n">values</span><span class="p">}</span>
+                <span class="n">all_values</span> <span class="o">=</span> <span class="n">recording</span><span class="o">.</span><span class="n">gather_dict</span><span class="p">(</span><span class="n">all_values</span><span class="p">,</span> <span class="nb">all</span><span class="o">=</span><span class="p">(</span><span class="n">gather</span> <span class="o">==</span> <span class="s1">&#39;all&#39;</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">gather</span> <span class="o">==</span> <span class="s1">&#39;all&#39;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">mpi_rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">tmp_values</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">add</span><span class="p">,</span> <span class="n">all_values</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+                    <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_attributes_as_arrays</span><span class="p">(</span><span class="n">attribute_names</span><span class="p">,</span>
+                                                            <span class="n">multiple_synapses</span><span class="o">=</span><span class="n">multiple_synapses</span><span class="p">)</span>
+                    <span class="n">tmp_values</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">tmp_values</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)):</span>
+                        <span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">tmp_values</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span> <span class="n">tmp_values</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)]</span> <span class="o">=</span> <span class="n">tmp_values</span><span class="p">[:,</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_attributes_as_arrays</span><span class="p">(</span><span class="n">attribute_names</span><span class="p">,</span>
+                                                        <span class="n">multiple_synapses</span><span class="o">=</span><span class="n">multiple_synapses</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">return_single</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">gather</span> <span class="o">==</span> <span class="s1">&#39;all&#39;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">mpi_rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="n">values</span>
+                <span class="k">return</span> <span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">values</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;format must be &#39;list&#39; or &#39;array&#39;&quot;</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_attributes_as_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">as_tuple</span><span class="p">(</span><span class="o">*</span><span class="n">names</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">connections</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_get_attributes_as_arrays</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">multiple_synapses</span><span class="o">=</span><span class="s1">&#39;sum&#39;</span><span class="p">):</span>
+        <span class="n">multi_synapse_operation</span> <span class="o">=</span> <span class="n">Projection</span><span class="o">.</span><span class="n">MULTI_SYNAPSE_OPERATIONS</span><span class="p">[</span><span class="n">multiple_synapses</span><span class="p">]</span>
+        <span class="n">all_values</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">attribute_name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nan</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">size</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">attribute_name</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;s&quot;</span><span class="p">:</span>  <span class="c1"># weights --&gt; weight, delays --&gt; delay</span>
+                <span class="n">attribute_name</span> <span class="o">=</span> <span class="n">attribute_name</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">connections</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">attribute_name</span><span class="p">)</span>
+                <span class="n">addr</span> <span class="o">=</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">presynaptic_index</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">postsynaptic_index</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">addr</span><span class="p">]):</span>
+                    <span class="n">values</span><span class="p">[</span><span class="n">addr</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">values</span><span class="p">[</span><span class="n">addr</span><span class="p">]</span> <span class="o">=</span> <span class="n">multi_synapse_operation</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">addr</span><span class="p">],</span> <span class="n">value</span><span class="p">)</span>
+            <span class="n">all_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">all_values</span>
+
+    <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;get(&#39;weight&#39;, format, gather)&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">getWeights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="n">gather</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;weight&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="p">,</span> <span class="n">gather</span><span class="p">,</span> <span class="n">with_address</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;get(&#39;delay&#39;, format, gather)&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">getDelays</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="n">gather</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;delay&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="p">,</span> <span class="n">gather</span><span class="p">,</span> <span class="n">with_address</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;get(parameter_name, format, gather)&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">getSynapseDynamics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_name</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="n">gather</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">parameter_name</span><span class="p">,</span> <span class="nb">format</span><span class="p">,</span> <span class="n">gather</span><span class="p">,</span> <span class="n">with_address</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Projection.save"><a class="viewcode-back" href="../../../reference/projections.html#pyNN.neuron.Projection.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute_names</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="n">gather</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_address</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Print synaptic attributes (weights, delays, etc.) to file. In the array</span>
+<span class="sd">        format, zeros are printed for non-existent connections.</span>
+
+<span class="sd">        Values will be expressed in the standard PyNN units (i.e. millivolts,</span>
+<span class="sd">        nanoamps, milliseconds, microsiemens, nanofarads, event per second).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">attribute_names</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="s1">&#39;connections&#39;</span><span class="p">):</span>
+            <span class="n">attribute_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">synapse_type</span><span class="o">.</span><span class="n">get_parameter_names</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
+            <span class="n">file</span> <span class="o">=</span> <span class="n">recording</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">StandardTextFile</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;wb&#39;</span><span class="p">)</span>
+        <span class="n">all_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">attribute_names</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="nb">format</span><span class="p">,</span> <span class="n">gather</span><span class="o">=</span><span class="n">gather</span><span class="p">,</span> <span class="n">with_address</span><span class="o">=</span><span class="n">with_address</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;array&#39;</span><span class="p">:</span>
+            <span class="n">all_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">values</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+                          <span class="k">for</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">all_values</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">mpi_rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="n">attribute_names</span><span class="p">}</span>
+            <span class="k">if</span> <span class="n">with_address</span><span class="p">:</span>
+                <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;columns&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;i&quot;</span><span class="p">,</span> <span class="s2">&quot;j&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;columns&quot;</span><span class="p">])</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">all_values</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+    <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;save(&#39;all&#39;, file, format=&#39;list&#39;, gather=gather)&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">saveConnections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">gather</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">compatible_output</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="n">gather</span><span class="o">=</span><span class="n">gather</span><span class="p">)</span>
+
+    <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;save(&#39;weight&#39;, file, format, gather)&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">printWeights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="n">gather</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;weight&#39;</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="nb">format</span><span class="p">,</span> <span class="n">gather</span><span class="p">)</span>
+
+    <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;save(&#39;delay&#39;, file, format, gather)&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">printDelays</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="n">gather</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Print synaptic weights to file. In the array format, zeros are printed</span>
+<span class="sd">        for non-existent connections.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;delay&#39;</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="nb">format</span><span class="p">,</span> <span class="n">gather</span><span class="p">)</span>
+
+    <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;numpy.histogram()&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">weightHistogram</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a histogram of synaptic weights.</span>
+<span class="sd">        If min and max are not given, the minimum and maximum weights are</span>
+<span class="sd">        calculated automatically.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;weight&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="n">gather</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_address</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">min</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">min</span> <span class="o">=</span> <span class="n">weights</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">max</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">max</span> <span class="o">=</span> <span class="n">weights</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="n">bins</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">,</span> <span class="n">nbins</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">bins</span><span class="p">)</span>  <span class="c1"># returns n, bins</span>
+
+<div class="viewcode-block" id="Projection.describe"><a class="viewcode-back" href="../../../reference/projections.html#pyNN.neuron.Projection.describe">[docs]</a>    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="s1">&#39;projection_default.txt&#39;</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a human-readable description of the projection.</span>
+
+<span class="sd">        The output may be customized by specifying a different template</span>
+<span class="sd">        togther with an associated template engine (see ``pyNN.descriptions``).</span>
+
+<span class="sd">        If template is None, then a dictionary containing the template context</span>
+<span class="sd">        will be returned.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span>
+            <span class="s2">&quot;pre&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+            <span class="s2">&quot;post&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+            <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">,</span>
+            <span class="s2">&quot;receptor_type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">receptor_type</span><span class="p">,</span>
+            <span class="s2">&quot;size_local&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span>
+            <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">gather</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="s2">&quot;connector&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connector</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+            <span class="s2">&quot;plasticity&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">synapse_type</span><span class="p">:</span>
+            <span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">plasticity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">synapse_type</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">descriptions</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+<span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Store an individual plastic connection and information about it. Provide an</span>
+<span class="sd">    interface that allows access to the connection&#39;s weight, delay and other</span>
+<span class="sd">    attributes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 2.0.0.alpha.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2017, the PyNN community.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

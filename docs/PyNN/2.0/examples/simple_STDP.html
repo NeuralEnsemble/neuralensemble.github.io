@@ -1,0 +1,295 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>A very simple example of using STDP &#8212; PyNN 2.0.0.alpha.1 documentation</title>
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.0.alpha.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 2.0.0.alpha.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="a-very-simple-example-of-using-stdp">
+<h1>A very simple example of using STDP<a class="headerlink" href="#a-very-simple-example-of-using-stdp" title="Permalink to this headline">¶</a></h1>
+<img alt="../_images/simple_stdp_neuron_20151005-081202.png" src="../_images/simple_stdp_neuron_20151005-081202.png" />
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># encoding: utf8</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">A very simple example of using STDP.</span>
+
+<span class="sd">A single postsynaptic neuron fires at a constant rate. We connect several</span>
+<span class="sd">presynaptic neurons to it, each of which fires spikes with a fixed time</span>
+<span class="sd">lag or time advance with respect to the postsynaptic neuron.</span>
+<span class="sd">The weights of these connections are very small, so they will not</span>
+<span class="sd">significantly affect the firing times of the post-synaptic neuron.</span>
+<span class="sd">We plot the amount of potentiation or depression of each synapse as a</span>
+<span class="sd">function of the time difference.</span>
+
+
+<span class="sd">Usage: python simple_STDP.py [-h] [--plot-figure] [--debug DEBUG] simulator</span>
+
+<span class="sd">positional arguments:</span>
+<span class="sd">  simulator      neuron, nest, brian or another backend simulator</span>
+
+<span class="sd">optional arguments:</span>
+<span class="sd">  -h, --help     show this help message and exit</span>
+<span class="sd">  --plot-figure  Plot the simulation results to a file</span>
+<span class="sd">  --fit-curve    Calculate the best-fit curve to the weight-delta_t measurements</span>
+<span class="sd">  --debug DEBUG  Print debugging information</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">exp</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">neo</span>
+<span class="kn">from</span> <span class="nn">quantities</span> <span class="k">import</span> <span class="n">ms</span>
+<span class="kn">from</span> <span class="nn">pyNN.utility</span> <span class="k">import</span> <span class="n">get_simulator</span><span class="p">,</span> <span class="n">init_logging</span><span class="p">,</span> <span class="n">normalized_filename</span>
+<span class="kn">from</span> <span class="nn">pyNN.utility.plotting</span> <span class="k">import</span> <span class="n">DataTable</span>
+<span class="kn">from</span> <span class="nn">pyNN.parameters</span> <span class="k">import</span> <span class="n">Sequence</span>
+
+
+<span class="c1"># === Parameters ============================================================</span>
+
+<span class="n">firing_period</span> <span class="o">=</span> <span class="mf">100.0</span>    <span class="c1"># (ms) interval between spikes</span>
+<span class="n">cell_parameters</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;tau_m&quot;</span><span class="p">:</span> <span class="mf">10.0</span><span class="p">,</span>       <span class="c1"># (ms)</span>
+    <span class="s2">&quot;v_thresh&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">50.0</span><span class="p">,</span>   <span class="c1"># (mV)</span>
+    <span class="s2">&quot;v_reset&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">60.0</span><span class="p">,</span>    <span class="c1"># (mV)</span>
+    <span class="s2">&quot;v_rest&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">60.0</span><span class="p">,</span>     <span class="c1"># (mV)</span>
+    <span class="s2">&quot;cm&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>           <span class="c1"># (nF)</span>
+    <span class="s2">&quot;tau_refrac&quot;</span><span class="p">:</span> <span class="n">firing_period</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>  <span class="c1"># (ms) long refractory period to prevent bursting</span>
+<span class="p">}</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">60</span>                   <span class="c1"># number of synapses / number of presynaptic neurons</span>
+<span class="n">delta_t</span> <span class="o">=</span> <span class="mf">1.0</span>            <span class="c1"># (ms) time difference between the firing times of neighbouring neurons</span>
+<span class="n">t_stop</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">firing_period</span> <span class="o">+</span> <span class="n">n</span> <span class="o">*</span> <span class="n">delta_t</span>
+<span class="n">delay</span> <span class="o">=</span> <span class="mf">3.0</span>              <span class="c1"># (ms) synaptic time delay</span>
+
+
+<span class="c1"># === Configure the simulator ===============================================</span>
+
+<span class="n">sim</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="n">get_simulator</span><span class="p">((</span><span class="s2">&quot;--plot-figure&quot;</span><span class="p">,</span> <span class="s2">&quot;Plot the simulation results to a file&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;store_true&quot;</span><span class="p">}),</span>
+                             <span class="p">(</span><span class="s2">&quot;--fit-curve&quot;</span><span class="p">,</span> <span class="s2">&quot;Calculate the best-fit curve to the weight-delta_t measurements&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;store_true&quot;</span><span class="p">}),</span>
+                             <span class="p">(</span><span class="s2">&quot;--dendritic-delay-fraction&quot;</span><span class="p">,</span> <span class="s2">&quot;What fraction of the total transmission delay is due to dendritic propagation&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}),</span>
+                             <span class="p">(</span><span class="s2">&quot;--debug&quot;</span><span class="p">,</span> <span class="s2">&quot;Print debugging information&quot;</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+    <span class="n">init_logging</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">min_delay</span><span class="o">=</span><span class="n">delay</span><span class="p">,</span> <span class="n">max_delay</span><span class="o">=</span><span class="n">delay</span><span class="p">)</span>
+
+
+<span class="c1"># === Build the network =====================================================</span>
+
+<span class="k">def</span> <span class="nf">build_spike_sequences</span><span class="p">(</span><span class="n">period</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">delta_t</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a spike time generator for `n` neurons (spike sources), where</span>
+<span class="sd">    all neurons fire with the same period, but neighbouring neurons have a relative</span>
+<span class="sd">    firing time difference of `delta_t`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">spike_time_gen</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Spike time generator. `i` should be an array of indices.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">Sequence</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">period</span> <span class="o">+</span> <span class="n">j</span> <span class="o">*</span> <span class="n">delta_t</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">period</span><span class="p">))</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="n">n</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">spike_time_gen</span>
+
+<span class="n">spike_sequence_generator</span> <span class="o">=</span> <span class="n">build_spike_sequences</span><span class="p">(</span><span class="n">firing_period</span><span class="p">,</span> <span class="n">t_stop</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">delta_t</span><span class="p">)</span>
+<span class="c1"># presynaptic population</span>
+<span class="n">p1</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Population</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">sim</span><span class="o">.</span><span class="n">SpikeSourceArray</span><span class="p">(</span><span class="n">spike_times</span><span class="o">=</span><span class="n">spike_sequence_generator</span><span class="p">),</span>
+                    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;presynaptic&quot;</span><span class="p">)</span>
+<span class="c1"># single postsynaptic neuron</span>
+<span class="n">p2</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Population</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">sim</span><span class="o">.</span><span class="n">IF_cond_exp</span><span class="p">(</span><span class="o">**</span><span class="n">cell_parameters</span><span class="p">),</span>
+                    <span class="n">initial_values</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;v&quot;</span><span class="p">:</span> <span class="n">cell_parameters</span><span class="p">[</span><span class="s2">&quot;v_reset&quot;</span><span class="p">]},</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;postsynaptic&quot;</span><span class="p">)</span>
+<span class="c1"># drive to the postsynaptic neuron, ensuring it fires at exact multiples of the firing period</span>
+<span class="n">p3</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Population</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">sim</span><span class="o">.</span><span class="n">SpikeSourceArray</span><span class="p">(</span><span class="n">spike_times</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">firing_period</span> <span class="o">-</span> <span class="n">delay</span><span class="p">,</span> <span class="n">t_stop</span><span class="p">,</span> <span class="n">firing_period</span><span class="p">)),</span>
+                    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;driver&quot;</span><span class="p">)</span>
+
+<span class="c1"># we set the initial weights to be very small, to avoid perturbing the firing times of the</span>
+<span class="c1"># postsynaptic neurons</span>
+<span class="n">stdp_model</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">STDPMechanism</span><span class="p">(</span>
+                <span class="n">timing_dependence</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">SpikePairRule</span><span class="p">(</span><span class="n">tau_plus</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">tau_minus</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span>
+                                                    <span class="n">A_plus</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">A_minus</span><span class="o">=</span><span class="mf">0.012</span><span class="p">),</span>
+                <span class="n">weight_dependence</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">AdditiveWeightDependence</span><span class="p">(</span><span class="n">w_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">w_max</span><span class="o">=</span><span class="mf">0.0000001</span><span class="p">),</span>
+                <span class="n">weight</span><span class="o">=</span><span class="mf">0.00000005</span><span class="p">,</span>
+                <span class="n">delay</span><span class="o">=</span><span class="n">delay</span><span class="p">,</span>
+                <span class="n">dendritic_delay_fraction</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">dendritic_delay_fraction</span><span class="p">))</span>
+<span class="n">connections</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Projection</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">sim</span><span class="o">.</span><span class="n">AllToAllConnector</span><span class="p">(),</span> <span class="n">stdp_model</span><span class="p">)</span>
+
+<span class="c1"># the connection weight from the driver neuron is very strong, to ensure the</span>
+<span class="c1"># postsynaptic neuron fires at the correct times</span>
+<span class="n">driver_connection</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Projection</span><span class="p">(</span><span class="n">p3</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">sim</span><span class="o">.</span><span class="n">OneToOneConnector</span><span class="p">(),</span>
+                                   <span class="n">sim</span><span class="o">.</span><span class="n">StaticSynapse</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="n">delay</span><span class="p">))</span>
+
+<span class="c1"># == Instrument the network =================================================</span>
+
+<span class="n">p1</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s1">&#39;spikes&#39;</span><span class="p">)</span>
+<span class="n">p2</span><span class="o">.</span><span class="n">record</span><span class="p">([</span><span class="s1">&#39;spikes&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">])</span>
+
+
+<span class="k">class</span> <span class="nc">WeightRecorder</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Recording of weights is not yet built in to PyNN, so therefore we need</span>
+<span class="sd">    to construct a callback object, which reads the current weights from</span>
+<span class="sd">    the projection at regular intervals.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sampling_interval</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interval</span> <span class="o">=</span> <span class="n">sampling_interval</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">projection</span> <span class="o">=</span> <span class="n">projection</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_weights</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">projection</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;weight&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="n">with_address</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">t</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">interval</span>
+
+    <span class="k">def</span> <span class="nf">get_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">neo</span><span class="o">.</span><span class="n">AnalogSignal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_weights</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s1">&#39;nA&#39;</span><span class="p">,</span> <span class="n">sampling_period</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">interval</span> <span class="o">*</span> <span class="n">ms</span><span class="p">,</span>
+                                     <span class="n">channel_index</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_weights</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span>
+                                     <span class="n">name</span><span class="o">=</span><span class="s2">&quot;weight&quot;</span><span class="p">)</span>
+
+<span class="n">weight_recorder</span> <span class="o">=</span> <span class="n">WeightRecorder</span><span class="p">(</span><span class="n">sampling_interval</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">connections</span><span class="p">)</span>
+
+<span class="c1"># === Run the simulation =====================================================</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">t_stop</span><span class="p">,</span> <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">weight_recorder</span><span class="p">])</span>
+
+
+<span class="c1"># === Save the results, optionally plot a figure =============================</span>
+
+<span class="n">filename</span> <span class="o">=</span> <span class="n">normalized_filename</span><span class="p">(</span><span class="s2">&quot;Results&quot;</span><span class="p">,</span> <span class="s2">&quot;simple_stdp&quot;</span><span class="p">,</span> <span class="s2">&quot;pkl&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">simulator</span><span class="p">)</span>
+<span class="n">p2</span><span class="o">.</span><span class="n">write_data</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">annotations</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;script_name&#39;</span><span class="p">:</span> <span class="vm">__file__</span><span class="p">})</span>
+
+<span class="n">presynaptic_data</span> <span class="o">=</span> <span class="n">p1</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">postsynaptic_data</span> <span class="o">=</span> <span class="n">p2</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Post-synaptic spike times: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">postsynaptic_data</span><span class="o">.</span><span class="n">spiketrains</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">weights</span> <span class="o">=</span> <span class="n">weight_recorder</span><span class="o">.</span><span class="n">get_weights</span><span class="p">()</span>
+<span class="n">final_weights</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">deltas</span> <span class="o">=</span> <span class="n">delta_t</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="n">n</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Final weights: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">final_weights</span><span class="p">)</span>
+<span class="n">plasticity_data</span> <span class="o">=</span> <span class="n">DataTable</span><span class="p">(</span><span class="n">deltas</span><span class="p">,</span> <span class="n">final_weights</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">fit_curve</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">double_exponential</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">w0</span><span class="p">,</span> <span class="n">wp</span><span class="p">,</span> <span class="n">wn</span><span class="p">,</span> <span class="n">tau</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">w0</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">t</span> <span class="o">&gt;=</span> <span class="n">t0</span><span class="p">,</span> <span class="n">wp</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="n">t0</span><span class="p">)</span> <span class="o">/</span> <span class="n">tau</span><span class="p">),</span> <span class="n">wn</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="n">t</span> <span class="o">-</span> <span class="n">t0</span><span class="p">)</span> <span class="o">/</span> <span class="n">tau</span><span class="p">))</span>
+    <span class="n">p0</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">5e-8</span><span class="p">,</span> <span class="mf">1e-8</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.2e-8</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">)</span>
+    <span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span> <span class="o">=</span> <span class="n">plasticity_data</span><span class="o">.</span><span class="n">fit_curve</span><span class="p">(</span><span class="n">double_exponential</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">ftol</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best fit parameters: t0=</span><span class="si">{0}</span><span class="s2">, w0=</span><span class="si">{1}</span><span class="s2">, wp=</span><span class="si">{2}</span><span class="s2">, wn=</span><span class="si">{3}</span><span class="s2">, tau=</span><span class="si">{4}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">popt</span><span class="p">))</span>
+
+
+<span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">plot_figure</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">pyNN.utility.plotting</span> <span class="k">import</span> <span class="n">Figure</span><span class="p">,</span> <span class="n">Panel</span><span class="p">,</span> <span class="n">DataTable</span>
+    <span class="n">figure_filename</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;png&quot;</span><span class="p">)</span>
+    <span class="n">Figure</span><span class="p">(</span>
+        <span class="c1"># raster plot of the presynaptic neuron spike times</span>
+        <span class="n">Panel</span><span class="p">(</span><span class="n">presynaptic_data</span><span class="o">.</span><span class="n">spiketrains</span><span class="p">,</span>
+              <span class="n">yticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">t_stop</span><span class="p">)),</span>
+        <span class="c1"># membrane potential of the postsynaptic neuron</span>
+        <span class="n">Panel</span><span class="p">(</span><span class="n">postsynaptic_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;v&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+              <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Membrane potential (mV)&quot;</span><span class="p">,</span>
+              <span class="n">data_labels</span><span class="o">=</span><span class="p">[</span><span class="n">p2</span><span class="o">.</span><span class="n">label</span><span class="p">],</span> <span class="n">yticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">t_stop</span><span class="p">)),</span>
+        <span class="c1"># evolution of the synaptic weights with time</span>
+        <span class="n">Panel</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">xticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">yticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Time (ms)&quot;</span><span class="p">,</span>
+              <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">t_stop</span><span class="p">)),</span>
+        <span class="c1"># scatterplot of the final weight of each synapse against the relative</span>
+        <span class="c1"># timing of pre- and postsynaptic spikes for that synapse</span>
+        <span class="n">Panel</span><span class="p">(</span><span class="n">plasticity_data</span><span class="p">,</span>
+              <span class="n">xticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">yticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="n">n</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">delta_t</span><span class="p">,</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">delta_t</span><span class="p">),</span>
+              <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mf">0.9</span> <span class="o">*</span> <span class="n">final_weights</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="mf">1.1</span> <span class="o">*</span> <span class="n">final_weights</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span>
+              <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;t_post - t_pre (ms)&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Final weight (nA)&quot;</span><span class="p">,</span>
+              <span class="n">show_fit</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">fit_curve</span><span class="p">),</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Simple STDP example&quot;</span><span class="p">,</span>
+        <span class="n">annotations</span><span class="o">=</span><span class="s2">&quot;Simulated with </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">figure_filename</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">figure_filename</span><span class="p">)</span>
+
+
+<span class="c1"># === Clean up and quit ========================================================</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/examples/simple_STDP.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 2.0.0.alpha.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2017, the PyNN community.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>
