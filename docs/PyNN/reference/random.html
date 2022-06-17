@@ -1,0 +1,404 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Random numbers &#8212; PyNN 0.10.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Parameter handling" href="parameters.html" />
+    <link rel="prev" title="Simulation control" href="simulationcontrol.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="parameters.html" title="Parameter handling"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="simulationcontrol.html" title="Simulation control"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API reference</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Random numbers</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="random-numbers">
+<h1>Random numbers<a class="headerlink" href="#random-numbers" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-pyNN.random"></span><dl class="py class">
+<dt class="sig sig-object py" id="pyNN.random.RandomDistribution">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">RandomDistribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distribution</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters_pos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rng</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters_named</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/random.html#RandomDistribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.random.RandomDistribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class which defines a next(n) method which returns an array of <cite>n</cite> random
+numbers from a given distribution.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt><cite>distribution</cite>:</dt><dd><p>the name of a random number distribution.</p>
+</dd>
+<dt><cite>parameters_pos</cite>:</dt><dd><p>parameters of the distribution, provided as a tuple. For the correct
+ordering, see <cite>random.available_distributions</cite>.</p>
+</dd>
+<dt><cite>rng</cite>:</dt><dd><p>if present, should be a <a class="reference internal" href="#pyNN.random.NumpyRNG" title="pyNN.random.NumpyRNG"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyRNG</span></code></a>, <a class="reference internal" href="#pyNN.random.GSLRNG" title="pyNN.random.GSLRNG"><code class="xref py py-class docutils literal notranslate"><span class="pre">GSLRNG</span></code></a> or
+<a class="reference internal" href="#pyNN.random.NativeRNG" title="pyNN.random.NativeRNG"><code class="xref py py-class docutils literal notranslate"><span class="pre">NativeRNG</span></code></a> object.</p>
+</dd>
+<dt><cite>parameters_named</cite>:</dt><dd><p>parameters of the distribution, provided as keyword arguments.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Parameters may be provided either through <cite>parameters_pos</cite> or through
+<cite>parameters_named</cite>, but not both. All parameters must be provided, there
+are no default values. Parameter names are, in general, as used in Wikipedia.</p>
+<p>Examples:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rd</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;uniform&#39;</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">70</span><span class="p">,</span> <span class="o">-</span><span class="mi">50</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rd</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;normal&#39;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rng</span> <span class="o">=</span> <span class="n">NumpyRNG</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">8658764</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rd</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;gamma&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Available distributions:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 20%" />
+<col style="width: 53%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Name</p></td>
+<td><p>Parameters</p></td>
+<td><p>Comments</p></td>
+</tr>
+<tr class="row-even"><td><p>binomial</p></td>
+<td><p>n, p</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>gamma</p></td>
+<td><p>k, theta</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>exponential</p></td>
+<td><p>beta</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>lognormal</p></td>
+<td><p>mu, sigma</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>normal</p></td>
+<td><p>mu, sigma</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>normal_clipped</p></td>
+<td><p>mu, sigma, low, high</p></td>
+<td><p>Values outside (low, high) are redrawn</p></td>
+</tr>
+<tr class="row-even"><td><p>normal_clipped_to_boundary</p></td>
+<td><p>mu, sigma, low, high</p></td>
+<td><p>Values below/above low/high are set to low/high</p></td>
+</tr>
+<tr class="row-odd"><td><p>poisson</p></td>
+<td><p><a href="#id2"><span class="problematic" id="id3">lambda_</span></a></p></td>
+<td><p>Trailing underscore since lambda is a Python keyword</p></td>
+</tr>
+<tr class="row-even"><td><p>uniform</p></td>
+<td><p>low, high</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>uniform_int</p></td>
+<td><p>low, high</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>vonmises</p></td>
+<td><p>mu, kappa</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.random.RandomDistribution.next">
+<span class="sig-name descname"><span class="pre">next</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/random.html#RandomDistribution.next"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.random.RandomDistribution.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <cite>n</cite> random numbers from the distribution.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.random.RandomDistribution.lazily_evaluate">
+<span class="sig-name descname"><span class="pre">lazily_evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/random.html#RandomDistribution.lazily_evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.random.RandomDistribution.lazily_evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate an array of random numbers of the requested shape.</p>
+<p>If a mask is given, produce only enough numbers to fill the
+region defined by the mask (hence ‘lazily’).</p>
+<p>This method is called by the lazyarray <cite>evaluate()</cite> and
+<cite>_partially_evaluate()</cite> methods.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.random.NumpyRNG">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">NumpyRNG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel_safe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/random.html#NumpyRNG"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.random.NumpyRNG" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pyNN.random.WrappedRNG</span></code></p>
+<p>Wrapper for the <code class="xref py py-class docutils literal notranslate"><span class="pre">np.random.RandomState</span></code> class (Mersenne Twister PRNG).</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.random.NumpyRNG.translations">
+<span class="sig-name descname"><span class="pre">translations</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{'binomial':</span> <span class="pre">('binomial',</span> <span class="pre">{'n':</span> <span class="pre">'n',</span> <span class="pre">'p':</span> <span class="pre">'p'}),</span> <span class="pre">'exponential':</span> <span class="pre">('exponential',</span> <span class="pre">{'beta':</span> <span class="pre">'scale'}),</span> <span class="pre">'gamma':</span> <span class="pre">('gamma',</span> <span class="pre">{'k':</span> <span class="pre">'shape',</span> <span class="pre">'theta':</span> <span class="pre">'scale'}),</span> <span class="pre">'lognormal':</span> <span class="pre">('lognormal',</span> <span class="pre">{'mu':</span> <span class="pre">'mean',</span> <span class="pre">'sigma':</span> <span class="pre">'sigma'}),</span> <span class="pre">'normal':</span> <span class="pre">('normal',</span> <span class="pre">{'mu':</span> <span class="pre">'loc',</span> <span class="pre">'sigma':</span> <span class="pre">'scale'}),</span> <span class="pre">'normal_clipped':</span> <span class="pre">('normal_clipped',</span> <span class="pre">{'mu':</span> <span class="pre">'mu',</span> <span class="pre">'sigma':</span> <span class="pre">'sigma',</span> <span class="pre">'low':</span> <span class="pre">'low',</span> <span class="pre">'high':</span> <span class="pre">'high'}),</span> <span class="pre">'normal_clipped_to_boundary':</span> <span class="pre">('normal_clipped_to_boundary',</span> <span class="pre">{'mu':</span> <span class="pre">'mu',</span> <span class="pre">'sigma':</span> <span class="pre">'sigma',</span> <span class="pre">'low':</span> <span class="pre">'low',</span> <span class="pre">'high':</span> <span class="pre">'high'}),</span> <span class="pre">'poisson':</span> <span class="pre">('poisson',</span> <span class="pre">{'lambda_':</span> <span class="pre">'lam'}),</span> <span class="pre">'uniform':</span> <span class="pre">('uniform',</span> <span class="pre">{'low':</span> <span class="pre">'low',</span> <span class="pre">'high':</span> <span class="pre">'high'}),</span> <span class="pre">'uniform_int':</span> <span class="pre">('randint',</span> <span class="pre">{'low':</span> <span class="pre">'low',</span> <span class="pre">'high':</span> <span class="pre">'high'}),</span> <span class="pre">'vonmises':</span> <span class="pre">('vonmises',</span> <span class="pre">{'mu':</span> <span class="pre">'mu',</span> <span class="pre">'kappa':</span> <span class="pre">'kappa'})}</span></em><a class="headerlink" href="#pyNN.random.NumpyRNG.translations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.random.NumpyRNG.normal_clipped">
+<span class="sig-name descname"><span class="pre">normal_clipped</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/random.html#NumpyRNG.normal_clipped"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.random.NumpyRNG.normal_clipped" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.random.NumpyRNG.normal_clipped_to_boundary">
+<span class="sig-name descname"><span class="pre">normal_clipped_to_boundary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/random.html#NumpyRNG.normal_clipped_to_boundary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.random.NumpyRNG.normal_clipped_to_boundary" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.random.NumpyRNG.describe">
+<span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.random.NumpyRNG.describe" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.random.NumpyRNG.next">
+<span class="sig-name descname"><span class="pre">next</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distribution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.random.NumpyRNG.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <cite>n</cite> random numbers from the specified distribution.</p>
+<dl class="simple">
+<dt>If:</dt><dd><ul class="simple">
+<li><p><cite>n</cite> is None, return a float,</p></li>
+<li><p><cite>n</cite> &gt;= 1, return a Numpy array,</p></li>
+<li><p><cite>n</cite> &lt; 0, raise an Exception,</p></li>
+<li><p><cite>n</cite> is 0, return an empty array.</p></li>
+</ul>
+</dd>
+</dl>
+<p>If called with distribution=None, returns uniformly distributed floats in the range [0, 1)</p>
+<p>If <cite>mask</cite> is provided, it should be a boolean or integer NumPy array,
+indicating that only a subset of the random numbers should be returned.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p>or:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p>will each return only three values.</p>
+<p>If the rng is “parallel safe”, an array of n values will be drawn from the rng,
+and the mask applied.
+If the rng is not parallel safe, the contents of the mask are disregarded, only its
+size (for an integer mask) or the number of True values (for a boolean mask)
+is used in determining how many values to draw.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.random.GSLRNG">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">GSLRNG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mt19937'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel_safe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/random.html#GSLRNG"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.random.GSLRNG" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pyNN.random.WrappedRNG</span></code></p>
+<p>Wrapper for the GSL random number generators.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.random.GSLRNG.translations">
+<span class="sig-name descname"><span class="pre">translations</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{'binomial':</span> <span class="pre">('binomial',</span> <span class="pre">{'n':</span> <span class="pre">'n',</span> <span class="pre">'p':</span> <span class="pre">'p'}),</span> <span class="pre">'exponential':</span> <span class="pre">('exponential',</span> <span class="pre">{'beta':</span> <span class="pre">'mu'}),</span> <span class="pre">'gamma':</span> <span class="pre">('gamma',</span> <span class="pre">{'k':</span> <span class="pre">'k',</span> <span class="pre">'theta':</span> <span class="pre">'theta'}),</span> <span class="pre">'lognormal':</span> <span class="pre">('lognormal',</span> <span class="pre">{'mu':</span> <span class="pre">'zeta',</span> <span class="pre">'sigma':</span> <span class="pre">'sigma'}),</span> <span class="pre">'normal':</span> <span class="pre">('normal',</span> <span class="pre">{'mu':</span> <span class="pre">'mu',</span> <span class="pre">'sigma':</span> <span class="pre">'sigma'}),</span> <span class="pre">'normal_clipped':</span> <span class="pre">('normal_clipped',</span> <span class="pre">{'mu':</span> <span class="pre">'mu',</span> <span class="pre">'sigma':</span> <span class="pre">'sigma',</span> <span class="pre">'low':</span> <span class="pre">'low',</span> <span class="pre">'high':</span> <span class="pre">'high'}),</span> <span class="pre">'poisson':</span> <span class="pre">('poisson',</span> <span class="pre">{'lambda_':</span> <span class="pre">'mu'}),</span> <span class="pre">'uniform':</span> <span class="pre">('flat',</span> <span class="pre">{'low':</span> <span class="pre">'a',</span> <span class="pre">'high':</span> <span class="pre">'b'}),</span> <span class="pre">'uniform_int':</span> <span class="pre">('uniform_int',</span> <span class="pre">{'low':</span> <span class="pre">'low',</span> <span class="pre">'high':</span> <span class="pre">'high'})}</span></em><a class="headerlink" href="#pyNN.random.GSLRNG.translations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.random.GSLRNG.uniform_int">
+<span class="sig-name descname"><span class="pre">uniform_int</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">low</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/random.html#GSLRNG.uniform_int"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.random.GSLRNG.uniform_int" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.random.GSLRNG.gamma">
+<span class="sig-name descname"><span class="pre">gamma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/random.html#GSLRNG.gamma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.random.GSLRNG.gamma" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.random.GSLRNG.normal">
+<span class="sig-name descname"><span class="pre">normal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/random.html#GSLRNG.normal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.random.GSLRNG.normal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.random.GSLRNG.normal_clipped">
+<span class="sig-name descname"><span class="pre">normal_clipped</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/random.html#GSLRNG.normal_clipped"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.random.GSLRNG.normal_clipped" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.random.GSLRNG.describe">
+<span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.random.GSLRNG.describe" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.random.GSLRNG.next">
+<span class="sig-name descname"><span class="pre">next</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distribution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.random.GSLRNG.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <cite>n</cite> random numbers from the specified distribution.</p>
+<dl class="simple">
+<dt>If:</dt><dd><ul class="simple">
+<li><p><cite>n</cite> is None, return a float,</p></li>
+<li><p><cite>n</cite> &gt;= 1, return a Numpy array,</p></li>
+<li><p><cite>n</cite> &lt; 0, raise an Exception,</p></li>
+<li><p><cite>n</cite> is 0, return an empty array.</p></li>
+</ul>
+</dd>
+</dl>
+<p>If called with distribution=None, returns uniformly distributed floats in the range [0, 1)</p>
+<p>If <cite>mask</cite> is provided, it should be a boolean or integer NumPy array,
+indicating that only a subset of the random numbers should be returned.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p>or:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p>will each return only three values.</p>
+<p>If the rng is “parallel safe”, an array of n values will be drawn from the rng,
+and the mask applied.
+If the rng is not parallel safe, the contents of the mask are disregarded, only its
+size (for an integer mask) or the number of True values (for a boolean mask)
+is used in determining how many values to draw.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.random.NativeRNG">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">NativeRNG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/random.html#NativeRNG"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.random.NativeRNG" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pyNN.random.AbstractRNG</span></code></p>
+<p>Signals that the simulator’s own native RNG should be used.
+Each simulator module should implement a class of the same name which
+inherits from this and which sets the seed appropriately.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.random.NativeRNG.next">
+<span class="sig-name descname"><span class="pre">next</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distribution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.random.NativeRNG.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <cite>n</cite> random numbers from the specified distribution.</p>
+<dl class="simple">
+<dt>If:</dt><dd><ul class="simple">
+<li><p><cite>n</cite> is None, return a float,</p></li>
+<li><p><cite>n</cite> &gt;= 1, return a Numpy array,</p></li>
+<li><p><cite>n</cite> &lt; 0, raise an Exception,</p></li>
+<li><p><cite>n</cite> is 0, return an empty array.</p></li>
+</ul>
+</dd>
+</dl>
+<p>If called with distribution=None, returns uniformly distributed floats in the range [0, 1)</p>
+<p>If <cite>mask</cite> is provided, it should be a boolean or integer NumPy array,
+indicating that only a subset of the random numbers should be returned.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p>or:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p>will each return only three values.</p>
+<p>If the rng is “parallel safe”, an array of n values will be drawn from the rng,
+and the mask applied.
+If the rng is not parallel safe, the contents of the mask are disregarded, only its
+size (for an integer mask) or the number of True values (for a boolean mask)
+is used in determining how many values to draw.</p>
+</dd></dl>
+
+</dd></dl>
+
+<section id="adapting-a-different-random-number-generator-to-work-with-pynn">
+<h2>Adapting a different random number generator to work with PyNN<a class="headerlink" href="#adapting-a-different-random-number-generator-to-work-with-pynn" title="Permalink to this headline">¶</a></h2>
+<div class="admonition-todo admonition" id="id1">
+<p class="admonition-title">Todo</p>
+<p>write this</p>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Random numbers</a><ul>
+<li><a class="reference internal" href="#adapting-a-different-random-number-generator-to-work-with-pynn">Adapting a different random number generator to work with PyNN</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="simulationcontrol.html"
+                        title="previous chapter">Simulation control</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="parameters.html"
+                        title="next chapter">Parameter handling</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/reference/random.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="parameters.html" title="Parameter handling"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="simulationcontrol.html" title="Simulation control"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api_reference.html" >API reference</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Random numbers</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2021, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+    </div>
+  </body>
+</html>

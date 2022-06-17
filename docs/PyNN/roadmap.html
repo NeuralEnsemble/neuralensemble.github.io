@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Roadmap &#8212; PyNN 0.10.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Roadmap</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="roadmap">
+<h1>Roadmap<a class="headerlink" href="#roadmap" title="Permalink to this headline">¶</a></h1>
+<section id="nineml-neuroml-model-definitions">
+<h2>NineML/NeuroML model definitions<a class="headerlink" href="#nineml-neuroml-model-definitions" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="multi-compartmental-models">
+<h2>Multi-compartmental models<a class="headerlink" href="#multi-compartmental-models" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="nineml-neuroml-export">
+<h2>NineML/NeuroML export<a class="headerlink" href="#nineml-neuroml-export" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="api-simplification">
+<h2>API simplification<a class="headerlink" href="#api-simplification" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="multi-simulator-models-with-music">
+<h2>Multi-simulator models with MUSIC<a class="headerlink" href="#multi-simulator-models-with-music" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>from pyNN import music
+music.setup({“neuron”: 10, “nest”: 20})
+sim1, sim2 = music.get_simulators()
+sim1.setup(timestep=0.025)
+sim2.setup(timestep=0.1)
+cell_parameters = {”tau_m”: 12.0, ”cm”: 0.8, ”v_thresh”: -50.0,
+                   ”v_reset”: -65.0}
+pE = sim1.Population((100,100), sim.IF_cond_exp, cell_parameters,
+                     label=”excitatory neurons”)
+pI = sim2.Population((50,50), sim.IF_cond_exp, cell_parameters,
+                     label=”inhibitory neurons”)
+all = pE + pI
+DDPC = sim.DistanceDependentProbabilityConnector
+connector = DDPC(”exp(-d**2/400.0)”, weights=0.05,
+                 delays=”0.5+0.01d”)
+e2e = sim1.Projection(pE, pE, connector, target=”excitatory”)
+e2i = music.Projection(pE, pI, connector, target=”excitatory”)
+i2i = sim2.Projection(pI, pI, connector, target=”inhibitory”)
+
+music.run(1000.0)
+</pre></div>
+</div>
+<p>The concept here is that PyNN takes over the rôle of the <em>music</em> executable,
+<cite>music.setup()</cite> launches the requested number of MPI processes for each simulator,
+and then the same script runs on each of these processes. On the processes running
+<cite>sim1</cite>, <cite>sim1</cite> is the real backend module, as in a normal, non-MUSIC PyNN script,
+while <cite>sim2</cite> is a no-op proxy object. Vice versa on processes running <cite>sim2</cite>.
+For connections between different simulators, a <cite>music.Projection</cite> instance is
+needed, which takes care of defining the MUSIC ports.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Roadmap</a><ul>
+<li><a class="reference internal" href="#nineml-neuroml-model-definitions">NineML/NeuroML model definitions</a></li>
+<li><a class="reference internal" href="#multi-compartmental-models">Multi-compartmental models</a></li>
+<li><a class="reference internal" href="#nineml-neuroml-export">NineML/NeuroML export</a></li>
+<li><a class="reference internal" href="#api-simplification">API simplification</a></li>
+<li><a class="reference internal" href="#multi-simulator-models-with-music">Multi-simulator models with MUSIC</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/roadmap.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Roadmap</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2021, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+    </div>
+  </body>
+</html>

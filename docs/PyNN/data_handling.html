@@ -1,0 +1,332 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Data handling &#8212; PyNN 0.10.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Simulation control" href="simulation_control.html" />
+    <link rel="prev" title="Recording spikes and state variables" href="recording.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="simulation_control.html" title="Simulation control"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="recording.html" title="Recording spikes and state variables"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Data handling</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="data-handling">
+<h1>Data handling<a class="headerlink" href="#data-handling" title="Permalink to this headline">¶</a></h1>
+<div class="admonition-todo admonition" id="id1">
+<p class="admonition-title">Todo</p>
+<p>add a note that data handling has changed considerably since 0.7,
+and give link to detailed changelog.</p>
+</div>
+<p>Recorded data in PyNN is always associated with the <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code> or
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Assembly</span></code> from which it was recorded. Data may either be written to
+file, using the <code class="xref py py-meth docutils literal notranslate"><span class="pre">write_data()</span></code> method, or retrieved as objects in memory,
+using <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_data()</span></code>.</p>
+<section id="retrieving-recorded-data">
+<h2>Retrieving recorded data<a class="headerlink" href="#retrieving-recorded-data" title="Permalink to this headline">¶</a></h2>
+<p>Handling of recorded data in PyNN makes use of the <a class="reference external" href="http://neuralensemble.org/neo">Neo</a> package, which provides
+a common Python data model for neurophysiology data (whether real or simulated).</p>
+<p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_data()</span></code> method returns a Neo <code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code> object. This is the
+top-level data container, which contains one or more <code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code>s. Each
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code> is a container for data sharing a common time basis - a new
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code> is added every time the <code class="xref py py-func docutils literal notranslate"><span class="pre">reset()</span></code> function is called.</p>
+<p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code> can contain lists of <code class="xref py py-class docutils literal notranslate"><span class="pre">AnalogSignal</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">SpikeTrain</span></code> objects.
+These data objects
+inherit from NumPy’s array class, and so can be treated in further processing
+(analysis, visualization, etc.) in exactly the same way as NumPy arrays, but in
+addition they carry metadata about units, sampling interval, etc.</p>
+<p>Here is a complete example of recording and plotting data from a simulation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyNN.neuron</span> <span class="k">as</span> <span class="nn">sim</span>  <span class="c1"># can of course replace `neuron` with `nest`, `brian`, etc.</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+<span class="n">p_in</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Population</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">sim</span><span class="o">.</span><span class="n">SpikeSourcePoisson</span><span class="p">(</span><span class="n">rate</span><span class="o">=</span><span class="mf">10.0</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;input&quot;</span><span class="p">)</span>
+<span class="n">p_out</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Population</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">sim</span><span class="o">.</span><span class="n">EIF_cond_exp_isfa_ista</span><span class="p">(),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;AdExp neurons&quot;</span><span class="p">)</span>
+
+<span class="n">syn</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">StaticSynapse</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+<span class="n">random</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">FixedProbabilityConnector</span><span class="p">(</span><span class="n">p_connect</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">connections</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Projection</span><span class="p">(</span><span class="n">p_in</span><span class="p">,</span> <span class="n">p_out</span><span class="p">,</span> <span class="n">random</span><span class="p">,</span> <span class="n">syn</span><span class="p">,</span> <span class="n">receptor_type</span><span class="o">=</span><span class="s1">&#39;excitatory&#39;</span><span class="p">)</span>
+
+<span class="n">p_in</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s1">&#39;spikes&#39;</span><span class="p">)</span>
+<span class="n">p_out</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s1">&#39;spikes&#39;</span><span class="p">)</span>                    <span class="c1"># record spikes from all neurons</span>
+<span class="n">p_out</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">record</span><span class="p">([</span><span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">])</span>  <span class="c1"># record other variables from first two neurons</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mf">500.0</span><span class="p">)</span>
+
+<span class="n">spikes_in</span> <span class="o">=</span> <span class="n">p_in</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
+<span class="n">data_out</span> <span class="o">=</span> <span class="n">p_out</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
+
+<span class="n">fig_settings</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;lines.linewidth&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="s1">&#39;axes.linewidth&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="s1">&#39;axes.labelsize&#39;</span><span class="p">:</span> <span class="s1">&#39;small&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;legend.fontsize&#39;</span><span class="p">:</span> <span class="s1">&#39;small&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">8</span>
+<span class="p">}</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">fig_settings</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">plot_spiketrains</span><span class="p">(</span><span class="n">segment</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">spiketrain</span> <span class="ow">in</span> <span class="n">segment</span><span class="o">.</span><span class="n">spiketrains</span><span class="p">:</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">spiketrain</span><span class="p">)</span> <span class="o">*</span> <span class="n">spiketrain</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s1">&#39;source_id&#39;</span><span class="p">]</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">spiketrain</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span> <span class="n">visible</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">plot_signal</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">colour</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">):</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Neuron </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">signal</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s1">&#39;source_ids&#39;</span><span class="p">][</span><span class="n">index</span><span class="p">]</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">times</span><span class="p">,</span> <span class="n">signal</span><span class="p">[:,</span> <span class="n">index</span><span class="p">],</span> <span class="n">colour</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">_dimensionality</span><span class="o">.</span><span class="n">string</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span> <span class="n">visible</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+
+<span class="n">n_panels</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">data_out</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">analogsignals</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">n_panels</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">plot_spiketrains</span><span class="p">(</span><span class="n">spikes_in</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">n_panels</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">plot_spiketrains</span><span class="p">(</span><span class="n">data_out</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">panel</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="k">for</span> <span class="n">array</span> <span class="ow">in</span> <span class="n">data_out</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">analogsignals</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">array</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">n_panels</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">panel</span><span class="p">)</span>
+        <span class="n">plot_signal</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">colour</span><span class="o">=</span><span class="s1">&#39;bg&#39;</span><span class="p">[</span><span class="n">panel</span> <span class="o">%</span> <span class="mi">2</span><span class="p">])</span>
+        <span class="n">panel</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;time (</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">array</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">_dimensionality</span><span class="o">.</span><span class="n">string</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="_images/neo_example.png" src="_images/neo_example.png" />
+<p>The adoption of Neo as an output representation also makes it easier to handle
+data when running multiple simulations with the same network, calling
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code> between each run. In previous versions of PyNN it was necessary to
+retrieve the data before every <code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code>, and take care of storing the
+resulting data. Now, each run just creates a new Neo <code class="docutils literal notranslate"><span class="pre">Segment</span></code>, and PyNN takes
+care of storing the data until it is needed. This is illustrated in the example
+below.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyNN.neuron</span> <span class="k">as</span> <span class="nn">sim</span>  <span class="c1"># can of course replace `nest` with `neuron`, `brian`, etc.</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">quantities</span> <span class="kn">import</span> <span class="n">nA</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+
+<span class="n">cell</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Population</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">sim</span><span class="o">.</span><span class="n">HH_cond_exp</span><span class="p">())</span>
+<span class="n">step_current</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">DCSource</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mf">80.0</span><span class="p">)</span>
+<span class="n">step_current</span><span class="o">.</span><span class="n">inject_into</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+
+<span class="n">cell</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">amp</span> <span class="ow">in</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">):</span>
+    <span class="n">step_current</span><span class="o">.</span><span class="n">amplitude</span> <span class="o">=</span> <span class="n">amp</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mf">100.0</span><span class="p">)</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">annotations</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;amplitude&quot;</span><span class="p">:</span> <span class="n">amp</span> <span class="o">*</span> <span class="n">nA</span><span class="p">})</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">segments</span><span class="p">:</span>
+    <span class="n">vm</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">analogsignals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">vm</span><span class="o">.</span><span class="n">times</span><span class="p">,</span> <span class="n">vm</span><span class="p">,</span>
+             <span class="n">label</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;amplitude&quot;</span><span class="p">]))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper left&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time (</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">vm</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">_dimensionality</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Membrane potential (</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">vm</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">_dimensionality</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="_images/reset_example.png" src="_images/reset_example.png" />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>if you still want to retrieve the data after every run you can do so:
+just call <code class="docutils literal notranslate"><span class="pre">get_data(clear=True)</span></code></p>
+</div>
+</section>
+<section id="writing-data-to-file">
+<h2>Writing data to file<a class="headerlink" href="#writing-data-to-file" title="Permalink to this headline">¶</a></h2>
+<p>Neo provides support for writing to a <a class="reference external" href="http://neo.readthedocs.io/en/latest/io.html">variety of different file formats</a>,
+notably an assortment of text-based formats, NumPy binary format,
+Matlab <code class="file docutils literal notranslate"><span class="pre">.mat</span></code> files, and HDF5. To write to a given format, we create a Neo
+<code class="xref py py-class docutils literal notranslate"><span class="pre">IO</span></code> object and pass it to the <code class="xref py py-meth docutils literal notranslate"><span class="pre">write_data()</span></code> method:</p>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">neo.io</span> <span class="kn">import</span> <span class="n">NixIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">io</span> <span class="o">=</span> <span class="n">NixIO</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;my_data.h5&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">population</span><span class="o">.</span><span class="n">write_data</span><span class="p">(</span><span class="n">io</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As a shortcut, for file formats with a well-defined file extension, it is
+possible to pass just the filename, and PyNN will create the appropriate
+<code class="xref py py-class docutils literal notranslate"><span class="pre">IO</span></code> object for you:</p>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">population</span><span class="o">.</span><span class="n">write_data</span><span class="p">(</span><span class="s2">&quot;my_data.mat&quot;</span><span class="p">)</span>  <span class="c1"># writes to a Matlab file</span>
+</pre></div>
+</div>
+<p>By default, all the variables that were specified in the <code class="xref py py-meth docutils literal notranslate"><span class="pre">record()</span></code> call
+will be saved to file, but it is also possible to save only a subset of the
+recorded data:</p>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">population</span><span class="o">.</span><span class="n">write_data</span><span class="p">(</span><span class="n">io</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>When running distributed simulations using MPI (see <a class="reference internal" href="parallel.html"><span class="doc">Running parallel simulations</span></a>), by default
+the data is gathered from all MPI nodes to the master node, and only saved to
+file on the master node. If you would prefer that each node saves its own
+local subset of the data to disk separately, use <em>gather=False</em>:</p>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">population</span><span class="o">.</span><span class="n">write_data</span><span class="p">(</span><span class="n">io</span><span class="p">,</span> <span class="n">gather</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Saving data to a file does not delete the data from the <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>
+object. If you wish to do so (for example to release memory), use <em>clear=True</em>:</p>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">population</span><span class="o">.</span><span class="n">write_data</span><span class="p">(</span><span class="n">io</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="simple-plotting">
+<h2>Simple plotting<a class="headerlink" href="#simple-plotting" title="Permalink to this headline">¶</a></h2>
+<p>Plotting Neo data with Matplotlib, as shown above, can be rather verbose, with
+a lot of repetitive boilerplate code. PyNN therefore provides a couple of
+classes, <a class="reference internal" href="reference/utility.html#pyNN.utility.plotting.Figure" title="pyNN.utility.plotting.Figure"><code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code></a> and <a class="reference internal" href="reference/utility.html#pyNN.utility.plotting.Panel" title="pyNN.utility.plotting.Panel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Panel</span></code></a>,
+to make quick-and-easy plots of recorded data. It is possible to
+customize the plots to some extent, but for publication-quality or
+highly-customized plots you should probably use Matplotlib or some other
+plotting package directly.</p>
+<p>A simple example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyNN.utility.plotting</span> <span class="kn">import</span> <span class="n">Figure</span><span class="p">,</span> <span class="n">Panel</span>
+
+<span class="o">...</span>
+
+<span class="n">population</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s1">&#39;spikes&#39;</span><span class="p">)</span>
+<span class="n">population</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">record</span><span class="p">((</span><span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">))</span>
+
+<span class="o">...</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">population</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">vm</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;v&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">gsyn</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;gsyn_exc&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">Figure</span><span class="p">(</span>
+    <span class="n">Panel</span><span class="p">(</span><span class="n">vm</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Membrane potential (mV)&quot;</span><span class="p">),</span>
+    <span class="n">Panel</span><span class="p">(</span><span class="n">gsyn</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Synaptic conductance (uS)&quot;</span><span class="p">),</span>
+    <span class="n">Panel</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">spiketrains</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Time (ms)&quot;</span><span class="p">,</span> <span class="n">xticks</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;simulation_results.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/release_0.8b1_example.png"><img alt="Image generated using the Figure and Panel classes from pyNN.utility.plotting" src="_images/release_0.8b1_example.png" style="width: 600px;" /></a>
+</section>
+<section id="other-packages-for-working-with-neo-data">
+<h2>Other packages for working with Neo data<a class="headerlink" href="#other-packages-for-working-with-neo-data" title="Permalink to this headline">¶</a></h2>
+<p>A variety of software tools are available for working with Neo-format data,
+for example <a class="reference external" href="http://spyke-viewer.readthedocs.org/en/0.4.0/">SpykeViewer</a> and <a class="reference external" href="http://neuralensemble.org/OpenElectrophy/">OpenElectrophy</a>.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Data handling</a><ul>
+<li><a class="reference internal" href="#retrieving-recorded-data">Retrieving recorded data</a></li>
+<li><a class="reference internal" href="#writing-data-to-file">Writing data to file</a></li>
+<li><a class="reference internal" href="#simple-plotting">Simple plotting</a></li>
+<li><a class="reference internal" href="#other-packages-for-working-with-neo-data">Other packages for working with Neo data</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="recording.html"
+                        title="previous chapter">Recording spikes and state variables</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="simulation_control.html"
+                        title="next chapter">Simulation control</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/data_handling.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="simulation_control.html" title="Simulation control"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="recording.html" title="Recording spikes and state variables"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Data handling</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2021, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+    </div>
+  </body>
+</html>

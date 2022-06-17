@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Backends &#8212; PyNN 0.10.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="NEURON" href="backends/NEURON.html" />
+    <link rel="prev" title="Random numbers" href="random_numbers.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="backends/NEURON.html" title="NEURON"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="random_numbers.html" title="Random numbers"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Backends</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="backends">
+<h1>Backends<a class="headerlink" href="#backends" title="Permalink to this headline">¶</a></h1>
+<p>The PyNN API provides a uniform interface to different simulators, but
+nevertheless each simulator has features that are not available in other
+simulators, and we aim to make these features accessible, as much as possible,
+from PyNN.</p>
+<p>For each simulator backend, this section presents the configuration options
+specific to that backend and explains how to use “native” neuron and synapse
+models within the PyNN framework.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="backends/NEURON.html">NEURON</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="backends/NEURON.html#configuration-options">Configuration options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backends/NEURON.html#using-native-cell-models">Using native cell models</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="backends/NEST.html">NEST</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="backends/NEST.html#configuration-options">Configuration options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backends/NEST.html#using-native-cell-models">Using native cell models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backends/NEST.html#using-native-synaptic-plasticity-models">Using native synaptic plasticity models</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="backends/Brian.html">Brian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/NeuroML.html">NeuroML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/NineML.html">NineML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/neuromorphic.html">Neuromorphic hardware</a></li>
+</ul>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="random_numbers.html"
+                        title="previous chapter">Random numbers</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="backends/NEURON.html"
+                        title="next chapter">NEURON</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/backends.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="backends/NEURON.html" title="NEURON"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="random_numbers.html" title="Random numbers"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Backends</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2021, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+    </div>
+  </body>
+</html>

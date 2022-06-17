@@ -1,0 +1,195 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>PyNN 0.6 release notes &#8212; PyNN 0.10.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Developers’ guide" href="../developers_guide.html" />
+    <link rel="prev" title="PyNN 0.7 release notes" href="0.7.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../developers_guide.html" title="Developers’ guide"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="0.7.html" title="PyNN 0.7 release notes"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../release_notes.html" accesskey="U">Release notes</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">PyNN 0.6 release notes</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="pynn-0-6-release-notes">
+<h1>PyNN 0.6 release notes<a class="headerlink" href="#pynn-0-6-release-notes" title="Permalink to this headline">¶</a></h1>
+<p>14th February 2010</p>
+<p>Welcome to PyNN 0.6!</p>
+<p>There have been three major changes to the API in this version.</p>
+<ul class="simple">
+<li><p>Spikes, membrane potential and synaptic conductances can now be saved to file
+in various binary formats. To do this, pass a PyNN <code class="xref py py-class docutils literal notranslate"><span class="pre">File</span></code> object to
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">Population.print_X()</span></code>, instead of a filename. There are various types
+of PyNN <code class="xref py py-class docutils literal notranslate"><span class="pre">File</span></code> object, defined in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">recording.files</span> <span class="pre">module</span></code>,
+e.g., <code class="xref py py-class docutils literal notranslate"><span class="pre">StandardTextFile</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PickleFile</span></code>,
+<code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyBinaryFile</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">HDF5ArrayFile</span></code>.</p></li>
+<li><p>Added a <code class="xref py py-func docutils literal notranslate"><span class="pre">reset()</span></code> function and made the behaviour of <code class="xref py py-func docutils literal notranslate"><span class="pre">setup()</span></code>
+consistent across simulators. <code class="xref py py-func docutils literal notranslate"><span class="pre">reset()</span></code> sets the simulation time to zero
+and sets membrane potentials to their initial values, but does not change the
+network structure. <code class="xref py py-func docutils literal notranslate"><span class="pre">setup()</span></code> destroys any previously defined network.</p></li>
+<li><p>The possibility of expressing distance-dependent weights and delays was
+extended to the <code class="xref py py-class docutils literal notranslate"><span class="pre">AllToAllConnector</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">FixedProbabilityConnector</span></code> classes. To
+reduce the number of arguments to the constructors, the arguments affecting
+the spatial topology (periodic boundary conditions, etc.) were moved to a new
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Space</span></code> class, so that only a single <code class="xref py py-class docutils literal notranslate"><span class="pre">Space</span></code> instance need be passed to the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Connector</span></code> constructor.</p></li>
+</ul>
+<section id="details">
+<h2>Details<a class="headerlink" href="#details" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Switched to using the point process-based AdExp mechanism in NEURON.</p></li>
+<li><p>Factored out most of the commonality between the <code class="xref py py-class docutils literal notranslate"><span class="pre">Recorder</span></code> classes of
+each backend into a parent class <code class="xref py py-class docutils literal notranslate"><span class="pre">recording.Recorder</span></code>, and tidied up the
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">recording</span></code> module.</p></li>
+<li><p>Added an attribute <code class="xref py py-attr docutils literal notranslate"><span class="pre">conductance_based</span></code> to <code class="xref py py-class docutils literal notranslate"><span class="pre">StandardCellType</span></code>, to make the
+determination of synapse type for a given cell more robust.</p></li>
+<li><p>PyNN now uses a named logger, which makes it easier to control logging levels
+when using PyNN within a larger application.</p></li>
+<li><p>implemented gather for <code class="xref py py-meth docutils literal notranslate"><span class="pre">Projection.saveConnections()</span></code></p></li>
+<li><p>Added a test script (<code class="file docutils literal notranslate"><span class="pre">test_mpi.py</span></code>) to check whether serial and distributed
+simulations give the same results</p></li>
+<li><p>Added a <code class="xref py py-meth docutils literal notranslate"><span class="pre">size()</span></code> method to <code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code>, to give the total number of
+connections across all nodes (unlike <code class="xref py py-meth docutils literal notranslate"><span class="pre">__len__()</span></code>, which gives only the
+connections on the local node</p></li>
+<li><p>Speeded up <code class="xref py py-func docutils literal notranslate"><span class="pre">record()</span></code> by a huge factor (from 10 s for 12000 cells to less than
+0.1 s) by removing an unecessary conditional path (since all IDs now have an
+attribute “local”)</p></li>
+<li><p><cite>synapse_type</cite> is now passed to the <code class="xref py py-class docutils literal notranslate"><span class="pre">ConnectionManager</span></code> constructor, not to
+the <code class="xref py py-meth docutils literal notranslate"><span class="pre">connect()</span></code> method, since (a) it is fixed for a given connection manager,
+(b) it is needed in other methods than just <code class="xref py py-meth docutils literal notranslate"><span class="pre">connect()</span></code>; fixed weight unit
+conversion in <code class="xref py py-mod docutils literal notranslate"><span class="pre">brian</span></code> module.</p></li>
+<li><p>Updated connection handling in <code class="xref py py-mod docutils literal notranslate"><span class="pre">nest</span></code> module to work with NEST version
+1.9.8498. Will not now work with previous NEST versions</p></li>
+<li><p>The <code class="xref py py-mod docutils literal notranslate"><span class="pre">neuron</span></code> back-end now supports having both static and Tsodyks-Markram
+synapses on the same neuron (previously, the T-M synapses replaced the static
+synapses) - in agreement with <code class="xref py py-mod docutils literal notranslate"><span class="pre">nest</span></code> and common sense. Thanks to Bartosz
+Telenczuk for reporting this.</p></li>
+<li><p>Added a <cite>compatible_output</cite> mode for the <code class="xref py py-meth docutils literal notranslate"><span class="pre">saveConnections()</span></code> method. True by
+default, it allows connections to be reloaded from a file. If False, then the
+raw connections are stored, which makes for easier postprocessing.</p></li>
+<li><p>Added an <code class="xref py py-class docutils literal notranslate"><span class="pre">ACSource</span></code> current source to the <code class="xref py py-mod docutils literal notranslate"><span class="pre">nest</span></code> module.</p></li>
+<li><p>Fixed Hoc build directory problem in <code class="file docutils literal notranslate"><span class="pre">setup.py</span></code> - see ticket:147</p></li>
+<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">Population.get_v()</span></code> and the other “<cite>get</cite>” methods now return cell indices
+(starting from 0) rather than cell IDs. This behaviour now matches that of
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">Population.print_v()</span></code>, etc. See ticket:119 if you think this is a bad idea.</p></li>
+<li><p>Moved the base <code class="xref py py-class docutils literal notranslate"><span class="pre">Connector</span></code> class from <code class="xref py py-mod docutils literal notranslate"><span class="pre">common</span></code> to <code class="xref py py-mod docutils literal notranslate"><span class="pre">connectors</span></code>. Put the
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">distances()</span></code> function inside a <code class="xref py py-class docutils literal notranslate"><span class="pre">Space</span></code> class, to allow more convenient
+specification of topology parameters.</p></li>
+<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">Projection.setWeights()</span></code> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">setDelays()</span></code> now accept a 2D array argument
+(ref ticket:136), to be symmetric with <code class="xref py py-meth docutils literal notranslate"><span class="pre">getWeights()</span></code> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">getDelays()</span></code>. For
+distributed simulations, each node only takes the values it needs from the
+array.</p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">FixedProbabilityConnector</span></code> is now more strict, and checks that <code class="xref py py-attr docutils literal notranslate"><span class="pre">p_connect</span></code> is
+less than 1 (see ticket:148). This makes no difference to the behaviour, but
+could act as a check for errors in user code.</p></li>
+<li><p>Fixed problem with changing <code class="xref py py-class docutils literal notranslate"><span class="pre">SpikeSourcePoisson</span></code> rate during a simulation (see
+ticket:152)</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">PyNN 0.6 release notes</a><ul>
+<li><a class="reference internal" href="#details">Details</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="0.7.html"
+                        title="previous chapter">PyNN 0.7 release notes</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../developers_guide.html"
+                        title="next chapter">Developers’ guide</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/releases/0.6.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../developers_guide.html" title="Developers’ guide"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="0.7.html" title="PyNN 0.7 release notes"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../release_notes.html" >Release notes</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">PyNN 0.6 release notes</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2021, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Recording spikes and state variables &#8212; PyNN 0.10.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Data handling" href="data_handling.html" />
+    <link rel="prev" title="Injecting current" href="injecting_current.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="data_handling.html" title="Data handling"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="injecting_current.html" title="Injecting current"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Recording spikes and state variables</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="recording-spikes-and-state-variables">
+<h1>Recording spikes and state variables<a class="headerlink" href="#recording-spikes-and-state-variables" title="Permalink to this headline">¶</a></h1>
+<p>It is possible to record the times of action potentials, and the values of
+state variables, of any neuron in the network. Recording state variables of
+dynamic synapse models is not yet supported.</p>
+<p>The classes <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PopulationView</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">Assembly</span></code>
+all have a <code class="xref py py-meth docutils literal notranslate"><span class="pre">record()</span></code> method, which takes either a single variable name or
+a list/tuple of such names, and which sets up recording of the requested variables
+for all neurons in the population:</p>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">population</span><span class="o">.</span><span class="n">record</span><span class="p">([</span><span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;spikes&#39;</span><span class="p">])</span> <span class="c1"># record membrane potential and spikes from all neurons in the population</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">assembly</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s1">&#39;spikes&#39;</span><span class="p">)</span>          <span class="c1"># record spikes from all neurons in multiple populations</span>
+</pre></div>
+</div>
+<p>To record from only a subset of the neurons in a <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>, we create
+a temporary <code class="xref py py-class docutils literal notranslate"><span class="pre">PopulationView</span></code> using indexing or the <code class="xref py py-meth docutils literal notranslate"><span class="pre">sample()</span></code> method
+and call <code class="xref py py-meth docutils literal notranslate"><span class="pre">record()</span></code> on this view:</p>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">population</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">)</span>                         <span class="c1"># record membrane potential from 10 neurons chosen at random</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">population</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]]</span><span class="o">.</span><span class="n">record</span><span class="p">([</span><span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">,</span> <span class="s1">&#39;gsyn_inh&#39;</span><span class="p">])</span> <span class="c1"># record several variables from specific neurons</span>
+</pre></div>
+</div>
+<p>To find out what variable names are available for a given neuron model, inspect
+the <code class="xref py py-attr docutils literal notranslate"><span class="pre">recordable</span></code> attribute of the population’s <code class="xref py py-attr docutils literal notranslate"><span class="pre">celltype</span></code> attribute:</p>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">population</span><span class="o">.</span><span class="n">celltype</span>
+<span class="go">EIF_cond_alpha_isfa_ista(&lt;parameters&gt;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">population</span><span class="o">.</span><span class="n">celltype</span><span class="o">.</span><span class="n">recordable</span>
+<span class="go">[&#39;spikes&#39;, &#39;v&#39;, &#39;w&#39;, &#39;gsyn_exc&#39;, &#39;gsyn_inh&#39;]</span>
+</pre></div>
+</div>
+<p>By default, variables are recorded at every time step. It is possible to record at a lower frequency using the
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">sampling_interval</span></code> argument, e.g.:</p>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">population</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>   <span class="c1"># reset recording for this population</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">population</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="n">sampling_interval</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You should ensure that the sampling interval is an integer multiple of the simulation time step. Other values may
+work, but have not been tested.</p>
+<p>An alternative syntax is available, using the top-level <code class="xref py py-func docutils literal notranslate"><span class="pre">record()</span></code> function:</p>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="p">([</span><span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;spikes&#39;</span><span class="p">],</span> <span class="n">population</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;output_data.pkl&quot;</span><span class="p">,</span> <span class="n">sampling_interval</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This avoids having to call <code class="xref py py-func docutils literal notranslate"><span class="pre">population.write_data()</span></code> at the end of the simulation; the data
+will be automatically written to the specified filename.</p>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="injecting_current.html"
+                        title="previous chapter">Injecting current</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="data_handling.html"
+                        title="next chapter">Data handling</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/recording.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="data_handling.html" title="Data handling"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="injecting_current.html" title="Injecting current"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Recording spikes and state variables</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2021, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+    </div>
+  </body>
+</html>

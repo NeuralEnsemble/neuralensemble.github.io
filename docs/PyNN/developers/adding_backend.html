@@ -1,0 +1,315 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Adding a new backend &#8212; PyNN 0.10.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Adding a new backend</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="adding-a-new-backend">
+<h1>Adding a new backend<a class="headerlink" href="#adding-a-new-backend" title="Permalink to this headline">¶</a></h1>
+<section id="structure-of-the-codebase">
+<h2>Structure of the codebase<a class="headerlink" href="#structure-of-the-codebase" title="Permalink to this headline">¶</a></h2>
+<p>PyNN is both an API for simulator-independent model descriptions and an
+implementation of that API for a number of simulators.</p>
+<p>If you wish to add PyNN support for your own simulator, you are welcome to add
+it as part of the main PyNN codebase, or you can maintain it separately. The
+advantage of the former is that we can help maintain it, and keep it up to date
+as the API evolves.</p>
+<p>A PyNN-compliant interface is not required to use any of the code from the
+<code class="docutils literal notranslate"><span class="pre">pyNN</span></code> package, it can implement the API entirely independently. However, by
+basing an interface on the “common” implementation you can save yourself a lot
+of work, since once you implement a small number of low-level functions and
+classes, you get the rest of the API for free.</p>
+<section id="the-common-implementation">
+<h3>The common implementation<a class="headerlink" href="#the-common-implementation" title="Permalink to this headline">¶</a></h3>
+<section id="recording">
+<h4>Recording<a class="headerlink" href="#recording" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">recording</span></code> modules provides a base class <code class="docutils literal notranslate"><span class="pre">Recorder</span></code> that exposes
+methods <code class="docutils literal notranslate"><span class="pre">record()</span></code>, <code class="docutils literal notranslate"><span class="pre">get()</span></code>, <code class="docutils literal notranslate"><span class="pre">write()</span></code> and <code class="docutils literal notranslate"><span class="pre">count()</span></code>. Each simulator
+using the common implementation then subclasses this base class, and must
+implement at least the methods <code class="docutils literal notranslate"><span class="pre">_record()</span></code>, <code class="docutils literal notranslate"><span class="pre">_get()</span></code> and <code class="docutils literal notranslate"><span class="pre">_local_count()</span></code>.
+Each <code class="docutils literal notranslate"><span class="pre">Recorder</span></code> instance records only a single variable, whose name is passed
+in the constructor.</p>
+<p>By default, PyNN scales recorded data to the standard PyNN units (mV for voltage,
+etc.), reorders columns if necessary, and adds initial values to the beginning
+of the recording if the simulator does not record the value at time 0. In this
+way, the structure of the output data is harmonized between simulators. For
+large datasets, this can be very time-consuming, and so this restructuring can
+be turned off by setting the <code class="docutils literal notranslate"><span class="pre">compatible_output</span></code> flag to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</section>
+</section>
+<section id="the-nest-interface">
+<h3>The NEST interface<a class="headerlink" href="#the-nest-interface" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="the-neuron-interface">
+<h3>The NEURON interface<a class="headerlink" href="#the-neuron-interface" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="the-brian-interface">
+<h3>The Brian interface<a class="headerlink" href="#the-brian-interface" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="adding-a-new-simulator-interface">
+<h2>Adding a new simulator interface<a class="headerlink" href="#adding-a-new-simulator-interface" title="Permalink to this headline">¶</a></h2>
+<p>The quickest way to add an interface for a new simulator is to implement the
+“internal API”, described below. Each simulator interface is implemented as
+a sub-package within the <code class="docutils literal notranslate"><span class="pre">pyNN</span></code> package. The suggested layout for this
+sub-package is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">|</span>\<span class="n">_</span>   <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
+<span class="o">|</span>\<span class="n">_</span>   <span class="n">cells</span><span class="o">.</span><span class="n">py</span>
+<span class="o">|</span>\<span class="n">_</span>   <span class="n">connectors</span><span class="o">.</span><span class="n">py</span>
+<span class="o">|</span>\<span class="n">_</span>   <span class="n">electrodes</span><span class="o">.</span><span class="n">py</span>
+<span class="o">|</span>\<span class="n">_</span>   <span class="n">recording</span><span class="o">.</span><span class="n">py</span>
+<span class="o">|</span>\<span class="n">_</span>   <span class="n">simulator</span><span class="o">.</span><span class="n">py</span>
+ \<span class="n">_</span>   <span class="n">synapses</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>The only two files that are <em>required</em> are <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> and <code class="docutils literal notranslate"><span class="pre">simulator.py</span></code>:
+the contents of all the other modules being imported into <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code>.</p>
+<p>[Maybe just provide a template, rather than discussing the whole thing]</p>
+<dl>
+<dt>__init__:</dt><dd><p>list_standard_models()  [surely this could be in common?]
+setup() - should call common.setup() and then do whatever initialization is necessary for your backend
+end() - should be in common
+run = common.build_run(simulator)
+reset = common.build_reset(simulator)
+initialize = common.initialize
+get_current_time, get_time_step, get_min_delay, get_max_delay, </p>
+<blockquote>
+<div><p>num_processes, rank = common.build_state_queries(simulator)</p>
+</div></blockquote>
+<p>create = common.build_create(Population)
+connect = common.build_connect(Projection, FixedProbabilityConnector)
+set = common.set ??
+record = common.build_record(simulator)
+record_v = lambda source, filename: record([‘v’], source, filename)
+record_gsyn = lambda source, filename: record([‘gsyn_exc’, ‘gsyn_inh’], source, filename)</p>
+</dd>
+<dt>simulator:</dt><dd><dl class="simple">
+<dt>class State</dt><dd><p>run
+clear
+reset
+properties: t, dt, …</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>standardmodels</p>
+<dl>
+<dt>populations:</dt><dd><p>class ID</p>
+<dl>
+<dt>class Population</dt><dd><p>_simulator = simulator
+_recorder_class = Recorder
+_assembly_class = Assembly</p>
+<p>_create_cells
+_set_initial_value_array
+_get_view
+_get_parameters
+_set_parameters</p>
+</dd>
+<dt>class PopulationView</dt><dd><p>_assembly_class = Assembly
+_simulator = simulator</p>
+<p>_set_initial_value_array
+_get_view
+_get_parameters
+_set_parameters</p>
+</dd>
+<dt>class Assembly</dt><dd><p>_simulator = simulator</p>
+</dd>
+</dl>
+</dd>
+<dt>projections</dt><dd><p>class Connection</p>
+<dl class="simple">
+<dt>class Projection</dt><dd><p>_simulator = simulator
+__init__
+__len__
+set
+_convergent_connect</p>
+</dd>
+</dl>
+</dd>
+<dt>recording</dt><dd><dl class="simple">
+<dt>class Recorder(recording.Recorder):</dt><dd><p>_simulator = simulator
+_record
+_get_spiketimes
+_get_all_signals
+(staticmethod) find_units
+_local_count</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="a-walk-through-the-lifecycle-of-a-simulation">
+<h2>A walk through the lifecycle of a simulation<a class="headerlink" href="#a-walk-through-the-lifecycle-of-a-simulation" title="Permalink to this headline">¶</a></h2>
+<section id="import-phase">
+<h3>Import phase<a class="headerlink" href="#import-phase" title="Permalink to this headline">¶</a></h3>
+<p>[What happens on import]</p>
+</section>
+<section id="setup-phase">
+<h3>Setup phase<a class="headerlink" href="#setup-phase" title="Permalink to this headline">¶</a></h3>
+<p>[What happens when calling setup()]</p>
+</section>
+<section id="creating-neurons">
+<h3>Creating neurons<a class="headerlink" href="#creating-neurons" title="Permalink to this headline">¶</a></h3>
+<p>On creating a Population…</p>
+<ul class="simple">
+<li><p>create default structure, if none specified</p></li>
+<li><dl class="simple">
+<dt>create StandardCellType instance (if using standard cells)</dt><dd><ul>
+<li><p>check and translate parameters, translated parameters stored in parameters attribute</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>create recorders</p></li>
+<li><p>create neurons, determine local_mask</p></li>
+</ul>
+<p>Finally, we set initial values for all neurons’ state variables, e.g. membrane
+potential. The user may set these values later with a call to the initialize()
+method, but in case they don’t we set them here to default values. Defaults are
+set on a model-by-model basis: each StandardCellType subclass has a dictionary
+attribute called default_initial_values. [For now, these must be numeric values.
+It would be nice to allow them to be the names of parameters, allowing the
+initial membrane potential to be set to the resting membrane potential, for
+example]. This of course causes a problem - not yet resolved - for non
+standard cells. These initial values are immediately passed through to the
+simulator. We set initial values using the initialize() method, which in turn
+updates the initial_values attribute - we do not modify initial_values directly:
+probably it should be read-only.</p>
+</section>
+<section id="creating-connectors">
+<h3>Creating connectors<a class="headerlink" href="#creating-connectors" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="composing-synaptic-plasticity-models">
+<h3>Composing synaptic plasticity models<a class="headerlink" href="#composing-synaptic-plasticity-models" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="connecting-neurons">
+<h3>Connecting neurons<a class="headerlink" href="#connecting-neurons" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="instrumenting-the-network">
+<h3>Instrumenting the network<a class="headerlink" href="#instrumenting-the-network" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="running-a-simulation">
+<h3>Running a simulation<a class="headerlink" href="#running-a-simulation" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="retrieving-saving-recorded-data">
+<h3>Retrieving/saving recorded data<a class="headerlink" href="#retrieving-saving-recorded-data" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="finishing-up-or-resetting-for-a-new-run">
+<h3>Finishing up, or resetting for a new run<a class="headerlink" href="#finishing-up-or-resetting-for-a-new-run" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Adding a new backend</a><ul>
+<li><a class="reference internal" href="#structure-of-the-codebase">Structure of the codebase</a><ul>
+<li><a class="reference internal" href="#the-common-implementation">The common implementation</a><ul>
+<li><a class="reference internal" href="#recording">Recording</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-nest-interface">The NEST interface</a></li>
+<li><a class="reference internal" href="#the-neuron-interface">The NEURON interface</a></li>
+<li><a class="reference internal" href="#the-brian-interface">The Brian interface</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#adding-a-new-simulator-interface">Adding a new simulator interface</a></li>
+<li><a class="reference internal" href="#a-walk-through-the-lifecycle-of-a-simulation">A walk through the lifecycle of a simulation</a><ul>
+<li><a class="reference internal" href="#import-phase">Import phase</a></li>
+<li><a class="reference internal" href="#setup-phase">Setup phase</a></li>
+<li><a class="reference internal" href="#creating-neurons">Creating neurons</a></li>
+<li><a class="reference internal" href="#creating-connectors">Creating connectors</a></li>
+<li><a class="reference internal" href="#composing-synaptic-plasticity-models">Composing synaptic plasticity models</a></li>
+<li><a class="reference internal" href="#connecting-neurons">Connecting neurons</a></li>
+<li><a class="reference internal" href="#instrumenting-the-network">Instrumenting the network</a></li>
+<li><a class="reference internal" href="#running-a-simulation">Running a simulation</a></li>
+<li><a class="reference internal" href="#retrieving-saving-recorded-data">Retrieving/saving recorded data</a></li>
+<li><a class="reference internal" href="#finishing-up-or-resetting-for-a-new-run">Finishing up, or resetting for a new run</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/developers/adding_backend.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Adding a new backend</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2021, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+    </div>
+  </body>
+</html>

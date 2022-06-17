@@ -1,0 +1,431 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>PyNN 0.8 alpha 1 release notes &#8212; PyNN 0.10.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="PyNN 0.7 release notes" href="0.7.html" />
+    <link rel="prev" title="PyNN 0.8 alpha 2 release notes" href="0.8-alpha-2.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="0.7.html" title="PyNN 0.7 release notes"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="0.8-alpha-2.html" title="PyNN 0.8 alpha 2 release notes"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../release_notes.html" accesskey="U">Release notes</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">PyNN 0.8 alpha 1 release notes</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="pynn-0-8-alpha-1-release-notes">
+<h1>PyNN 0.8 alpha 1 release notes<a class="headerlink" href="#pynn-0-8-alpha-1-release-notes" title="Permalink to this headline">¶</a></h1>
+<p>July 31st 2012</p>
+<p>Welcome to the first alpha release of PyNN 0.8! This is the first time there has
+been an alpha or beta release of PyNN. In the past it hasn’t seemed necessary,
+at first because few people were using PyNN for their research and those that
+were understood well that PyNN was in an early stage of development, more
+recently because most of the changes were either extensions to the API or due to
+internal refactoring.</p>
+<p>For PyNN 0.8 we have taken the opportunity to make significant, backward-incompatible
+changes to the API. The aim was fourfold:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>to simplify the API, making it more consistent and easier to remember;</p></li>
+<li><p>to make the API more powerful, so more complex models can be expressed with less code;</p></li>
+<li><p>to allow a number of internal simplifications so it is easier for new developers to contribute;</p></li>
+<li><p>to prepare for planned future extensions, notably support for multi-compartmental models.</p></li>
+</ul>
+</div></blockquote>
+<p>Since there have been so many changes, it seemed prudent to have a number of
+development releases before the final release of 0.8.0, to get as much testing
+from users as possible. There may be more alpha releases, and there will be at
+least one beta release.</p>
+<p>This alpha release of PyNN is <em>not</em> intended for use in your research. If you
+have existing PyNN scripts, please install PyNN 0.8 alpha separately to your
+current PyNN installation (for example using <a class="reference external" href="http://www.virtualenv.org/">virtualenv</a>) and update your
+scripts, as outlined below, in a separate branch of your version control
+repository. If you find a bug, or if PyNN 0.8 alpha gives different results to
+PyNN 0.7, please let us know using the <a class="reference external" href="https://github.com/NeuralEnsemble/PyNN/issues/">bug tracker</a> or on the <a class="reference external" href="http://groups.google.com/group/neuralensemble">mailing list</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The first alpha release only supports NEURON and NEST. Support for
+Brian, PCSIM, NeuroML and MOOSE will be restored/added before the
+final 0.8.0 release.</p>
+</div>
+<section id="creating-populations">
+<h2>Creating populations<a class="headerlink" href="#creating-populations" title="Permalink to this headline">¶</a></h2>
+<p>In previous versions of PyNN, the <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code> constructor was called
+with the population size, a <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseCellType</span></code> sub-class such as
+<code class="xref py py-class docutils literal notranslate"><span class="pre">IF_cond_exp</span></code> and a dictionary of parameter values. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">Population</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">IF_cond_exp</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;tau_m&#39;</span><span class="o">=</span><span class="mf">12.0</span><span class="p">,</span> <span class="s1">&#39;cm&#39;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">})</span>  <span class="c1"># PyNN 0.7</span>
+</pre></div>
+</div>
+<p>This dictionary was passed to the cell-type class constructor within the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code> constructor to create a cell-type instance.</p>
+<p>The reason for doing this was that in early versions of PyNN, use of native
+NEST models was supported by passing a string, the model name, as the cell-type
+argument. Since PyNN 0.7, however, native models have been supported with the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">NativeCellType</span></code> class, and passing a string is no longer allowed.</p>
+<p>It makes more sense, therefore, for the cell-type instance to be created by the
+user, and to pass a cell-type instance, rather than a cell-type class, to the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code> constructor.</p>
+<p>There is also a second change: specification of parameters for cell-type classes
+is now done via keyword arguments rather than a single parameter dictionary.
+This is for consistency with current sources and synaptic plasticity models,
+which already use keyword arguments.</p>
+<p>The example above should be rewritten as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">Population</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">IF_cond_exp</span><span class="p">(</span><span class="n">tau_m</span><span class="o">=</span><span class="mf">12.0</span><span class="p">,</span> <span class="n">cm</span><span class="o">=</span><span class="mf">0.8</span><span class="p">))</span>  <span class="c1"># PyNN 0.8</span>
+</pre></div>
+</div>
+<p>or:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">Population</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">IF_cond_exp</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="s1">&#39;tau_m&#39;</span><span class="o">=</span><span class="mf">12.0</span><span class="p">,</span> <span class="s1">&#39;cm&#39;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">}))</span>  <span class="c1"># PyNN 0.8</span>
+</pre></div>
+</div>
+<p>or:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cell_type</span> <span class="o">=</span> <span class="n">IF_cond_exp</span><span class="p">(</span><span class="n">tau_m</span><span class="o">=</span><span class="mf">12.0</span><span class="p">,</span> <span class="n">cm</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>   <span class="c1"># PyNN 0.8</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">Population</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">cell_type</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The first form, with a separate parameter dictionary, is still supported for
+the time being, but is deprecated and may be removed in future versions.</p>
+</section>
+<section id="specifying-heterogeneous-parameter-values">
+<h2>Specifying heterogeneous parameter values<a class="headerlink" href="#specifying-heterogeneous-parameter-values" title="Permalink to this headline">¶</a></h2>
+<p>In previous versions of PyNN, the <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code> constructor supported
+setting parameters to either homogeneous values (all cells in the population
+have the same value) or random values. After construction, it was possible to
+change parameters using the <code class="xref py py-meth docutils literal notranslate"><span class="pre">Population.set()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">Population.tset()</span></code>
+(for <em>topographic</em> set - parameters were set by using an array of the same
+size as the population) and <code class="xref py py-meth docutils literal notranslate"><span class="pre">Population.rset()</span></code> (for <em>random</em> set) methods.</p>
+<p>In PyNN 0.8, setting parameters is simpler and more consistent, in that both
+when constructing a cell type for use in the <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code> constructor
+(see above) and in the <code class="xref py py-meth docutils literal notranslate"><span class="pre">Population.set()</span></code> method, parameter values can be
+any of the following:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>a single number - sets the same value for all cells in the <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>;</p></li>
+<li><p>a <code class="xref py py-class docutils literal notranslate"><span class="pre">RandomDistribution</span></code> object - for each cell, sets a different
+random value drawn from the distribution;</p></li>
+<li><p>a list or 1D NumPy array of the same size as the <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>;</p></li>
+<li><p>a function that takes a single integer argument; this function will be
+called with the index of every cell in the <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code> to return
+the parameter value for that cell.</p></li>
+</ul>
+</div></blockquote>
+<p>See <a class="reference internal" href="../parameters.html"><span class="doc">Model parameters and initial values</span></a> for more details and examples.</p>
+<p>The call signature of the <code class="xref py py-meth docutils literal notranslate"><span class="pre">Population.set()</span></code> method has also been changed;
+now parameters should be specified as keyword arguments. For example, instead
+of:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;tau_m&quot;</span><span class="p">:</span> <span class="mf">20.0</span><span class="p">)</span>  <span class="c1"># PyNN 0.7</span>
+</pre></div>
+</div>
+<p>use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">tau_m</span><span class="o">=</span><span class="mf">20.0</span><span class="p">)</span>  <span class="c1"># PyNN 0.8</span>
+</pre></div>
+</div>
+<p>and instead of:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="o">.</span><span class="n">set</span><span class="p">({</span><span class="s2">&quot;tau_m&quot;</span><span class="p">:</span> <span class="mf">20.0</span><span class="p">,</span> <span class="s2">&quot;v_rest&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">65</span><span class="p">})</span>  <span class="c1"># PyNN 0.7</span>
+</pre></div>
+</div>
+<p>use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">tau_m</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">v_rest</span><span class="o">=-</span><span class="mi">65</span><span class="p">)</span>  <span class="c1"># PyNN 0.8</span>
+</pre></div>
+</div>
+<p>Now that <code class="xref py py-meth docutils literal notranslate"><span class="pre">Population.set()</span></code> accepts random distributions and arrays as
+arguments, the <code class="xref py py-meth docutils literal notranslate"><span class="pre">Population.tset()</span></code> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">Population.rset()</span></code> methods are
+superfluous. As of version 0.8, their use is deprecated and they will probably
+be removed in the next version of PyNN. Their use can be replaced as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="o">.</span><span class="n">tset</span><span class="p">(</span><span class="s2">&quot;i_offset&quot;</span><span class="p">,</span> <span class="n">arr</span><span class="p">)</span>  <span class="c1"># PyNN 0.7</span>
+<span class="n">p</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">i_offset</span><span class="o">=</span><span class="n">arr</span><span class="p">)</span>      <span class="c1"># PyNN 0.8</span>
+
+<span class="n">p</span><span class="o">.</span><span class="n">rset</span><span class="p">(</span><span class="s2">&quot;tau_m&quot;</span><span class="p">:</span> <span class="n">rand_distr</span><span class="p">)</span>  <span class="c1"># PyNN 0.7</span>
+<span class="n">p</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">tau_m</span><span class="o">=</span><span class="n">rand_distr</span><span class="p">)</span>      <span class="c1"># PyNN 0.8</span>
+</pre></div>
+</div>
+<section id="setting-spike-times">
+<h3>Setting spike times<a class="headerlink" href="#setting-spike-times" title="Permalink to this headline">¶</a></h3>
+<p>Where a single parameter value is already an array, e.g. spike times, this
+should be wrapped by a <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code> object. For example, to generate
+a different Poisson spike train for every neuron in a population of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">SpikeSourceArray</span></code>s:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_spike_times</span><span class="p">(</span><span class="n">i_range</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">Sequence</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">accumulate</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">exponential</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)))</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">i_range</span><span class="p">]</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Population</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="n">sim</span><span class="o">.</span><span class="n">SpikeSourceArray</span><span class="p">(</span><span class="n">spike_times</span><span class="o">=</span><span class="n">generate_spike_times</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="recording">
+<h2>Recording<a class="headerlink" href="#recording" title="Permalink to this headline">¶</a></h2>
+<p>Previous versions of PyNN had three methods for recording from populations of
+neurons: <code class="xref py py-meth docutils literal notranslate"><span class="pre">record()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">record_v()</span></code> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">record_gsyn()</span></code>, for
+recording spikes, membrane potentials, and synaptic conductances, respectively.
+There was no official way to record any other state variables, for example the
+<em>w</em> variable from the adaptive-exponential integrate-and-fire model, or when
+using native, non-standard models, although there were workarounds.</p>
+<p>In PyNN 0.8, we have replaced these three methods with a single <code class="xref py py-meth docutils literal notranslate"><span class="pre">record()</span></code>
+method, which takes the variable to record as its first argument, e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="o">.</span><span class="n">record</span><span class="p">()</span>  <span class="c1"># PyNN 0.7</span>
+<span class="n">p</span><span class="o">.</span><span class="n">record_v</span><span class="p">()</span>
+<span class="n">p</span><span class="o">.</span><span class="n">record_gsyn</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>becomes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s1">&#39;spikes&#39;</span><span class="p">)</span>  <span class="c1"># PyNN 0.8</span>
+<span class="n">p</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">record</span><span class="p">([</span><span class="s1">&#39;gsyn_exc&#39;</span><span class="p">,</span> <span class="s1">&#39;gsyn_inh&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Note that (1) you can now choose to record the excitatory and inhibitory
+synaptic conductances separately, (2) you can give a list of variables to
+record, so, for example, you can record all the variables for the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">EIF_cond_exp_isfa_ista</span></code> model in a single command using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="o">.</span><span class="n">record</span><span class="p">([</span><span class="s1">&#39;spikes&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">,</span> <span class="s1">&#39;gsyn_inh&#39;</span><span class="p">])</span>  <span class="c1"># PyNN 0.8</span>
+</pre></div>
+</div>
+<p>Note that the <code class="xref py py-meth docutils literal notranslate"><span class="pre">record_v()</span></code> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">record_gsyn()</span></code> methods still exist,
+but their use is deprecated, and they will be removed in the next version of
+PyNN.</p>
+<p>See <a class="reference internal" href="../recording.html"><span class="doc">Recording spikes and state variables</span></a> for more details.</p>
+</section>
+<section id="retrieving-recorded-data">
+<h2>Retrieving recorded data<a class="headerlink" href="#retrieving-recorded-data" title="Permalink to this headline">¶</a></h2>
+<p>Perhaps the biggest change in PyNN 0.8 is that handling of recorded data,
+whether retrieval as Python objects or saving to file, now uses the <a class="reference external" href="http://neuralensemble.org/neo">Neo</a>
+package, which provides a common Python object model for neurophysiology data
+(whether real or simulated).</p>
+<p>Using Neo provides several advantages:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>data objects contain essential metadata, such as units, sampling interval, etc.;</p></li>
+<li><p>data can be saved to any of the file formats supported by Neo, including HDF5 and Matlab files;</p></li>
+<li><p>it is easier to handle data when running multiple simulations with the same network (calling <code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code> between each one);</p></li>
+<li><p>it is possible to save multiple signals to a single file;</p></li>
+<li><p>better interoperability with other Python packages using Neo (for data analysis, etc.).</p></li>
+</ul>
+</div></blockquote>
+<p>Note that Neo is based on NumPy, and most Neo data objects sub-class the NumPy
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code> class, so much of your data handling code should work exactly
+the same as before.</p>
+<p>See <a class="reference internal" href="../data_handling.html"><span class="doc">Data handling</span></a> for more details.</p>
+</section>
+<section id="creating-connections">
+<h2>Creating connections<a class="headerlink" href="#creating-connections" title="Permalink to this headline">¶</a></h2>
+<p>In previous versions of PyNN, synaptic weights and delays were specified on
+creation of the <code class="xref py py-class docutils literal notranslate"><span class="pre">Connector</span></code> object. If the synaptic weight had its own
+dynamics (whether short-term or spike-timing-dependent plasticity), the
+parameters for this were specified on creation of a <code class="xref py py-class docutils literal notranslate"><span class="pre">SynapseDynamics</span></code>
+object. In other words, specification of synaptic parameters was split across
+two different classes.</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">SynapseDynamics</span></code> was also rather complex, and could have both a “fast”
+(for short-term synaptic depression and facilitation) and “slow” (for long-term
+plasticity) component, although most simulator backends did not support
+specifying both fast and slow components at the same time.</p>
+<p>In PyNN 0.8, all synaptic parameters including weights and delays are given as
+arguments to a <code class="xref py py-class docutils literal notranslate"><span class="pre">SynapseType</span></code> sub-class such as <code class="xref py py-class docutils literal notranslate"><span class="pre">StaticSynapse</span></code> or
+<code class="xref py py-class docutils literal notranslate"><span class="pre">TsodyksMarkramSynapse</span></code>. For example, instead of:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">prj</span> <span class="o">=</span> <span class="n">Projection</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">AllToAllConnector</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">delays</span><span class="o">=</span><span class="mf">0.5</span><span class="p">))</span>  <span class="c1"># PyNN 0.7</span>
+</pre></div>
+</div>
+<p>you should now write:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">prj</span> <span class="o">=</span> <span class="n">Projection</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">AllToAllConnector</span><span class="p">(),</span> <span class="n">StaticSynapse</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">0.5</span><span class="p">))</span>  <span class="c1"># PyNN 0.8</span>
+</pre></div>
+</div>
+<p>and instead of:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;U&#39;</span><span class="p">:</span> <span class="mf">0.04</span><span class="p">,</span> <span class="s1">&#39;tau_rec&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span> <span class="s1">&#39;tau_facil&#39;</span><span class="p">:</span> <span class="mf">1000.0</span><span class="p">}</span>
+<span class="n">facilitating</span> <span class="o">=</span> <span class="n">SynapseDynamics</span><span class="p">(</span><span class="n">fast</span><span class="o">=</span><span class="n">TsodyksMarkramMechanism</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">))</span>   <span class="c1"># PyNN 0.7</span>
+<span class="n">prj</span> <span class="o">=</span> <span class="n">Projection</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">FixedProbabilityConnector</span><span class="p">(</span><span class="n">p_connect</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span>
+                 <span class="n">synapse_dynamics</span><span class="o">=</span><span class="n">facilitating</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;U&#39;</span><span class="p">:</span> <span class="mf">0.04</span><span class="p">,</span> <span class="s1">&#39;tau_rec&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span> <span class="s1">&#39;tau_facil&#39;</span><span class="p">:</span> <span class="mf">1000.0</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">}</span>
+<span class="n">facilitating</span> <span class="o">=</span> <span class="n">TsodyksMarkramSynapse</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">))</span>                          <span class="c1"># PyNN 0.8</span>
+<span class="n">prj</span> <span class="o">=</span> <span class="n">Projection</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">FixedProbabilityConnector</span><span class="p">(</span><span class="n">p_connect</span><span class="o">=</span><span class="mf">0.1</span><span class="p">),</span>
+                 <span class="n">synapse_type</span><span class="o">=</span><span class="n">facilitating</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that <em>“weights”</em> and <em>“delays”</em> are now <em>“weight”</em> and <em>“delay”</em>. In addition,
+the <em>“method”</em> argument to <code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code> is now called <em>“connector”</em>,
+and the <em>“target”</em> argument is now <em>“receptor_type”</em>. The <em>“rng”</em> argument has
+been moved from <code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code> to <code class="xref py py-class docutils literal notranslate"><span class="pre">Connector</span></code>, and the <em>“space”</em>
+argument of <code class="xref py py-class docutils literal notranslate"><span class="pre">Connector</span></code> has been moved to <code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code>.</p>
+<p>The ability to specify both short-term and long-term plasticity for a given
+connection type, in a simulator-independent way, has been removed, although in
+practice only the NEURON backend supported this. This functionality will be
+reintroduced in PyNN 0.9. If you need this in the meantime, a workaround for the
+NEURON backend is to use a <code class="xref py py-class docutils literal notranslate"><span class="pre">NativeSynapseType</span></code> mechanism - ask on the
+<a class="reference external" href="http://groups.google.com/group/neuralensemble">mailing list</a> for guidance.</p>
+</section>
+<section id="specifying-heterogeneous-synapse-parameters">
+<h2>Specifying heterogeneous synapse parameters<a class="headerlink" href="#specifying-heterogeneous-synapse-parameters" title="Permalink to this headline">¶</a></h2>
+<p>As for neuron parameters, synapse parameter values can now be any of the
+following:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>a single number - sets the same value for all connections in the <code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code>;</p></li>
+<li><p>a <code class="xref py py-class docutils literal notranslate"><span class="pre">RandomDistribution</span></code> object - for each connection, sets a different
+random value drawn from the distribution;</p></li>
+<li><p>a list or 1D NumPy array of the same size as the <code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code>
+(although this is not very useful for random networks, whose size may not
+be known in advance);</p></li>
+<li><p>a function that takes a single float argument; this function will be
+called with the <em>distance</em> between the pre- and post-synaptic cell to return
+the parameter value for that cell.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="accessing-setting-and-saving-properties-of-synaptic-connections">
+<h2>Accessing, setting and saving properties of synaptic connections<a class="headerlink" href="#accessing-setting-and-saving-properties-of-synaptic-connections" title="Permalink to this headline">¶</a></h2>
+<p>In older versions of PyNN, the <code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code> class had a bunch of methods
+for working with synaptic parameters: <code class="xref py py-meth docutils literal notranslate"><span class="pre">getWeights()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">setWeights()</span></code>,
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">randomizeWeights()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">printWeights()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">getDelays()</span></code>,
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">setDelays()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">randomizeDelays()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">printDelays()</span></code>,
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">getSynapseDynamics()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">setSynapseDynamics()</span></code>,
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">randomizeSynapseDynamics()</span></code>, and <code class="xref py py-meth docutils literal notranslate"><span class="pre">saveConnections()</span></code>.</p>
+<p>These have been replace by three methods: <code class="xref py py-meth docutils literal notranslate"><span class="pre">get()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">set()</span></code> and
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code>. The original methods still exist, but their use is deprecated and
+they will be removed in the next version of PyNN. You should update your code
+as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">prj</span><span class="o">.</span><span class="n">getWeights</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">)</span>                          <span class="c1"># PyNN 0.7</span>
+<span class="n">prj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;weight&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="n">with_address</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>   <span class="c1"># PyNN 0.8</span>
+
+<span class="n">prj</span><span class="o">.</span><span class="n">randomizeDelays</span><span class="p">(</span><span class="n">rand_distr</span><span class="p">)</span>                        <span class="c1"># PyNN 0.7</span>
+<span class="n">prj</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">delay</span><span class="o">=</span><span class="n">rand_distr</span><span class="p">)</span>                              <span class="c1"># PyNN 0.8</span>
+
+<span class="n">prj</span><span class="o">.</span><span class="n">setSynapseDynamics</span><span class="p">(</span><span class="s1">&#39;tau_rec&#39;</span><span class="p">,</span> <span class="mf">50.0</span><span class="p">)</span>                <span class="c1"># PyNN 0.7</span>
+<span class="n">prj</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">tau_rec</span><span class="o">=</span><span class="mf">50.0</span><span class="p">)</span>                                  <span class="c1"># PyNN 0.8</span>
+
+<span class="n">prj</span><span class="o">.</span><span class="n">printWeights</span><span class="p">(</span><span class="s1">&#39;exc_weights.txt&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">)</span>    <span class="c1"># PyNN 0.7</span>
+<span class="n">prj</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;weight&#39;</span><span class="p">,</span> <span class="s1">&#39;exc_weights.txt&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">)</span>  <span class="c1"># PyNN 0.8</span>
+
+<span class="n">prj</span><span class="o">.</span><span class="n">saveConnections</span><span class="p">(</span><span class="s1">&#39;exc_conn.txt&#39;</span><span class="p">)</span>                    <span class="c1"># PyNN 0.7</span>
+<span class="n">prj</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="s1">&#39;exc_conn.txt&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">)</span>         <span class="c1"># PyNN 0.8</span>
+</pre></div>
+</div>
+<p>Also note that all three new methods can operate on several parameters at a time:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">weights</span><span class="p">,</span> <span class="n">delays</span> <span class="o">=</span> <span class="n">prj</span><span class="o">.</span><span class="n">getWeights</span><span class="p">(</span><span class="s1">&#39;array&#39;</span><span class="p">),</span> <span class="n">prj</span><span class="o">.</span><span class="n">getDelays</span><span class="p">(</span><span class="s1">&#39;array&#39;</span><span class="p">)</span>  <span class="c1"># PyNN 0.7</span>
+<span class="n">weights</span><span class="p">,</span> <span class="n">delays</span> <span class="o">=</span> <span class="n">prj</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="s1">&#39;weight&#39;</span><span class="p">,</span> <span class="s1">&#39;delay&#39;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">)</span>     <span class="c1"># PyNN 0.8</span>
+
+<span class="n">prj</span><span class="o">.</span><span class="n">randomizeWeights</span><span class="p">(</span><span class="n">rand_distr</span><span class="p">);</span> <span class="n">prj</span><span class="o">.</span><span class="n">setDelays</span><span class="p">(</span><span class="mf">0.4</span><span class="p">)</span>               <span class="c1"># PyNN 0.7</span>
+<span class="n">prj</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="n">rand_distr</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>                              <span class="c1"># PyNN 0.8</span>
+</pre></div>
+</div>
+</section>
+<section id="python-compatibility">
+<h2>Python compatibility<a class="headerlink" href="#python-compatibility" title="Permalink to this headline">¶</a></h2>
+<p>With an eye towards future support for Python 3, we have decided to drop support
+for Python versions 2.5 and earlier in PyNN 0.8.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">PyNN 0.8 alpha 1 release notes</a><ul>
+<li><a class="reference internal" href="#creating-populations">Creating populations</a></li>
+<li><a class="reference internal" href="#specifying-heterogeneous-parameter-values">Specifying heterogeneous parameter values</a><ul>
+<li><a class="reference internal" href="#setting-spike-times">Setting spike times</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#recording">Recording</a></li>
+<li><a class="reference internal" href="#retrieving-recorded-data">Retrieving recorded data</a></li>
+<li><a class="reference internal" href="#creating-connections">Creating connections</a></li>
+<li><a class="reference internal" href="#specifying-heterogeneous-synapse-parameters">Specifying heterogeneous synapse parameters</a></li>
+<li><a class="reference internal" href="#accessing-setting-and-saving-properties-of-synaptic-connections">Accessing, setting and saving properties of synaptic connections</a></li>
+<li><a class="reference internal" href="#python-compatibility">Python compatibility</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="0.8-alpha-2.html"
+                        title="previous chapter">PyNN 0.8 alpha 2 release notes</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="0.7.html"
+                        title="next chapter">PyNN 0.7 release notes</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/releases/0.8-alpha-1.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="0.7.html" title="PyNN 0.7 release notes"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="0.8-alpha-2.html" title="PyNN 0.8 alpha 2 release notes"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../release_notes.html" >Release notes</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">PyNN 0.8 alpha 1 release notes</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2021, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+    </div>
+  </body>
+</html>
