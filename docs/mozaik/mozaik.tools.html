@@ -1,0 +1,688 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>tools Package &mdash; mozaik 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mozaik 0.1.0 documentation" href="index.html" />
+    <link rel="up" title="mozaik API" href="mozaik.html" />
+    <link rel="next" title="visualization Package" href="mozaik.visualization.html" />
+    <link rel="prev" title="storage Package" href="mozaik.storage.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mozaik.visualization.html" title="visualization Package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mozaik.storage.html" title="storage Package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="mozaik.html" accesskey="U">mozaik API</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="tools-package">
+<h1>tools Package<a class="headerlink" href="#tools-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-mozaik.tools.misc">
+<span id="misc-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">misc</span></tt> Module<a class="headerlink" href="#module-mozaik.tools.misc" title="Permalink to this headline">¶</a></h2>
+<p>Various helper functions.</p>
+<dl class="function">
+<dt id="mozaik.tools.misc.sample_from_bin_distribution">
+<tt class="descclassname">mozaik.tools.misc.</tt><tt class="descname">sample_from_bin_distribution</tt><big>(</big><em>bins</em>, <em>number_of_samples</em><big>)</big><a class="headerlink" href="#mozaik.tools.misc.sample_from_bin_distribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Samples from a distribution defined by a vector the sum in. The vector doesn&#8217;t have to add up to one
+it will be automatically normalized.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>bins</strong> : ndarray</p>
+<blockquote>
+<div><p>The returned samples correspond to the bins in <cite>bins</cite> - the numpy array defining the bin distribution</p>
+</div></blockquote>
+<p><strong>number_of_samples</strong> : int</p>
+<blockquote class="last">
+<div><p>Number of samples to generate.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.tools.misc.normal_function">
+<tt class="descclassname">mozaik.tools.misc.</tt><tt class="descname">normal_function</tt><big>(</big><em>x</em>, <em>mean=0</em>, <em>sigma=1.0</em><big>)</big><a class="headerlink" href="#mozaik.tools.misc.normal_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the value of probability density of normal distribution N(mean,sigma) at point <cite>x</cite>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.tools.misc.find_neuron">
+<tt class="descclassname">mozaik.tools.misc.</tt><tt class="descname">find_neuron</tt><big>(</big><em>which</em>, <em>positions</em><big>)</big><a class="headerlink" href="#mozaik.tools.misc.find_neuron" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Finds a neuron depending on which:</dt>
+<dd>&#8216;center&#8217; - the most central neuron in the sheet 
+&#8216;top_right&#8217; - the top_right neuron in the sheet
+&#8216;top_left&#8217; - the top_left neuron in the sheet
+&#8216;bottom_left&#8217; - the bottom_left neuron in the sheet
+&#8216;bottom_right&#8217; - the bottom_right neuron in the sheet</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="mozaik-parametrized-module">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">mozaik_parametrized</span></tt> Module<a class="headerlink" href="#mozaik-parametrized-module" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-mozaik.tools.mozaik_parametrized"></span><p>This module contains extension of the <a class="reference external" href="http://ioam.github.io/param/">param</a> package,
+and a collection of functions that allow for powerfull filtering of sets
+of <a class="reference internal" href="#mozaik.tools.mozaik_parametrized.MozaikParametrized" title="mozaik.tools.mozaik_parametrized.MozaikParametrized"><tt class="xref py py-class docutils literal"><span class="pre">MozaikParametrized</span></tt></a> instances based on the values of their parameters.</p>
+<p>When parametrizing <em>mozaik</em> objects we will allow only SNumber, SInteger and SString parameters.
+These are extension of corresponding parametrized parameters that automatically
+allow None value, are instantiated and allow for definition of units and period.</p>
+<dl class="attribute">
+<dt id="mozaik.tools.mozaik_parametrized.SNumber">
+<tt class="descclassname">mozaik.tools.mozaik_parametrized.</tt><tt class="descname">SNumber</tt><a class="headerlink" href="#mozaik.tools.mozaik_parametrized.SNumber" title="Permalink to this definition">¶</a></dt>
+<dd><p>A mozaik parameter that can hold a number. For the full range of options the 
+parameter offers reffer to the <cite>Number</cite> class in <a class="reference external" href="http://ioam.github.io/param/">param</a> package.</p>
+<p>On top of the Number class it adds the ability to specify units and period in constructor.
+The units should be <cite>quantities.units</cite>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mozaik.tools.mozaik_parametrized.SInteger">
+<tt class="descclassname">mozaik.tools.mozaik_parametrized.</tt><tt class="descname">SInteger</tt><a class="headerlink" href="#mozaik.tools.mozaik_parametrized.SInteger" title="Permalink to this definition">¶</a></dt>
+<dd><p>A mozaik parameter that can hold an integer. For the full range of options the 
+parameter offers reffer to the <cite>Integer</cite> class in <a class="reference external" href="http://ioam.github.io/param/">param</a> package.</p>
+<p>On top of the Integer class it adds the ability to specify units in constructor. The units should be <cite>quantities.units</cite>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mozaik.tools.mozaik_parametrized.SString">
+<tt class="descclassname">mozaik.tools.mozaik_parametrized.</tt><tt class="descname">SString</tt><a class="headerlink" href="#mozaik.tools.mozaik_parametrized.SString" title="Permalink to this definition">¶</a></dt>
+<dd><p>A mozaik parameter that can hold an string. For the full range of options the 
+parameter offers reffer to the <cite>Integer</cite> class in <a class="reference external" href="http://ioam.github.io/param/">param</a> package.</p>
+<p>This class is here for consistency reasons as it defines the units and period properties, 
+just like SInteger and SNumber, but automatically sets them to None.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.tools.mozaik_parametrized.MozaikParametrized">
+<em class="property">class </em><tt class="descclassname">mozaik.tools.mozaik_parametrized.</tt><tt class="descname">MozaikParametrized</tt><big>(</big><em>**params</em><big>)</big><a class="headerlink" href="#mozaik.tools.mozaik_parametrized.MozaikParametrized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">param.parameterized.Parameterized</span></tt></p>
+<p>We extend the topographica Parametrized package to constrain the parametrization.
+We allow only three parameter types (SNumber or SInteger or SString) that we have 
+extended with further information.</p>
+<p>This allows us to define several useful operations over such parametrized objects that
+we will use extensively (see above).</p>
+<p>Currently the main use of this parametrization is for defining stimuli and 
+analysis data structures. It allows us to write general and powerfull querying 
+functions, automatically handle parameter units and parameter names.</p>
+<p>For the usage of the <a class="reference internal" href="#mozaik.tools.mozaik_parametrized.MozaikParametrized" title="mozaik.tools.mozaik_parametrized.MozaikParametrized"><tt class="xref py py-class docutils literal"><span class="pre">MozaikParametrized</span></tt></a> class refer to the <cite>Parameterized</cite>
+in <a class="reference external" href="http://ioam.github.io/param/">param</a> package, as the behaviour of this class is 
+identical, with the exception that it restricts the possbile parameters used to the
+trio of SNumber or SInteger or SString.</p>
+<p>This class also adds several utility functions documented below.</p>
+<dl class="attribute">
+<dt id="mozaik.tools.mozaik_parametrized.MozaikParametrized.name">
+<tt class="descname">name</tt><em class="property"> = 'MozaikParametrized'</em><a class="headerlink" href="#mozaik.tools.mozaik_parametrized.MozaikParametrized.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.tools.mozaik_parametrized.MozaikParametrized.equalParams">
+<tt class="descname">equalParams</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mozaik.tools.mozaik_parametrized.MozaikParametrized.equalParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if self and other have the same parameters and all their
+values match. False otherwise.</p>
+<p>JACOMMENT: This seems to work only because get_param_values sorts the
+list by names which is undocumented!</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.tools.mozaik_parametrized.MozaikParametrized.equalParamsExcept">
+<tt class="descname">equalParamsExcept</tt><big>(</big><em>other</em>, <em>exceptt</em><big>)</big><a class="headerlink" href="#mozaik.tools.mozaik_parametrized.MozaikParametrized.equalParamsExcept" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if self and other have the same parameters and all their
+values match with the exception of the parameter in except.
+False otherwise.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mozaik.tools.mozaik_parametrized.MozaikParametrized.params">
+<em class="property">classmethod </em><tt class="descname">params</tt><big>(</big><em>parameter_name=None</em><big>)</big><a class="headerlink" href="#mozaik.tools.mozaik_parametrized.MozaikParametrized.params" title="Permalink to this definition">¶</a></dt>
+<dd><p>In MozaikParametrized we hide parameters with precedence below 0 from
+users.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mozaik.tools.mozaik_parametrized.MozaikParametrized.idd">
+<em class="property">classmethod </em><tt class="descname">idd</tt><big>(</big><em>obj</em><big>)</big><a class="headerlink" href="#mozaik.tools.mozaik_parametrized.MozaikParametrized.idd" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class method is used in concjuction with the MozaikParametrized.__str__ function that stores all the parameters and the class and module of an object.
+This method restores a &#8216;Shell&#8217; object out of this str. The returned object will be of the same type as the original object and will contain all its original parameters
+and their values, BUT WILL NOT BE INITIALIZED and so should not be used for anything else other than examining it&#8217;s parameters!!!!</p>
+<p>Furthermore if given an instance of MozaikParametrized instead it will convert it into the &#8216;Shell&#8217; object.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.tools.mozaik_parametrized.filter_query">
+<tt class="descclassname">mozaik.tools.mozaik_parametrized.</tt><tt class="descname">filter_query</tt><big>(</big><em>object_list</em>, <em>extra_data_list=None</em>, <em>allow_non_existent_parameters=False</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mozaik.tools.mozaik_parametrized.filter_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a subset of <cite>object_list</cite> containing MozaikParametrized instances (and associated data if data_list!=None)
+for which the parameters in kwargs match.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>object_list</strong> : list(MozaikParametrized)</p>
+<blockquote>
+<div><p>The list of MozaikParametrized objects to filter.</p>
+</div></blockquote>
+<p><strong>extra_data_list</strong> : list(object)</p>
+<blockquote>
+<div><p>The list of values corresponding to objects in object_list. 
+The same subset of the vales will be returned as for the <cite>object_list</cite>.</p>
+</div></blockquote>
+<p><strong>allow_non_existent_parameters</strong> : bool</p>
+<blockquote>
+<div><p>If True it will allow objects in object list that 
+miss some of the parameters listed in kwargs, 
+and include them in the results as long the remaining 
+parameters match if False it will exclude them.</p>
+</div></blockquote>
+<p><strong>**kwargs</strong> : dict</p>
+<blockquote>
+<div><p>The parameter names and values that have to match.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>if data_list == None</strong> :  subset of object_list containing elements that match the kwargs parameters</p>
+<p class="last"><strong>if data_list != None</strong> :  tuple (a,b) where a is a subset of object_list containing elements that match the kwargs parameters and b is the corresponding subset of data_list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.tools.mozaik_parametrized.colapse">
+<tt class="descclassname">mozaik.tools.mozaik_parametrized.</tt><tt class="descname">colapse</tt><big>(</big><em>data_list</em>, <em>object_list</em>, <em>func=None</em>, <em>parameter_list=</em><span class="optional">[</span><span class="optional">]</span>, <em>allow_non_identical_objects=False</em><big>)</big><a class="headerlink" href="#mozaik.tools.mozaik_parametrized.colapse" title="Permalink to this definition">¶</a></dt>
+<dd><p>It collapses the data_list against parameters of objects in object_list that are in parameter_list. 
+This means that the new list of parameters (and associated datalist) will contain one object for each
+combination of parameter values not among the paramters against which to
+collapse. Each such object will be associated with a list of data that
+corresponded to object with the same parameter values, but any values for
+the parameters against which one is collapsing.
+The collapsed parameters in the object_list will be replaced with None.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>func</strong> : bool</p>
+<blockquote>
+<div><p>If not None, func is applied to each member of v.</p>
+</div></blockquote>
+<p><strong>data_list</strong> : list</p>
+<blockquote>
+<div><p>The list of data corresponding to objects in object_list.</p>
+</div></blockquote>
+<p><strong>object_list</strong> : list(MozaikParametrized)</p>
+<blockquote>
+<div><p>The list of object corresponding to data in data_list.</p>
+</div></blockquote>
+<p><strong>parameter_list</strong> : list</p>
+<blockquote>
+<div><p>The list of parameter names against which to collapse the data.</p>
+</div></blockquote>
+<p><strong>func</strong> : func()</p>
+<blockquote>
+<div><p>The function to be applied to the lists formed by data associated
+with the same object parametrizations with exception of the parameters in parameter_list</p>
+</div></blockquote>
+<p><strong>allow_non_identical_objects</strong> : bool, optional</p>
+<blockquote>
+<div><p>unless set to True, it will
+not allow running this operation on
+StimulusDependentData that does not contain
+only object of the same type</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>(v,object_id)</strong> : list,list</p>
+<blockquote class="last">
+<div><p>Where object_id is the new list of objects where the objects in <cite>parameter_list</cite> were
+&#8216;collapsed out&#8217; and replaced with None. v is a list of lists. The outer list
+corresponds in order to the object_id list. The inner list corresponds
+to the list of data from data_list that mapped on the given object_id.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.tools.mozaik_parametrized.varying_parameters">
+<tt class="descclassname">mozaik.tools.mozaik_parametrized.</tt><tt class="descname">varying_parameters</tt><big>(</big><em>parametrized_objects</em><big>)</big><a class="headerlink" href="#mozaik.tools.mozaik_parametrized.varying_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the varying list of params. Can be only applied
+on list of MozaikParametrized that have the same parameter set.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><strong>List of parameters of the `MozaikParamterrized` objects in `parametrized_objects` that have at least 2 different values within the list.</strong> :</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.tools.mozaik_parametrized.parameter_value_list">
+<tt class="descclassname">mozaik.tools.mozaik_parametrized.</tt><tt class="descname">parameter_value_list</tt><big>(</big><em>parametrized_objects</em>, <em>param</em><big>)</big><a class="headerlink" href="#mozaik.tools.mozaik_parametrized.parameter_value_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of values the given parameter has in the list of MozaikParametrized instances.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>parametrized_objects</strong> : list</p>
+<blockquote>
+<div><p>A list of MozaikParametrized instances.</p>
+</div></blockquote>
+<p><strong>param</strong> : str</p>
+<blockquote>
+<div><p>Name of the parameter.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first last"><strong>A list of different values that the parameter param has across the `MozaikParametrized` objects in `parametrized_objects` list.</strong> :</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.tools.mozaik_parametrized.identical_parametrized_object_params">
+<tt class="descclassname">mozaik.tools.mozaik_parametrized.</tt><tt class="descname">identical_parametrized_object_params</tt><big>(</big><em>parametrized_objects</em><big>)</big><a class="headerlink" href="#mozaik.tools.mozaik_parametrized.identical_parametrized_object_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the objects have the same parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>True if all instances of `MozaikParametrized` in  `parametrized_objects` have the same set of parameters (not values!).</strong> :</p>
+<p class="last"><strong>Otherwise returns False.</strong> :</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.tools.mozaik_parametrized.matching_parametrized_object_params">
+<tt class="descclassname">mozaik.tools.mozaik_parametrized.</tt><tt class="descname">matching_parametrized_object_params</tt><big>(</big><em>parametrized_objects</em>, <em>params=None</em>, <em>except_params=None</em><big>)</big><a class="headerlink" href="#mozaik.tools.mozaik_parametrized.matching_parametrized_object_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether <cite>parametrized_objects</cite> have the same parameter values for parameters in <cite>params</cite> or not in <cite>except_params</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>parametrized_objects</strong> : list</p>
+<blockquote>
+<div><p>List of <cite>MozaikParametrized</cite> object to test.</p>
+</div></blockquote>
+<p><strong>params</strong> : list,optional</p>
+<blockquote>
+<div><p>List of parameters whose values have to match.</p>
+</div></blockquote>
+<p><strong>except_params</strong> : list, optional</p>
+<blockquote>
+<div><p>List of parameters that do not have to match.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>if params != None</strong> :</p>
+<blockquote>
+<div><p>Returns True if all <cite>MozaikParametrized</cite> objects in <cite>parametrized_objects</cite> have the same parameter values for parameters in <cite>params</cite>, otherwise returns False.</p>
+</div></blockquote>
+<p><strong>if except_params != None</strong> :</p>
+<blockquote>
+<div><p>Returns True if all <cite>MozaikParametrized</cite> objects in <cite>arametrized_objects</cite> have the same parameters except those in <cite>except_params</cite>, otherwise returns False.</p>
+</div></blockquote>
+<p><strong>if except_params == None and except_params == None</strong> :</p>
+<blockquote>
+<div><p>Returns True if all <cite>MozaikParametrized</cite> objects in <cite>parametrized_objects</cite> have the same parameters, otherwise returns False.</p>
+</div></blockquote>
+<p><strong>if except_params != None and except_params != None</strong> :</p>
+<blockquote class="last">
+<div><p>Throws exception</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.tools.mozaik_parametrized.colapse_to_dictionary">
+<tt class="descclassname">mozaik.tools.mozaik_parametrized.</tt><tt class="descname">colapse_to_dictionary</tt><big>(</big><em>value_list</em>, <em>parametrized_objects</em>, <em>parameter_name</em><big>)</big><a class="headerlink" href="#mozaik.tools.mozaik_parametrized.colapse_to_dictionary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Colapse out a parameter <cite>parameter_name</cite> of a list of  <cite>MozaikParametrized</cite> instances.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>value_list</strong> : list</p>
+<blockquote>
+<div><p>The list of values that correspond to instances of <cite>MozaikParametrized</cite> in <cite>parametrized_objects</cite>.</p>
+</div></blockquote>
+<p><strong>parametrized_objects</strong> : list</p>
+<blockquote>
+<div><p>The list of values that correspond to instances of <cite>MozaikParametrized</cite>.</p>
+</div></blockquote>
+<p><strong>parameter_name</strong> : str</p>
+<blockquote>
+<div><p>The parameter  against which to colapse.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>D</strong> : dict</p>
+<blockquote class="last">
+<div><p>Where D.keys() correspond to <cite>parametrized_objects</cite> ids
+with the dimension <cite>parameter_name</cite> colapsed out (and replaced with None).
+The D.values() are tuple of lists (keys,values), where keys is the list of
+values that the parameter_name had in the parametrized_objects, and the values are the
+values from value_list that correspond to the keys.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="circ-stat-module">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">circ_stat</span></tt> Module<a class="headerlink" href="#circ-stat-module" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-mozaik.tools.circ_stat"></span><p>This module contains several helper functions for working with periodic variables.</p>
+<dl class="function">
+<dt id="mozaik.tools.circ_stat.circular_dist">
+<tt class="descclassname">mozaik.tools.circ_stat.</tt><tt class="descname">circular_dist</tt><big>(</big><em>a</em>, <em>b</em>, <em>period</em><big>)</big><a class="headerlink" href="#mozaik.tools.circ_stat.circular_dist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the distance between a and b (scalars) in a domain with <cite>period</cite> period.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.tools.circ_stat.rad_to_complex">
+<tt class="descclassname">mozaik.tools.circ_stat.</tt><tt class="descname">rad_to_complex</tt><big>(</big><em>vector</em><big>)</big><a class="headerlink" href="#mozaik.tools.circ_stat.rad_to_complex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a vector/matrix of angles (0, 2*pi) to vector/matrix of complex
+numbers (that will lie on the unit circle) and correspond to the given angle.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.tools.circ_stat.angle_to_pi">
+<tt class="descclassname">mozaik.tools.circ_stat.</tt><tt class="descname">angle_to_pi</tt><big>(</big><em>array</em><big>)</big><a class="headerlink" href="#mozaik.tools.circ_stat.angle_to_pi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns angles of complex numbers in array but in (0, 2*pi) interval unlike
+numpy.angle the returns it in (-pi, pi).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.tools.circ_stat.circ_mean">
+<tt class="descclassname">mozaik.tools.circ_stat.</tt><tt class="descname">circ_mean</tt><big>(</big><em>matrix</em>, <em>weights=None</em>, <em>axis=None</em>, <em>low=0</em>, <em>high=6.283185307179586</em>, <em>normalize=False</em><big>)</big><a class="headerlink" href="#mozaik.tools.circ_stat.circ_mean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Circular mean of matrix. Weighted if weights are not none.
+Mean will be computed along axis axis.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>matrix</strong> : ndarray</p>
+<blockquote>
+<div><p>Matrix of data for which the compute the circular mean.</p>
+</div></blockquote>
+<p><strong>weights</strong> : ndarray, optional</p>
+<blockquote>
+<div><p>If not none, matrix of the same size as matrix. It will be used as weighting for the mean.</p>
+</div></blockquote>
+<p><strong>low, high</strong> : double, optional</p>
+<blockquote>
+<div><p>The min and max values that will be mapped onto the periodic interval of (0, 2pi).</p>
+</div></blockquote>
+<p><strong>axis</strong> : int, optional</p>
+<blockquote>
+<div><p>Numpy axis along which to compute the circular mean.</p>
+</div></blockquote>
+<p><strong>normalize</strong> : bool</p>
+<blockquote>
+<div><p>If True weights will be normalized along axis. If any weights
+that are to be jointly normalized are all zero they will be
+kept zero!</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>(angle, length)</strong> : ndarray,ndarray</p>
+<blockquote class="last">
+<div><p>Where angle is the circular mean, and len is the length of the resulting mean vector.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="distribution-parametrization-module">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">distribution_parametrization</span></tt> Module<a class="headerlink" href="#distribution-parametrization-module" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-mozaik.tools.distribution_parametrization"></span><p>This module contains code interfacing NeuroTools parameters, and pyNN distribution interface.</p>
+<p>In future pyNN plans to make an comprehensive merge between NeuroTools parametrization system and pyNN,
+in which case this code should become obsolete and mozaik should fully switch to such new system.</p>
+<dl class="function">
+<dt id="mozaik.tools.distribution_parametrization.load_parameters">
+<tt class="descclassname">mozaik.tools.distribution_parametrization.</tt><tt class="descname">load_parameters</tt><big>(</big><em>parameter_url</em>, <em>modified_parameters</em><big>)</big><a class="headerlink" href="#mozaik.tools.distribution_parametrization.load_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>A simple function for loading parameters that replaces the values in <em>modified_parameters</em> in the loaded parameters
+and subsequently expands references.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.tools.distribution_parametrization.PyNNDistribution">
+<em class="property">class </em><tt class="descclassname">mozaik.tools.distribution_parametrization.</tt><tt class="descname">PyNNDistribution</tt><big>(</big><em>name</em>, <em>params=()</em>, <em>boundaries=None</em>, <em>constrain='clip'</em><big>)</big><a class="headerlink" href="#mozaik.tools.distribution_parametrization.PyNNDistribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyNN.random.RandomDistribution</span></tt></p>
+<p>This will be the wraper for the PyNN RandomDistribution</p>
+<p>The first parameter is the name of the distribution (see pyNN.random.RandomDistribution)
+The params is a tuple of parameters of the corresponding numpy distribution (see pyNN.random.RandomDistribution)
+For the rest of the parameters see pyNN.random.RandomDistribution</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.tools.distribution_parametrization.MozaikExtendedParameterSet">
+<em class="property">class </em><tt class="descclassname">mozaik.tools.distribution_parametrization.</tt><tt class="descname">MozaikExtendedParameterSet</tt><big>(</big><em>initialiser</em>, <em>label=None</em>, <em>update_namespace=None</em><big>)</big><a class="headerlink" href="#mozaik.tools.distribution_parametrization.MozaikExtendedParameterSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">parameters.ParameterSet</span></tt></p>
+<p>This is an extension to <cite>ParameterSet</cite> class which adds the PyNNDistribution as a possible type of a parameter.</p>
+<dl class="staticmethod">
+<dt id="mozaik.tools.distribution_parametrization.MozaikExtendedParameterSet.read_from_str">
+<em class="property">static </em><tt class="descname">read_from_str</tt><big>(</big><em>s</em>, <em>update_namespace=None</em><big>)</big><a class="headerlink" href="#mozaik.tools.distribution_parametrization.MozaikExtendedParameterSet.read_from_str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="id5">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">misc</span></tt> Module<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-mozaik.tools.misc"></span><p>Various helper functions.</p>
+<dl class="function">
+<dt>
+<tt class="descclassname">mozaik.tools.misc.</tt><tt class="descname">sample_from_bin_distribution</tt><big>(</big><em>bins</em>, <em>number_of_samples</em><big>)</big></dt>
+<dd><p>Samples from a distribution defined by a vector the sum in. The vector doesn&#8217;t have to add up to one
+it will be automatically normalized.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>bins</strong> : ndarray</p>
+<blockquote>
+<div><p>The returned samples correspond to the bins in <cite>bins</cite> - the numpy array defining the bin distribution</p>
+</div></blockquote>
+<p><strong>number_of_samples</strong> : int</p>
+<blockquote class="last">
+<div><p>Number of samples to generate.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<tt class="descclassname">mozaik.tools.misc.</tt><tt class="descname">normal_function</tt><big>(</big><em>x</em>, <em>mean=0</em>, <em>sigma=1.0</em><big>)</big></dt>
+<dd><p>Returns the value of probability density of normal distribution N(mean,sigma) at point <cite>x</cite>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<tt class="descclassname">mozaik.tools.misc.</tt><tt class="descname">find_neuron</tt><big>(</big><em>which</em>, <em>positions</em><big>)</big></dt>
+<dd><dl class="docutils">
+<dt>Finds a neuron depending on which:</dt>
+<dd>&#8216;center&#8217; - the most central neuron in the sheet 
+&#8216;top_right&#8217; - the top_right neuron in the sheet
+&#8216;top_left&#8217; - the top_left neuron in the sheet
+&#8216;bottom_left&#8217; - the bottom_left neuron in the sheet
+&#8216;bottom_right&#8217; - the bottom_right neuron in the sheet</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="neo-object-operations-module">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">neo_object_operations</span></tt> Module<a class="headerlink" href="#neo-object-operations-module" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-mozaik.tools.neo_object_operations"></span><p>This file contains various operations over Neo objects. Such as sum over lists
+of Neo objects etc.</p>
+<dl class="function">
+<dt id="mozaik.tools.neo_object_operations.neo_sum">
+<tt class="descclassname">mozaik.tools.neo_object_operations.</tt><tt class="descname">neo_sum</tt><big>(</big><em>l</em><big>)</big><a class="headerlink" href="#mozaik.tools.neo_object_operations.neo_sum" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets a list of Neo objects and it
+adds them up. Importantly unlike Python sum function
+it starts adding to the first element of the list no to 0.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.tools.neo_object_operations.neo_mean">
+<tt class="descclassname">mozaik.tools.neo_object_operations.</tt><tt class="descname">neo_mean</tt><big>(</big><em>l</em><big>)</big><a class="headerlink" href="#mozaik.tools.neo_object_operations.neo_mean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the mean over list of Neo objects.
+See neo_sum for more details.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="units-module">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">units</span></tt> Module<a class="headerlink" href="#units-module" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-mozaik.tools.units"></span><p>This module defines units used in mozaik project and not specified in the quantities package.</p>
+<dl class="function">
+<dt id="mozaik.tools.units.periodic">
+<tt class="descclassname">mozaik.tools.units.</tt><tt class="descname">periodic</tt><big>(</big><em>unit</em><big>)</big><a class="headerlink" href="#mozaik.tools.units.periodic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether a units is periodic</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>(a,b): bool,double</strong> :</p>
+<blockquote class="last">
+<div><p>Where a is True if unit is periodic, and b corresponds to the period if a is True.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/mozaik_logo_small.svg" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mozaik.storage.html"
+                        title="previous chapter">storage Package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mozaik.visualization.html"
+                        title="next chapter">visualization Package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/mozaik.tools.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mozaik.visualization.html" title="visualization Package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mozaik.storage.html" title="storage Package"
+             >previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="mozaik.html" >mozaik API</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2013, mozaik authors and contributors &lt;&gt;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

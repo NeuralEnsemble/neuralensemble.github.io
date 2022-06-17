@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Getting started &mdash; mozaik 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mozaik 0.1.0 documentation" href="index.html" />
+    <link rel="next" title="Tutorials" href="tutorials.html" />
+    <link rel="prev" title="Introduction" href="introduction.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="tutorials.html" title="Tutorials"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="introduction.html" title="Introduction"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="getting-started">
+<h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<p>Here we will discuss several general topics that the user should be familiar before starting to use <em>mozaik</em>.</p>
+<div class="section" id="parametrization">
+<h2>Parametrization<a class="headerlink" href="#parametrization" title="Permalink to this headline">¶</a></h2>
+<p>There are two systems used to parametrize objects throughout mozaik, each with its own role.</p>
+<ul>
+<li><dl class="first docutils">
+<dt>ParemterSet - This system is used to parametrize objects for which the parameters are typically loaded from configuration files, and for which</dt>
+<dd><p class="first last">we want to enforce typing. For more details. See <a class="reference internal" href="#parametersetsection"><em>Common abreviations</em></a> section for more details.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>MozaikParametrizedObject - For objects that are stored in large numbers and for which we need to have a flexible way to sort between them based on their parameters</dt>
+<dd><p class="first last">we use the <tt class="xref py py-class docutils literal"><span class="pre">mozaik.tools.mozaik_parametrized.MozaikParametrizedObject</span></tt> interface. See <a class="reference internal" href="#mposection"><em>ParameterSet</em></a> section for more details.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="section" id="parameterset">
+<span id="mposection"></span><h3>ParameterSet<a class="headerlink" href="#parameterset" title="Permalink to this headline">¶</a></h3>
+<p>In many of its modules <em>mozaik</em> uses <a class="reference external" href="https://github.com/apdavison/parameters?source=cr">ParameterSet</a>  package to parametrize the classes.
+The advantage of this system is that it allows for easy import of parameters for configuration files, automatic type checking, and offers advanced parameter
+manipulation methods. For example the model specification modules are entirely written to use this system, but also the <tt class="xref py py-mod docutils literal"><span class="pre">mozaik.analysis</span></tt>, <tt class="xref py py-mod docutils literal"><span class="pre">mozaik.plotting</span></tt> and <tt class="xref py py-mod docutils literal"><span class="pre">mozaik.storage.queries</span></tt> package
+use it extensively.</p>
+<p>Each class in <em>mozaik</em> parameterized via the <cite>ParameterSet</cite> module will be derived from the <tt class="xref py py-class docutils literal"><span class="pre">mozaik.framework.interfaces.MozaikParametrizeObject</span></tt>
+and will specify a required_parameters dictionary atributed that will hold the names of the required parameters as keys and their required types as
+values. Each such class will accept a <cite>parameters</cite> argument in its constructor that has to be set to a dictionary containing the parameter names as values
+and the parameter values as the values. The presence of all the required parameters and the matching of their types with the supplied
+values will be automatically checked, and a exception will be raised if the supplied parameters and required_parameters dictionary do not match
+in parameter names or types. The required_parameters attributes specified along the inheritance hierarchy are concatentated, so user does not
+have to specify parameters that have already been specified by the base class again, but also it means that derived classes cannot ignore or delete
+parameters specified in their parents required_parameters attribute.</p>
+<p>The ParameterSet instances can be nested.  It is also possible to use  <cite>ParameterSet</cite> as an parameter type in the reuiqred_parameters dictionary. In this one exceptional
+case the supplied parameter type does not have to match the required_parameters values, as it can be set to None.</p>
+<p>The <em>mozaik</em> documentation quidelines stipulate that the parameters in the required_parameters attribute are documented via the standard
+numpy parameter syntax in the numpydoc &#8216;Other parameters&#8217; section and this section should not be used otherwise (this is a workaround as numpydoc does
+not support and other parameter sections, in future we would like to extend numpydoc to recongnice special &#8216;Required parameters&#8217; section).</p>
+<p>Throughout the documentation we will refer to this parameterization scheme as the &#8216;required parameters` or RP.</p>
+</div>
+<div class="section" id="mozaikparametrizedobject">
+<h3>MozaikParametrizedObject<a class="headerlink" href="#mozaikparametrizedobject" title="Permalink to this headline">¶</a></h3>
+<p>There are several situations in mozaik where we deal with large numbers of objects, each uniquely identified by a (potentiall different) set
+of parameters. Often we want to refer to subsets of such set of objects based on combinations of their parameter values. In mozaik this happens
+when we deal with stimuli, with recordings and with analysis data structures. To facilitate a common handling of these cases we define a class
+<tt class="xref py py-class docutils literal"><span class="pre">mozaik.tools.mozaik_parametrized.MozaikParametrizedObject</span></tt>, which represents a extension of this parameter package: <a class="reference external" href="http://ioam.github.io/param/">param</a>.</p>
+<p>We restrict the types of parameters that can be used with <tt class="xref py py-class docutils literal"><span class="pre">mozaik.tools.mozaik_parametrized.MozaikParametrizedObject</span></tt>
+class to those defined in <a class="reference internal" href="mozaik.tools.html#module-mozaik.tools.mozaik_parametrized" title="mozaik.tools.mozaik_parametrized"><tt class="xref py py-mod docutils literal"><span class="pre">mozaik.tools.mozaik_parametrized</span></tt></a> module: <tt class="xref py py-class docutils literal"><span class="pre">mozaik.tools.mozaik_parametrized.SNumber</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">mozaik.tools.mozaik_parametrized.SInteger</span></tt> and <tt class="xref py py-class docutils literal"><span class="pre">mozaik.tools.mozaik_parametrized.SString</span></tt>,
+representing a floating number, integer or a string respectively. On top of the properties inherited from identical parameters of the <a class="reference external" href="http://ioam.github.io/param/">param</a> package we
+allow for definition of period for the SNumber and SInteger parameter types, and units for the SNumber parameter.
+If period is set, it declares the parameter to be periodic with the given period. The units declare the units in which the parameter value is given.</p>
+<p>The <a class="reference internal" href="mozaik.tools.html#module-mozaik.tools.mozaik_parametrized" title="mozaik.tools.mozaik_parametrized"><tt class="xref py py-mod docutils literal"><span class="pre">mozaik.tools.mozaik_parametrized</span></tt></a> module containes number of methods that allow for powerfull filtering of sets of <em>MozaikParametrizedObject</em>
+objects. These methods are primarily used the the <tt class="xref py py-mod docutils literal"><span class="pre">mozail.storage.queries</span></tt> package.</p>
+<p>The user will encounter the <tt class="xref py py-class docutils literal"><span class="pre">mozaik.tools.mozaik_parametrized.MozaikParametrizedObject</span></tt> class if he wants to define a new Stimulus or a
+new AnalysisDataStructure class. In this case it has to derive the new class from <tt class="xref py py-class docutils literal"><span class="pre">mozaik.tools.mozaik_parametrized.MozaikParametrizedObject</span></tt>
+and declare all parameters that will identify the object using the three parameter types declared in <a class="reference internal" href="mozaik.tools.html#module-mozaik.tools.mozaik_parametrized" title="mozaik.tools.mozaik_parametrized"><tt class="xref py py-mod docutils literal"><span class="pre">mozaik.tools.mozaik_parametrized</span></tt></a> module.</p>
+</div>
+<div class="section" id="common-abreviations">
+<span id="parametersetsection"></span><h3>Common abreviations<a class="headerlink" href="#common-abreviations" title="Permalink to this headline">¶</a></h3>
+<p>Throughout the documentation we use several common abbreviations</p>
+<ul class="simple">
+<li>DSV - Data Store View (see <tt class="xref py py-class docutils literal"><span class="pre">mozaik.storage.datastore.DataStoreView</span></tt>)</li>
+<li>ADS - Analysis Data Structure (see <tt class="xref py py-mod docutils literal"><span class="pre">mozaik.analysis.data_structures</span></tt>)</li>
+<li>PNV - Per Neuron Value analysis data structure (see <tt class="xref py py-class docutils literal"><span class="pre">mozaik.analysis.data_structures.PerNeuronValue</span></tt>)</li>
+<li>RP (or required parameters) - The required parameters parametrization scheme (see ParameterSet section above)</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/mozaik_logo_small.svg" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="introduction.html"
+                        title="previous chapter">Introduction</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="tutorials.html"
+                        title="next chapter">Tutorials</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/getting_started.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="tutorials.html" title="Tutorials"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="introduction.html" title="Introduction"
+             >previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2013, mozaik authors and contributors &lt;&gt;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

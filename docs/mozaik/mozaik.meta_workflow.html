@@ -1,0 +1,331 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>meta-workflow Package &mdash; mozaik 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mozaik 0.1.0 documentation" href="index.html" />
+    <link rel="up" title="mozaik API" href="mozaik.html" />
+    <link rel="next" title="sheets Package" href="mozaik.sheets.html" />
+    <link rel="prev" title="visualization Package" href="mozaik.visualization.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mozaik.sheets.html" title="sheets Package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mozaik.visualization.html" title="visualization Package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="mozaik.html" accesskey="U">mozaik API</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="meta-workflow-package">
+<h1>meta-workflow Package<a class="headerlink" href="#meta-workflow-package" title="Permalink to this headline">¶</a></h1>
+<p>This peckage contains implementation of meta workflows - i.e. workflows
+involving executation of multiple simulations runs. Currently
+parameter search is implemented.</p>
+<div class="section" id="meta-workflow-parameter-search-module">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">meta_workflow.parameter_search</span></tt> Module<a class="headerlink" href="#meta-workflow-parameter-search-module" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-mozaik.meta_workflow.parameter_search"></span><dl class="class">
+<dt id="mozaik.meta_workflow.parameter_search.ParameterSearchBackend">
+<em class="property">class </em><tt class="descclassname">mozaik.meta_workflow.parameter_search.</tt><tt class="descname">ParameterSearchBackend</tt><a class="headerlink" href="#mozaik.meta_workflow.parameter_search.ParameterSearchBackend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>This is the parameter search backend interface. The :func:.`execute_job`
+implements the execution of the job, using the information given to the 
+constructor, and the dictionary of modified parameters given in its arguments.</p>
+<dl class="method">
+<dt id="mozaik.meta_workflow.parameter_search.ParameterSearchBackend.execute_job">
+<tt class="descname">execute_job</tt><big>(</big><em>run_script</em>, <em>simulator_name</em>, <em>parameters_url</em>, <em>parameters</em>, <em>simulation_run_name</em><big>)</big><a class="headerlink" href="#mozaik.meta_workflow.parameter_search.ParameterSearchBackend.execute_job" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function recevies the list of parameters to modify and their values, and has to 
+execute the corresponding mozaik simulation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>parameters</strong> : dict</p>
+<blockquote class="last">
+<div><p>The dictionary holding the names of parameters to be modified as keys, and the values to set them to as the corresponding values.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.meta_workflow.parameter_search.LocalSequentialBackend">
+<em class="property">class </em><tt class="descclassname">mozaik.meta_workflow.parameter_search.</tt><tt class="descname">LocalSequentialBackend</tt><a class="headerlink" href="#mozaik.meta_workflow.parameter_search.LocalSequentialBackend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>This is the simplest backend that simply executes the simulation on the present 
+machine sequentially (i.e. it waits for the simulation to end before starting new one).</p>
+<dl class="method">
+<dt id="mozaik.meta_workflow.parameter_search.LocalSequentialBackend.execute_job">
+<tt class="descname">execute_job</tt><big>(</big><em>run_script</em>, <em>simulator_name</em>, <em>parameters_url</em>, <em>parameters</em>, <em>simulation_run_name</em><big>)</big><a class="headerlink" href="#mozaik.meta_workflow.parameter_search.LocalSequentialBackend.execute_job" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function recevies the list of parameters to modify and their values, and has to 
+execute the corresponding mozaik simulation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>parameters</strong> : dict</p>
+<blockquote class="last">
+<div><p>The dictionary holding the names of parameters to be modified as keys, and the values to set them to as the corresponding values.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.meta_workflow.parameter_search.SlurmSequentialBackend">
+<em class="property">class </em><tt class="descclassname">mozaik.meta_workflow.parameter_search.</tt><tt class="descname">SlurmSequentialBackend</tt><big>(</big><em>num_threads</em>, <em>num_mpi</em>, <em>slurm_options=None</em><big>)</big><a class="headerlink" href="#mozaik.meta_workflow.parameter_search.SlurmSequentialBackend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>This is a back end that runs each simulation run as a slurm job.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>num_threads</strong> : int</p>
+<blockquote>
+<div><p>Number of threads per mpi process.</p>
+</div></blockquote>
+<p><strong>num_mpi</strong> : int</p>
+<blockquote>
+<div><p>Number of mpi processes to spawn per job.</p>
+</div></blockquote>
+<p><strong>slurm_options</strong> : list(string), optional</p>
+<blockquote>
+<div><p>List of strings that will be passed to slurm sbatch command as options.</p>
+</div></blockquote>
+<p><strong>Note:</strong> :</p>
+<p><strong>&#8212;&#8211;</strong> :</p>
+<p class="last"><strong>The most common usage of slurm_options is the let slurm know how many mpi processed to spawn per job, and how to allocates resources to them.</strong> :</p>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mozaik.meta_workflow.parameter_search.SlurmSequentialBackend.execute_job">
+<tt class="descname">execute_job</tt><big>(</big><em>run_script</em>, <em>simulator_name</em>, <em>parameters_url</em>, <em>parameters</em>, <em>simulation_run_name</em><big>)</big><a class="headerlink" href="#mozaik.meta_workflow.parameter_search.SlurmSequentialBackend.execute_job" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function recevies the list of parameters to modify and their values, and has to 
+execute the corresponding mozaik simulation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>parameters</strong> : dict</p>
+<blockquote class="last">
+<div><p>The dictionary holding the names of parameters to be modified as keys, and the values to set them to as the corresponding values.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.meta_workflow.parameter_search.ParameterSearch">
+<em class="property">class </em><tt class="descclassname">mozaik.meta_workflow.parameter_search.</tt><tt class="descname">ParameterSearch</tt><big>(</big><em>backend</em><big>)</big><a class="headerlink" href="#mozaik.meta_workflow.parameter_search.ParameterSearch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>This class defines the interface of parameter search.
+Each ParameterSearch has to implement the function <cite>generate_parameter_combinations</cite>
+and <cite>master_directory_name</cite>.</p>
+<p>The parameter search is executed with the function run_parameter_search.</p>
+<p>Furthermore each ParameterSearch receives a backend object, that determines how the simulation
+with a given parameter combination is executed. This allows for user to define executaion
+mechanisms using various cluster scheaduling architectures. See :class:.`ParameterSearchBackend`
+for more details.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>params</strong> : ParameterSearchBackend</p>
+<blockquote class="last">
+<div><p>The job execution backend to use.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<p>The commandline usage should be:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">parameter_search_script</span> <span class="n">simulation_run_script</span> <span class="n">simulator_name</span> <span class="n">path_to_root_parameter_file</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="mozaik.meta_workflow.parameter_search.ParameterSearch.generate_parameter_combinations">
+<tt class="descname">generate_parameter_combinations</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.meta_workflow.parameter_search.ParameterSearch.generate_parameter_combinations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of dictionaries, each holding the modified parameters as keys, and a combination of their values as the values.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.meta_workflow.parameter_search.ParameterSearch.master_directory_name">
+<tt class="descname">master_directory_name</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.meta_workflow.parameter_search.ParameterSearch.master_directory_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the name of the master directory which will contain results from the invididual simulation runs.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.meta_workflow.parameter_search.ParameterSearch.run_parameter_search">
+<tt class="descname">run_parameter_search</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.meta_workflow.parameter_search.ParameterSearch.run_parameter_search" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method will run the parameter search replacing each combination of values defined by dictionary params
+in the default parametrization and runing the simulation with each such modified parameters,
+storing the results of each simulation run in a subdirectory named based on the given modified parameter names and their
+values.</p>
+<p>It will read the command line for the name of the script that runs individual simulations, the simulator name and the root parameter file path
+Command line syntax:</p>
+<p>python parameter_search_script simulation_run_script simulator_name root_parameter_file_name</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.meta_workflow.parameter_search.CombinationParameterSearch">
+<em class="property">class </em><tt class="descclassname">mozaik.meta_workflow.parameter_search.</tt><tt class="descname">CombinationParameterSearch</tt><big>(</big><em>backend</em>, <em>parameter_values</em><big>)</big><a class="headerlink" href="#mozaik.meta_workflow.parameter_search.CombinationParameterSearch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.meta_workflow.parameter_search.ParameterSearch" title="mozaik.meta_workflow.parameter_search.ParameterSearch"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.meta_workflow.parameter_search.ParameterSearch</span></tt></a></p>
+<p>A ParameterSearch that recevies a list of parameters and list of values for each parameter to test.
+It will then test each of the combination of values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>parameter_values</strong> : dict</p>
+<blockquote class="last">
+<div><p>Dictionary containing parameter names as keys, and lists as values, each corresponding to the list of values to test for the given parameter.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mozaik.meta_workflow.parameter_search.CombinationParameterSearch.generate_parameter_combinations">
+<tt class="descname">generate_parameter_combinations</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.meta_workflow.parameter_search.CombinationParameterSearch.generate_parameter_combinations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.meta_workflow.parameter_search.CombinationParameterSearch.master_directory_name">
+<tt class="descname">master_directory_name</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.meta_workflow.parameter_search.CombinationParameterSearch.master_directory_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.meta_workflow.parameter_search.parameter_combinations">
+<tt class="descclassname">mozaik.meta_workflow.parameter_search.</tt><tt class="descname">parameter_combinations</tt><big>(</big><em>arrays</em><big>)</big><a class="headerlink" href="#mozaik.meta_workflow.parameter_search.parameter_combinations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="meta-workflow-visualization-module">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">meta_workflow.visualization</span></tt> Module<a class="headerlink" href="#meta-workflow-visualization-module" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/mozaik_logo_small.svg" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mozaik.visualization.html"
+                        title="previous chapter">visualization Package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mozaik.sheets.html"
+                        title="next chapter">sheets Package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/mozaik.meta_workflow.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mozaik.sheets.html" title="sheets Package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mozaik.visualization.html" title="visualization Package"
+             >previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="mozaik.html" >mozaik API</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2013, mozaik authors and contributors &lt;&gt;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

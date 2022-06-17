@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Introduction &mdash; mozaik 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mozaik 0.1.0 documentation" href="index.html" />
+    <link rel="next" title="Getting started" href="getting_started.html" />
+    <link rel="prev" title="Installation intructions" href="installation.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="getting_started.html" title="Getting started"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation intructions"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p><em>mozaik</em> is an integrated workflow framework for large scale neural simulations, intended
+to relieve users from writing boilerplate code for projects involving complex heterogenous
+neural network models, complex stimulation and experimental protocols and subsequent analysis and plotting.</p>
+<p>It is built on top of the following tools:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://neuralensemble.org/PyNN/">PyNN</a> (for simulator independent neural network model definition)</li>
+<li><a class="reference external" href="http://pythonhosted.org/neo/Neo">neo</a>  (for exchange and internal representation of data)</li>
+<li><a class="reference external" href="http://matplotlib.org/">matplotib</a> (for plotting)</li>
+</ul>
+</div></blockquote>
+<p><em>Mozaik</em> currently covers the following main areas of the neural simulation workflow:</p>
+<blockquote>
+<div><ul class="simple">
+<li>High-level components for definition of topologically organized spiking networks (built on top of <a class="reference external" href="http://neuralensemble.org/PyNN/">PyNN</a>)</li>
+<li>Experiment control (description and execution of experiments)</li>
+<li>Stimulus definition framework</li>
+<li>Data storage (storage of recordings and analysis results)</li>
+<li>Data manipulation (a query based system for performing high-level filtering operations over the datastore)</li>
+<li>Analysis module</li>
+<li>Plotting module</li>
+</ul>
+</div></blockquote>
+<p>Tasks that we would like to cover in <em>mozaik</em> in future are:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Support of FACETS-like benchmarks within the experiment control framework</li>
+<li>Versioning system built on top of Sumatra</li>
+<li>GUI for recording and analysis browsing and plotting</li>
+</ul>
+</div></blockquote>
+<p><em>mozaik</em> is currently subdivided into the core package and 10 subpackages:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="mozaik.html"><em>mozaik API</em></a> - contains the core of the <em>mozaik</em>:</dt>
+<dd><ul class="first last simple">
+<li>core - The core API objects</li>
+</ul>
+</dd>
+</dl>
+<ul class="simple">
+<li>controller - the control center of <em>mozaik</em> workflows</li>
+<li>space - the input space handling</li>
+</ul>
+</li>
+<li><p class="first"><a class="reference internal" href="mozaik.sheets.html"><em>sheets Package</em></a> - Code defining 2D sheets of neurons, one of the basic building blocks of <em>mozaik</em> networks</p>
+</li>
+<li><p class="first"><a class="reference internal" href="mozaik.connectors.html"><em>connector Package</em></a> - Defines various connections between sheets</p>
+</li>
+<li><p class="first"><a class="reference internal" href="mozaik.experiments.html"><em>experiments Package</em></a> - Defines the experiment interface</p>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="mozaik.models.html"><em>models Package</em></a> - code encapsulating a <em>mozaik</em> network consisting of sheets and connectors and providing</dt>
+<dd><p class="first last">an &#8216;I/O&#8217; interface to it. Currently it also contains retinal models (these might be reorganized in future).</p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><a class="reference internal" href="mozaik.stimuli.html"><em>stimuli Package</em></a> - definition of stimulus interfaces</p>
+</li>
+<li><p class="first"><a class="reference internal" href="mozaik.storage.html"><em>storage Package</em></a> - data storage and data querying code</p>
+</li>
+<li><p class="first"><a class="reference internal" href="mozaik.analysis.html"><em>analysis Package</em></a> - analysis code</p>
+</li>
+<li><p class="first"><a class="reference internal" href="mozaik.visualization.html"><em>visualization Package</em></a> - plotting code</p>
+</li>
+<li><p class="first"><a class="reference internal" href="mozaik.meta_workflow.html"><em>meta-workflow Package</em></a> - code supporting meta-workflows, such as parameter searches</p>
+</li>
+<li><p class="first"><a class="reference internal" href="mozaik.tools.html"><em>tools Package</em></a> - utility code</p>
+</li>
+</ul>
+</div></blockquote>
+<p>This might change as <em>mozaik</em> grows, and code in the framework
+is likely to get separated into new sub-packages as it matures.</p>
+<p>Scetch of how the control flows between the <em>mozaik</em> elements:</p>
+<a class="reference internal image-reference" href="_images/mozaik_control_flow.png"><img alt="_images/mozaik_control_flow.png" src="_images/mozaik_control_flow.png" style="width: 800px;" /></a>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/mozaik_logo_small.svg" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="previous chapter">Installation intructions</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="getting_started.html"
+                        title="next chapter">Getting started</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/introduction.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="getting_started.html" title="Getting started"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation intructions"
+             >previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2013, mozaik authors and contributors &lt;&gt;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

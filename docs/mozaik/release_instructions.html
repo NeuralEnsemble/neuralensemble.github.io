@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Making a release &mdash; mozaik 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mozaik 0.1.0 documentation" href="index.html" />
+    <link rel="prev" title="Authors and contributors" href="authors.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="authors.html" title="Authors and contributors"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="making-a-release">
+<h1>Making a release<a class="headerlink" href="#making-a-release" title="Permalink to this headline">¶</a></h1>
+<p>To make a release of Mozaik requires you to have permissions to upload Mozaik
+packages to the <a class="reference external" href="http://pypi.python.org/">Python Package Index</a> and the INCF Software Center, and to
+upload documentation to the neuralensemble.org server.</p>
+<p>When you think a release is ready, run through the following checklist one
+last time:</p>
+<blockquote>
+<div><ul class="simple">
+<li>do all the tests pass? You should do this on at least two Linux systems &#8211; one a very
+recent version and one at least a year old. You should also do this with Python 2.6 and 2.7.</li>
+<li>do all the example scripts generate the correct output? Run the</li>
+<li>does the documentation build without errors? You should then at least skim
+the generated HTML pages to check for obvious problems.</li>
+<li>have you updated the version numbers in <tt class="file docutils literal"><span class="pre">setup.py</span></tt>, <tt class="file docutils literal"><span class="pre">src/__init__.py</span></tt>,
+<tt class="file docutils literal"><span class="pre">doc/conf.py</span></tt> and <tt class="file docutils literal"><span class="pre">doc/index.txt</span></tt>?</li>
+<li>have you updated the changelog?</li>
+</ul>
+</div></blockquote>
+<p>Once you&#8217;ve confirmed all the above, create a source package using:</p>
+<div class="highlight-python"><pre>$ python setup.py sdist</pre>
+</div>
+<p>and check that it installs properly.</p>
+<p>Now you should commit any changes, then tag with the release number as follows:</p>
+<div class="highlight-python"><pre>$ git tag x.y.z</pre>
+</div>
+<p>where <tt class="docutils literal"><span class="pre">x.y.z</span></tt> is the release number. You should now upload the documentation
+to <a class="reference external" href="http://neuralensemble.org/docs/mozaik/">http://neuralensemble.org/docs/mozaik/</a>.</p>
+<p>If this is a development release (i.e. an <em>alpha</em> or <em>beta</em>), the final step is
+to upload the source package to the INCF Software Center [more instructions needed here].
+Do <strong>not</strong> upload development releases to PyPI.</p>
+<p>If this is a final release, there are a few more steps:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">if it is a major release (i.e. an <tt class="docutils literal"><span class="pre">x.y.0</span></tt> release), create a new bug-fix
+branch:</p>
+<div class="highlight-python"><pre>$ git branch x.y</pre>
+</div>
+</li>
+<li><p class="first">upload the source package to PyPI:</p>
+<div class="highlight-python"><pre>$ python setup.py sdist upload</pre>
+</div>
+</li>
+<li><p class="first">make an announcement on the <a class="reference external" href="http://groups.google.com/group/neuralensemble">mailing list</a></p>
+</li>
+<li><p class="first">if it is a major release, write a blog post about it with a focus on the
+new features and major changes</p>
+</li>
+<li><p class="first">go home, take a headache pill and lie down for a while in a darkened room (-;</p>
+</li>
+</ul>
+</div></blockquote>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/mozaik_logo_small.svg" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="authors.html"
+                        title="previous chapter">Authors and contributors</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/release_instructions.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="authors.html" title="Authors and contributors"
+             >previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2013, mozaik authors and contributors &lt;&gt;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

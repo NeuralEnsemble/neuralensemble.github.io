@@ -1,0 +1,393 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vision Package &mdash; mozaik 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mozaik 0.1.0 documentation" href="index.html" />
+    <link rel="up" title="stimuli Package" href="mozaik.stimuli.html" />
+    <link rel="next" title="storage Package" href="mozaik.storage.html" />
+    <link rel="prev" title="stimuli Package" href="mozaik.stimuli.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mozaik.storage.html" title="storage Package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mozaik.stimuli.html" title="stimuli Package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="mozaik.html" >mozaik API</a> &raquo;</li>
+          <li><a href="mozaik.stimuli.html" accesskey="U">stimuli Package</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="vision-package">
+<h1>vision Package<a class="headerlink" href="#vision-package" title="Permalink to this headline">¶</a></h1>
+<p>This package contains implementation of visual stimuli.</p>
+<div class="section" id="stimuli-visual-stimulus-module">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">stimuli.visual_stimulus</span></tt> Module<a class="headerlink" href="#stimuli-visual-stimulus-module" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-mozaik.stimuli.vision.visual_stimulus"></span><p>This module contains API of visual stimuli.</p>
+<dl class="class">
+<dt id="mozaik.stimuli.vision.visual_stimulus.VisualStimulus">
+<em class="property">class </em><tt class="descclassname">mozaik.stimuli.vision.visual_stimulus.</tt><tt class="descname">VisualStimulus</tt><big>(</big><em>**params</em><big>)</big><a class="headerlink" href="#mozaik.stimuli.vision.visual_stimulus.VisualStimulus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">mozaik.stimuli.BaseStimulus</span></tt></p>
+<p>Abstract base class for visual stimuli.</p>
+<p>This class defines all parameters common to all visual stimuli.</p>
+<p>This class implements all functions specified by the <tt class="xref py py-class docutils literal"><span class="pre">mozaik.stimuli.stimulus.BaseStimulus</span></tt> interface.
+The only function that remains to be implemented by the user whenever creating a new stimulus by subclassing
+this class is the <tt class="xref py py-func docutils literal"><span class="pre">mozaik.stimuli.stimulus.BaseStimulus.frames()</span></tt> function.</p>
+<p>This class also implements functions common to all visual stimuli that are required for it to be compatible 
+with the <a class="reference internal" href="mozaik.html#mozaik.space.VisualSpace" title="mozaik.space.VisualSpace"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.space.VisualSpace</span></tt></a> and  class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Mozaik parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt><strong>background_luminance</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=None, constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=1 lx (lux))</span></dt>
+<dd><p class="first last">Background luminance. Maximum luminance of object allowed is 2*background_luminance</p>
+</dd>
+<dt><strong>density</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=None, constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=1.0 1/deg)</span></dt>
+<dd><p class="first last">The density of stimulus - units per degree</p>
+</dd>
+<dt><strong>location_x</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=None, constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=1 deg (arcdegree))</span></dt>
+<dd><p class="first last">x location of the center of  visual region.</p>
+</dd>
+<dt><strong>location_y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=None, constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=1 deg (arcdegree))</span></dt>
+<dd><p class="first last">y location of the center of  visual region.</p>
+</dd>
+<dt><strong>size_x</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=None, constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=1 deg (arcdegree))</span></dt>
+<dd><p class="first last">The size of the region in degrees (asimuth).</p>
+</dd>
+<dt><strong>size_y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=None, constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=1 deg (arcdegree))</span></dt>
+<dd><p class="first last">The size of the region in degrees (elevation).</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mozaik.stimuli.vision.visual_stimulus.VisualStimulus.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.stimuli.vision.visual_stimulus.VisualStimulus.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the current frame to the next frame in the sequence.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.stimuli.vision.visual_stimulus.VisualStimulus.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.stimuli.vision.visual_stimulus.VisualStimulus.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset to the first frame in the sequence.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.stimuli.vision.visual_stimulus.VisualStimulus.next_frame">
+<tt class="descname">next_frame</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.stimuli.vision.visual_stimulus.VisualStimulus.next_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>For creating movies with NeuroTools.visualization.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="stimuli-topographica-based-module">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">stimuli.topographica_based</span></tt> Module<a class="headerlink" href="#stimuli-topographica-based-module" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-mozaik.stimuli.vision.topographica_based"></span><p>The file contains stimuli that use topographica to generate the stimulus</p>
+<dl class="class">
+<dt id="mozaik.stimuli.vision.topographica_based.TopographicaBasedVisualStimulus">
+<em class="property">class </em><tt class="descclassname">mozaik.stimuli.vision.topographica_based.</tt><tt class="descname">TopographicaBasedVisualStimulus</tt><big>(</big><em>**params</em><big>)</big><a class="headerlink" href="#mozaik.stimuli.vision.topographica_based.TopographicaBasedVisualStimulus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.stimuli.vision.visual_stimulus.VisualStimulus" title="mozaik.stimuli.vision.visual_stimulus.VisualStimulus"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.stimuli.vision.visual_stimulus.VisualStimulus</span></tt></a></p>
+<p>As we do not handle transparency in the Topographica stimuli (i.e. all pixels of all stimuli difned here will have 0% transparancy)
+in this abstract class we disable the transparent flag defined by the <tt class="xref py py-class docutils literal"><span class="pre">mozaik.stimuli.visual_stimulus.VisualStimulus</span></tt>, to improve efficiency.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.stimuli.vision.topographica_based.FullfieldDriftingSinusoidalGrating">
+<em class="property">class </em><tt class="descclassname">mozaik.stimuli.vision.topographica_based.</tt><tt class="descname">FullfieldDriftingSinusoidalGrating</tt><big>(</big><em>**params</em><big>)</big><a class="headerlink" href="#mozaik.stimuli.vision.topographica_based.FullfieldDriftingSinusoidalGrating" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.stimuli.vision.topographica_based.TopographicaBasedVisualStimulus" title="mozaik.stimuli.vision.topographica_based.TopographicaBasedVisualStimulus"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.stimuli.vision.topographica_based.TopographicaBasedVisualStimulus</span></tt></a></p>
+<p>A full field sinusoidal grating stimulus.</p>
+<p class="rubric">Notes</p>
+<p><cite>max_luminance</cite> is interpreted as scale and <cite>size_x/2</cite> as the bounding box radius.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Mozaik parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt><strong>orientation</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=[0, 3.141592653589793], constant=False, default=None, inclusive_bounds=(True, True), period=3.14159265359, readonly=False, units=1 rad (radian))</span></dt>
+<dd><p class="first last">Grating orientation</p>
+</dd>
+<dt><strong>temporal_frequency</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=None, constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=1 Hz (hertz))</span></dt>
+<dd><p class="first last">Temporal frequency of grating</p>
+</dd>
+<dt><strong>spatial_frequency</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=None, constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=1 cycles_per_degree)</span></dt>
+<dd><p class="first last">Spatial frequency of grating</p>
+</dd>
+<dt><strong>contrast</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=[0, 100.0], constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=1 dimensionless)</span></dt>
+<dd><p class="first last">Contrast of the stimulus</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.stimuli.vision.topographica_based.Null">
+<em class="property">class </em><tt class="descclassname">mozaik.stimuli.vision.topographica_based.</tt><tt class="descname">Null</tt><big>(</big><em>**params</em><big>)</big><a class="headerlink" href="#mozaik.stimuli.vision.topographica_based.Null" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.stimuli.vision.topographica_based.TopographicaBasedVisualStimulus" title="mozaik.stimuli.vision.topographica_based.TopographicaBasedVisualStimulus"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.stimuli.vision.topographica_based.TopographicaBasedVisualStimulus</span></tt></a></p>
+<p>Blank stimulus.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.stimuli.vision.topographica_based.NaturalImageWithEyeMovement">
+<em class="property">class </em><tt class="descclassname">mozaik.stimuli.vision.topographica_based.</tt><tt class="descname">NaturalImageWithEyeMovement</tt><big>(</big><em>**params</em><big>)</big><a class="headerlink" href="#mozaik.stimuli.vision.topographica_based.NaturalImageWithEyeMovement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.stimuli.vision.topographica_based.TopographicaBasedVisualStimulus" title="mozaik.stimuli.vision.topographica_based.TopographicaBasedVisualStimulus"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.stimuli.vision.topographica_based.TopographicaBasedVisualStimulus</span></tt></a></p>
+<p>A visual stimulus that simulates an eye movement over a static image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Mozaik parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt><strong>image_location</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SString(constant=False, default=None, period=None, readonly=False, units=None)</span></dt>
+<dd><p class="first last">Location of the image</p>
+</dd>
+<dt><strong>size</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=None, constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=1 deg (arcdegree))</span></dt>
+<dd><p class="first last">The length of the longer axis of the image in visual degrees</p>
+</dd>
+<dt><strong>eye_path_location</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SString(constant=False, default=None, period=None, readonly=False, units=None)</span></dt>
+<dd><p class="first last">Location of file containing the eye path (two columns of numbers)</p>
+</dd>
+<dt><strong>eye_movement_period</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=None, constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=1 ms (millisecond))</span></dt>
+<dd><p class="first last">The time between two consequitve eye movements recorded in the eye_path file</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.stimuli.vision.topographica_based.DriftingGratingWithEyeMovement">
+<em class="property">class </em><tt class="descclassname">mozaik.stimuli.vision.topographica_based.</tt><tt class="descname">DriftingGratingWithEyeMovement</tt><big>(</big><em>**params</em><big>)</big><a class="headerlink" href="#mozaik.stimuli.vision.topographica_based.DriftingGratingWithEyeMovement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.stimuli.vision.topographica_based.TopographicaBasedVisualStimulus" title="mozaik.stimuli.vision.topographica_based.TopographicaBasedVisualStimulus"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.stimuli.vision.topographica_based.TopographicaBasedVisualStimulus</span></tt></a></p>
+<p>A visual stimulus that simulates an eye movement over a drifting  gratings.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Mozaik parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt><strong>orientation</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=[0, 3.141592653589793], constant=False, default=None, inclusive_bounds=(True, True), period=3.14159265359, readonly=False, units=1 rad (radian))</span></dt>
+<dd><p class="first last">Grating orientation</p>
+</dd>
+<dt><strong>temporal_frequency</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=None, constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=1 Hz (hertz))</span></dt>
+<dd><p class="first last">Temporal frequency of grating</p>
+</dd>
+<dt><strong>spatial_frequency</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=None, constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=1 cycles_per_degree)</span></dt>
+<dd><p class="first last">Spatial frequency of grating</p>
+</dd>
+<dt><strong>eye_path_location</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SString(constant=False, default=None, period=None, readonly=False, units=None)</span></dt>
+<dd><p class="first last">Location of file containing the eye path (two columns of numbers)</p>
+</dd>
+<dt><strong>eye_movement_period</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=None, constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=1 ms (millisecond))</span></dt>
+<dd><p class="first last">The time between two consequitve eye movements recorded in the eye_path file</p>
+</dd>
+<dt><strong>contrast</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=[0, 100.0], constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=1 dimensionless)</span></dt>
+<dd><p class="first last">Contrast of the stimulus</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.stimuli.vision.topographica_based.DriftingSinusoidalGratingDisk">
+<em class="property">class </em><tt class="descclassname">mozaik.stimuli.vision.topographica_based.</tt><tt class="descname">DriftingSinusoidalGratingDisk</tt><big>(</big><em>**params</em><big>)</big><a class="headerlink" href="#mozaik.stimuli.vision.topographica_based.DriftingSinusoidalGratingDisk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.stimuli.vision.topographica_based.TopographicaBasedVisualStimulus" title="mozaik.stimuli.vision.topographica_based.TopographicaBasedVisualStimulus"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.stimuli.vision.topographica_based.TopographicaBasedVisualStimulus</span></tt></a></p>
+<p>A drifting sinusoidal grating confined to a apareture of specified radius.</p>
+<p class="rubric">Notes</p>
+<p>size_x/2 is interpreted as the bounding box radius.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Mozaik parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt><strong>orientation</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=[0, 3.141592653589793], constant=False, default=None, inclusive_bounds=(True, True), period=3.14159265359, readonly=False, units=1 rad (radian))</span></dt>
+<dd><p class="first last">Grating orientation</p>
+</dd>
+<dt><strong>temporal_frequency</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=None, constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=1 Hz (hertz))</span></dt>
+<dd><p class="first last">Temporal frequency of the grating</p>
+</dd>
+<dt><strong>radius</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=None, constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=1 deg (arcdegree))</span></dt>
+<dd><p class="first last">The radius of the grating disk - in degrees of visual field</p>
+</dd>
+<dt><strong>spatial_frequency</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=None, constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=1 cycles_per_degree)</span></dt>
+<dd><p class="first last">Spatial frequency of the grating</p>
+</dd>
+<dt><strong>contrast</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=[0, 100.0], constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=1 dimensionless)</span></dt>
+<dd><p class="first last">Contrast of the stimulus</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.stimuli.vision.topographica_based.DriftingSinusoidalGratingCenterSurroundStimulus">
+<em class="property">class </em><tt class="descclassname">mozaik.stimuli.vision.topographica_based.</tt><tt class="descname">DriftingSinusoidalGratingCenterSurroundStimulus</tt><big>(</big><em>**params</em><big>)</big><a class="headerlink" href="#mozaik.stimuli.vision.topographica_based.DriftingSinusoidalGratingCenterSurroundStimulus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.stimuli.vision.topographica_based.TopographicaBasedVisualStimulus" title="mozaik.stimuli.vision.topographica_based.TopographicaBasedVisualStimulus"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.stimuli.vision.topographica_based.TopographicaBasedVisualStimulus</span></tt></a></p>
+<p>A standard stimulus to probe orientation specific surround modulation:
+A drifting grating in center surrounded by a drifting grating in the surround.
+Orientations of both center and surround gratings can be varied independently.</p>
+<p class="rubric">Notes</p>
+<p>max_luminance is interpreted as scale and size_x/2 as the bounding box radius.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Mozaik parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt><strong>surround_orientation</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=[0, 3.141592653589793], constant=False, default=None, inclusive_bounds=(True, True), period=3.14159265359, readonly=False, units=1 rad (radian))</span></dt>
+<dd><p class="first last">Surround grating orientation</p>
+</dd>
+<dt><strong>gap</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=None, constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=1 deg (arcdegree))</span></dt>
+<dd><p class="first last">The gap between center and surround grating - in degrees of visual field</p>
+</dd>
+<dt><strong>temporal_frequency</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=None, constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=1 Hz (hertz))</span></dt>
+<dd><p class="first last">Temporal frequency of the grating (same for center and surround)</p>
+</dd>
+<dt><strong>center_orientation</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=[0, 3.141592653589793], constant=False, default=None, inclusive_bounds=(True, True), period=3.14159265359, readonly=False, units=1 rad (radian))</span></dt>
+<dd><p class="first last">Center grating orientation</p>
+</dd>
+<dt><strong>spatial_frequency</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=None, constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=1 cycles_per_degree)</span></dt>
+<dd><p class="first last">Spatial frequency of the grating (same for center and surround)</p>
+</dd>
+<dt><strong>center_radius</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=None, constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=1 deg (arcdegree))</span></dt>
+<dd><p class="first last">The (outside) radius of the center grating disk - in degrees of visual field</p>
+</dd>
+<dt><strong>surround_radius</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=None, constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=1 deg (arcdegree))</span></dt>
+<dd><p class="first last">The (outside) radius of the surround grating disk - in degrees of visual field</p>
+</dd>
+<dt><strong>contrast</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=[0, 100.0], constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=1 dimensionless)</span></dt>
+<dd><p class="first last">Contrast of the stimulus</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/mozaik_logo_small.svg" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mozaik.stimuli.html"
+                        title="previous chapter">stimuli Package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mozaik.storage.html"
+                        title="next chapter">storage Package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/mozaik.stimuli.vision.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mozaik.storage.html" title="storage Package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mozaik.stimuli.html" title="stimuli Package"
+             >previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="mozaik.html" >mozaik API</a> &raquo;</li>
+          <li><a href="mozaik.stimuli.html" >stimuli Package</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2013, mozaik authors and contributors &lt;&gt;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

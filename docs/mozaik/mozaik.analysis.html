@@ -1,0 +1,1185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>analysis Package &mdash; mozaik 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mozaik 0.1.0 documentation" href="index.html" />
+    <link rel="up" title="mozaik API" href="mozaik.html" />
+    <link rel="next" title="connector Package" href="mozaik.connectors.html" />
+    <link rel="prev" title="mozaik API" href="mozaik.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mozaik.connectors.html" title="connector Package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mozaik.html" title="mozaik API"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="mozaik.html" accesskey="U">mozaik API</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="analysis-package">
+<h1>analysis Package<a class="headerlink" href="#analysis-package" title="Permalink to this headline">¶</a></h1>
+<p>This sub-package contains modules that are related to analysis.</p>
+<div class="section" id="modules">
+<h2>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="#module-mozaik.analysis.analysis" title="mozaik.analysis.analysis"><tt class="xref py py-mod docutils literal"><span class="pre">mozaik.analysis.analysis</span></tt></a> - contains definition of the analysis interface and implementations of several analysis algorithms</li>
+<li><a class="reference internal" href="#module-mozaik.analysis.data_structures" title="mozaik.analysis.data_structures"><tt class="xref py py-mod docutils literal"><span class="pre">mozaik.analysis.data_structures</span></tt></a> - contains definitions of data stractures that the analysis algorithms produce</li>
+<li><a class="reference internal" href="#module-mozaik.analysis.helper_functions" title="mozaik.analysis.helper_functions"><tt class="xref py py-mod docutils literal"><span class="pre">mozaik.analysis.helper_functions</span></tt></a> - some utility functions that are used in the analysis package</li>
+<li><a class="reference internal" href="#module-mozaik.analysis.technical" title="mozaik.analysis.technical"><tt class="xref py py-mod docutils literal"><span class="pre">mozaik.analysis.technical</span></tt></a> - some technical analysis functions that are related to the mozaik architecture</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="architecture">
+<h2>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="#mozaik.analysis.analysis.Analysis" title="mozaik.analysis.analysis.Analysis"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.analysis.analysis.Analysis</span></tt></a> interface assumes that the input to the analysis is retrieved from
+<a class="reference internal" href="mozaik.storage.html#module-mozaik.storage.datastore" title="mozaik.storage.datastore"><tt class="xref py py-mod docutils literal"><span class="pre">mozaik.storage.datastore</span></tt></a>, in the form of recorded data or analysis data structures (see <a class="reference internal" href="#module-mozaik.analysis.data_structures" title="mozaik.analysis.data_structures"><tt class="xref py py-mod docutils literal"><span class="pre">mozaik.analysis.data_structures</span></tt></a>)
+produced by other analysis algorithms that were run previously. The analysis itself should be able to filter
+out from the datastore the recordings/data_structures that it can handle and should be as encompassing and general as possible.
+This way it will be possible to significantly &#8216;configure&#8217; the analysis process by merely filtering the data given
+to the Analysis classes via the <a class="reference internal" href="mozaik.storage.html#module-mozaik.storage.queries" title="mozaik.storage.queries"><tt class="xref py py-mod docutils literal"><span class="pre">mozaik.storage.queries</span></tt></a> mechanisms. The analysis function is
+responsible for packaging its results into one or a set of the data structures defined in <a class="reference internal" href="#module-mozaik.analysis.data_structures" title="mozaik.analysis.data_structures"><tt class="xref py py-mod docutils literal"><span class="pre">mozaik.analysis.data_structures</span></tt></a> and send them to the
+datastorage. Thus when creating new analysis one should always check which data structures are already defined, and define
+a new one only in case it is not possible to map the new results data structure on any of the existing ones.</p>
+</div>
+<div class="section" id="analysis-data-structures">
+<h2>Analysis data structures<a class="headerlink" href="#analysis-data-structures" title="Permalink to this headline">¶</a></h2>
+<p>The goal of the AnalysisDataStructure class is to offer a common interface/format for data generated by analysis,
+so they can be consumed by other analysis or visualization code in a standard way.
+For example many analyses can generate 2D tuning curves of several kinds but they
+all share a common data structure and can be plotted in a common way.</p>
+<p>An analysis class can generate several <cite>AnalysisDataStructures</cite> (ADSs) and
+one ADS can be generated by several Analysis classes.</p>
+<p>One important aspect of the ADS design is the notion of parameters as
+opposed to inputs. Each ADS should define a number of Parameters (see the
+documentation on Parameters).
+The importance of parameters is that they will offer a way to identify the
+ADS in the data store (see param_filter_query in queries).
+Furthermore the constructor of the AnalysisDataStructure can
+accept inputs, which are standard variables that should correspond to the
+data that is actually stored in the ADS.</p>
+<p>The five parameters that are common to each ADS and are defined in the top <a class="reference internal" href="#mozaik.analysis.data_structures.AnalysisDataStructure" title="mozaik.analysis.data_structures.AnalysisDataStructure"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.analysis.data_structures.AnalysisDataStructure</span></tt></a> class are:</p>
+<dl class="docutils">
+<dt>identifier</dt>
+<dd>An important parameter of each AnalysisDataStructure is an
+identifier which is used to identify data structures of common type
+in storage facilities. Currently different datastructures with
+a common interface should share the identifiers but it is not clear
+yet whether this is needed. If it turns out such sharing is not
+necessary it might be abolished and there will be one-to-one
+mapping between AnalysisDataStructure classes and identifiers.</dd>
+<dt>analysis_algorithm</dt>
+<dd>The identity (name) of the analysis class that produced this
+analysis data structure.</dd>
+<dt>sheet_name</dt>
+<dd>The sheet for which this results were computed. None if they do not
+belong to a specific sheet.</dd>
+<dt>neuron</dt>
+<dd>Neuron id to which the data structure belongs. None if it is not
+neuron specific.</dd>
+<dt>stimulus_id</dt>
+<dd>Stimulus id (as string) to which the data structure belongs.
+None if it is not stimulus specific.</dd>
+<dt>tags</dt>
+<dd><p class="first">In complicated workflows it might become difficult to design a
+filter to extract the right set of recordings or analysis data
+structures for a given analysis or visualization.
+We do not want users to define multiple AnalysisDataStructures that
+hold the same kind of data only to be able to tell them apart.</p>
+<p>Therefore, we also allow all analysis data structures to contain a
+list of tags (which are strings) that one can add during their
+creation (or later) and use them to later for their identification
+in a DataStore. Queries are written that support filtering of ADSs
+based on tags.</p>
+<p class="last">However, in general, we encourage users to use filter methods
+rather than tags to perform their plotting/analysis whenever
+possible!</p>
+</dd>
+</dl>
+<p>For more details see the <a class="reference internal" href="#module-mozaik.analysis.data_structures" title="mozaik.analysis.data_structures"><tt class="xref py py-mod docutils literal"><span class="pre">mozaik.analysis.data_structures</span></tt></a> and <a class="reference internal" href="#module-mozaik.analysis.analysis" title="mozaik.analysis.analysis"><tt class="xref py py-mod docutils literal"><span class="pre">mozaik.analysis.analysis</span></tt></a> module and specifically the two most
+important API classes: <a class="reference internal" href="#mozaik.analysis.data_structures.AnalysisDataStructure" title="mozaik.analysis.data_structures.AnalysisDataStructure"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.analysis.data_structures.AnalysisDataStructure</span></tt></a> and <a class="reference internal" href="#mozaik.analysis.analysis.Analysis" title="mozaik.analysis.analysis.Analysis"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.analysis.analysis.Analysis</span></tt></a></p>
+<div class="section" id="module-mozaik.analysis.analysis">
+<span id="analysis-module"></span><h3><tt class="xref py py-mod docutils literal"><span class="pre">analysis</span></tt> Module<a class="headerlink" href="#module-mozaik.analysis.analysis" title="Permalink to this headline">¶</a></h3>
+<p>This module contains the Mozaik analysis interface and implementation of various analysis algorithms</p>
+<p>For more documentation refer to <a href="#id1"><span class="problematic" id="id2">`mozaik.analysis`_</span></a></p>
+<dl class="class">
+<dt id="mozaik.analysis.analysis.Analysis">
+<em class="property">class </em><tt class="descclassname">mozaik.analysis.analysis.</tt><tt class="descname">Analysis</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>tags=None</em><big>)</big><a class="headerlink" href="#mozaik.analysis.analysis.Analysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="mozaik.html#mozaik.core.ParametrizedObject" title="mozaik.core.ParametrizedObject"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.core.ParametrizedObject</span></tt></a></p>
+<p>The analysis interface.</p>
+<p>Each mozaik analysis is a subclass of this class and is required to implementat
+the <cite>perform_analysis</cite> function which should contain the analysis code.
+This function should retrieve data from the <cite>DataStoreView</cite> that is
+supplied in the <cite>datastore</cite> parameter. Further, it should include <cite>tags</cite>
+as the tags for all <cite>AnalysisDataStructure</cite> objects that it creates.
+(See the description of the <cite>analysis.AnalysisDataStructure.tags</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>datastore</strong> : DataStoreView</p>
+<blockquote>
+<div><p>The datastore from which to pull data.</p>
+</div></blockquote>
+<p><strong>parameters</strong> : ParameterSet</p>
+<blockquote>
+<div><p>The required parameter set.</p>
+</div></blockquote>
+<p><strong>tags</strong> : list(str), optional</p>
+<blockquote class="last">
+<div><p>Tags to attach to the AnalysisDataStructures generated by the analysis.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mozaik.analysis.analysis.Analysis.analyse">
+<tt class="descname">analyse</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.analysis.analysis.Analysis.analyse" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is the function calls to perform the analysis.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.analysis.analysis.Analysis.perform_analysis">
+<tt class="descname">perform_analysis</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.analysis.analysis.Analysis.perform_analysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is an abstract function that each analysis class has to implement. It
+contains the code performing the analysis.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.analysis.analysis.TrialAveragedFiringRate">
+<em class="property">class </em><tt class="descclassname">mozaik.analysis.analysis.</tt><tt class="descname">TrialAveragedFiringRate</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>tags=None</em><big>)</big><a class="headerlink" href="#mozaik.analysis.analysis.TrialAveragedFiringRate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.analysis.analysis.Analysis" title="mozaik.analysis.analysis.Analysis"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.analysis.analysis.Analysis</span></tt></a></p>
+<p>This analysis takes each recording in DSV that has been done in response to stimulus type &#8216;stimulus_type&#8217; 
+and calculates the average (over trials) number of spikes. For each set of equal recordings (except trial) it creates one PerNeuronValue 
+<cite>AnalysisDataStructure</cite> instance containing the trial averaged firing rate per each recorded 
+neuron.</p>
+<dl class="method">
+<dt id="mozaik.analysis.analysis.TrialAveragedFiringRate.perform_analysis">
+<tt class="descname">perform_analysis</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.analysis.analysis.TrialAveragedFiringRate.perform_analysis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.analysis.analysis.PeriodicTuningCurvePreferenceAndSelectivity_VectorAverage">
+<em class="property">class </em><tt class="descclassname">mozaik.analysis.analysis.</tt><tt class="descname">PeriodicTuningCurvePreferenceAndSelectivity_VectorAverage</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>tags=None</em><big>)</big><a class="headerlink" href="#mozaik.analysis.analysis.PeriodicTuningCurvePreferenceAndSelectivity_VectorAverage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.analysis.analysis.Analysis" title="mozaik.analysis.analysis.Analysis"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.analysis.analysis.Analysis</span></tt></a></p>
+<p>Calculates a preference and selectvitiy tuning of a periodic variable via vector average method.</p>
+<p>This analysis takes from the DSV all <cite>PerNeuronValues</cite>.
+All PerNeuronValues have to belong to stimuli of the same type and
+contain the same type of values (i.e. have the same <cite>value_name</cite>).</p>
+<p>For each combination of parameters of the stimuli other than <cite>parameter_name</cite>
+<cite>PeriodicTuningCurvePreferenceAndSelectivity_VectorAverage</cite> creates a
+PerNeuronValue which corresponsd to the vector average through the
+periodic domain of <cite>parameter_name</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>parameter_name</strong> : str</p>
+<blockquote class="last">
+<div><p>The name of the parameter through which to calculate the VectorAverage</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="mozaik.analysis.analysis.PeriodicTuningCurvePreferenceAndSelectivity_VectorAverage.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'parameter_name': &lt;type 'str'&gt;}</em><a class="headerlink" href="#mozaik.analysis.analysis.PeriodicTuningCurvePreferenceAndSelectivity_VectorAverage.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.analysis.analysis.PeriodicTuningCurvePreferenceAndSelectivity_VectorAverage.perform_analysis">
+<tt class="descname">perform_analysis</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.analysis.analysis.PeriodicTuningCurvePreferenceAndSelectivity_VectorAverage.perform_analysis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.analysis.analysis.GSTA">
+<em class="property">class </em><tt class="descclassname">mozaik.analysis.analysis.</tt><tt class="descname">GSTA</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>tags=None</em><big>)</big><a class="headerlink" href="#mozaik.analysis.analysis.GSTA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.analysis.analysis.Analysis" title="mozaik.analysis.analysis.Analysis"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.analysis.analysis.Analysis</span></tt></a></p>
+<p>Computes conductance spike triggered average.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>length</strong> : float (ms)</p>
+<blockquote>
+<div><p>how long before and after spike to compute the GSTA
+it will be rounded <em>down</em> to fit the sampling frequency</p>
+</div></blockquote>
+<p><strong>neurons</strong> : list</p>
+<blockquote class="last">
+<div><p>the list of neuron ids for which to compute the GSTA</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p><cite>GSTA</cite> does not assume that spikes are aligned with the conductance
+sampling rate and will pick the bin in which the given spike falls
+(within the conductance sampling rate binning) as the center of the
+conductance vector that is included in the STA.</p>
+<dl class="attribute">
+<dt id="mozaik.analysis.analysis.GSTA.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'length': &lt;type 'float'&gt;, 'neurons': &lt;type 'list'&gt;}</em><a class="headerlink" href="#mozaik.analysis.analysis.GSTA.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.analysis.analysis.GSTA.perform_analysis">
+<tt class="descname">perform_analysis</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.analysis.analysis.GSTA.perform_analysis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.analysis.analysis.Precision">
+<em class="property">class </em><tt class="descclassname">mozaik.analysis.analysis.</tt><tt class="descname">Precision</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>tags=None</em><big>)</big><a class="headerlink" href="#mozaik.analysis.analysis.Precision" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.analysis.analysis.Analysis" title="mozaik.analysis.analysis.Analysis"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.analysis.analysis.Analysis</span></tt></a></p>
+<p>Computes the precision as the autocorrelation between the PSTH of
+different trials.</p>
+<p>Takes all the responses in the datastore, and for each recording group that is identical except the 
+trial number it will compute the autocorrelation between the PSTH of different trials. For each such 
+group it will create add a AnalogSignalList instance into the datastore containing the calculated autocorrelation
+vector for each neuron in <cite>required_parameters.neurons</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>bin_length</strong> : float (ms)</p>
+<blockquote>
+<div><p>the size of bin to construct the PSTH from</p>
+</div></blockquote>
+<p><strong>neurons: list</strong> :</p>
+<blockquote class="last">
+<div><p>the list of neuron ids for which to compute the autocorrelation</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="mozaik.analysis.analysis.Precision.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'bin_length': &lt;type 'float'&gt;, 'neurons': &lt;type 'list'&gt;}</em><a class="headerlink" href="#mozaik.analysis.analysis.Precision.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.analysis.analysis.Precision.perform_analysis">
+<tt class="descname">perform_analysis</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.analysis.analysis.Precision.perform_analysis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.analysis.analysis.TrialVariability">
+<em class="property">class </em><tt class="descclassname">mozaik.analysis.analysis.</tt><tt class="descname">TrialVariability</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>tags=None</em><big>)</big><a class="headerlink" href="#mozaik.analysis.analysis.TrialVariability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.analysis.analysis.Analysis" title="mozaik.analysis.analysis.Analysis"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.analysis.analysis.Analysis</span></tt></a></p>
+<p>For each stimulus and neuron it calculates the trial-to-trial variability of Vm or conductance (depending on parameters). 
+It creates a AnalogSignalList list for each recording (except trials).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>vm</strong> : bool</p>
+<blockquote>
+<div><p>calculate variability for Vm?</p>
+</div></blockquote>
+<p><strong>cond_exc</strong> : bool</p>
+<blockquote>
+<div><p>calculate variability for excitatory conductance?</p>
+</div></blockquote>
+<p><strong>cond_inh</strong> : bool</p>
+<blockquote class="last">
+<div><p>calculate variability for inhibitory conductance?</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="mozaik.analysis.analysis.TrialVariability.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'cond_exc': &lt;type 'bool'&gt;, 'vm': &lt;type 'bool'&gt;, 'cond_inh': &lt;type 'bool'&gt;}</em><a class="headerlink" href="#mozaik.analysis.analysis.TrialVariability.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.analysis.analysis.TrialVariability.perform_analysis">
+<tt class="descname">perform_analysis</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.analysis.analysis.TrialVariability.perform_analysis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.analysis.analysis.GaussianTuningCurveFit">
+<em class="property">class </em><tt class="descclassname">mozaik.analysis.analysis.</tt><tt class="descname">GaussianTuningCurveFit</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>tags=None</em><big>)</big><a class="headerlink" href="#mozaik.analysis.analysis.GaussianTuningCurveFit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.analysis.analysis.Analysis" title="mozaik.analysis.analysis.Analysis"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.analysis.analysis.Analysis</span></tt></a></p>
+<p>Fits each tuning curve with a gaussian.</p>
+<p>It takes a dsv containing some PerNeuronValues.
+All PerNeuronValues have to belong to stimuli of the same type and
+contain the same type of values (i.e. have the same <cite>value_name</cite>).</p>
+<p>For each combination of parameters of the stimuli other than <cite>parameter_name</cite>
+<cite>GaussianTuningCurveFit</cite> fits a gaussian tuning curve to the values in the PerNeuronValues
+that span the parameter values of the <cite>parameter_name</cite> stimulus parameter.</p>
+<p>It stores the parameters of the fitted Gaussian in a PerNeuronValue - for each combination of parameters of the stimulus associated 
+with the supplied PerNeuronValue with the exception of the stimulus parameter <cite>parameter_name</cite>. For each combination it stored 
+5 PerNeuronValue data structures, containing the calculated selectivity, preference, half-width at half-height (HWHH), maximum (&#8216;scale&#8217; of the gaussian) and 
+baseline (the constant offset).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>parameter_name</strong> : str</p>
+<blockquote class="last">
+<div><p>The stimulus parameter name through which to fit the tuning curve.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="mozaik.analysis.analysis.GaussianTuningCurveFit.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'parameter_name': &lt;type 'str'&gt;}</em><a class="headerlink" href="#mozaik.analysis.analysis.GaussianTuningCurveFit.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.analysis.analysis.GaussianTuningCurveFit.perform_analysis">
+<tt class="descname">perform_analysis</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.analysis.analysis.GaussianTuningCurveFit.perform_analysis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.analysis.analysis.PSTH">
+<em class="property">class </em><tt class="descclassname">mozaik.analysis.analysis.</tt><tt class="descname">PSTH</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>tags=None</em><big>)</big><a class="headerlink" href="#mozaik.analysis.analysis.PSTH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.analysis.analysis.Analysis" title="mozaik.analysis.analysis.Analysis"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.analysis.analysis.Analysis</span></tt></a></p>
+<p>For each recording in the datastore view it creates an AnalogSignalList containing the PSTH of the neuron
+using the bin length <cite>required_parameters.bin_length</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>bin_length</strong> : float</p>
+<blockquote class="last">
+<div><p>The bin length of the PSTH</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="mozaik.analysis.analysis.PSTH.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'bin_length': &lt;type 'float'&gt;}</em><a class="headerlink" href="#mozaik.analysis.analysis.PSTH.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.analysis.analysis.PSTH.perform_analysis">
+<tt class="descname">perform_analysis</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.analysis.analysis.PSTH.perform_analysis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.analysis.analysis.TemporalBinAverage">
+<em class="property">class </em><tt class="descclassname">mozaik.analysis.analysis.</tt><tt class="descname">TemporalBinAverage</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>tags=None</em><big>)</big><a class="headerlink" href="#mozaik.analysis.analysis.TemporalBinAverage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.analysis.analysis.Analysis" title="mozaik.analysis.analysis.Analysis"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.analysis.analysis.Analysis</span></tt></a></p>
+<p>For each recording or AnalogSingalList ADS <cite>with x_axis_name`=&#8217;time&#8217; in the datastore `TemporalBinAverage</cite> creates a new
+AnalogSingalList, containing a down-sampled version of the signal (vm, conductances or the AnalogSingalList), such that it will
+bin the time axis with bin length <cite>required_parameters.bin_length</cite> and make average for each bin.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>bin_length</strong> : float</p>
+<blockquote>
+<div><p>The bin length of the PSTH</p>
+</div></blockquote>
+<p><strong>vm</strong> : bool</p>
+<blockquote>
+<div><p>calculate TemporalBinAverage for Vm?</p>
+</div></blockquote>
+<p><strong>cond_exc</strong> : bool</p>
+<blockquote>
+<div><p>calculate TemporalBinAverage for excitatory conductance?</p>
+</div></blockquote>
+<p><strong>cond_inh</strong> : bool</p>
+<blockquote class="last">
+<div><p>calculate TemporalBinAverage for inhibitory conductance?</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="mozaik.analysis.analysis.TemporalBinAverage.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'bin_length': &lt;type 'float'&gt;, 'cond_exc': &lt;type 'bool'&gt;, 'vm': &lt;type 'bool'&gt;, 'cond_inh': &lt;type 'bool'&gt;}</em><a class="headerlink" href="#mozaik.analysis.analysis.TemporalBinAverage.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.analysis.analysis.TemporalBinAverage.perform_analysis">
+<tt class="descname">perform_analysis</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.analysis.analysis.TemporalBinAverage.perform_analysis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.analysis.analysis.ActionPotentialRemoval">
+<em class="property">class </em><tt class="descclassname">mozaik.analysis.analysis.</tt><tt class="descname">ActionPotentialRemoval</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>tags=None</em><big>)</big><a class="headerlink" href="#mozaik.analysis.analysis.ActionPotentialRemoval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.analysis.analysis.Analysis" title="mozaik.analysis.analysis.Analysis"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.analysis.analysis.Analysis</span></tt></a></p>
+<p>For each recording in the datastore view it creates an AnalogSignalList containing the VMs with 
+the spikes removed and sends it to the datastore.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>window_length</strong> : float (ms)</p>
+<blockquote class="last">
+<div><p>The length of the window starting at a spike time in which the Vm is replaced with linear interpolation.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Vm, in the window starting at each spike time, and lasting the window_length is removed and replaced by linear
+interpolation between the values of Vm at the extrems of the  cutout window.</p>
+<dl class="attribute">
+<dt id="mozaik.analysis.analysis.ActionPotentialRemoval.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'window_length': &lt;type 'float'&gt;}</em><a class="headerlink" href="#mozaik.analysis.analysis.ActionPotentialRemoval.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.analysis.analysis.ActionPotentialRemoval.perform_analysis">
+<tt class="descname">perform_analysis</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.analysis.analysis.ActionPotentialRemoval.perform_analysis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.analysis.analysis.Irregularity">
+<em class="property">class </em><tt class="descclassname">mozaik.analysis.analysis.</tt><tt class="descname">Irregularity</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>tags=None</em><big>)</big><a class="headerlink" href="#mozaik.analysis.analysis.Irregularity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.analysis.analysis.Analysis" title="mozaik.analysis.analysis.Analysis"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.analysis.analysis.Analysis</span></tt></a></p>
+<p>Irregularity as defined in:
+Kumar, A., Schrader, S., Aertsen, A., &amp; Rotter, S. (2008). The high-conductance state of cortical networks. Neural computation, 20(1), 1-43. 
+It is the square of inter spike interval coefficient of variation.</p>
+<p>It creates on <cite>PerNeuronValue</cite> ADS per each recording in the DSV.</p>
+<p class="rubric">Notes</p>
+<p>It is not possible to compute CV for neurons with no spikes. Therefore we exclude such neurons from the analysis.
+This means that the resulting PerNeuronValue ADS might not contain all ids of neurons as the source recording.</p>
+<dl class="method">
+<dt id="mozaik.analysis.analysis.Irregularity.perform_analysis">
+<tt class="descname">perform_analysis</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.analysis.analysis.Irregularity.perform_analysis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.analysis.analysis.NeuronToNeuronAnalogSignalCorrelations">
+<em class="property">class </em><tt class="descclassname">mozaik.analysis.analysis.</tt><tt class="descname">NeuronToNeuronAnalogSignalCorrelations</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>tags=None</em><big>)</big><a class="headerlink" href="#mozaik.analysis.analysis.NeuronToNeuronAnalogSignalCorrelations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.analysis.analysis.Analysis" title="mozaik.analysis.analysis.Analysis"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.analysis.analysis.Analysis</span></tt></a></p>
+<p>Calculates the pairwise correlation of AnalogSignal object for each pair of neurons.
+It creates one PerNeuronPairValue for each AnalogSignalList ADS present in the DSV.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>convert_nan_to_zero</strong> : bool,</p>
+<blockquote class="last">
+<div><p>If true nan values in correlation coefficients which can result from non-varying varialbes will be turned to zeros.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="mozaik.analysis.analysis.NeuronToNeuronAnalogSignalCorrelations.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'convert_nan_to_zero': &lt;type 'bool'&gt;}</em><a class="headerlink" href="#mozaik.analysis.analysis.NeuronToNeuronAnalogSignalCorrelations.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.analysis.analysis.NeuronToNeuronAnalogSignalCorrelations.perform_analysis">
+<tt class="descname">perform_analysis</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.analysis.analysis.NeuronToNeuronAnalogSignalCorrelations.perform_analysis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.analysis.analysis.PopulationMean">
+<em class="property">class </em><tt class="descclassname">mozaik.analysis.analysis.</tt><tt class="descname">PopulationMean</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>tags=None</em><big>)</big><a class="headerlink" href="#mozaik.analysis.analysis.PopulationMean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.analysis.analysis.Analysis" title="mozaik.analysis.analysis.Analysis"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.analysis.analysis.Analysis</span></tt></a></p>
+<p>Calculates the mean value accross population of a quantity. Currently it can process PerNeuronValues and PerNeuronPairValue ADS.
+This list might be increased.</p>
+<dl class="method">
+<dt id="mozaik.analysis.analysis.PopulationMean.perform_analysis">
+<tt class="descname">perform_analysis</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.analysis.analysis.PopulationMean.perform_analysis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-mozaik.analysis.data_structures">
+<span id="data-structures-module"></span><h3><tt class="xref py py-mod docutils literal"><span class="pre">data_structures</span></tt> Module<a class="headerlink" href="#module-mozaik.analysis.data_structures" title="Permalink to this headline">¶</a></h3>
+<p>This module contains the definition of the AnalysisDataStructure API and implementation of some basic analysis data structures.</p>
+<p>For more documentation refer to <a href="#id3"><span class="problematic" id="id4">`mozaik.analysis`_</span></a></p>
+<dl class="class">
+<dt id="mozaik.analysis.data_structures.AnalysisDataStructure">
+<em class="property">class </em><tt class="descclassname">mozaik.analysis.data_structures.</tt><tt class="descname">AnalysisDataStructure</tt><big>(</big><em>tags=</em><span class="optional">[</span><span class="optional">]</span>, <em>**params</em><big>)</big><a class="headerlink" href="#mozaik.analysis.data_structures.AnalysisDataStructure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="mozaik.tools.html#mozaik.tools.mozaik_parametrized.MozaikParametrized" title="mozaik.tools.mozaik_parametrized.MozaikParametrized"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.tools.mozaik_parametrized.MozaikParametrized</span></tt></a></p>
+<p>Encapsulates data that a certain Analysis class generates.</p>
+<p>The four parameters that are common to all AnalysisDataStructure classes are <cite>identified</cite>, <cite>analysis_algorithm</cite>, <cite>neuron</cite>, <cite>sheet_name</cite> and <cite>stimulus_id</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Mozaik parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt><strong>stimulus_id</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SString(constant=False, default=None, period=None, readonly=False, units=None)</span></dt>
+<dd><p class="first last">The stimulus for which the results were computed. None if they are not related to specific stimulus</p>
+</dd>
+<dt><strong>identifier</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SString(constant=False, default=None, period=None, readonly=False, units=None)</span></dt>
+<dd><p class="first last">The identifier of the analysis data structure</p>
+</dd>
+<dt><strong>neuron</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SInteger(bounds=None, constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=None)</span></dt>
+<dd><p class="first last">Neuron id to which the datastructure belongs. None if it is not neuron specific</p>
+</dd>
+<dt><strong>analysis_algorithm</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SString(constant=False, default=None, period=None, readonly=False, units=None)</span></dt>
+<dd><p class="first last">The identifier of the analysis data structure</p>
+</dd>
+<dt><strong>sheet_name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SString(constant=False, default=None, period=None, readonly=False, units=None)</span></dt>
+<dd><p class="first last">The sheet for which this results were computed. None if they do not belong to specific sheet</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.analysis.data_structures.SingleValue">
+<em class="property">class </em><tt class="descclassname">mozaik.analysis.data_structures.</tt><tt class="descname">SingleValue</tt><big>(</big><em>**params</em><big>)</big><a class="headerlink" href="#mozaik.analysis.data_structures.SingleValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.analysis.data_structures.AnalysisDataStructure" title="mozaik.analysis.data_structures.AnalysisDataStructure"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.analysis.data_structures.AnalysisDataStructure</span></tt></a></p>
+<p>Data structure holding single value. This can be per model, if sheet parameter is None,
+or per sheet if sheet is specified. In principle it can also be per neuron if the neuron
+parameter is specified, but in most cases you probably want to use <a class="reference internal" href="#mozaik.analysis.data_structures.PerNeuronValue" title="mozaik.analysis.data_structures.PerNeuronValue"><tt class="xref py py-class docutils literal"><span class="pre">PerNeuronValue</span></tt></a>
+instead.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Mozaik parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt><strong>value_name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SString(constant=False, default=None, period=None, readonly=False, units=None)</span></dt>
+<dd><p class="first last">The name of the value.</p>
+</dd>
+<dt><strong>period</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=None, constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=None)</span></dt>
+<dd><p class="first last">The period of the value. If value is not periodic period=None</p>
+</dd>
+<dt><strong>value</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=None, constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=None)</span></dt>
+<dd><p class="first last">The value.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.analysis.data_structures.PerNeuronValue">
+<em class="property">class </em><tt class="descclassname">mozaik.analysis.data_structures.</tt><tt class="descname">PerNeuronValue</tt><big>(</big><em>values</em>, <em>idds</em>, <em>value_units</em>, <em>**params</em><big>)</big><a class="headerlink" href="#mozaik.analysis.data_structures.PerNeuronValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.analysis.data_structures.AnalysisDataStructure" title="mozaik.analysis.data_structures.AnalysisDataStructure"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.analysis.data_structures.AnalysisDataStructure</span></tt></a></p>
+<p>Data structure holding single value per neuron.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>values</strong> : list</p>
+<blockquote>
+<div><p>The vector of values one per neuron</p>
+</div></blockquote>
+<p><strong>value_units</strong> : quantities</p>
+<blockquote>
+<div><p>Quantities unit describing the units of the value</p>
+</div></blockquote>
+<p><strong>ids</strong> : list(int)</p>
+<blockquote>
+<div><p>The ids of the neurons which are stored, in the same order as in the values</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Mozaik parameters:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt><strong>value_name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SString(constant=False, default=None, period=None, readonly=False, units=None)</span></dt>
+<dd><p class="first last">The name of the value.</p>
+</dd>
+<dt><strong>period</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=None, constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=None)</span></dt>
+<dd><p class="first last">The period of the value. If value is not periodic period=None</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mozaik.analysis.data_structures.PerNeuronValue.get_value_by_id">
+<tt class="descname">get_value_by_id</tt><big>(</big><em>idds</em><big>)</big><a class="headerlink" href="#mozaik.analysis.data_structures.PerNeuronValue.get_value_by_id" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>idd</strong> : int or list(int)</p>
+<blockquote>
+<div><p>The ids for which the return the values.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>ids</strong> : AnalogSignal or list(AnalogSignal)</p>
+<blockquote class="last">
+<div><p>List (or single) of AnalogSignal objects corresponding to ids in <cite>idd</cite>.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.analysis.data_structures.PerNeuronPairValue">
+<em class="property">class </em><tt class="descclassname">mozaik.analysis.data_structures.</tt><tt class="descname">PerNeuronPairValue</tt><big>(</big><em>values</em>, <em>idds</em>, <em>value_units</em>, <em>**params</em><big>)</big><a class="headerlink" href="#mozaik.analysis.data_structures.PerNeuronPairValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.analysis.data_structures.AnalysisDataStructure" title="mozaik.analysis.data_structures.AnalysisDataStructure"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.analysis.data_structures.AnalysisDataStructure</span></tt></a></p>
+<p>Data structure holding values for each pair of neurons.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>values</strong> : numpy.nd_array</p>
+<blockquote>
+<div><p>The 2D array holding the values.</p>
+</div></blockquote>
+<p><strong>value_units</strong> : quantities</p>
+<blockquote>
+<div><p>Quantities unit describing the units of the value</p>
+</div></blockquote>
+<p><strong>ids</strong> : list(int)</p>
+<blockquote>
+<div><p>The ids of the neurons which are stored, in the same order as in the values (along both axis).</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Mozaik parameters:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt><strong>value_name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SString(constant=False, default=None, period=None, readonly=False, units=None)</span></dt>
+<dd><p class="first last">The name of the value.</p>
+</dd>
+<dt><strong>period</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=None, constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=None)</span></dt>
+<dd><p class="first last">The period of the value. If value is not periodic period=None</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mozaik.analysis.data_structures.PerNeuronPairValue.get_value_by_ids">
+<tt class="descname">get_value_by_ids</tt><big>(</big><em>idds1</em>, <em>idds2</em><big>)</big><a class="headerlink" href="#mozaik.analysis.data_structures.PerNeuronPairValue.get_value_by_ids" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>idd</strong> : int or list(int)</p>
+<blockquote>
+<div><p>The ids for which the return the values.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>ids</strong> : AnalogSignal or list(AnalogSignal)</p>
+<blockquote class="last">
+<div><p>List (or single) of AnalogSignal objects corresponding to ids in <cite>idd</cite>.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.analysis.data_structures.AnalysisDataStructure1D">
+<em class="property">class </em><tt class="descclassname">mozaik.analysis.data_structures.</tt><tt class="descname">AnalysisDataStructure1D</tt><big>(</big><em>y_axis_units</em>, <em>**params</em><big>)</big><a class="headerlink" href="#mozaik.analysis.data_structures.AnalysisDataStructure1D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.analysis.data_structures.AnalysisDataStructure" title="mozaik.analysis.data_structures.AnalysisDataStructure"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.analysis.data_structures.AnalysisDataStructure</span></tt></a></p>
+<p>Data structure representing 1D data.
+All data corresponds to the same axis name and units.
+Explicitly specifies the axis - their name and units.
+Note that at this stage we do not assume the structure in which the data
+is stored.
+Also the class can hold multiple instances of 1D data.</p>
+<p>It uses the quantities package to specify units.
+If at all possible all data stored in numoy arrays should be quantities
+arrays with matching units!</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>y_axis_units</strong> : quantities</p>
+<blockquote>
+<div><p>The quantities units of y axis.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Mozaik parameters:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt><strong>y_axis_name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SString(constant=False, default=None, period=None, readonly=False, units=None)</span></dt>
+<dd><p class="first last">the name of the y axis.</p>
+</dd>
+<dt><strong>x_axis_name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SString(constant=False, default=None, period=None, readonly=False, units=None)</span></dt>
+<dd><p class="first last">the name of the x axis.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.analysis.data_structures.AnalogSignalList">
+<em class="property">class </em><tt class="descclassname">mozaik.analysis.data_structures.</tt><tt class="descname">AnalogSignalList</tt><big>(</big><em>asl</em>, <em>ids</em>, <em>y_axis_units</em>, <em>**params</em><big>)</big><a class="headerlink" href="#mozaik.analysis.data_structures.AnalogSignalList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.analysis.data_structures.AnalysisDataStructure1D" title="mozaik.analysis.data_structures.AnalysisDataStructure1D"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.analysis.data_structures.AnalysisDataStructure1D</span></tt></a></p>
+<p>This is a simple list of Neo AnalogSignal objects.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>asl</strong> : list(AnalogSignal)</p>
+<blockquote>
+<div><p>The variable containing the list of AnalogSignal objects, in the order
+corresponding to the order of neurons indexes in the indexes parameter.</p>
+</div></blockquote>
+<p><strong>ids</strong> : list(int)</p>
+<blockquote class="last">
+<div><p>List of ids of neurons in the original Mozaik sheet to which the
+AnalogSignals correspond.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mozaik.analysis.data_structures.AnalogSignalList.get_asl_by_id">
+<tt class="descname">get_asl_by_id</tt><big>(</big><em>idd</em><big>)</big><a class="headerlink" href="#mozaik.analysis.data_structures.AnalogSignalList.get_asl_by_id" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>idd</strong> : int or list(int)</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>ids</strong> : AnalogSignal or list(AnalogSignal)</p>
+<blockquote class="last">
+<div><p>List (or single) of AnalogSignal objects corresponding to ids in <cite>idd</cite>.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.analysis.data_structures.ConductanceSignalList">
+<em class="property">class </em><tt class="descclassname">mozaik.analysis.data_structures.</tt><tt class="descname">ConductanceSignalList</tt><big>(</big><em>e_con</em>, <em>i_con</em>, <em>ids</em>, <em>**params</em><big>)</big><a class="headerlink" href="#mozaik.analysis.data_structures.ConductanceSignalList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.analysis.data_structures.AnalysisDataStructure1D" title="mozaik.analysis.data_structures.AnalysisDataStructure1D"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.analysis.data_structures.AnalysisDataStructure1D</span></tt></a></p>
+<p>This is a simple list of Neurotools AnalogSignal objects representing the
+conductances.</p>
+<p>The object holds two lists, one for excitatory and one for inhibitory
+conductances.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>e_asl</strong> : list(AnalogSignal)</p>
+<blockquote>
+<div><p>The variable containing the list of AnalogSignal objects corresponding
+to excitatory conductances, in the order corresponding to the order of
+neurons indexes in the indexes parameter.</p>
+</div></blockquote>
+<p><strong>i_asl</strong> : list(AnalogSignal)</p>
+<blockquote>
+<div><p>The variable containing the list of AnalogSignal objects corresponding
+to inhibitory conductances, in the order corresponding to the order of
+neurons indexes in the indexes parameter.</p>
+</div></blockquote>
+<p><strong>ids</strong> : list(int)</p>
+<blockquote class="last">
+<div><p>List of ids of neurons in the original Mozaik sheet to which the
+AnalogSignals correspond.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mozaik.analysis.data_structures.ConductanceSignalList.get_econ_by_id">
+<tt class="descname">get_econ_by_id</tt><big>(</big><em>idd</em><big>)</big><a class="headerlink" href="#mozaik.analysis.data_structures.ConductanceSignalList.get_econ_by_id" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>idd</strong> : int or list(int)</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>ids</strong> : AnalogSignal or list(AnalogSignal)</p>
+<blockquote class="last">
+<div><p>List (or single) of AnalogSignal objects containing excitatory conductanes corresponding to ids in <cite>idd</cite>.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.analysis.data_structures.ConductanceSignalList.get_icon_by_id">
+<tt class="descname">get_icon_by_id</tt><big>(</big><em>idd</em><big>)</big><a class="headerlink" href="#mozaik.analysis.data_structures.ConductanceSignalList.get_icon_by_id" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>idd</strong> : int or list(int)</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>ids</strong> : AnalogSignal or list(AnalogSignal)</p>
+<blockquote class="last">
+<div><p>List (or single) of AnalogSignal objects containing inhibitory conductanes corresponding to ids in <cite>idd</cite>.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.analysis.data_structures.Connections">
+<em class="property">class </em><tt class="descclassname">mozaik.analysis.data_structures.</tt><tt class="descname">Connections</tt><big>(</big><em>weights</em>, <em>delays</em>, <em>**params</em><big>)</big><a class="headerlink" href="#mozaik.analysis.data_structures.Connections" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.analysis.data_structures.AnalysisDataStructure" title="mozaik.analysis.data_structures.AnalysisDataStructure"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.analysis.data_structures.AnalysisDataStructure</span></tt></a></p>
+<p>Data structure holding connections.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>weights</strong> : list</p>
+<blockquote>
+<div><p>List of tuples (i,j,w) where i is index of pre-synaptic neuron in sheet source_name and j is index of post-synaptic neuron in sheet target_name, and w is the weights.</p>
+</div></blockquote>
+<p><strong>delays</strong> : list</p>
+<blockquote>
+<div><p>List of tuples (i,j,d) where i is index of pre-synaptic neuron in sheet source_name and j is index of post-synaptic neuron in sheet target_name, and d is the delay.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Mozaik parameters:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt><strong>source_name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SString(constant=False, default=None, period=None, readonly=False, units=None)</span></dt>
+<dd><p class="first last">The name of the source sheet.</p>
+</dd>
+<dt><strong>target_name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SString(constant=False, default=None, period=None, readonly=False, units=None)</span></dt>
+<dd><p class="first last">The name of the target sheet.</p>
+</dd>
+<dt><strong>proj_name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SString(constant=False, default=None, period=None, readonly=False, units=None)</span></dt>
+<dd><p class="first last">Projection name.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-mozaik.analysis.helper_functions">
+<span id="helper-functions-module"></span><h3><tt class="xref py py-mod docutils literal"><span class="pre">helper_functions</span></tt> Module<a class="headerlink" href="#module-mozaik.analysis.helper_functions" title="Permalink to this headline">¶</a></h3>
+<p>This module contains various utility functions often useb by analysis code.</p>
+<dl class="function">
+<dt id="mozaik.analysis.helper_functions.psth">
+<tt class="descclassname">mozaik.analysis.helper_functions.</tt><tt class="descname">psth</tt><big>(</big><em>spike_list</em>, <em>bin_length</em><big>)</big><a class="headerlink" href="#mozaik.analysis.helper_functions.psth" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function returns the psth of the spiketrains with bin length bin_length.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>spike_list</strong> : list(SpikeTrain )</p>
+<blockquote>
+<div><p>The list of spike trains. They are assumed to start and end at the same time.</p>
+</div></blockquote>
+<p><strong>bin_length</strong> : float (ms)</p>
+<blockquote>
+<div><p>Bin length.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>psth</strong> : AnalogSignal</p>
+<blockquote class="last">
+<div><p>The PSTH of the spiketrain.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.analysis.helper_functions.psth_across_trials">
+<tt class="descclassname">mozaik.analysis.helper_functions.</tt><tt class="descname">psth_across_trials</tt><big>(</big><em>spike_trials</em>, <em>bin_length</em><big>)</big><a class="headerlink" href="#mozaik.analysis.helper_functions.psth_across_trials" title="Permalink to this definition">¶</a></dt>
+<dd><p>It returns PSTH averaged across the spiketrains</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>spike_trials</strong> : list(list(SpikeTrain))</p>
+<blockquote>
+<div><p>should contain a list of lists of neo spiketrains objects,
+first coresponding to different trials and second to different neurons.
+The function returns the histogram of spikes across trials with bin length
+bin_length.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>psth</strong> : AnalogSignal</p>
+<blockquote class="last">
+<div><p>The PSTH averages over the spiketrains in spike_trials.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-mozaik.analysis.technical">
+<span id="technical-module"></span><h3><tt class="xref py py-mod docutils literal"><span class="pre">technical</span></tt> Module<a class="headerlink" href="#module-mozaik.analysis.technical" title="Permalink to this headline">¶</a></h3>
+<p>This module contains special analysis functions that relate to some tehnical mozaik architecture aspects and thus 
+do not represent a standard analysis</p>
+<dl class="class">
+<dt id="mozaik.analysis.technical.NeuronAnnotationsToPerNeuronValues">
+<em class="property">class </em><tt class="descclassname">mozaik.analysis.technical.</tt><tt class="descname">NeuronAnnotationsToPerNeuronValues</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>tags=None</em><big>)</big><a class="headerlink" href="#mozaik.analysis.technical.NeuronAnnotationsToPerNeuronValues" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.analysis.analysis.Analysis" title="mozaik.analysis.analysis.Analysis"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.analysis.analysis.Analysis</span></tt></a></p>
+<p>Creates a PerNeuronValues analysis data structure per each neuron
+annotation that is defined for all neurons in a given sheet.</p>
+<p>This analysis is aware of several mozaik specific annotations and adds additional
+appropriate information to the PerNeuronValue ADS (i.e. setting period to
+numpy.pi of orientation preference of initial connection fields).
+Users are expected to modify this class to add additional information for
+their new annotations if required.
+It is assumed that in future the handling of parameters around Mozaik
+might be enhanced and unified further to avoid extension of this class.</p>
+<dl class="method">
+<dt id="mozaik.analysis.technical.NeuronAnnotationsToPerNeuronValues.perform_analysis">
+<tt class="descname">perform_analysis</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.analysis.technical.NeuronAnnotationsToPerNeuronValues.perform_analysis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-mozaik.analysis.vision">
+<span id="vision-module"></span><h3><tt class="xref py py-mod docutils literal"><span class="pre">vision</span></tt> Module<a class="headerlink" href="#module-mozaik.analysis.vision" title="Permalink to this headline">¶</a></h3>
+<p>Module containing vision specific analysis.</p>
+<dl class="class">
+<dt id="mozaik.analysis.vision.ModulationRatio">
+<em class="property">class </em><tt class="descclassname">mozaik.analysis.vision.</tt><tt class="descname">ModulationRatio</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>tags=None</em><big>)</big><a class="headerlink" href="#mozaik.analysis.vision.ModulationRatio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.analysis.analysis.Analysis" title="mozaik.analysis.analysis.Analysis"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.analysis.analysis.Analysis</span></tt></a></p>
+<p>This analysis calculates the modulation ration (as the F1/F0) for all
+neurons in the data using all available responses recorded to the
+FullfieldDriftingSinusoidalGrating stimuli. This method also requires
+that &#8216;orientation preference&#8217; has already been calculated for all the 
+neurons.</p>
+<p>The <cite>ModulationRatio</cite> takes all responses recorded to the FullfieldDriftingSinusoidalGrating and
+calculates their PSTH.  Then it collapses this list of PSTHs into groups, each containing PSTH associated
+with the same FullfieldDriftingSinusoidalGrating stimulus with the  exception of the orientation. 
+For each such group it then goes through each recorded neuron and selects the closest 
+presented orientation to the orientation peference of the given neuron, and using the PSTH associated 
+with this selected orientation it calculates the modulation ratio for that neuron. This way for each
+group it will calculate modulation ratios for all recorded neurons, and will store them in datastore
+using the PerNeuronValue data structure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>bin_length</strong> : float (ms)</p>
+<blockquote class="last">
+<div><p>the size of bin to construct the PSTH from</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mozaik.analysis.vision.ModulationRatio.perform_analysis">
+<tt class="descname">perform_analysis</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.analysis.vision.ModulationRatio.perform_analysis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.analysis.vision.Analog_F0andF1">
+<em class="property">class </em><tt class="descclassname">mozaik.analysis.vision.</tt><tt class="descname">Analog_F0andF1</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>tags=None</em><big>)</big><a class="headerlink" href="#mozaik.analysis.vision.Analog_F0andF1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.analysis.analysis.Analysis" title="mozaik.analysis.analysis.Analysis"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.analysis.analysis.Analysis</span></tt></a></p>
+<p>Calculates the DC and first harmonic of trial averaged vm and conductances for each neuron
+measured to FullfieldDriftingSinusoidalGrating. 
+It stores them in PerNeuronValue datastructures (one for exc. one for inh. conductances).</p>
+<p class="rubric">Notes</p>
+<p>Only neurons for which the corresponding signals were measured will be included in the PerNeuronValue data structures.</p>
+<dl class="method">
+<dt id="mozaik.analysis.vision.Analog_F0andF1.perform_analysis">
+<tt class="descname">perform_analysis</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.analysis.vision.Analog_F0andF1.perform_analysis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.analysis.vision.LocalHomogeneityIndex">
+<em class="property">class </em><tt class="descclassname">mozaik.analysis.vision.</tt><tt class="descname">LocalHomogeneityIndex</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>tags=None</em><big>)</big><a class="headerlink" href="#mozaik.analysis.vision.LocalHomogeneityIndex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.analysis.analysis.Analysis" title="mozaik.analysis.analysis.Analysis"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.analysis.analysis.Analysis</span></tt></a></p>
+<p>Calculates Local Homogeneity Index (LHI) for each neuron, of each PerNeuronValue that is present in the datastore, according to:
+Nauhaus, I., Benucci, A., Carandini, M., &amp; Ringach, D. (2008). Neuronal selectivity and local map structure in visual cortex. Neuron, 57(5), 673–679.</p>
+<dl class="attribute">
+<dt id="mozaik.analysis.vision.LocalHomogeneityIndex.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'sigma': &lt;type 'float'&gt;}</em><a class="headerlink" href="#mozaik.analysis.vision.LocalHomogeneityIndex.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.analysis.vision.LocalHomogeneityIndex.perform_analysis">
+<tt class="descname">perform_analysis</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.analysis.vision.LocalHomogeneityIndex.perform_analysis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/mozaik_logo_small.svg" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mozaik.html"
+                        title="previous chapter">mozaik API</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mozaik.connectors.html"
+                        title="next chapter">connector Package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/mozaik.analysis.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mozaik.connectors.html" title="connector Package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mozaik.html" title="mozaik API"
+             >previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="mozaik.html" >mozaik API</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2013, mozaik authors and contributors &lt;&gt;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

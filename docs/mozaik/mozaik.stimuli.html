@@ -1,0 +1,256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>stimuli Package &mdash; mozaik 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mozaik 0.1.0 documentation" href="index.html" />
+    <link rel="up" title="mozaik API" href="mozaik.html" />
+    <link rel="next" title="vision Package" href="mozaik.stimuli.vision.html" />
+    <link rel="prev" title="vision Package" href="mozaik.models.vision.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mozaik.stimuli.vision.html" title="vision Package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mozaik.models.vision.html" title="vision Package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="mozaik.html" accesskey="U">mozaik API</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="stimuli-package">
+<h1>stimuli Package<a class="headerlink" href="#stimuli-package" title="Permalink to this headline">¶</a></h1>
+<p>This sub-package contains modules that are related to definition and manipulation of stimuli.</p>
+<div class="section" id="modules">
+<h2>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="xref py py-mod docutils literal"><span class="pre">mozaik.stimuli.stimulus</span></tt> - contains definition of the stimulus API</li>
+<li><tt class="xref py py-mod docutils literal"><span class="pre">mozaik.stimuli.visual_stimulus</span></tt> - contains definitions of the visual stimulus API, and implements some of the functions specified in the stimulus interface</li>
+<li><tt class="xref py py-mod docutils literal"><span class="pre">mozaik.stimuli.topographica_based</span></tt> - contains implementation of number of visual stimuli, using the <a class="reference external" href="http://topographica.org/">Topographica</a> pattern generation package.</li>
+</ul>
+</div></blockquote>
+<p>See the <tt class="xref py py-mod docutils literal"><span class="pre">mozaik.stimuli.stimulus</span></tt> for more general information on stimulus handling in <em>mozaik</em>.</p>
+<div class="section" id="module-mozaik.stimuli.__init__">
+<span id="stimuli-module"></span><h3><tt class="xref py py-mod docutils literal"><span class="pre">stimuli</span></tt> Module<a class="headerlink" href="#module-mozaik.stimuli.__init__" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>This module defines the API for:</dt>
+<dd><ul class="first last simple">
+<li>implementation of stimuli as input to models (see class BaseStimulus)</li>
+<li>identification of stimulus identity</li>
+<li>function helpers for common manipulation with collections of stimuli</li>
+</ul>
+</dd>
+</dl>
+<p>Each stimulus is expected to have a list of parameters which have to uniquely identify the stimulus.
+This parameterization is done via the MozaikParametrized package (see <a class="reference internal" href="mozaik.tools.html#mozaik.tools.mozaik_parametrized.MozaikParametrized" title="mozaik.tools.mozaik_parametrized.MozaikParametrized"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.tools.mozaik_parametrized.MozaikParametrized</span></tt></a>)
+that allows to specify parameters with the all above requirements.
+For Stimuli objects we will allow only SNumber, SInteger and SString parameter types (see <a class="reference internal" href="mozaik.tools.html#module-mozaik.tools.mozaik_parametrized" title="mozaik.tools.mozaik_parametrized"><tt class="xref py py-mod docutils literal"><span class="pre">mozaik.tools.mozaik_parametrized</span></tt></a>).
+These extend the corresponding parameterized parameters to allow specification of units.</p>
+<p>Note that each stimulus can be converted back and forth into a string via the str operator and the <a class="reference internal" href="mozaik.tools.html#mozaik.tools.mozaik_parametrized.MozaikParametrized.idd" title="mozaik.tools.mozaik_parametrized.MozaikParametrized.idd"><tt class="xref py py-func docutils literal"><span class="pre">mozaik.tools.mozaik_parametrized.MozaikParametrized.idd()</span></tt></a> function. 
+This allows for efficient storing  and manipulation of stimulus identities.</p>
+<p>Note that <em>all</em> such parameters defined in the class (and its ancestors) will
+be considered as parameters of the BaseStimulus.</p>
+<dl class="class">
+<dt id="mozaik.stimuli.__init__.BaseStimulus">
+<em class="property">class </em><tt class="descclassname">mozaik.stimuli.__init__.</tt><tt class="descname">BaseStimulus</tt><big>(</big><em>**params</em><big>)</big><a class="headerlink" href="#mozaik.stimuli.__init__.BaseStimulus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="mozaik.tools.html#mozaik.tools.mozaik_parametrized.MozaikParametrized" title="mozaik.tools.mozaik_parametrized.MozaikParametrized"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.tools.mozaik_parametrized.MozaikParametrized</span></tt></a></p>
+<p>The abstract stimulus class. It defines the parameters common to all stimuli and
+the list of function each stimulus has to provide.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Mozaik parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt><strong>frame_duration</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=None, constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=1 ms (millisecond))</span></dt>
+<dd><p class="first last">The duration of single frame</p>
+</dd>
+<dt><strong>trial</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SInteger(bounds=None, constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=None)</span></dt>
+<dd><p class="first last">The trial of the stimulus</p>
+</dd>
+<dt><strong>duration</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SNumber(bounds=None, constant=False, default=None, inclusive_bounds=(True, True), period=None, readonly=False, units=1 ms (millisecond))</span></dt>
+<dd><p class="first last">The duration of stimulus</p>
+</dd>
+<dt><strong>direct_stimulation_name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">SString(constant=False, default=None, period=None, readonly=False, units=None)</span></dt>
+<dd><p class="first last">The name of the artifical stimulation protocol</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mozaik.stimuli.__init__.BaseStimulus.number_of_parameters">
+<tt class="descname">number_of_parameters</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.stimuli.__init__.BaseStimulus.number_of_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns number of parameters of the stimulus.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.stimuli.__init__.BaseStimulus.frames">
+<tt class="descname">frames</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.stimuli.__init__.BaseStimulus.frames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a generator which yields the frames of the stimulus in sequence.
+Each frame is returned as a tuple <cite>(frame, variables)</cite> where
+<cite>frame</cite> is a numpy array containing the stimulus at the given time and
+<cite>variables</cite> is a list of variable values (e.g., orientation) associated
+with that frame.</p>
+<p>See topographica_based for examples.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.stimuli.__init__.BaseStimulus.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.stimuli.__init__.BaseStimulus.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the current frame to the next frame in the sequence.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.stimuli.__init__.BaseStimulus.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.stimuli.__init__.BaseStimulus.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset to the first frame in the sequence.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.stimuli.__init__.BaseStimulus.export">
+<tt class="descname">export</tt><big>(</big><em>path=None</em><big>)</big><a class="headerlink" href="#mozaik.stimuli.__init__.BaseStimulus.export" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the frames to disk. Returns a list of paths to the individual
+frames.</p>
+<dl class="docutils">
+<dt>path - the directory in which the individual frames will be saved. If</dt>
+<dd>path is None, then a temporary directory is created.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.stimuli.__init__.InternalStimulus">
+<em class="property">class </em><tt class="descclassname">mozaik.stimuli.__init__.</tt><tt class="descname">InternalStimulus</tt><big>(</big><em>**params</em><big>)</big><a class="headerlink" href="#mozaik.stimuli.__init__.InternalStimulus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.stimuli.__init__.BaseStimulus" title="mozaik.stimuli.__init__.BaseStimulus"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.stimuli.__init__.BaseStimulus</span></tt></a></p>
+<p>This is a very specific case of stimulus. It is used exclusively in the case the model does not 
+have any sensory stimulus (and consequently input space). In such case it is still possible to 
+stimulate the network &#8216;artifically&#8217; via the Experiment&#8217;s direct stimulation facilities (see exc_spike_stimulators etc. in Experiment class).</p>
+<p>In such case this stimulus should be associated with the experiment, as it will allow for all the other parts of mozaik to work
+consistently, and will be useful in that it will record the duration of the experiment, the possible information about multiple trials,
+and the identity of the artificialy stimulation used. Note that in that case the frame_duration should be set to duration time.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="subpackages">
+<h3>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="mozaik.stimuli.vision.html">vision Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mozaik.stimuli.vision.html#stimuli-visual-stimulus-module"><tt class="docutils literal"><span class="pre">stimuli.visual_stimulus</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mozaik.stimuli.vision.html#stimuli-topographica-based-module"><tt class="docutils literal"><span class="pre">stimuli.topographica_based</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/mozaik_logo_small.svg" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mozaik.models.vision.html"
+                        title="previous chapter">vision Package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mozaik.stimuli.vision.html"
+                        title="next chapter">vision Package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/mozaik.stimuli.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mozaik.stimuli.vision.html" title="vision Package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mozaik.models.vision.html" title="vision Package"
+             >previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="mozaik.html" >mozaik API</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2013, mozaik authors and contributors &lt;&gt;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

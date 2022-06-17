@@ -1,0 +1,451 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Mozaik Tutorial 1 &mdash; mozaik 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mozaik 0.1.0 documentation" href="index.html" />
+    <link rel="up" title="Tutorials" href="tutorials.html" />
+    <link rel="next" title="mozaik API" href="mozaik.html" />
+    <link rel="prev" title="Tutorials" href="tutorials.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mozaik.html" title="mozaik API"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="tutorials.html" title="Tutorials"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="tutorials.html" accesskey="U">Tutorials</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="mozaik-tutorial-1">
+<h1>Mozaik Tutorial 1<a class="headerlink" href="#mozaik-tutorial-1" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial assumes we have already installed mozaik. Being a workflow organizer, mozaik relies on several software packages and programs, e.g. a simulator like <a class="reference external" href="http://www.nest-initiative.org/index.php/Software:About_NEST">NEST</a>, the <a class="reference external" href="http://neuralensemble.org/PyNN/">PyNN</a> simulation language, and their dependencies... Please refer to the installation instructions to have mozaik on your machine.</p>
+<div class="section" id="project-folder-organization">
+<h2>Project folder organization<a class="headerlink" href="#project-folder-organization" title="Permalink to this headline">¶</a></h2>
+<p>There would be no need to have the code for our project in separate files but it is a good practice for larger projects, so we will go through each file dealing with a part of the workflow:</p>
+<ul class="simple">
+<li><strong>model.py</strong> contains the high level specification of the network (sheet creation, reference to parameters, connection schema, ...).</li>
+<li><strong>param</strong> is a folder containing a parameter file for each sheet.</li>
+<li><strong>experiments.py</strong> contains a planned stimulation protocol for the network.</li>
+<li><strong>run.py</strong> executes the experiment and, eventually, saves the results to file, runs analysis, plotting, ...</li>
+<li><strong>analysis_and_visualization.py</strong> specifies how to filter recorded data, what algorithm apply to these results and how to create publication-ready figures.</li>
+</ul>
+</div>
+<div class="section" id="file-content">
+<h2>File Content<a class="headerlink" href="#file-content" title="Permalink to this headline">¶</a></h2>
+<p>Now let&#8217;s take a look at the content of the files. For simplicity, to force ourselves in looking more at the actual files and to keep focused on what we need to look at in them, only the relevant lines will be shown here. In any case the number of lines is very little compared to what we can accomplish with them.</p>
+<div class="section" id="model-py">
+<h3>model.py<a class="headerlink" href="#model-py" title="Permalink to this headline">¶</a></h3>
+<p>There are two main components of mozaik: <strong>sheets</strong> and <strong>connectors</strong>. These are the ones we are going to set in this file.
+Mozaik comes with a whole set of sheets and connectors, we can specify their properties by assigning their parameteters. In addition, we can define our own sheets and connectors, and we will do this in the advanced tutorial.
+Each model should be derived from the mozaik base class Model:</p>
+<div class="highlight-python"><pre>class VogelsAbbott( Model )</pre>
+</div>
+<p>Inside the model constructor we will specify a list of parameters that will correspond to each of the sheets our network will have.</p>
+<p>Upon creation of the object <em>ParameterSet</em>, mozaik will load the parameters according to the names we specified in our model:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">required_parameters</span> <span class="o">=</span> <span class="n">ParameterSet</span><span class="p">({</span>
+    <span class="s">&#39;exc_layer&#39;</span> <span class="p">:</span> <span class="n">ParameterSet</span><span class="p">,</span>
+    <span class="s">&#39;inh_layer&#39;</span> <span class="p">:</span> <span class="n">ParameterSet</span><span class="p">,</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>In fact <em>Model</em> is a hierarchy of objects which represent sheets, connectors and other subobjects.
+To create instances of them, we use a corresponding hierarchy of parameters which are read during init.
+Therefore each of the above parameters is itself ParameterSet, as it will correspond to the subtree of parameters
+required to parameterize the given sheet and all its related components.
+We will set some of them in the default parameter file and others in the files inside param folder (more on this in the next section).</p>
+<p>Then we will use the sheets component parameter to load the class corresponding to it:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sim</span><span class="p">,</span> <span class="n">num_threads</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
+    <span class="n">Model</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sim</span><span class="p">,</span> <span class="n">num_threads</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+    <span class="c"># Load components</span>
+    <span class="n">ExcLayer</span> <span class="o">=</span> <span class="n">load_component</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">exc_layer</span><span class="o">.</span><span class="n">component</span><span class="p">)</span>
+    <span class="n">InhLayer</span> <span class="o">=</span> <span class="n">load_component</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">inh_layer</span><span class="o">.</span><span class="n">component</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The function <em>load_component()</em> creates the classes that represent our sheets. We then create the instances
+of the sheets and pass them the parameters that their require.</p>
+<blockquote>
+<div>exc = ExcLayer(self, self.parameters.exc_layer.params)
+inh = InhLayer(self, self.parameters.inh_layer.params)</div></blockquote>
+<p>Then we will use the sheet instances to specify how to connect each sheet in itself and against other sheets, using already available connectors or our custom defined ones (more on this in the advanced tutorial):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># initialize projections</span>
+<span class="n">UniformProbabilisticArborization</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="s">&#39;ExcExcConnection&#39;</span><span class="p">,</span>
+    <span class="n">exc</span><span class="p">,</span>
+    <span class="n">exc</span><span class="p">,</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">exc_layer</span><span class="o">.</span><span class="n">ExcExcConnection</span>
+<span class="p">)</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+<span class="c"># … and so on</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="param-folder">
+<h3>param folder<a class="headerlink" href="#param-folder" title="Permalink to this headline">¶</a></h3>
+<p>Another important component of mozaik is the management of parameters. All parameters are loaded using the <em>ParameterSet</em> class which reads, upon initialization, the root parameter file that is given to
+it on command line (see below), and recursively any other paramter files that are referenced from it (or from the other parameter files being loaded).
+In our case the root parameter file is called <em>default</em>. The root parameter file contains a dictionary of basic parameters used by mozaik to setup
+your project as well as references to other parameter files that will be included and expanded.</p>
+<p>The file <em>defaults</em> contains some general parameters which are almost self explaining (for the others have a look at the documentation):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+  <span class="s">&#39;exc_layer&#39;</span><span class="p">:</span> <span class="n">url</span><span class="p">(</span><span class="s">&quot;param/exc_layer&quot;</span><span class="p">),</span>
+  <span class="s">&#39;inh_layer&#39;</span><span class="p">:</span> <span class="n">url</span><span class="p">(</span><span class="s">&quot;param/inh_layer&quot;</span><span class="p">),</span>
+  <span class="s">&#39;results_dir&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+  <span class="s">&#39;name&#39;</span> <span class="p">:</span> <span class="s">&#39;Vogels&amp;Abbott&#39;</span><span class="p">,</span>
+  <span class="s">&#39;reset&#39;</span> <span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+  <span class="s">&#39;null_stimulus_period&#39;</span> <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+  <span class="s">&#39;input_space&#39;</span> <span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+  <span class="s">&#39;input_space_type&#39;</span> <span class="p">:</span> <span class="s">&#39;None&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The other files inside <em>param</em> contain parameters specific for each sheet. Let&#8217;s see some of them, as before only the relevant ones will be reported here.
+In the <em>component</em> parameter we specify the class to generate this sheet:</p>
+<div class="highlight-python"><pre>'component': 'mozaik.sheets.vision.VisualCorticalUniformSheet',</pre>
+</div>
+<p>Then, in params, we can detail the parameters for the type of sheet we chose:</p>
+<div class="highlight-python"><pre>'params':{
+            'name':'Exc_Layer',
+            ...,</pre>
+</div>
+<p>The parameters can be nested, as for the cell model (with its own params!) used in this sheet:</p>
+<div class="highlight-python"><pre>'cell': {
+        'model': 'IF_cond_exp',
+        'params': {</pre>
+</div>
+<p>Note that each file contains as well all the connector projecting from this sheet:</p>
+<div class="highlight-python"><pre>'ExcExcConnection': {</pre>
+</div>
+<p>that we can even refer to by reference to other files:</p>
+<div class="highlight-python"><pre>'ExcInhConnection': ref('exc_layer.ExcExcConnection'),</pre>
+</div>
+<p>When creating a layer we can track back the parameters by looking at the API doc for &#8216;mozaik.sheets.vision.VisualCorticalUniformSheet&#8217;, for example.</p>
+</div>
+<div class="section" id="experiment-py">
+<h3>experiment.py<a class="headerlink" href="#experiment-py" title="Permalink to this headline">¶</a></h3>
+<p>How to run the experiment is something unrelated to model creation. This is why we specify our experimental protocol in a separate file
+(then to reuse the same network with a different protocol we just need to use another experiment file).</p>
+<p>We write a method <em>create_experiment</em> to establish our protocol. In this case, we only want to give an initial kick, external spike train,
+to the network followed by a period or recording when the network is running on its own. To do this we will have to experiments one that
+supplies the network with the initial Kick (see the <cite>PoissonNetworkKick</cite> below), and one which effectively does nothing (see the <cite>NoStimulation</cite> below):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">return</span>  <span class="p">[</span>
+            <span class="c">#Lets kick the network up into activation</span>
+            <span class="n">PoissonNetworkKick</span><span class="p">(</span>
+                                <span class="n">model</span><span class="p">,</span><span class="n">duration</span><span class="o">=</span><span class="mi">8</span><span class="o">*</span><span class="mi">7</span><span class="p">,</span>
+                                <span class="n">sheet_list</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;V1_Exc_L4&quot;</span><span class="p">,</span><span class="s">&quot;V1_Inh_L4&quot;</span><span class="p">],</span>
+                                <span class="n">recording_configuration</span><span class="o">=</span><span class="p">{</span>
+                                                          <span class="s">&#39;component&#39;</span> <span class="p">:</span> <span class="s">&#39;mozaik.sheets.population_selector.RCRandomPercentage&#39;</span><span class="p">,</span>
+                                                          <span class="s">&#39;params&#39;</span> <span class="p">:</span> <span class="p">{</span><span class="s">&#39;percentage&#39;</span> <span class="p">:</span> <span class="mf">20.0</span><span class="p">}</span>
+                                                        <span class="p">},</span>
+                                <span class="n">lambda_list</span><span class="o">=</span><span class="p">[</span><span class="mf">100.0</span><span class="p">,</span><span class="mf">100.0</span><span class="p">],</span>
+                                <span class="n">weight_list</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">]</span>
+                              <span class="p">),</span>
+            <span class="c">#Spontaneous Activity</span>
+            <span class="n">NoStimulation</span><span class="p">(</span> <span class="n">model</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">3</span><span class="o">*</span><span class="mi">8</span><span class="o">*</span><span class="mi">7</span> <span class="p">),</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>As you can see the <cite>PoissonNetworkKick</cite> gets several parameters. One interesting is the recording_configuration, which corresponds to a dictionary
+containing the recording configuration class as the component parameter and the dictionary of parameters that will be passed to the recording configuration
+at initialization as ParameterSet as the params parameter.</p>
+<p>We can check, and modify, what is recorded by looking at the file specified as parameter &#8216;recorders&#8217; for each sheet. For example, inside the parameter file for the excitatory sheet (as above), we find:</p>
+<div class="highlight-python"><pre>'recorders' : url("param/exc_rec"),</pre>
+</div>
+<p>which tells us to look at that file to know the details of recording specifications:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;1&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;component&#39;</span> <span class="p">:</span> <span class="s">&#39;mozaik.sheets.population_selector.RCRandomN&#39;</span><span class="p">,</span>
+        <span class="s">&#39;variables&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="s">&quot;spikes&quot;</span><span class="p">),</span>
+        <span class="s">&#39;params&#39;</span> <span class="p">:</span> <span class="p">{</span> <span class="s">&#39;num_of_cells&#39;</span> <span class="p">:</span> <span class="mi">100</span> <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s">&quot;2&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;component&#39;</span> <span class="p">:</span> <span class="s">&#39;mozaik.sheets.population_selector.RCRandomN&#39;</span><span class="p">,</span>
+        <span class="s">&#39;variables&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="s">&quot;spikes&quot;</span><span class="p">,</span> <span class="s">&quot;v&quot;</span><span class="p">,</span> <span class="s">&quot;gsyn_exc&quot;</span><span class="p">,</span> <span class="s">&quot;gsyn_inh&quot;</span><span class="p">),</span>
+        <span class="s">&#39;params&#39;</span> <span class="p">:</span> <span class="p">{</span> <span class="s">&#39;num_of_cells&#39;</span> <span class="p">:</span> <span class="mi">21</span> <span class="p">}</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This is neat! We are telling mozaik to record two <em>things</em> from the exc_layer.
+The first one is just &#8220;spikes&#8221;, spike trains from 100 randomly selected cells. These
+recording will go into the mozaik <em>datastore</em>, which we will cover in one of our future tutorials, and which based around the  <a class="reference external" href="http://pythonhosted.org/neo/">NEO</a> package.
+The second recording is a bit more complex, in instructs to store voltage and conductances (excitatory and inhibitory) from 21 randomly selected cells.
+This will be handy afterwards when we will use the <em>datastore</em> to run analysis and create images...</p>
+</div>
+<div class="section" id="run-py">
+<h3>run.py<a class="headerlink" href="#run-py" title="Permalink to this headline">¶</a></h3>
+<p>The run.py is our top level execution file.
+We start our simulation with one line. We chose to put it in a separate file thus we can add other running-related operations, like logging and plotting.
+The single interesting line here is:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">data_store</span><span class="p">,</span><span class="n">model</span> <span class="o">=</span> <span class="n">run_workflow</span><span class="p">(</span> <span class="s">&#39;VogelsAbbott2005&#39;</span><span class="p">,</span> <span class="n">VogelsAbbott</span><span class="p">,</span> <span class="n">create_experiments</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>As we can see, we pass to run_workflow the name of our project, its model (that we construct in the model.py and configure via the configuration files)
+and a function which returns the list of experiments to run on it.
+This Controller method will take care of simulating the model and returns an instance of  data_store contining the recorded data (dilligently labled with all
+relevant meta-data), which we can then use for analysis and visualization, see line below:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">perform_analysis_and_visualization</span><span class="p">(</span><span class="n">data_store</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="analysis-and-visualization-py">
+<h3>analysis_and_visualization.py<a class="headerlink" href="#analysis-and-visualization-py" title="Permalink to this headline">¶</a></h3>
+<p>Last but not least, we can have a file to write our own analysis and plotting procedure. Mozaik comes with a set of analysis tools that we can further expand (we will in the advanced tutorial). In this example we will use just a couple of them in order to familirize with the process.</p>
+<p>The method that gets called in the previous run.py file receives the simulation output <em>datastore</em>:</p>
+<div class="highlight-python"><pre>def perform_analysis_and_visualization( data_store )</pre>
+</div>
+<p>As seen before, <em>datastore</em> is a object holding a collection of recordings and analysis results.
+The recordings are stored as a list of <a class="reference external" href="http://pythonhosted.org/neo/">NEO</a> segments containing analog signals and spikes of cells from our sheets that we have instructed mozaik to record.
+There are methods in the query mozaik subpackaged  that allow us to create sub-views of the <em>datastore</em> effectivly perform various filterings on our records base on range
+of metadata such as the identyty and parameters of stimuli to which the recordings have been obtained.
+Here we take only a simple subset and leave more sophisticated operation for a more advanced tutorial.
+To understand the analysis process we do a very simple, though still meaningful, example.
+We simply take all recordings done in layer &#8216;Exc_Layer&#8217; (funtion <cite>param_filter_query</cite>), retrieve the segments from this data
+store view, pick the first segment and get the ids of the neurons for which the excitatory conductances were stored, and saved this list
+in the variable <cite>analog_ids</cite>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">analog_ids</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">param_filter_query</span><span class="p">(</span><span class="n">data_store</span><span class="p">,</span><span class="n">sheet_name</span><span class="o">=</span><span class="s">&quot;Exc_Layer&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get_segments</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_stored_esyn_ids</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>We filter our data_store set by taking only the part of recorded traces that were obtained during spontaneous activity after the kick.
+Then, we will process our traces using a Peri-Stimulus Time Histogram with bin length set at 5ms, just as a histogram binning example since this experiment has no stimulus:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">PSTH</span><span class="p">(</span>
+   <span class="n">param_filter_query</span><span class="p">(</span> <span class="n">data_store</span><span class="p">,</span> <span class="n">st_direct_stimulation_name</span><span class="o">=</span><span class="s">&quot;None&quot;</span> <span class="p">),</span>
+   <span class="n">ParameterSet</span><span class="p">({</span><span class="s">&#39;bin_length&#39;</span> <span class="p">:</span> <span class="mf">5.0</span><span class="p">})</span>
+<span class="p">)</span><span class="o">.</span><span class="n">analyse</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Next, we compute the average firing rate, on the same data_store subset, which effectivly will be spike count per neuron
+as in this experiment we had only one trial:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">TrialAveragedFiringRate</span><span class="p">(</span>
+   <span class="n">param_filter_query</span><span class="p">(</span> <span class="n">data_store</span><span class="p">,</span> <span class="n">st_direct_stimulation_name</span><span class="o">=</span><span class="s">&quot;None&quot;</span> <span class="p">),</span>
+   <span class="n">ParameterSet</span><span class="p">({})</span>
+<span class="p">)</span><span class="o">.</span><span class="n">analyse</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Then we check the correlation among analog signals on a per neuron basis:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">NeuronToNeuronAnalogSignalCorrelations</span><span class="p">(</span>
+    <span class="n">param_filter_query</span><span class="p">(</span> <span class="n">data_store</span><span class="p">,</span> <span class="n">analysis_algorithm</span><span class="o">=</span><span class="s">&#39;PSTH&#39;</span> <span class="p">),</span>
+    <span class="n">ParameterSet</span><span class="p">({</span><span class="s">&#39;convert_nan_to_zero&#39;</span> <span class="p">:</span> <span class="bp">True</span><span class="p">})</span>
+<span class="p">)</span><span class="o">.</span><span class="n">analyse</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Note that, during the procedure, we can end up with some unassigned value. We can specify the conversion to be applied in this case.
+Finally we compute the population mean over any <cite>PerNeuronValue</cite> analysis data structures so far added to the datastore, which will effectively
+give as the average firing rate and average PSTH correlation between neurons:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">PopulationMean</span><span class="p">(</span> <span class="n">data_store</span><span class="p">,</span> <span class="n">ParameterSet</span><span class="p">({})</span> <span class="p">)</span><span class="o">.</span><span class="n">analyse</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>There are several nice things about plotting in mozaik. Plots are easily defined in all their aspects, using the same parameters approach common across mozaik.
+We simply take our data_store view from a query and pass it to the plot creator, which is based around matplotlib:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">dsv</span> <span class="o">=</span> <span class="n">param_filter_query</span><span class="p">(</span><span class="n">data_store</span><span class="p">,</span><span class="n">st_direct_stimulation_name</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;None&#39;</span><span class="p">])</span>
+
+<span class="n">OverviewPlot</span><span class="p">(</span>
+    <span class="n">dsv</span><span class="p">,</span>
+    <span class="n">ParameterSet</span><span class="p">({</span>
+         <span class="s">&#39;sheet_name&#39;</span> <span class="p">:</span> <span class="s">&#39;Exc_Layer&#39;</span><span class="p">,</span>
+         <span class="s">&#39;neuron&#39;</span> <span class="p">:</span> <span class="n">analog_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+         <span class="s">&#39;sheet_activity&#39;</span> <span class="p">:</span> <span class="p">{}</span>
+    <span class="p">}),</span>
+    <span class="n">fig_param</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;dpi&#39;</span> <span class="p">:</span> <span class="mi">100</span><span class="p">,</span><span class="s">&#39;figsize&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">19</span><span class="p">,</span><span class="mi">12</span><span class="p">)},</span>
+    <span class="n">plot_file_name</span><span class="o">=</span><span class="s">&#39;ExcAnalog1.png&#39;</span>
+<span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">({</span>
+    <span class="s">&#39;Vm_plot.y_lim&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">80</span><span class="p">,</span><span class="o">-</span><span class="mi">50</span><span class="p">),</span>
+    <span class="s">&#39;Conductance_plot.y_lim&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">500.0</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>The parameters to specify are those of matplotlib, for &#8216;fig_param&#8217; and plot(), plus some from our data_store.</p>
+</div>
+<div class="section" id="results">
+<h3>Results<a class="headerlink" href="#results" title="Permalink to this headline">¶</a></h3>
+<p>Running this project is as easy as enter this command line in the mozaik/contrib directory:</p>
+<div class="highlight-python"><pre>$ mpirun python run.py nest 1 param/defaults 'test'</pre>
+</div>
+<p>In this example mozaik uses MPI to run its jobs and NEST as simulator. These are specified as command line parameters, together with the name for this specific run (in this case &#8216;test&#8217;).</p>
+<p>The command will produce a quite long series of logging lines in our terminal, which we can briefly review (and which can be shut down commenting out logging in the run.py file). At start, our backend simulator, NEST, is called by PyNN on behalf of mozaik:</p>
+<div class="highlight-python"><pre>            -- N E S T --
+
+Copyright (C) 2004 The NEST Initiative
+Version 2.2.2 Jul  5 2013 15:53:57
+
+This program is provided AS IS and comes with
+NO WARRANTY. See the file LICENSE for details.
+
+Problems or suggestions?
+  Website     : http://www.nest-initiative.org
+  Mailing list: nest_user@nest-initiative.org
+
+Type 'nest.help()' to find out more about NEST.</pre>
+</div>
+<p>Then we have mozaik actually loading and working the classes to create our sheets,  connect them and execute the simulation:</p>
+<div class="highlight-python"><pre>0    Loaded component VisualCorticalUniformSheet from module mozaik.sheets.vision
+0    Loaded component VisualCorticalUniformSheet from module mozaik.sheets.vision
+0    Creating VisualCorticalUniformSheet with 3200 neurons.
+0  NEST does not allow setting an initial value for g_ex
+0  NEST does not allow setting an initial value for g_in
+0    Loaded component RCRandomN from module mozaik.sheets.population_selector
+0    Loaded component RCRandomN from module mozaik.sheets.population_selector
+0    Creating VisualCorticalUniformSheet with 800 neurons.
+0  NEST does not allow setting an initial value for g_ex
+0  NEST does not allow setting an initial value for g_in
+0    Loaded component RCRandomN from module mozaik.sheets.population_selector
+0    Loaded component RCRandomN from module mozaik.sheets.population_selector
+0    Creating UniformProbabilisticArborization between VisualCorticalUniformSheet and VisualCorticalUniformSheet
+0    Connector UniformProbabilisticArborization took 1s to compute
+0    Creating UniformProbabilisticArborization between VisualCorticalUniformSheet and VisualCorticalUniformSheet
+0    Connector UniformProbabilisticArborization took 0s to compute
+0    Creating UniformProbabilisticArborization between VisualCorticalUniformSheet and VisualCorticalUniformSheet
+0    Connector UniformProbabilisticArborization took 1s to compute
+0    Creating UniformProbabilisticArborization between VisualCorticalUniformSheet and VisualCorticalUniformSheet
+0    Connector UniformProbabilisticArborization took 0s to compute
+0    Starting Experiemnts
+0    Starting experiment: PoissonNetworkKick
+0    Running model
+0    Simulating the network for 56 ms
+0    Finished simulating the network for 56 ms
+0    Stimulus 1/1 finished. Memory usage: 194MB
+0    Experiment 1/2 finished
+0    Starting experiment: NoStimulation
+0    Running model
+0    Simulating the network for 168 ms
+0    Finished simulating the network for 168 ms
+0    Stimulus 1/1 finished. Memory usage: 199MB
+0    Experiment 2/2 finished
+0    Total simulation run time: 14s
+0    Simulator run time: 6s (46%)
+0    Mozaik run time: 7s (53%)
+Final memory usage: 199MB
+There are some notes to these lines.</pre>
+</div>
+<div class="line-block">
+<div class="line">We see that NEST emits some alerts, due to initializations which cannot be accomplished. Don&#8217;t worry they don&#8217;t affect our simulation (they are just specification of PyNN not met in NEST).</div>
+<div class="line">Then we can see mozaik classes loaded to accomplish what we specified in our files: our model is derived from VisualCorticalUniformSheet and connected using UniformProbabilisticArborization. After network creation, our experiment is performed, which is composed of two phases (PoissonNetworkKick and NoStimulation). Data is then recorded and some statistic about the simulation emitted.</div>
+</div>
+<p>Since we also chose to have some analysis and plotting, we can see logs also for these activities:</p>
+<div class="highlight-python"><pre>Starting visualization
+0    Starting PSTH analysis
+0  PSTH analysis took: 0.262467861176seconds
+0    Starting TrialAveragedFiringRate analysis
+0  TrialAveragedFiringRate analysis took: 0.21697306633seconds
+...
+0  OverviewPlot plotting took: 0.769396066666seconds
+0  OverviewPlot plotting took: 0.57945394516seconds
+0  OverviewPlot plotting took: 0.617439985275seconds
+0  RasterPlot plotting took: 0.31623506546seconds
+0  RasterPlot plotting took: 0.31383895874seconds</pre>
+</div>
+<p>All data and figures from the experiment are saved by mozaik in an additional folder, having the name we specified in the run_workflow call,
+with appended the result name specified in the command line (&lt;model_name&gt;_&lt;simulation_instance_name&gt;____). We specified result folder location in the file param/defaults:</p>
+<div class="highlight-python"><pre>'results_dir': ''</pre>
+</div>
+<p>Left blank, mozaik will assume that we want our result in the same folder of our project. Indeed, there we find our results folder &#8220;<em>VogelsAbbott2005_test_____</em>&#8221; containing several data_store pickled files and images.</p>
+<p>Happy mozaiking!</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/mozaik_logo_small.svg" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="tutorials.html"
+                        title="previous chapter">Tutorials</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mozaik.html"
+                        title="next chapter">mozaik API</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/tutorial.1.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mozaik.html" title="mozaik API"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="tutorials.html" title="Tutorials"
+             >previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="tutorials.html" >Tutorials</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2013, mozaik authors and contributors &lt;&gt;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

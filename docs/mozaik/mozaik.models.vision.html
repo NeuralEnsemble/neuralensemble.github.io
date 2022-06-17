@@ -1,0 +1,522 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vision Package &mdash; mozaik 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mozaik 0.1.0 documentation" href="index.html" />
+    <link rel="up" title="models Package" href="mozaik.models.html" />
+    <link rel="next" title="stimuli Package" href="mozaik.stimuli.html" />
+    <link rel="prev" title="models Package" href="mozaik.models.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mozaik.stimuli.html" title="stimuli Package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mozaik.models.html" title="models Package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="mozaik.html" >mozaik API</a> &raquo;</li>
+          <li><a href="mozaik.models.html" accesskey="U">models Package</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="vision-package">
+<h1>vision Package<a class="headerlink" href="#vision-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-mozaik.models.vision.cai97">
+<span id="cai97-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">cai97</span></tt> Module<a class="headerlink" href="#module-mozaik.models.vision.cai97" title="Permalink to this headline">¶</a></h2>
+<p>docstring goes here</p>
+<dl class="function">
+<dt id="mozaik.models.vision.cai97.meshgrid3D">
+<tt class="descclassname">mozaik.models.vision.cai97.</tt><tt class="descname">meshgrid3D</tt><big>(</big><em>x</em>, <em>y</em>, <em>z</em><big>)</big><a class="headerlink" href="#mozaik.models.vision.cai97.meshgrid3D" title="Permalink to this definition">¶</a></dt>
+<dd><p>A slimmed-down version of <a class="reference external" href="http://www.scipy.org/scipy/numpy/attachment/ticket/966/meshgrid.py">http://www.scipy.org/scipy/numpy/attachment/ticket/966/meshgrid.py</a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.models.vision.cai97.stRF_kernel_2d">
+<tt class="descclassname">mozaik.models.vision.cai97.</tt><tt class="descname">stRF_kernel_2d</tt><big>(</big><em>duration=200.0</em>, <em>dt=8.333333333333334</em>, <em>size=10.0</em>, <em>scale_factor=10.0</em>, <em>p={}</em><big>)</big><a class="headerlink" href="#mozaik.models.vision.cai97.stRF_kernel_2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>scale_factor = pixel/degree</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.models.vision.cai97.stRF_2d">
+<tt class="descclassname">mozaik.models.vision.cai97.</tt><tt class="descname">stRF_2d</tt><big>(</big><em>x</em>, <em>y</em>, <em>t</em>, <em>p</em><big>)</big><a class="headerlink" href="#mozaik.models.vision.cai97.stRF_2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>x, y, and t should all be 3D arrays, produced by meshgrid3D.
+If we need to optimize, it would be quicker to do G() on a 1D t array and
+F_2d() on 2D x and y arrays, and then multiply them, as Jens did in his
+original implementation.
+Timing gives 0.44 s for Jens&#8217; implementation, and 2.9 s for this one.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.models.vision.cai97.G">
+<tt class="descclassname">mozaik.models.vision.cai97.</tt><tt class="descname">G</tt><big>(</big><em>t</em>, <em>K1</em>, <em>K2</em>, <em>c1</em>, <em>c2</em>, <em>t1</em>, <em>t2</em>, <em>n1</em>, <em>n2</em><big>)</big><a class="headerlink" href="#mozaik.models.vision.cai97.G" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mozaik.models.vision.cai97.F_2d">
+<tt class="descclassname">mozaik.models.vision.cai97.</tt><tt class="descname">F_2d</tt><big>(</big><em>x</em>, <em>y</em>, <em>A</em>, <em>sigma</em><big>)</big><a class="headerlink" href="#mozaik.models.vision.cai97.F_2d" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-mozaik.models.vision.spatiotemporalfilter">
+<span id="spatiotemporalfilter-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">spatiotemporalfilter</span></tt> Module<a class="headerlink" href="#module-mozaik.models.vision.spatiotemporalfilter" title="Permalink to this headline">¶</a></h2>
+<p>Retina/LGN model based on that developed by Jens Kremkow (CNRS-INCM/ALUF)</p>
+<dl class="function">
+<dt id="mozaik.models.vision.spatiotemporalfilter.meshgrid3D">
+<tt class="descclassname">mozaik.models.vision.spatiotemporalfilter.</tt><tt class="descname">meshgrid3D</tt><big>(</big><em>x</em>, <em>y</em>, <em>z</em><big>)</big><a class="headerlink" href="#mozaik.models.vision.spatiotemporalfilter.meshgrid3D" title="Permalink to this definition">¶</a></dt>
+<dd><p>A slimmed-down version of <a class="reference external" href="http://www.scipy.org/scipy/numpy/attachment/ticket/966/meshgrid.py">http://www.scipy.org/scipy/numpy/attachment/ticket/966/meshgrid.py</a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.models.vision.spatiotemporalfilter.SpatioTemporalReceptiveField">
+<em class="property">class </em><tt class="descclassname">mozaik.models.vision.spatiotemporalfilter.</tt><tt class="descname">SpatioTemporalReceptiveField</tt><big>(</big><em>func</em>, <em>func_params</em>, <em>width</em>, <em>height</em>, <em>duration</em><big>)</big><a class="headerlink" href="#mozaik.models.vision.spatiotemporalfilter.SpatioTemporalReceptiveField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Implements spatio-temporal receptive field.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>func</strong> : function</p>
+<blockquote>
+<div><p>should be a function of x, y, t, and a ParameterSet object</p>
+</div></blockquote>
+<p><strong>func_params</strong> : ParameterSet</p>
+<blockquote>
+<div><p>ParameterSet that is passed to <cite>func</cite>.</p>
+</div></blockquote>
+<p><strong>width</strong> : float (degrees)</p>
+<blockquote>
+<div><p>x-dimension size</p>
+</div></blockquote>
+<p><strong>height</strong> : float (degrees)</p>
+<blockquote>
+<div><p>y-dimension size</p>
+</div></blockquote>
+<p><strong>duration</strong> : float (ms)</p>
+<blockquote class="last">
+<div><p>length of the temporal axis of the RF</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Coordinates x = 0 and y = 0 are at the centre of the spatial kernel.</p>
+<dl class="method">
+<dt id="mozaik.models.vision.spatiotemporalfilter.SpatioTemporalReceptiveField.quantize">
+<tt class="descname">quantize</tt><big>(</big><em>dx</em>, <em>dy</em>, <em>dt</em><big>)</big><a class="headerlink" href="#mozaik.models.vision.spatiotemporalfilter.SpatioTemporalReceptiveField.quantize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quantizes the the receptive field.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>dx</strong> : float</p>
+<blockquote>
+<div><p>The number of pixels along x axis.</p>
+</div></blockquote>
+<p><strong>dy</strong> : float</p>
+<blockquote>
+<div><p>The number of pixels along y axis.</p>
+</div></blockquote>
+<p><strong>dy</strong> : float</p>
+<blockquote class="last">
+<div><p>The number of time bins along the t axis.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>If <cite>dx</cite> does not
+divide exactly into the width, then the actual width will be slightly
+larger than the nominal width. <cite>dx</cite> and <cite>dy</cite> should be in degrees and <cite>dt</cite> in ms.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mozaik.models.vision.spatiotemporalfilter.SpatioTemporalReceptiveField.kernel_duration">
+<tt class="descname">kernel_duration</tt><a class="headerlink" href="#mozaik.models.vision.spatiotemporalfilter.SpatioTemporalReceptiveField.kernel_duration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.models.vision.spatiotemporalfilter.CellWithReceptiveField">
+<em class="property">class </em><tt class="descclassname">mozaik.models.vision.spatiotemporalfilter.</tt><tt class="descname">CellWithReceptiveField</tt><big>(</big><em>x</em>, <em>y</em>, <em>receptive_field</em>, <em>gain</em>, <em>visual_space</em><big>)</big><a class="headerlink" href="#mozaik.models.vision.spatiotemporalfilter.CellWithReceptiveField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>A model of the input current to an LGN relay cell, that multiplies, in space
+and time, the luminance values impinging on its receptive field by a
+spatiotemporal kernel. Spatial summation over the result of this
+multiplication at each time point gives a current in nA, that may then be
+injected into a relay cell.</p>
+<p>initialize() should be called once, before stimulus presentation
+view() should be called in a loop, once for each stimulus frame
+response_current() should be called at the end of stimulus presentation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>x , y</strong> : float</p>
+<blockquote>
+<div><p>x and y coordinates of the center of the RF in visual space.</p>
+</div></blockquote>
+<p><strong>receptive_field</strong> : SpatioTemporalReceptiveField</p>
+<blockquote>
+<div><p>The receptive field object containing the RFs data.</p>
+</div></blockquote>
+<p><strong>gain</strong> : float</p>
+<blockquote>
+<div><p>The calculated input current values will be multiplied by the gain parameter.</p>
+</div></blockquote>
+<p><strong>visual_space</strong> : VisualSpace</p>
+<blockquote class="last">
+<div><p>The object representing the visual space.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mozaik.models.vision.spatiotemporalfilter.CellWithReceptiveField.initialize">
+<tt class="descname">initialize</tt><big>(</big><em>background_luminance</em>, <em>stimulus_duration</em><big>)</big><a class="headerlink" href="#mozaik.models.vision.spatiotemporalfilter.CellWithReceptiveField.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the array that will contain the current response, and set the
+initial values on the assumption that the system was looking at a blank
+screen of constant luminance prior to stimulus onset.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>background_luminance</strong> : float</p>
+<blockquote>
+<div><p>The background luminance of the visual space.</p>
+</div></blockquote>
+<p><strong>stimulus_duration</strong> : float (ms)</p>
+<blockquote class="last">
+<div><p>The duration  of the visual stimulus.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.models.vision.spatiotemporalfilter.CellWithReceptiveField.view">
+<tt class="descname">view</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.models.vision.spatiotemporalfilter.CellWithReceptiveField.view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Look at the visual space and update t
+Where the kernel temporal resolution is the same as the frame duration
+(visual space update interval):</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>R_i = Sum[j=0,L-1] K_j.I_i-j</dt>
+<dd>where L is the kernel length/duration</dd>
+</dl>
+</div></blockquote>
+<dl class="docutils">
+<dt>Where the kernel temporal resolution = (frame duration)/α (α an integer)</dt>
+<dd><dl class="first last docutils">
+<dt>R_k = Sum[j=0,L-1] K_j.I_i&#8217;</dt>
+<dd>where i&#8217; = (k-j)//α  (// indicates integer division, discarding the
+remainder)</dd>
+</dl>
+</dd>
+</dl>
+<p>To avoid loading the entire image sequence into memory, we build up the response array one frame at a time.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.models.vision.spatiotemporalfilter.CellWithReceptiveField.response_current">
+<tt class="descname">response_current</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.models.vision.spatiotemporalfilter.CellWithReceptiveField.response_current" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiply the response (units of luminance (cd/m²) if we assume the
+kernel values are dimensionless) by the &#8216;gain&#8217;, to produce a current in
+nA. Returns a dictionary containing &#8216;times&#8217; and &#8216;amplitudes&#8217;.
+Might be better to use a NeuroTools AnalogSignal.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.models.vision.spatiotemporalfilter.SpatioTemporalFilterRetinaLGN">
+<em class="property">class </em><tt class="descclassname">mozaik.models.vision.spatiotemporalfilter.</tt><tt class="descname">SpatioTemporalFilterRetinaLGN</tt><big>(</big><em>model</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.models.vision.spatiotemporalfilter.SpatioTemporalFilterRetinaLGN" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="mozaik.html#mozaik.core.SensoryInputComponent" title="mozaik.core.SensoryInputComponent"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.core.SensoryInputComponent</span></tt></a></p>
+<p>Retina/LGN model with spatiotemporal receptive field.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>density</strong> : int (1/degree^2)</p>
+<blockquote>
+<div><p>Number of neurons to simulate per square degree of visual space.</p>
+</div></blockquote>
+<p><strong>size</strong> : tuple (degree,degree)</p>
+<blockquote>
+<div><p>The x and y size of the visual field.</p>
+</div></blockquote>
+<p><strong>linear_scaler</strong> : float</p>
+<blockquote>
+<div><p>The linear scaler that the RF output is multiplied with.</p>
+</div></blockquote>
+<p><strong>cached</strong> : bool</p>
+<blockquote>
+<div><p>If the stimuli are chached.</p>
+</div></blockquote>
+<p><strong>cache_path</strong> : str</p>
+<blockquote>
+<div><p>Path to the directory where to store the create the cache.</p>
+</div></blockquote>
+<p><strong>mpi_reproducible_noise</strong> : bool</p>
+<blockquote>
+<div><p>If true the background noise is generated in such a way that is reproducible accross runs using different number of mpi processes. 
+Significant slowdown if True.</p>
+</div></blockquote>
+<p class="last"><strong>recorders :</strong> :</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>If the stimulus is cached SpatioTemporalFilterRetinaLGN will write in the local directory <cite>parameters.cache_path</cite>
+the generated amplitudes for all the neurons in the retina (so this will be specific to the model)
+for each new presented stimulus. If it is asked to generate activities for a stimulus that already exists in the directory (it just 
+checks for the name and parameter values of the stimulus, <em>except</em> trail number) it will retrieve the values from the cahce.
+Note that the input currents are stored without the noise and the aditional noise is still applied after retrieval 
+so the actual current injected into the retinal neurons will not be identical to the one that was injected when 
+the stimulus was saved in the cache.</p>
+<p><strong>IMPORTANT</strong>
+This mechanism assumes that the retinal model stays otherwise identical between 
+simulations. The moment anything is changed in the retinal model one <strong>has</strong> to delete 
+the retina_cache directory (which effectively resets the cache).</p>
+<dl class="attribute">
+<dt id="mozaik.models.vision.spatiotemporalfilter.SpatioTemporalFilterRetinaLGN.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'noise': {'mean': &lt;type 'float'&gt;, 'stdev': &lt;type 'float'&gt;}, 'density': &lt;type 'int'&gt;, 'cached': &lt;type 'bool'&gt;, 'recorders': &lt;class 'parameters.ParameterSet'&gt;, 'cell': {'model': &lt;type 'str'&gt;, 'initial_values': &lt;class 'parameters.ParameterSet'&gt;, 'params': &lt;class 'parameters.ParameterSet'&gt;}, 'cache_path': &lt;type 'str'&gt;, 'gain': &lt;type 'float'&gt;, 'linear_scaler': &lt;type 'float'&gt;, 'receptive_field': {'func_params': &lt;class 'parameters.ParameterSet'&gt;, 'width': &lt;type 'float'&gt;, 'height': &lt;type 'float'&gt;, 'temporal_resolution': &lt;type 'float'&gt;, 'func': &lt;type 'str'&gt;, 'duration': &lt;type 'float'&gt;, 'spatial_resolution': &lt;type 'float'&gt;}, 'mpi_reproducible_noise': &lt;type 'bool'&gt;, 'size': &lt;type 'tuple'&gt;}</em><a class="headerlink" href="#mozaik.models.vision.spatiotemporalfilter.SpatioTemporalFilterRetinaLGN.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.models.vision.spatiotemporalfilter.SpatioTemporalFilterRetinaLGN.get_cache">
+<tt class="descname">get_cache</tt><big>(</big><em>stimulus_id</em><big>)</big><a class="headerlink" href="#mozaik.models.vision.spatiotemporalfilter.SpatioTemporalFilterRetinaLGN.get_cache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the cached calculated responses due to stimulus corresponding to <cite>stimulus_id</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>stimulus_id</strong> : StimulusID</p>
+<blockquote>
+<div><p>The stimulus id of the stimulus for which to return the activities</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>Tuple (input_currents, retinal_input)  where input_currents are the currents due to the RFs of the individual RFs and retinal_input is the</strong> :</p>
+<p class="last"><strong>list of frames shown to the retina.</strong> :</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.models.vision.spatiotemporalfilter.SpatioTemporalFilterRetinaLGN.write_cache">
+<tt class="descname">write_cache</tt><big>(</big><em>stimulus_id</em>, <em>input_currents</em>, <em>retinal_input</em><big>)</big><a class="headerlink" href="#mozaik.models.vision.spatiotemporalfilter.SpatioTemporalFilterRetinaLGN.write_cache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores input currents and the retinal input corresponding to a given stimulus.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>stimulus_id</strong> : StimulusID</p>
+<blockquote class="last">
+<div><blockquote>
+<div><p>The stimulus id of the stimulus for which we will store the input currents</p>
+</div></blockquote>
+<dl class="docutils">
+<dt>input_currents <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
+<dd><p class="first last">List containing the input currents that will be injected to the LGN neurons due to the neuron&#8217;s RFs. One per each LGN neuron.</p>
+</dd>
+<dt>retinal_input <span class="classifier-delimiter">:</span> <span class="classifier">list(ndarray)</span></dt>
+<dd><p class="first last">List of 2D arrays containing the frames of luminances that were presented to the retina for the stimulus <cite>stimulus_id</cite>.</p>
+</dd>
+</dl>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.models.vision.spatiotemporalfilter.SpatioTemporalFilterRetinaLGN.process_input">
+<tt class="descname">process_input</tt><big>(</big><em>visual_space</em>, <em>stimulus</em>, <em>duration=None</em>, <em>offset=0</em><big>)</big><a class="headerlink" href="#mozaik.models.vision.spatiotemporalfilter.SpatioTemporalFilterRetinaLGN.process_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Present a visual stimulus to the model, and create the LGN output
+(relay) neurons.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>visual_space</strong> : VisualSpace</p>
+<blockquote>
+<div><p>The visual space to which the stimuli are presented.</p>
+</div></blockquote>
+<p><strong>stimulus</strong> : VisualStimulus</p>
+<blockquote>
+<div><p>The visual stimulus to be shown.</p>
+</div></blockquote>
+<p><strong>duration</strong> : int (ms)</p>
+<blockquote>
+<div><p>The time for which we will simulate the stimulus</p>
+</div></blockquote>
+<p><strong>offset</strong> : int(ms)</p>
+<blockquote>
+<div><p>The time (in absolute time of the whole simulation) at which the stimulus starts.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>retinal_input</strong> : list(ndarray)</p>
+<blockquote class="last">
+<div><p>List of 2D arrays containing the frames of luminances that were presented to the retina.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.models.vision.spatiotemporalfilter.SpatioTemporalFilterRetinaLGN.provide_null_input">
+<tt class="descname">provide_null_input</tt><big>(</big><em>visual_space</em>, <em>duration=None</em>, <em>offset=0</em><big>)</big><a class="headerlink" href="#mozaik.models.vision.spatiotemporalfilter.SpatioTemporalFilterRetinaLGN.provide_null_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function exists for optimization purposes. It is the analog to 
+:func:.`mozaik.retinal.SpatioTemporalFilterRetinaLGN.process_input` for the 
+special case when blank stimulus is shown.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>visual_space</strong> : VisualSpace</p>
+<blockquote>
+<div><p>The visual space to which the blank stimulus are presented.</p>
+</div></blockquote>
+<p><strong>duration</strong> : int (ms)</p>
+<blockquote>
+<div><p>The time for which we will simulate the blank stimulus</p>
+</div></blockquote>
+<p><strong>offset</strong> : int(ms)</p>
+<blockquote>
+<div><p>The time (in absolute time of the whole simulation) at which the stimulus starts.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>retinal_input</strong> : list(ndarray)</p>
+<blockquote class="last">
+<div><p>List of 2D arrays containing the frames of luminances that were presented to the retina.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/mozaik_logo_small.svg" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mozaik.models.html"
+                        title="previous chapter">models Package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mozaik.stimuli.html"
+                        title="next chapter">stimuli Package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/mozaik.models.vision.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mozaik.stimuli.html" title="stimuli Package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mozaik.models.html" title="models Package"
+             >previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="mozaik.html" >mozaik API</a> &raquo;</li>
+          <li><a href="mozaik.models.html" >models Package</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2013, mozaik authors and contributors &lt;&gt;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

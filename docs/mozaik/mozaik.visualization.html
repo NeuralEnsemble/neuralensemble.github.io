@@ -1,0 +1,1214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>visualization Package &mdash; mozaik 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mozaik 0.1.0 documentation" href="index.html" />
+    <link rel="up" title="mozaik API" href="mozaik.html" />
+    <link rel="next" title="meta-workflow Package" href="mozaik.meta_workflow.html" />
+    <link rel="prev" title="tools Package" href="mozaik.tools.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mozaik.meta_workflow.html" title="meta-workflow Package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mozaik.tools.html" title="tools Package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="mozaik.html" accesskey="U">mozaik API</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="visualization-package">
+<h1>visualization Package<a class="headerlink" href="#visualization-package" title="Permalink to this headline">¶</a></h1>
+<p>This package contains the definition of the visualization API, together with implementation
+of numerous plotting methods that take advantage of the <em>mozaik</em> data structures to automatize a
+lot of the visualization functionality.</p>
+<p>The philoshophy of the visualization package is similar to the analysis package <a class="reference internal" href="mozaik.analysis.html#module-mozaik.analysis.analysis" title="mozaik.analysis.analysis"><tt class="xref py py-mod docutils literal"><span class="pre">mozaik.analysis.analysis</span></tt></a>.
+The input of each plotting is a datastore, it is the role of the plotting to extract as
+much as possible data from the provided datastore and display as much as possible information
+(of course with respect to the role of the given plotting class). It is then up to the
+user to manipulate the datastore before passing it to the plotting function to
+restrict the information that is being plotted. Together with the querying system
+this provides a very flexible and unified framework for defining what users want
+to plot.</p>
+<p>The implementation is based on matplotlib and its GridSpec
+objects. The plotting framwork is divided into two main concepts, represented by the two
+high-level classes Plotting <a class="reference internal" href="#mozaik.visualization.plotting.Plotting" title="mozaik.visualization.plotting.Plotting"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.visualization.plotting.Plotting</span></tt></a> and <a class="reference internal" href="#mozaik.visualization.simple_plot.SimplePlot" title="mozaik.visualization.simple_plot.SimplePlot"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.visualization.simple_plot.SimplePlot</span></tt></a>.</p>
+<p>The <cite>SimplePlot</cite> represent low-level plotting. It is assumed that this plot has
+only a single axis that is drawn into the region defined by the GridSpec
+instance that is passed into it. The role of the set of classes derived from
+SimplePlot is to standardize the low level looks of all figures (mainly related
+to axis, lables, titles etc.), and should assume data given to them in a format
+that is easy to use by the given plot. In order to unify the look of figures it
+defines four functions pre_axis_plot, pre_plot, plot, and post_plot. The actual
+plotting that user defines is typically defined in the plot function while the
+pre_axis_plot, pre_plot and post_plot functions handle the pre and post
+plotting adjustments to the plot (i.e. typical post_plot function for
+example adjusts the ticks of the axis to a common format other such axis
+related properties). When defining a new <cite>SimplePlot</cite> function user is encoureged
+to push as much of it&#8217;s &#8216;decorating&#8217; funcitonality into the post and pre plot
+function and define only the absolute minimum in the plot function. At the same
+time, there is already a set of classes implementing a general common look
+provided, and so users are encouraged to use these as much as possible. If
+their formatting features are not sufficient or incompatible with a given plot,
+users are encoureged to define new virtual class that defines the formatting in
+the pre and post plot functions (and thus sepparating it from the plot itself),
+and incorporating these as low as possible within the hierarchy of the
+<cite>SimplePlot</cite> classes to re-use as much of the previous work as possible.</p>
+<p>The <cite>Plotting</cite> class (and its children) define the high level plotting
+mechanisms. They are mainly responsible for hierarchical organization of
+figures with multiple plots, any mechanisms that require consideration of
+several plots at the same time, and the translation of the data form the general
+format provided by <cite>Datastore</cite>, to specific format that the <cite>SimplePlot</cite> plots
+require. In general the Plotting instances should not do any plotting of axes
+themselves (but instead calling the <cite>SimplePlot</cite> instances to do the actual
+plotting), with the exception of multi-axis figures whith complicated inter-axis
+dependencies, for which it is not practical to break them down into single
+<cite>SimplePlot</cite> instances.</p>
+<div class="section" id="module-mozaik.visualization.plotting">
+<span id="plotting-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">plotting</span></tt> Module<a class="headerlink" href="#module-mozaik.visualization.plotting" title="Permalink to this headline">¶</a></h2>
+<p>This module defines the <a class="reference internal" href="#mozaik.visualization.plotting.Plotting" title="mozaik.visualization.plotting.Plotting"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.visualization.plotting.Plotting</span></tt></a> API and offers
+a library of plotting commands derived from it.</p>
+<div class="section" id="the-plotting-api">
+<h3>The plotting API<a class="headerlink" href="#the-plotting-api" title="Permalink to this headline">¶</a></h3>
+<p>The high-level plotting API is defined by the <a class="reference internal" href="#mozaik.visualization.plotting.Plotting" title="mozaik.visualization.plotting.Plotting"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.visualization.plotting.Plotting</span></tt></a> class.
+Each  class derived from <cite>Plotting</cite> should implement two plotting functions:  plot and subplot.
+The subplot function accepts a SubplotSpec object (see matplotlib doc) as input which 
+will tell it where to plot. The subplot function returns a dictionary, where each key
+is a name of a subplot it generates (and will correspond to a creation of another Plotting or 
+SimplePlot plot), and the associated value is a tuple that contains the:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Plotting or SimplePlot object</li>
+<li>the SubplotSpec subregion into which the plot is supposed to be drawn</li>
+<li>dictionary of parameters that to be passed to the plot.</li>
+</ul>
+</div></blockquote>
+<p>This way one can nest Plotting instances and eventualy simple_plot instances as the leafs of the tree.</p>
+<p>The third element of the tuple discussed above is a dictionary of parameters that will be  passed onto the eventual call to SimplePlot class.
+At each level of hierarchy the Plotting instances can add some parameters via the third element of the tuple. But note that the parameters at 
+higher levels of hierarchy will overide the parameters given at lower level of hierarchy.</p>
+<p>The names of the subplots that 
+are returned by the subplot function as the keys of the dictionary should be documented as they will be used 
+to identify the subplots by user should he wish to pass specific parameters to them. The user can do this by 
+passing a dictionary to the plot function. The keys of the dictionary are comma sepparated strings containing the 
+path to the plot in the plotting hierarchy to which the parameters will be passed, e.g: top_plot_name.first_level_subplot_name.second_level_subplot_name.parameter_name = value
+One can also use &#8216;*&#8217; instead of a plot name to indicated that the parameter should be passed to all the subplots at that level. Also if the path
+ends before it reaches a simple_plot level it is automatically assumed the parameter will be passed into the rest of the subtree.
+Finaly the subplots function can return plots which are names which use the &#8216;.&#8217; character. This will be processed in the same way as above
+and it allows for Plotting classes that create multiple groups of plots to let user sepparately target the different groups with parameters.</p>
+<p>The plot function can either not be defined in which case it defaults to the
+Plotting.plot, which simply creates a figure and calls subplot with SuplotSpec
+spanning the whole figure. Alternatively, one can define the plot function if
+one wants to add some additional figure level decorations, in case the figure is plotted on
+its own (i.e. becomes the highest-level), and that would otherwise prevent
+flexible use in nesting via the subplot.</p>
+<dl class="class">
+<dt id="mozaik.visualization.plotting.Plotting">
+<em class="property">class </em><tt class="descclassname">mozaik.visualization.plotting.</tt><tt class="descname">Plotting</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>plot_file_name=None</em>, <em>fig_param=None</em><big>)</big><a class="headerlink" href="#mozaik.visualization.plotting.Plotting" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="mozaik.html#mozaik.core.ParametrizedObject" title="mozaik.core.ParametrizedObject"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.core.ParametrizedObject</span></tt></a></p>
+<p>The high level Plotting API. See the module information on more detailed description.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>datastore</strong> : Datastore</p>
+<blockquote>
+<div><p>the DataStore from which to plot the data</p>
+</div></blockquote>
+<p><strong>parameters</strong> : ParameterSet</p>
+<blockquote>
+<div><p>The mozaik parameters.</p>
+</div></blockquote>
+<p><strong>plot_file_name</strong> : str</p>
+<blockquote>
+<div><p>Either None, in which case the plot is not saved onto
+HD, or path to a file into which to save the file (formats
+accepted by matplotlib).</p>
+</div></blockquote>
+<p><strong>fig_params</strong> : dict</p>
+<blockquote class="last">
+<div><p>The parameters that are passed to the matplotlib figure
+command (but note facecolor=&#8217;w&#8217; is already supplied).</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mozaik.visualization.plotting.Plotting.subplot">
+<tt class="descname">subplot</tt><big>(</big><em>subplotspec</em><big>)</big><a class="headerlink" href="#mozaik.visualization.plotting.Plotting.subplot" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is the function that each Plotting instance has to implement.
+See the module documentation for more details.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.visualization.plotting.Plotting.plot">
+<tt class="descname">plot</tt><big>(</big><em>params=None</em><big>)</big><a class="headerlink" href="#mozaik.visualization.plotting.Plotting.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>The top level plot function. It is this function that the user will call on the plot instance to 
+execute the plotting.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>params</strong> : dict</p>
+<blockquote class="last">
+<div><p>The dictionary of parameters modifying the defaults across the plotting hierarchy.
+Keys are comma sepparated path in the plot hierarchy, values are values to be substituted. 
+See the module level info for more details.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.visualization.plotting.PlotTuningCurve">
+<em class="property">class </em><tt class="descclassname">mozaik.visualization.plotting.</tt><tt class="descname">PlotTuningCurve</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>plot_file_name=None</em>, <em>fig_param=None</em><big>)</big><a class="headerlink" href="#mozaik.visualization.plotting.PlotTuningCurve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.visualization.plotting.Plotting" title="mozaik.visualization.plotting.Plotting"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.visualization.plotting.Plotting</span></tt></a></p>
+<p>Plots tuning curves, one plot in line per each neuron. This plotting function assumes a set of PerNeuronValue 
+ADSs in the datastore associated with certain stimulus type. It will plot
+the values stored in these  PerNeuronValue instances (corresponding to neurons in <cite>neurons</cite>) across the 
+varying parameter <cite>parameter_name</cite> of thier associated stimuli. If other parameters of the 
+stimuli are varying withing the datastore it will automatically plot one tuning curve per each combination
+of values of the other parameters and label the curve accordingly.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>neurons</strong> : list</p>
+<blockquote>
+<div><p>List of neuron ids for which to plot the tuning curves.</p>
+</div></blockquote>
+<p><strong>sheet_name</strong> : str</p>
+<blockquote>
+<div><p>From which layer to plot the tuning curves.</p>
+</div></blockquote>
+<p><strong>parameter_name</strong> : str</p>
+<blockquote>
+<div><p>The parameter_name through which to plot the tuning curve.</p>
+</div></blockquote>
+<p><strong>Defines &#8216;TuningCurve_&#8217; + value_name +  &#8216;.Plot0&#8217; ... &#8216;TuningCurve_&#8217; + value_name +  &#8216;.Plotn&#8217;</strong> :</p>
+<p class="last"><strong>where n goes through number of neurons, and value_name creates one row for each value_name found in the different PerNeuron found</strong> :</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.visualization.plotting.RasterPlot">
+<em class="property">class </em><tt class="descclassname">mozaik.visualization.plotting.</tt><tt class="descname">RasterPlot</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>plot_file_name=None</em>, <em>fig_param=None</em><big>)</big><a class="headerlink" href="#mozaik.visualization.plotting.RasterPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.visualization.plotting.Plotting" title="mozaik.visualization.plotting.Plotting"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.visualization.plotting.Plotting</span></tt></a></p>
+<p>It plots raster plots of spikes stored in the recordings.
+It assumes a datastore with a set of recordings. It will plot a line of raster 
+plots, one per each recording, showing the raster plot corresponding to the given 
+recording.</p>
+<p>Defines &#8216;RasterPlot.Plot0&#8217; ... &#8216;RasterPlot.PlotN&#8217;</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>sheet_name</strong> : str</p>
+<blockquote>
+<div><p>From which layer to plot the raster plots.</p>
+</div></blockquote>
+<p><strong>neurons</strong> : list</p>
+<blockquote>
+<div><p>List of neuron ids for which to plot the tuning curves.</p>
+</div></blockquote>
+<p><strong>trial_averaged_histogram</strong> : bool</p>
+<blockquote class="last">
+<div><p>Should the plot show also the trial averaged histogram?</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.visualization.plotting.VmPlot">
+<em class="property">class </em><tt class="descclassname">mozaik.visualization.plotting.</tt><tt class="descname">VmPlot</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>plot_file_name=None</em>, <em>fig_param=None</em><big>)</big><a class="headerlink" href="#mozaik.visualization.plotting.VmPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.visualization.plotting.Plotting" title="mozaik.visualization.plotting.Plotting"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.visualization.plotting.Plotting</span></tt></a></p>
+<p>It plots the membrane potentials stored in the recordings.
+It assumes a datastore with a set of recordings. It will plot a line of vm
+plots, one per each recording, showing the vm corresponding to the given 
+recording.</p>
+<p>It defines one plot named: &#8216;VmPlot.Plot0&#8217; ... &#8216;VmPlot.PlotN&#8217;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>sheet_name</strong> : str</p>
+<blockquote>
+<div><p>From which layer to plot the vms.</p>
+</div></blockquote>
+<p><strong>neuron</strong> : int</p>
+<blockquote class="last">
+<div><p>Id of the neuron to plot.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.visualization.plotting.GSynPlot">
+<em class="property">class </em><tt class="descclassname">mozaik.visualization.plotting.</tt><tt class="descname">GSynPlot</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>plot_file_name=None</em>, <em>fig_param=None</em><big>)</big><a class="headerlink" href="#mozaik.visualization.plotting.GSynPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.visualization.plotting.Plotting" title="mozaik.visualization.plotting.Plotting"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.visualization.plotting.Plotting</span></tt></a></p>
+<p>It plots the conductances stored in the recordings.
+It assumes a datastore with a set of recordings. It will plot a line of conductance 
+plots, one per each recording, showing the excitatory and inhibitory conductances corresponding to the given 
+recording.</p>
+<p>It defines one plot named: &#8216;ConductancesPlot.Plot0&#8217; ... &#8216;ConductancesPlot.PlotN&#8217;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>sheet_name</strong> : str</p>
+<blockquote>
+<div><p>From which layer to plot the conductances.</p>
+</div></blockquote>
+<p><strong>neuron</strong> : int</p>
+<blockquote class="last">
+<div><p>Id of the neuron to plot.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.visualization.plotting.OverviewPlot">
+<em class="property">class </em><tt class="descclassname">mozaik.visualization.plotting.</tt><tt class="descname">OverviewPlot</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>plot_file_name=None</em>, <em>fig_param=None</em><big>)</big><a class="headerlink" href="#mozaik.visualization.plotting.OverviewPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.visualization.plotting.Plotting" title="mozaik.visualization.plotting.Plotting"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.visualization.plotting.Plotting</span></tt></a></p>
+<p>It defines 4 (or 3 depending on the sheet_activity option) plots named: &#8216;Activity_plot&#8217;, &#8216;Spike_plot&#8217;, &#8216;Vm_plot&#8217;, &#8216;Conductance_plot&#8217;
+corresponding to the ActivityMovie RasterPlot, VmPlot, GSynPlot plots respectively. And than a line of the with the extensions .Plot1 ... .PlotN</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>sheet_name</strong> : str</p>
+<blockquote>
+<div><p>From which layer to plot.</p>
+</div></blockquote>
+<p><strong>neuron</strong> : int</p>
+<blockquote>
+<div><p>Id of the neuron to plot.</p>
+</div></blockquote>
+<p><strong>sheet_activity: bool</strong> :</p>
+<blockquote class="last">
+<div><p>Whether to also show the sheet activity plot as the first row.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.visualization.plotting.AnalogSignalListPlot">
+<em class="property">class </em><tt class="descclassname">mozaik.visualization.plotting.</tt><tt class="descname">AnalogSignalListPlot</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>plot_file_name=None</em>, <em>fig_param=None</em><big>)</big><a class="headerlink" href="#mozaik.visualization.plotting.AnalogSignalListPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.visualization.plotting.Plotting" title="mozaik.visualization.plotting.Plotting"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.visualization.plotting.Plotting</span></tt></a></p>
+<p>This plot shows a line of plots each showing analog signals, one plot per each AnalogSignalList instance
+present in the datastore.</p>
+<p>It defines line of plots named: &#8216;AnalogSignalPlot.Plot0&#8217; ... &#8216;AnalogSignalPlot.PlotN&#8217;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>sheet_name</strong> : str</p>
+<blockquote>
+<div><p>From which layer to plot.</p>
+</div></blockquote>
+<p><strong>neurons</strong> : list</p>
+<blockquote class="last">
+<div><p>List of neuron ids for which to plot the analog signals.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.visualization.plotting.ConductanceSignalListPlot">
+<em class="property">class </em><tt class="descclassname">mozaik.visualization.plotting.</tt><tt class="descname">ConductanceSignalListPlot</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>plot_file_name=None</em>, <em>fig_param=None</em><big>)</big><a class="headerlink" href="#mozaik.visualization.plotting.ConductanceSignalListPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.visualization.plotting.Plotting" title="mozaik.visualization.plotting.Plotting"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.visualization.plotting.Plotting</span></tt></a></p>
+<p>This plot shows a line of plots each showing excitatory and inhibitory conductances, one plot per each ConductanceSignalList instance 
+present in the datastore.</p>
+<p>It defines line of plots named: &#8216;ConductancePlot.Plot0&#8217; ... &#8216;ConductancePlot.PlotN&#8217;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>sheet_name</strong> : str</p>
+<blockquote>
+<div><p>From which layer to plot.</p>
+</div></blockquote>
+<p><strong>normalize_individually</strong> : bool</p>
+<blockquote class="last">
+<div><p>Whether to normalize each trace individually by dividing it with its maximum.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.visualization.plotting.RetinalInputMovie">
+<em class="property">class </em><tt class="descclassname">mozaik.visualization.plotting.</tt><tt class="descname">RetinalInputMovie</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>plot_file_name=None</em>, <em>fig_param=None</em><big>)</big><a class="headerlink" href="#mozaik.visualization.plotting.RetinalInputMovie" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.visualization.plotting.Plotting" title="mozaik.visualization.plotting.Plotting"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.visualization.plotting.Plotting</span></tt></a></p>
+<p>This plots one plot showing the retinal input per each recording in the datastore.</p>
+<p>It defines line of plots named: &#8216;PixelMovie.Plot0&#8217; ... &#8216;PixelMovie.PlotN&#8217;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>frame_rate</strong> : int</p>
+<blockquote class="last">
+<div><p>The desired frame rate (per sec), it might be less if the computer is too slow.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.visualization.plotting.ActivityMovie">
+<em class="property">class </em><tt class="descclassname">mozaik.visualization.plotting.</tt><tt class="descname">ActivityMovie</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>plot_file_name=None</em>, <em>fig_param=None</em><big>)</big><a class="headerlink" href="#mozaik.visualization.plotting.ActivityMovie" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.visualization.plotting.Plotting" title="mozaik.visualization.plotting.Plotting"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.visualization.plotting.Plotting</span></tt></a></p>
+<p>This plots one plot per each recording, each showing the activity during that recording 
+based on the spikes stored in the recording. The activity is showed localized in the sheet cooridantes.</p>
+<p>It defines line of plots named: &#8216;ScatterPlot.Plot0&#8217; ... &#8216;ScatterPlot.PlotN&#8217; or &#8216;PixelMovie.Plot0&#8217; ... &#8216;PixelMovie.PlotN&#8217;
+depending on the parameter <cite>scatter</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>frame_rate</strong> : int</p>
+<blockquote>
+<div><p>The desired frame rate (per sec), it might be less if the computer is too slow.</p>
+</div></blockquote>
+<p><strong>bin_width</strong> : float</p>
+<blockquote>
+<div><p>In ms the width of the bins into which to sample spikes.</p>
+</div></blockquote>
+<p><strong>scatter</strong> :  bool</p>
+<blockquote>
+<div><p>Whether to plot neurons activity into a scatter plot (if True) or as an interpolated pixel image.</p>
+</div></blockquote>
+<p><strong>resolution</strong> : int</p>
+<blockquote>
+<div><p>The number of pixels into which the activity will be interpolated in case scatter = False.</p>
+</div></blockquote>
+<p><strong>sheet_name: str</strong> :</p>
+<blockquote class="last">
+<div><p>The sheet for which to display the actvity movie.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.visualization.plotting.PerNeuronValuePlot">
+<em class="property">class </em><tt class="descclassname">mozaik.visualization.plotting.</tt><tt class="descname">PerNeuronValuePlot</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>plot_file_name=None</em>, <em>fig_param=None</em><big>)</big><a class="headerlink" href="#mozaik.visualization.plotting.PerNeuronValuePlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.visualization.plotting.Plotting" title="mozaik.visualization.plotting.Plotting"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.visualization.plotting.Plotting</span></tt></a></p>
+<p>Plots the values for all PerNeuronValue ADSs in teh datastore, one for each sheet.</p>
+<p>It defines line of plots named: &#8216;ScatterPlot.Plot0&#8217; ... &#8216;ScatterPlot.PlotN</p>
+<p>#JAHACK, so far doesn&#8217;t support the situation where several types of
+PerNeuronValue analysys data structures are present in the supplied
+datastore.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.visualization.plotting.PerNeuronValueScatterPlot">
+<em class="property">class </em><tt class="descclassname">mozaik.visualization.plotting.</tt><tt class="descname">PerNeuronValueScatterPlot</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>plot_file_name=None</em>, <em>fig_param=None</em><big>)</big><a class="headerlink" href="#mozaik.visualization.plotting.PerNeuronValueScatterPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.visualization.plotting.Plotting" title="mozaik.visualization.plotting.Plotting"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.visualization.plotting.Plotting</span></tt></a></p>
+<p>Takes each pair of PerNeuronValue ADSs in the datastore that have the same units and plots a scatter plot of each such pair.</p>
+<p>It defines line of plots named: &#8216;ScatterPlot.Plot0&#8217; ... &#8216;ScatterPlot.PlotN</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.visualization.plotting.ConnectivityPlot">
+<em class="property">class </em><tt class="descclassname">mozaik.visualization.plotting.</tt><tt class="descname">ConnectivityPlot</tt><big>(</big><em>datastore</em>, <em>parameters</em>, <em>pnv_dsv=None</em>, <em>plot_file_name=None</em>, <em>fig_param=None</em><big>)</big><a class="headerlink" href="#mozaik.visualization.plotting.ConnectivityPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.visualization.plotting.Plotting" title="mozaik.visualization.plotting.Plotting"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.visualization.plotting.Plotting</span></tt></a></p>
+<p>Plots Connectivity, one for each projection originating or targeting
+(depending on parameter reversed) sheet <cite>sheet_name</cite> for a single neuron in the
+sheet.</p>
+<p>This plot can accept second DSV that contains the PerNeuronValues
+corresponding to the target sheets (or source sheet if reversed is True) to be displayed that will be plotted as
+well.</p>
+<p>It defines line of plots named: &#8216;ConnectionsPlot.Plot0&#8217; ... &#8216;DelaysPlot.PlotN` and &#8216;DelaysPlot.Plot0&#8217; ... &#8216;DelaysPlot.PlotN
+where N is number of projections.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>pnv_dsv</strong> : Datastore</p>
+<blockquote>
+<div><p>The datastore holding PerNeuronValues - one per each sheet that will be displayed as colors for the connections.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>neuron</strong> : int</p>
+<blockquote>
+<div><p>The target neuron whose connections are to be displayed.</p>
+</div></blockquote>
+<p><strong>reversed</strong> : bool</p>
+<blockquote>
+<div><p>If false the outgoing connections from the given neuron are shown. if true the incomming connections are shown.</p>
+</div></blockquote>
+<p><strong>sheet_name</strong> : str</p>
+<blockquote class="last">
+<div><p>For neuron in which sheet to display connectivity.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>One PerNeuronValue can be present per target sheet!</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-mozaik.visualization.simple_plot">
+<span id="simple-plot-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">simple_plot</span></tt> Module<a class="headerlink" href="#module-mozaik.visualization.simple_plot" title="Permalink to this headline">¶</a></h2>
+<p>See <tt class="xref py py-mod docutils literal"><span class="pre">mozaik.visualization</span></tt> for more general documentation.</p>
+<dl class="class">
+<dt id="mozaik.visualization.simple_plot.SimplePlot">
+<em class="property">class </em><tt class="descclassname">mozaik.visualization.simple_plot.</tt><tt class="descname">SimplePlot</tt><a class="headerlink" href="#mozaik.visualization.simple_plot.SimplePlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>The low level plotting API based around matplotlib.</p>
+<p>Each simple plot is assumed to create a single axis - this happens in this class.
+Each user defined low-level plotting function is supposed to derive from this class
+and implement the four abstract methods: <cite>pre_axis_plot</cite>, <cite>pre_plot</cite>, <cite>plot</cite>, <cite>post_plot</cite>, to 
+direct the styling and decoration of the plot, and call the actual matplotlib plotting functions in the 
+<cite>plot</cite> function.</p>
+<p>The main policy that this API declares is that any overwriting of the standard style default
+values by the <cite>Plotting</cite> mechanisms should take precedence over those done
+by specific instances of <cite>SimplePlot</cite>. In order to enforce this precedence,
+the modifiable parameters of the classes should be stored in the common
+dictionary <cite>parameters</cite>. Each class derived from <cite>SimplePlot</cite> should add its
+modifiable parameters into the <cite>parameters</cite> dictionary in its constructor.
+We will document the modifiable parameters the given class declares 
+in the &#8216;Other parameters&#8217; section.</p>
+<p>The kwargs passed to the instances of <cite>SimplePlot</cite> from the <cite>Plotting</cite>
+mechanisms will be stored. At the beginning of the __call__ the dictionary
+will be updated with these stored kwargs, and the updated parameters (note
+not all have to be present) will be marked. These marked parameters will not
+be then modifiable any further. In order to do so, the <cite>parameters</cite>
+dictionary is accessible via the __getattr__ and __setattr__ functions.</p>
+<p><em>Note, for this reason all `SimplePlot` classes need to take care that none
+of the modifiable attributes is also defined as a class attribute.</em></p>
+<dl class="method">
+<dt id="mozaik.visualization.simple_plot.SimplePlot.pre_axis_plot">
+<tt class="descname">pre_axis_plot</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.visualization.simple_plot.SimplePlot.pre_axis_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function that is executed before the axis is created.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.visualization.simple_plot.SimplePlot.pre_plot">
+<tt class="descname">pre_plot</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.visualization.simple_plot.SimplePlot.pre_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function that is executed before the plotting but after the axis is created.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.visualization.simple_plot.SimplePlot.plot">
+<tt class="descname">plot</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.visualization.simple_plot.SimplePlot.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function that has to perform the low level plotting. This is where the 
+main matplotlib plot calls will happen.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.visualization.simple_plot.SimplePlot.post_plot">
+<tt class="descname">post_plot</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.visualization.simple_plot.SimplePlot.post_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function that is executed after the plotting.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.visualization.simple_plot.SimplePlot.update_params">
+<tt class="descname">update_params</tt><big>(</big><em>params</em><big>)</big><a class="headerlink" href="#mozaik.visualization.simple_plot.SimplePlot.update_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the modifiable parameters and sets them to be further un-modifiable</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.visualization.simple_plot.SpikeRasterPlot">
+<em class="property">class </em><tt class="descclassname">mozaik.visualization.simple_plot.</tt><tt class="descname">SpikeRasterPlot</tt><big>(</big><em>spike_lists</em><big>)</big><a class="headerlink" href="#mozaik.visualization.simple_plot.SpikeRasterPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">mozaik.visualization.simple_plot.StandardStyle</span></tt></p>
+<p>This function plots the raster plot of spikes in the <cite>spike_lists</cite> argument.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>spike_lists</strong> : list</p>
+<blockquote>
+<div><p>The <cite>spike_lists</cite> argument is a list of list of SpikeList objects. The top
+level list corresponds to different sets of spikes that should be plotted
+over each other. They have to contain the same number of neurons. Each set
+of spikes will be colored by the color on corresponding postion of the
+colors parameter (matplotlib readable color formats accapted). If None all
+colors will be set to &#8216;#848484&#8217; (gray). The second level list contains 
+different trials of the populations responses stored in the individual SpikeList objects.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>group_trials</strong> : bool</p>
+<blockquote>
+<div><p>If is set to true - trials will be concatenated and plotted on the same line.</p>
+</div></blockquote>
+<p><strong>colors</strong> : list</p>
+<blockquote class="last">
+<div><p>The colors to assign to the different sets of spikes.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Each trial will be plotted as a sepparate line of spikes, and these will be
+grouped by the neurons. Only neurons in the neurons parameter will be
+plotted. If neurons are None, (up to) first 10 neurons will be plotted.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.visualization.simple_plot.SpikeHistogramPlot">
+<em class="property">class </em><tt class="descclassname">mozaik.visualization.simple_plot.</tt><tt class="descname">SpikeHistogramPlot</tt><big>(</big><em>spike_lists</em><big>)</big><a class="headerlink" href="#mozaik.visualization.simple_plot.SpikeHistogramPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.visualization.simple_plot.SpikeRasterPlot" title="mozaik.visualization.simple_plot.SpikeRasterPlot"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.visualization.simple_plot.SpikeRasterPlot</span></tt></a></p>
+<p>This function plots the raster plot of spikes in the spike_list argument.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>spike_list</strong> : list</p>
+<blockquote>
+<div><p>List of list of SpikeList objects.
+The top level list corresponds to different sets of spikes that should be
+plotted over each other. They have to contain the same number of neurons.
+Each set of spikes will be colored by the color on corresponding postion of
+the colors parameter. If None all colors will be set to &#8216;#848484&#8217; (gray).
+The second level list contains different trials of the populations responses
+stored in the individual SpikeList objects.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>bin_width</strong> : bool</p>
+<blockquote>
+<div><p>The with of the bins into which to bin the spikes.</p>
+</div></blockquote>
+<p><strong>colors</strong> : list</p>
+<blockquote class="last">
+<div><p>The colors to assign to the different sets of spikes.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Each trial will be plotted as a sepparate line of spikes, and these will be
+grouped by the neurons. Only neurons in the neurons parameter will be
+plotted. If neurons are None, the first neuron will be plotted.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.visualization.simple_plot.StandardStyleAnimatedPlot">
+<em class="property">class </em><tt class="descclassname">mozaik.visualization.simple_plot.</tt><tt class="descname">StandardStyleAnimatedPlot</tt><big>(</big><em>frame_duration</em><big>)</big><a class="headerlink" href="#mozaik.visualization.simple_plot.StandardStyleAnimatedPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">mozaik.visualization.simple_plot.StandardStyle</span></tt></p>
+<p>This is an abstract class helping construction of animated graphs.</p>
+<p>Each class subclassing from this class should implement the <cite>SimplePlot</cite>
+<cite>plot()</cite> function in which it should draw the first frame of the animation
+with all the corresponding decorations.</p>
+<p>Next it needs to implement the <cite>plot_next_frame</cite> function which should
+replot the data in the plot corresponding to the next frame. This function
+needs to keep track of the frame number itself if it needs it. Note that
+advanced usage of matplotlib is recomanded here so that not the whole graph
+is always replotted but only new data are set to the graph.</p>
+<p>The <cite>StandardStyleAnimatedPlot</cite> will take care of the updating of the
+figure, so now <cite>draw()</cite> or <cite>show()</cite> or event commands should be issued.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>frame_duration</strong> : double</p>
+<blockquote class="last">
+<div><p>Duration of single frame.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mozaik.visualization.simple_plot.StandardStyleAnimatedPlot.plot_next_frame">
+<tt class="descname">plot_next_frame</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.visualization.simple_plot.StandardStyleAnimatedPlot.plot_next_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function that each instance of <cite>StandardStyleAnimatedPlot</cite> has to implement, in which it updated
+the data in the plot to the next frame.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.visualization.simple_plot.PixelMovie">
+<em class="property">class </em><tt class="descclassname">mozaik.visualization.simple_plot.</tt><tt class="descname">PixelMovie</tt><big>(</big><em>movie</em>, <em>frame_duration</em><big>)</big><a class="headerlink" href="#mozaik.visualization.simple_plot.PixelMovie" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.visualization.simple_plot.StandardStyleAnimatedPlot" title="mozaik.visualization.simple_plot.StandardStyleAnimatedPlot"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.visualization.simple_plot.StandardStyleAnimatedPlot</span></tt></a></p>
+<p>An instatiation of StandardStyleAnimatedPlot that works with regularly sampled data - i.e. 3D matricies
+where axis are interpreted as x,y,t.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>movie</strong> : ndarray</p>
+<blockquote class="last">
+<div><p>3D array with axis (t,x,y) holding the data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.visualization.simple_plot.ScatterPlotMovie">
+<em class="property">class </em><tt class="descclassname">mozaik.visualization.simple_plot.</tt><tt class="descname">ScatterPlotMovie</tt><big>(</big><em>x</em>, <em>y</em>, <em>z</em>, <em>frame_duration</em><big>)</big><a class="headerlink" href="#mozaik.visualization.simple_plot.ScatterPlotMovie" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.visualization.simple_plot.StandardStyleAnimatedPlot" title="mozaik.visualization.simple_plot.StandardStyleAnimatedPlot"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.visualization.simple_plot.StandardStyleAnimatedPlot</span></tt></a></p>
+<p>An instatiation of StandardStyleAnimatedPlot that works with irregularly sampled data. That data
+are assumed to have constant positions throught the time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>x</strong> : ndarray</p>
+<blockquote>
+<div><p>1D array containing the x coordinate of the values to be displayed.</p>
+</div></blockquote>
+<p><strong>y</strong> : ndarray</p>
+<blockquote>
+<div><p>1D array containing the y coordinate of the values to be displayed.</p>
+</div></blockquote>
+<p><strong>z</strong> : ndarray</p>
+<blockquote class="last">
+<div><p>2D array containing the values to be displayed (t,values)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.visualization.simple_plot.ScatterPlot">
+<em class="property">class </em><tt class="descclassname">mozaik.visualization.simple_plot.</tt><tt class="descname">ScatterPlot</tt><big>(</big><em>x</em>, <em>y</em>, <em>z='b'</em>, <em>periodic=False</em>, <em>period=None</em><big>)</big><a class="headerlink" href="#mozaik.visualization.simple_plot.ScatterPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">mozaik.visualization.simple_plot.StandardStyle</span></tt></p>
+<p>Simple scatter plot</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>z</strong> : ndarray</p>
+<blockquote>
+<div><p>Array of the values to be plotted.</p>
+</div></blockquote>
+<p><strong>x</strong> : ndarray</p>
+<blockquote>
+<div><p>Array with the y positions of the neurons.</p>
+</div></blockquote>
+<p><strong>y</strong> : ndarray</p>
+<blockquote>
+<div><p>Array with the y positions of the neurons.</p>
+</div></blockquote>
+<p><strong>periodic</strong> : bool</p>
+<blockquote>
+<div><p>If the z is a periodic value.</p>
+</div></blockquote>
+<p><strong>period</strong> : double</p>
+<blockquote>
+<div><p>If periodic is True the z should come from (0,period).</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>identity_line</strong> : bool</p>
+<blockquote>
+<div><p>Should identity line be show?</p>
+</div></blockquote>
+<p><strong>colorbar</strong> : bool</p>
+<blockquote>
+<div><p>Should there be a colorbar?</p>
+</div></blockquote>
+<p><strong>colormap</strong> : colormap</p>
+<blockquote>
+<div><p>The colormap to use.</p>
+</div></blockquote>
+<p><strong>dot_size</strong> : double</p>
+<blockquote>
+<div><p>The size of the markers in the scatter plot.</p>
+</div></blockquote>
+<p><strong>marker</strong> : str</p>
+<blockquote>
+<div><p>The type of marker to use in the scatter plot.</p>
+</div></blockquote>
+<p><strong>equal_aspect_ratio</strong> : bool</p>
+<blockquote>
+<div><p>If to enforce equal aspect ratio.</p>
+</div></blockquote>
+<p><strong>mark_means</strong> : bool</p>
+<blockquote>
+<div><p>Whether to mark the means of each axis.</p>
+</div></blockquote>
+<p><strong>colorbar_label</strong> : label</p>
+<blockquote class="last">
+<div><p>The label  that will be put on the colorbar.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.visualization.simple_plot.StandardStyleLinePlot">
+<em class="property">class </em><tt class="descclassname">mozaik.visualization.simple_plot.</tt><tt class="descname">StandardStyleLinePlot</tt><big>(</big><em>x</em>, <em>y</em>, <em>labels=None</em><big>)</big><a class="headerlink" href="#mozaik.visualization.simple_plot.StandardStyleLinePlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">mozaik.visualization.simple_plot.StandardStyle</span></tt></p>
+<p>This function plots vector data in simple line plots.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>x, y</strong> : list</p>
+<blockquote>
+<div><p>lists each containing corresponding vectors of x and y axis values to
+be plotted.</p>
+</div></blockquote>
+<p><strong>labels</strong> : list, optional</p>
+<blockquote>
+<div><p>Can contain the labels to be given to the individual line plots.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>colors</strong> : int or list</p>
+<blockquote>
+<div><blockquote>
+<div><p>The colors of the plots. If it is one colour all plots will have that same color. If it is a list its</p>
+</div></blockquote>
+<p>length should correspond to length of x and y and the corresponding colors will be assigned to the individual graphs.</p>
+</div></blockquote>
+<p><strong>mean</strong> : bool</p>
+<blockquote class="last">
+<div><p>If the mean of the vectors should be plotted as well.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.visualization.simple_plot.ConductancesPlot">
+<em class="property">class </em><tt class="descclassname">mozaik.visualization.simple_plot.</tt><tt class="descname">ConductancesPlot</tt><big>(</big><em>exc</em>, <em>inh</em><big>)</big><a class="headerlink" href="#mozaik.visualization.simple_plot.ConductancesPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">mozaik.visualization.simple_plot.StandardStyle</span></tt></p>
+<p>Plots conductances.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>exc</strong> : list</p>
+<blockquote>
+<div><p>List of excitatory conductances (AnalogSignal type).</p>
+</div></blockquote>
+<p><strong>inh</strong> : list</p>
+<blockquote>
+<div><p>List of inhibitory conductances (AnalogSignal type).</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>legend</strong> : bool</p>
+<blockquote class="last">
+<div><p>Whether legend should be displayed.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.visualization.simple_plot.ConnectionPlot">
+<em class="property">class </em><tt class="descclassname">mozaik.visualization.simple_plot.</tt><tt class="descname">ConnectionPlot</tt><big>(</big><em>pos_x</em>, <em>pos_y</em>, <em>source_x</em>, <em>source_y</em>, <em>weights</em>, <em>colors=None</em>, <em>period=None</em><big>)</big><a class="headerlink" href="#mozaik.visualization.simple_plot.ConnectionPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">mozaik.visualization.simple_plot.StandardStyle</span></tt></p>
+<p>A plot that will display connections.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>pos_x</strong> : ndarray</p>
+<blockquote>
+<div><p>Array with x position of the target neurons.</p>
+</div></blockquote>
+<p><strong>pos_y</strong> : ndarray</p>
+<blockquote>
+<div><p>Array with y position of the target neurons.</p>
+</div></blockquote>
+<p><strong>source_x</strong> : double</p>
+<blockquote>
+<div><p>x position of the source neuron.</p>
+</div></blockquote>
+<p><strong>source_y</strong> : double</p>
+<blockquote>
+<div><p>y position of the source neuron.</p>
+</div></blockquote>
+<p><strong>weights</strong> : list</p>
+<blockquote>
+<div><p>Array of weights from source neuron to target neurons.</p>
+</div></blockquote>
+<p><strong>colors</strong> : list, optional</p>
+<blockquote>
+<div><p>The extra information per neuron that will be displayed as colors. None if no info.</p>
+</div></blockquote>
+<p><strong>period</strong> : float, optional</p>
+<blockquote>
+<div><p>If period is not None the colors should come from (0,period)</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>line</strong> : bool</p>
+<blockquote>
+<div><p>(TODO) True means the existing connections will be displayed as lines, with their thickness indicating the strength.
+False means the strength of connection will be indicated by the size of the circle representing the corresponding target neuron.</p>
+</div></blockquote>
+<p><strong>colorbar</strong> : bool</p>
+<blockquote>
+<div><p>Should there be a colorbar ?</p>
+</div></blockquote>
+<p><strong>colormap</strong> : colormap</p>
+<blockquote>
+<div><p>The colormap to use.</p>
+</div></blockquote>
+<p><strong>colorbar_label</strong> : label</p>
+<blockquote class="last">
+<div><p>The label  that will be put on the colorbar.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="plot-constructors-module">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">plot_constructors</span></tt> Module<a class="headerlink" href="#plot-constructors-module" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-mozaik.visualization.plot_constructors"></span><p>This module contains classes that assist with construction of complicated arrangements of plots.
+A typical example is a class that helps with creating a line of plots with a common y axis.</p>
+<dl class="class">
+<dt id="mozaik.visualization.plot_constructors.LinePlot">
+<em class="property">class </em><tt class="descclassname">mozaik.visualization.plot_constructors.</tt><tt class="descname">LinePlot</tt><big>(</big><em>**params</em><big>)</big><a class="headerlink" href="#mozaik.visualization.plot_constructors.LinePlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">param.parameterized.Parameterized</span></tt></p>
+<p>Plot multiple plots with common x or y axis in a row or column. The user has to specify 
+the function. This one has to return a list of tuples, each containing:</p>
+<blockquote>
+<div><ul class="simple">
+<li>a name of a plot</li>
+<li>a Plotting or SimplePlot instance</li>
+<li>the simple_plot parameters that should be passed on</li>
+</ul>
+</div></blockquote>
+<p>Assuming each <em>function</em> returns a list of plots with names PlotA,...PlotX
+The LinePlot will create a list of plots named:</p>
+<blockquote>
+<div>PlotA.plot0 ... PlotA.plotN
+PlotX.plot0 ... PlotX.plotN</div></blockquote>
+<p>where N is defined by the length parameter.
+User can this way target the plots with parameters as desribed in the Plotting class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Mozaik parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt><strong>function</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Callable(constant=False, default=None, readonly=False)</span></dt>
+<dd><p class="first last">The function that should be called to plot individual plots. It should accept three parameters: self, index in the line, gridspec object into which to plot the plot, the simple_plot parameters</p>
+</dd>
+<dt><strong>shared_lim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Boolean(bounds=(0, 1), constant=False, default=False, readonly=False)</span></dt>
+<dd><p class="first last">should the limits of the x axis or y axis (depending on the horizontal flag) be considered shared</p>
+</dd>
+<dt><strong>length</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Integer(bounds=None, constant=False, default=0, inclusive_bounds=(True, True), readonly=False)</span></dt>
+<dd><p class="first last">how many plots will there be</p>
+</dd>
+<dt><strong>extra_space_top</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Number(bounds=None, constant=False, default=0.0, inclusive_bounds=(True, True), readonly=False)</span></dt>
+<dd><p class="first last">Space to be reserved on top of the subplot, defined as fraction of the subplot.</p>
+</dd>
+<dt><strong>shared_axis</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Boolean(bounds=(0, 1), constant=False, default=True, readonly=False)</span></dt>
+<dd><p class="first last">should the x axis or y axis (depending on the horizontal flag) considered shared</p>
+</dd>
+<dt><strong>max_length</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Integer(bounds=None, constant=False, default=8, inclusive_bounds=(True, True), readonly=False)</span></dt>
+<dd><p class="first last">The maximum # plots actually displayed</p>
+</dd>
+<dt><strong>horizontal</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Boolean(bounds=(0, 1), constant=False, default=True, readonly=False)</span></dt>
+<dd><p class="first last">Should the line of plots be horizontal or vertical</p>
+</dd>
+<dt><strong>extra_space_right</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Number(bounds=None, constant=False, default=0.0, inclusive_bounds=(True, True), readonly=False)</span></dt>
+<dd><p class="first last">Space to be reserved on the right side of the subplot, defined as fraction of the subplot.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mozaik.visualization.plot_constructors.LinePlot.make_line_plot">
+<tt class="descname">make_line_plot</tt><big>(</big><em>subplotspec</em><big>)</big><a class="headerlink" href="#mozaik.visualization.plot_constructors.LinePlot.make_line_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call to execute the line plot.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>funtion</strong> : func</p>
+<blockquote>
+<div><p>Is the function that plots the individual plots. Function has to accept idx</p>
+</div></blockquote>
+<p><strong>subplotspec</strong> : subplotspec</p>
+<blockquote class="last">
+<div><p>Is the subplotspec into which the whole lineplot is to be plotted.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.visualization.plot_constructors.PerDSVPlot">
+<em class="property">class </em><tt class="descclassname">mozaik.visualization.plot_constructors.</tt><tt class="descname">PerDSVPlot</tt><big>(</big><em>datastore</em>, <em>**params</em><big>)</big><a class="headerlink" href="#mozaik.visualization.plot_constructors.PerDSVPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.visualization.plot_constructors.LinePlot" title="mozaik.visualization.plot_constructors.LinePlot"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.visualization.plot_constructors.LinePlot</span></tt></a></p>
+<p>This is a LinePlot that automatically partitions the datastore view based
+on some rules, and than executes the individual plots on the line over
+the individual DSVs.</p>
+<p>Unlike LinePlot the function parameter should accept as the first arguemnt
+DSV not the index of the plot on the line.</p>
+<p>The partition dsvs function should perform the partitioning.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Mozaik parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt><strong>function</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Callable(constant=False, default=None, readonly=False)</span></dt>
+<dd><p class="first last">The function that should be called to plot individual plots. It should accept three parameters: self, the DSV from which to generate the plot, gridspec object into which to plot the plot, the simple_plot parameters</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.visualization.plot_constructors.PerStimulusPlot">
+<em class="property">class </em><tt class="descclassname">mozaik.visualization.plot_constructors.</tt><tt class="descname">PerStimulusPlot</tt><big>(</big><em>datastore</em>, <em>**params</em><big>)</big><a class="headerlink" href="#mozaik.visualization.plot_constructors.PerStimulusPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.visualization.plot_constructors.PerDSVPlot" title="mozaik.visualization.plot_constructors.PerDSVPlot"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.visualization.plot_constructors.PerDSVPlot</span></tt></a></p>
+<p>Line plot where each plot corresponds to stimulus with the same parameter
+except trials.</p>
+<p>The self.dsvs will contain the datastores you want to plot in each of the
+subplots - i.e. all recordings in the given datastore come from the same
+stimulus of the same parameters except for the trial parameter.</p>
+<p>PerStimulusPlot provides several automatic titling of plots based on the
+stimulus name and parameters. The currently supported styles are:</p>
+<p>&#8220;None&#8221; - No title</p>
+<dl class="docutils">
+<dt>&#8220;Standard&#8221; - Simple style where the Stimulus name is plotted on one line</dt>
+<dd>and the parameter values on the second line</dd>
+<dt>&#8220;Clever&#8221; - This style is valid only for cases where only stimuli of the</dt>
+<dd>same type are present in the supplied DSV.
+If the style is set to Clever but the conditions doesn&#8217;t hold it
+falls back to Standard and emits a warning.
+In this case the name of the stimulus and all parameters which
+are the same for all stimuli in DSV are not displayed. The
+remaining parameters are shown line after line in the format
+&#8216;stimulus: value&#8217;.
+Of course trial parameter is ignored.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Mozaik parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt><strong>title_style</strong> <span class="classifier-delimiter">:</span> <span class="classifier">String(constant=False, default=Clever, readonly=False)</span></dt>
+<dd><p class="first last">The style of the title</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.visualization.plot_constructors.PerStimulusADSPlot">
+<em class="property">class </em><tt class="descclassname">mozaik.visualization.plot_constructors.</tt><tt class="descname">PerStimulusADSPlot</tt><big>(</big><em>datastore</em>, <em>**params</em><big>)</big><a class="headerlink" href="#mozaik.visualization.plot_constructors.PerStimulusADSPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.visualization.plot_constructors.PerStimulusPlot" title="mozaik.visualization.plot_constructors.PerStimulusPlot"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.visualization.plot_constructors.PerStimulusPlot</span></tt></a></p>
+<p>As PerStimulusPlot, but partitions the ADS not recordings.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.visualization.plot_constructors.GridPlot">
+<em class="property">class </em><tt class="descclassname">mozaik.visualization.plot_constructors.</tt><tt class="descname">GridPlot</tt><big>(</big><em>**params</em><big>)</big><a class="headerlink" href="#mozaik.visualization.plot_constructors.GridPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">param.parameterized.Parameterized</span></tt></p>
+<p>Set of plots that are placed on a grid, that vary in two parameters and can have shared x or y axis (only at the level of labels for now).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Mozaik parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt><strong>y_axis_parameter</strong> <span class="classifier-delimiter">:</span> <span class="classifier">String(constant=False, default=None, readonly=False)</span></dt>
+<dd><p class="first last">The parameter whose values should be iterated along y-axis</p>
+</dd>
+<dt><strong>x_axis_parameter</strong> <span class="classifier-delimiter">:</span> <span class="classifier">String(constant=False, default=None, readonly=False)</span></dt>
+<dd><p class="first last">The parameter whose values should be iterated along x-axis</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="visualization-module">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">visualization</span></tt> Module<a class="headerlink" href="#visualization-module" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/mozaik_logo_small.svg" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mozaik.tools.html"
+                        title="previous chapter">tools Package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mozaik.meta_workflow.html"
+                        title="next chapter">meta-workflow Package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/mozaik.visualization.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mozaik.meta_workflow.html" title="meta-workflow Package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mozaik.tools.html" title="tools Package"
+             >previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="mozaik.html" >mozaik API</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2013, mozaik authors and contributors &lt;&gt;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

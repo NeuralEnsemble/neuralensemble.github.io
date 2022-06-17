@@ -1,0 +1,734 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>sheets Package &mdash; mozaik 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mozaik 0.1.0 documentation" href="index.html" />
+    <link rel="up" title="mozaik API" href="mozaik.html" />
+    <link rel="next" title="Authors and contributors" href="authors.html" />
+    <link rel="prev" title="meta-workflow Package" href="mozaik.meta_workflow.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="authors.html" title="Authors and contributors"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mozaik.meta_workflow.html" title="meta-workflow Package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="mozaik.html" accesskey="U">mozaik API</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="sheets-package">
+<h1>sheets Package<a class="headerlink" href="#sheets-package" title="Permalink to this headline">¶</a></h1>
+<p>This package contains the API defining the basic building block
+of <em>mozaik</em> models - sheets - and related concepts.</p>
+<div class="section" id="module-mozaik.sheets.__init__">
+<span id="sheets-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">sheets</span></tt> Module<a class="headerlink" href="#module-mozaik.sheets.__init__" title="Permalink to this headline">¶</a></h2>
+<p>Module containing the implementation of sheets - one of the basic building blocks of <em>mozaik</em> models.</p>
+<dl class="class">
+<dt id="mozaik.sheets.__init__.Sheet">
+<em class="property">class </em><tt class="descclassname">mozaik.sheets.__init__.</tt><tt class="descname">Sheet</tt><big>(</big><em>model</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.sheets.__init__.Sheet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="mozaik.html#mozaik.core.BaseComponent" title="mozaik.core.BaseComponent"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.core.BaseComponent</span></tt></a></p>
+<p>Sheet is an abstraction of a 2D continuouse sheet of neurons, roughly
+corresponding to the PyNN Population class with the added spatial structure.</p>
+<p>The spatial position of all cells is kept within the PyNN Population object.
+Each sheet is assumed to be centered around (0,0) origin, corresponding to
+whatever excentricity the model is looking at. The internal representation
+of space is degrees of visual field. Thus x,y coordinates of a cell in all
+sheets correspond to the degrees of visual field this cell is away from the
+origin. However, the sheet and derived classes/methods are supposed to
+accept parameters in units that are most natural for the given parameter and
+recalculate these into the internal degrees of visual field representation.</p>
+<dl class="docutils">
+<dt>As a rule of thumb in mozaik:</dt>
+<dd><ul class="first last simple">
+<li>the units in visual space should be in degrees.</li>
+<li>the units for cortical space should be in μm.</li>
+</ul>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>cell</strong> : ParameterSet</p>
+<blockquote>
+<div><p>The parametrization of the cell model that all neurons in this sheet will have.</p>
+</div></blockquote>
+<p><strong>cell.model</strong> : str</p>
+<blockquote>
+<div><p>The name of the cell model.</p>
+</div></blockquote>
+<p><strong>cell.params</strong> : ParameterSet</p>
+<blockquote>
+<div><p>The set of parameters that the given model requires.</p>
+</div></blockquote>
+<p><strong>cell.initial_values</strong> : ParameterSet</p>
+<blockquote>
+<div><p>It can contain a ParameterSet containing the initial values for some of the parameters in cell.params</p>
+</div></blockquote>
+<p><strong>mpi_safe</strong> : bool</p>
+<blockquote>
+<div><p>Whether to set the sheet up to be reproducible in MPI environment. 
+This is computationally less efficient that if it is set to false, but it will
+guaruntee the same results irrespective of the number of MPI process used.</p>
+</div></blockquote>
+<p><strong>artificial_stimulators</strong> : ParameterSet</p>
+<blockquote>
+<div><p>Contains a list of ParameterSet objects, one per each <tt class="xref py py-class docutils literal"><span class="pre">direct_stimulator.DirectStimulator</span></tt> object to be created.
+Each contains a parameter &#8216;component&#8217; that specifies which <tt class="xref py py-class docutils literal"><span class="pre">direct_stimulator.DirectStimulator</span></tt> to use, and  a 
+parameter &#8216;params&#8217; which is a ParameterSet to be passed to that <cite>DirectStimulator</cite>.</p>
+</div></blockquote>
+<p><strong>name</strong> : str</p>
+<blockquote>
+<div><p>Name of the sheet.</p>
+</div></blockquote>
+<p><strong>recorders</strong> : ParameterSet</p>
+<blockquote class="last">
+<div><p>Parametrization of recorders in this sheet. The recorders ParameterSet will contain as keys the names
+of the different recording configuration user want to have in this sheet. For the format of each recording configuration see notes.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Each recording configuration requires the following parameters:</p>
+<dl class="docutils">
+<dt><em>variables</em> </dt>
+<dd>tuple of strings specifying the variables to measure (allowd values are: &#8216;spikes&#8217; , &#8216;v&#8217;,&#8217;gsyn_exc&#8217; , &#8216;gsyn_inh&#8217; )</dd>
+<dt><em>componnent</em> </dt>
+<dd>the path to the <a class="reference internal" href="#mozaik.sheets.population_selector.PopulationSelector" title="mozaik.sheets.population_selector.PopulationSelector"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.sheets.population_selector.PopulationSelector</span></tt></a> class</dd>
+<dt><em>params</em></dt>
+<dd>a ParameterSet containing the parameters for the given <a class="reference internal" href="#mozaik.sheets.population_selector.PopulationSelector" title="mozaik.sheets.population_selector.PopulationSelector"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.sheets.population_selector.PopulationSelector</span></tt></a> class</dd>
+</dl>
+<dl class="attribute">
+<dt id="mozaik.sheets.__init__.Sheet.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'cell': {'model': &lt;type 'str'&gt;, 'initial_values': &lt;class 'parameters.ParameterSet'&gt;, 'params': &lt;class 'parameters.ParameterSet'&gt;}, 'recorders': &lt;class 'parameters.ParameterSet'&gt;, 'artificial_stimulators': &lt;class 'parameters.ParameterSet'&gt;, 'name': &lt;type 'str'&gt;, 'mpi_safe': &lt;type 'bool'&gt;}</em><a class="headerlink" href="#mozaik.sheets.__init__.Sheet.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.sheets.__init__.Sheet.setup_to_record_list">
+<tt class="descname">setup_to_record_list</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.sheets.__init__.Sheet.setup_to_record_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the recording configuration.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.sheets.__init__.Sheet.size_in_degrees">
+<tt class="descname">size_in_degrees</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.sheets.__init__.Sheet.size_in_degrees" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the x, y size in degrees of visual field of the given area.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mozaik.sheets.__init__.Sheet.pop">
+<tt class="descname">pop</tt><a class="headerlink" href="#mozaik.sheets.__init__.Sheet.pop" title="Permalink to this definition">¶</a></dt>
+<dd><p>The PyNN population holding the neurons in this sheet.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.sheets.__init__.Sheet.add_neuron_annotation">
+<tt class="descname">add_neuron_annotation</tt><big>(</big><em>neuron_number</em>, <em>key</em>, <em>value</em>, <em>protected=True</em><big>)</big><a class="headerlink" href="#mozaik.sheets.__init__.Sheet.add_neuron_annotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds annotation to neuron at index neuron_number.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>neuron_number</strong> : int</p>
+<blockquote>
+<div><p>The index of the neuron in the population to which the annotation will be added.</p>
+</div></blockquote>
+<p><strong>key</strong> : str</p>
+<blockquote>
+<div><p>The name of the annotation</p>
+</div></blockquote>
+<p><strong>value</strong> : object</p>
+<blockquote>
+<div><p>The value of the annotation</p>
+</div></blockquote>
+<p><strong>protected</strong> : bool (default=True)</p>
+<blockquote class="last">
+<div><p>If True, the annotation cannot be changed.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.sheets.__init__.Sheet.get_neuron_annotation">
+<tt class="descname">get_neuron_annotation</tt><big>(</big><em>neuron_number</em>, <em>key</em><big>)</big><a class="headerlink" href="#mozaik.sheets.__init__.Sheet.get_neuron_annotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve annotation for a given neuron.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>neuron_number</strong> : int</p>
+<blockquote>
+<div><p>The index of the neuron in the population to which the annotation will be added.</p>
+</div></blockquote>
+<p><strong>key</strong> : str</p>
+<blockquote>
+<div><p>The name of the annotation</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>value</strong> : object</p>
+<blockquote class="last">
+<div><p>The value of the annotation</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.sheets.__init__.Sheet.get_neuron_annotations">
+<tt class="descname">get_neuron_annotations</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.sheets.__init__.Sheet.get_neuron_annotations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.sheets.__init__.Sheet.describe">
+<tt class="descname">describe</tt><big>(</big><em>template='default'</em>, <em>render=&lt;function &lt;lambda&gt; at 0x61b3938&gt;</em><big>)</big><a class="headerlink" href="#mozaik.sheets.__init__.Sheet.describe" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.sheets.__init__.Sheet.record">
+<tt class="descname">record</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.sheets.__init__.Sheet.record" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.sheets.__init__.Sheet.get_data">
+<tt class="descname">get_data</tt><big>(</big><em>stimulus_duration=None</em><big>)</big><a class="headerlink" href="#mozaik.sheets.__init__.Sheet.get_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve data recorded in this sheet from pyNN in response to the last presented stimulus.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>stimulus_duration</strong> : float(ms)</p>
+<blockquote>
+<div><p>The length of the last stimulus presentation.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>segment</strong> : Segment</p>
+<blockquote class="last">
+<div><p>The segment holding all the recorded data. See NEO documentation for detail on the format.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.sheets.__init__.Sheet.prepare_artificial_stimulation">
+<tt class="descname">prepare_artificial_stimulation</tt><big>(</big><em>duration</em>, <em>offset</em>, <em>additional_stimulators</em><big>)</big><a class="headerlink" href="#mozaik.sheets.__init__.Sheet.prepare_artificial_stimulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepares the background noise and artificial stimulation for the population for the stimulus that is 
+about to be presented.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>duration</strong> : float (ms)</p>
+<blockquote>
+<div><p>The duration of the stimulus that will be presented.</p>
+</div></blockquote>
+<p><strong>additional_stimulators</strong> : list</p>
+<blockquote>
+<div><p>List of additional stimulators, defined by the experiment that should be applied during this stimulus.</p>
+</div></blockquote>
+<p><strong>offset</strong> : float (ms)</p>
+<blockquote class="last">
+<div><p>The current time of the simulation.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.sheets.__init__.Sheet.setup_artificial_stimulation">
+<tt class="descname">setup_artificial_stimulation</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.sheets.__init__.Sheet.setup_artificial_stimulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called once population is created. Sets up the background noise.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.sheets.__init__.Sheet.setup_initial_values">
+<tt class="descname">setup_initial_values</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.sheets.__init__.Sheet.setup_initial_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called once population is set. Set&#8217;s up the initial values of the neural model variables.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-mozaik.sheets.vision">
+<span id="sheets-vision-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">sheets.vision</span></tt> Module<a class="headerlink" href="#module-mozaik.sheets.vision" title="Permalink to this headline">¶</a></h2>
+<p>This module contains implementation of vision related sheets.</p>
+<dl class="class">
+<dt id="mozaik.sheets.vision.RetinalUniformSheet">
+<em class="property">class </em><tt class="descclassname">mozaik.sheets.vision.</tt><tt class="descname">RetinalUniformSheet</tt><big>(</big><em>model</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.sheets.vision.RetinalUniformSheet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">mozaik.sheets.Sheet</span></tt></p>
+<p>Retinal sheet corresponds to a grid of retinal cells (retinal ganglion cells or photoreceptors). 
+It implicitly assumes the coordinate systems is in degress in visual field.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>sx</strong> : float (degrees)</p>
+<blockquote>
+<div><p>X size of the region.</p>
+</div></blockquote>
+<p><strong>sy</strong> : float (degrees)</p>
+<blockquote>
+<div><p>Y size of the region.</p>
+</div></blockquote>
+<p><strong>density</strong> : int</p>
+<blockquote class="last">
+<div><p>Number of neurons along both axis.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="mozaik.sheets.vision.RetinalUniformSheet.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'sy': &lt;type 'float'&gt;, 'sx': &lt;type 'float'&gt;, 'density': &lt;type 'int'&gt;}</em><a class="headerlink" href="#mozaik.sheets.vision.RetinalUniformSheet.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.sheets.vision.RetinalUniformSheet.size_in_degrees">
+<tt class="descname">size_in_degrees</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.sheets.vision.RetinalUniformSheet.size_in_degrees" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.sheets.vision.SheetWithMagnificationFactor">
+<em class="property">class </em><tt class="descclassname">mozaik.sheets.vision.</tt><tt class="descname">SheetWithMagnificationFactor</tt><big>(</big><em>model</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.sheets.vision.SheetWithMagnificationFactor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">mozaik.sheets.Sheet</span></tt></p>
+<p>A Sheet that has a magnification factor corresponding to cortical visual area.
+It interprets the coordinates system to be in degrees of visual field, but it allows
+for definition of the layer using parameters in cortical space. It offers 
+number of functions that facilitate conversion between the underlying visual degree
+coordinates and cortical space coordinate systems using the magnification factor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>magnification_factor</strong> : float (μm/degree)</p>
+<blockquote>
+<div><p>The magnification factor.</p>
+</div></blockquote>
+<p><strong>sx</strong> : float (μm)</p>
+<blockquote>
+<div><p>X size of the region.</p>
+</div></blockquote>
+<p><strong>sy</strong> : float (μm)</p>
+<blockquote class="last">
+<div><p>Y size of the region.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="mozaik.sheets.vision.SheetWithMagnificationFactor.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'sy': &lt;type 'float'&gt;, 'sx': &lt;type 'float'&gt;, 'magnification_factor': &lt;type 'float'&gt;}</em><a class="headerlink" href="#mozaik.sheets.vision.SheetWithMagnificationFactor.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.sheets.vision.SheetWithMagnificationFactor.vf_2_cs">
+<tt class="descname">vf_2_cs</tt><big>(</big><em>degree_x</em>, <em>degree_y</em><big>)</big><a class="headerlink" href="#mozaik.sheets.vision.SheetWithMagnificationFactor.vf_2_cs" title="Permalink to this definition">¶</a></dt>
+<dd><p>vf_2_cs converts the position (degree_x, degree_y) in visual field to
+position in cortical space (in μm) given the magnification_factor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>degree_x</strong> : float (degrees)</p>
+<blockquote>
+<div><p>X coordinate of the position in degrees of visual field</p>
+</div></blockquote>
+<p><strong>degree_y</strong> : float (degrees)</p>
+<blockquote>
+<div><p>Y coordinate of the position in degrees of visual field</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>microm_meters_x,microm_meters_y</strong> : float,float (μm,μm)</p>
+<blockquote class="last">
+<div><p>Tuple with the coordinates in cortical space (μm)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.sheets.vision.SheetWithMagnificationFactor.cs_2_vf">
+<tt class="descname">cs_2_vf</tt><big>(</big><em>micro_meters_x</em>, <em>micro_meters_y</em><big>)</big><a class="headerlink" href="#mozaik.sheets.vision.SheetWithMagnificationFactor.cs_2_vf" title="Permalink to this definition">¶</a></dt>
+<dd><p>cs_2_vf converts the position (micro_meters_x, micro_meters_y) in
+cortical space to the position in the visual field (in degrees) given
+the magnification_factor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>micro_meters_x</strong> : float (μm)</p>
+<blockquote>
+<div><p>X coordinate of the position in μm of cortical space</p>
+</div></blockquote>
+<p><strong>micro_meters_y</strong> : float (μm)</p>
+<blockquote>
+<div><p>Y coordinate of the position in μm of cortical space</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>degrees_x,degrees_y</strong> : float,float (degrees,degrees)</p>
+<blockquote class="last">
+<div><p>Tuple with the coordinates in visual space (degrees)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.sheets.vision.SheetWithMagnificationFactor.dvf_2_dcs">
+<tt class="descname">dvf_2_dcs</tt><big>(</big><em>distance_vf</em><big>)</big><a class="headerlink" href="#mozaik.sheets.vision.SheetWithMagnificationFactor.dvf_2_dcs" title="Permalink to this definition">¶</a></dt>
+<dd><p>dvf_2_dcs converts the distance in visual space to the distance in
+cortical space given the magnification_factor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>distance_vf</strong> : float (degrees)</p>
+<blockquote>
+<div><p>The distance in visual field coordinates (degrees).</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>distance_cs</strong> : float (μm)</p>
+<blockquote class="last">
+<div><p>Distance in cortical space.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.sheets.vision.SheetWithMagnificationFactor.size_in_degrees">
+<tt class="descname">size_in_degrees</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.sheets.vision.SheetWithMagnificationFactor.size_in_degrees" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the size of the sheet in cortical space (μm).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.sheets.vision.VisualCorticalUniformSheet">
+<em class="property">class </em><tt class="descclassname">mozaik.sheets.vision.</tt><tt class="descname">VisualCorticalUniformSheet</tt><big>(</big><em>model</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.sheets.vision.VisualCorticalUniformSheet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.sheets.vision.SheetWithMagnificationFactor" title="mozaik.sheets.vision.SheetWithMagnificationFactor"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.sheets.vision.SheetWithMagnificationFactor</span></tt></a></p>
+<p>Represents a visual cortical sheet of neurons, randomly uniformly distributed in cortical space.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>density</strong> : float (neurons/mm^2)</p>
+<blockquote class="last">
+<div><p>The density of neurons per square milimeter.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="mozaik.sheets.vision.VisualCorticalUniformSheet.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'density': &lt;type 'float'&gt;}</em><a class="headerlink" href="#mozaik.sheets.vision.VisualCorticalUniformSheet.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-mozaik.sheets.population_selector">
+<span id="sheets-population-selector-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">sheets.population_selector</span></tt> Module<a class="headerlink" href="#module-mozaik.sheets.population_selector" title="Permalink to this headline">¶</a></h2>
+<p>This module contains definition of the PopulationSelector API.
+It is used as mechanism for selecting subpopulations of neurons within
+Sheets. The most typical use is for selecting neurons for recordings, where 
+a PopulationSelector can for example simulate the sampling of neurons 
+when using a multi-electrode array of some specific spatial configuration.</p>
+<dl class="class">
+<dt id="mozaik.sheets.population_selector.PopulationSelector">
+<em class="property">class </em><tt class="descclassname">mozaik.sheets.population_selector.</tt><tt class="descname">PopulationSelector</tt><big>(</big><em>sheet</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.sheets.population_selector.PopulationSelector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="mozaik.html#mozaik.core.ParametrizedObject" title="mozaik.core.ParametrizedObject"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.core.ParametrizedObject</span></tt></a></p>
+<p>The PopulationSelector specifies which cells should be selected from population.</p>
+<p>It defines only one function: generate_idd_list_of_neurons that should 
+return the list of selected neurons ids, based on the provided sheet and parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>parameters</strong> : ParameterSet</p>
+<blockquote>
+<div><p>The dictionary of required parameters.</p>
+</div></blockquote>
+<p><strong>sheet</strong> : Sheet</p>
+<blockquote class="last">
+<div><p>The sheet from which to pick the neurons</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mozaik.sheets.population_selector.PopulationSelector.generate_idd_list_of_neurons">
+<tt class="descname">generate_idd_list_of_neurons</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.sheets.population_selector.PopulationSelector.generate_idd_list_of_neurons" title="Permalink to this definition">¶</a></dt>
+<dd><p>The abastract function that has to be implemented by each <cite>.PopulationSelector</cite> 
+and has to return the list of selected neurons.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>ids</strong> : list</p>
+<blockquote class="last">
+<div><p>List of selected ids.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.sheets.population_selector.RCAll">
+<em class="property">class </em><tt class="descclassname">mozaik.sheets.population_selector.</tt><tt class="descname">RCAll</tt><big>(</big><em>sheet</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.sheets.population_selector.RCAll" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.sheets.population_selector.PopulationSelector" title="mozaik.sheets.population_selector.PopulationSelector"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.sheets.population_selector.PopulationSelector</span></tt></a></p>
+<p>This PopulationSelector selects all neurons in the sheet.</p>
+<dl class="method">
+<dt id="mozaik.sheets.population_selector.RCAll.generate_idd_list_of_neurons">
+<tt class="descname">generate_idd_list_of_neurons</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.sheets.population_selector.RCAll.generate_idd_list_of_neurons" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.sheets.population_selector.RCRandomN">
+<em class="property">class </em><tt class="descclassname">mozaik.sheets.population_selector.</tt><tt class="descname">RCRandomN</tt><big>(</big><em>sheet</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.sheets.population_selector.RCRandomN" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.sheets.population_selector.PopulationSelector" title="mozaik.sheets.population_selector.PopulationSelector"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.sheets.population_selector.PopulationSelector</span></tt></a></p>
+<p>This PopulationSelector selects random specified number of neurons.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>num_of_cells</strong> : int</p>
+<blockquote class="last">
+<div><p>The number of cells to be selected.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="mozaik.sheets.population_selector.RCRandomN.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'num_of_cells': &lt;type 'int'&gt;}</em><a class="headerlink" href="#mozaik.sheets.population_selector.RCRandomN.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.sheets.population_selector.RCRandomN.generate_idd_list_of_neurons">
+<tt class="descname">generate_idd_list_of_neurons</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.sheets.population_selector.RCRandomN.generate_idd_list_of_neurons" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.sheets.population_selector.RCRandomPercentage">
+<em class="property">class </em><tt class="descclassname">mozaik.sheets.population_selector.</tt><tt class="descname">RCRandomPercentage</tt><big>(</big><em>sheet</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.sheets.population_selector.RCRandomPercentage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.sheets.population_selector.PopulationSelector" title="mozaik.sheets.population_selector.PopulationSelector"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.sheets.population_selector.PopulationSelector</span></tt></a></p>
+<p>This PopulationSelector select random percentage of the population.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>percentage</strong> : float</p>
+<blockquote class="last">
+<div><p>The percentage of neurons to select.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="mozaik.sheets.population_selector.RCRandomPercentage.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'percentage': &lt;type 'float'&gt;}</em><a class="headerlink" href="#mozaik.sheets.population_selector.RCRandomPercentage.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.sheets.population_selector.RCRandomPercentage.generate_idd_list_of_neurons">
+<tt class="descname">generate_idd_list_of_neurons</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.sheets.population_selector.RCRandomPercentage.generate_idd_list_of_neurons" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.sheets.population_selector.RCGrid">
+<em class="property">class </em><tt class="descclassname">mozaik.sheets.population_selector.</tt><tt class="descname">RCGrid</tt><big>(</big><em>sheet</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.sheets.population_selector.RCGrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.sheets.population_selector.PopulationSelector" title="mozaik.sheets.population_selector.PopulationSelector"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.sheets.population_selector.PopulationSelector</span></tt></a></p>
+<p>This PopulationSelector assumes a grid of points (&#8216;electrodes&#8217;) and includes the closest neuron to each point to the selected list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>size</strong> : float (micro meters of cortical space)</p>
+<blockquote>
+<div><p>The size of the grid (it is assumed to be square) - it has to be multiple of spacing</p>
+</div></blockquote>
+<p><strong>spacing</strong> : float (micro meters of cortical space)</p>
+<blockquote>
+<div><p>The space between two neighboring electrodes.</p>
+</div></blockquote>
+<p><strong>offset_x</strong> : float (micro meters of cortical space)</p>
+<blockquote>
+<div><p>The x axis offset from the center of the sheet.</p>
+</div></blockquote>
+<p><strong>offset_y</strong> : float (micro meters of cortical space)</p>
+<blockquote class="last">
+<div><p>The y axis offset from the center of the sheet.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="mozaik.sheets.population_selector.RCGrid.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'spacing': &lt;type 'float'&gt;, 'offset_x': &lt;type 'float'&gt;, 'offset_y': &lt;type 'float'&gt;, 'size': &lt;type 'float'&gt;}</em><a class="headerlink" href="#mozaik.sheets.population_selector.RCGrid.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.sheets.population_selector.RCGrid.generate_idd_list_of_neurons">
+<tt class="descname">generate_idd_list_of_neurons</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.sheets.population_selector.RCGrid.generate_idd_list_of_neurons" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/mozaik_logo_small.svg" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mozaik.meta_workflow.html"
+                        title="previous chapter">meta-workflow Package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="authors.html"
+                        title="next chapter">Authors and contributors</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/mozaik.sheets.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="authors.html" title="Authors and contributors"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mozaik.meta_workflow.html" title="meta-workflow Package"
+             >previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="mozaik.html" >mozaik API</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2013, mozaik authors and contributors &lt;&gt;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

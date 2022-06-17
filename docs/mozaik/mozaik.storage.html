@@ -1,0 +1,1038 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>storage Package &mdash; mozaik 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mozaik 0.1.0 documentation" href="index.html" />
+    <link rel="up" title="mozaik API" href="mozaik.html" />
+    <link rel="next" title="tools Package" href="mozaik.tools.html" />
+    <link rel="prev" title="vision Package" href="mozaik.stimuli.vision.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mozaik.tools.html" title="tools Package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mozaik.stimuli.vision.html" title="vision Package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="mozaik.html" accesskey="U">mozaik API</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="storage-package">
+<h1>storage Package<a class="headerlink" href="#storage-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-mozaik.storage.datastore">
+<span id="datastore-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">datastore</span></tt> Module<a class="headerlink" href="#module-mozaik.storage.datastore" title="Permalink to this headline">¶</a></h2>
+<p>This module implements the data storage functionality.</p>
+<dl class="class">
+<dt id="mozaik.storage.datastore.DataStoreView">
+<em class="property">class </em><tt class="descclassname">mozaik.storage.datastore.</tt><tt class="descname">DataStoreView</tt><big>(</big><em>parameters</em>, <em>full_datastore</em>, <em>replace=False</em><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.DataStoreView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="mozaik.html#mozaik.core.ParametrizedObject" title="mozaik.core.ParametrizedObject"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.core.ParametrizedObject</span></tt></a></p>
+<p>This class represents a subset of a DataStore and defines the query
+interface and the structure in which the data are stored in the memory of
+any datastore. Main role of this class is to allow for creating subsets of
+data stored in the <a class="reference internal" href="#mozaik.storage.datastore.DataStore" title="mozaik.storage.datastore.DataStore"><tt class="xref py py-class docutils literal"><span class="pre">DataStore</span></tt></a>, so that one can restrict other parts of
+Mozaik to work only over these subsets. This is done via means of queries
+(see <a class="reference internal" href="#module-mozaik.storage.queries" title="mozaik.storage.queries"><tt class="xref py py-mod docutils literal"><span class="pre">mozaik.storage.queries</span></tt></a>) which produce <a class="reference internal" href="#mozaik.storage.datastore.DataStoreView" title="mozaik.storage.datastore.DataStoreView"><tt class="xref py py-class docutils literal"><span class="pre">DataStoreView</span></tt></a> objects and can be
+chained to work like filters.</p>
+<p>Note that the actual datastores inherit from this object and define how the
+data are actualy stored on other media (i.e. hdf5 file format or simple pickle).</p>
+<p>Data store should aggregate all data and analysis results collected across
+experiments and a given model.</p>
+<p>Experiments results storage:</p>
+<p>These are stored as a simple list in the self.block.segments variable. Each
+segment corresponds to recordings from a single sheet to a single stimulus.</p>
+<p>Analysis results storage:</p>
+<p>A list containing the <a class="reference internal" href="mozaik.analysis.html#mozaik.analysis.data_structures.AnalysisDataStructure" title="mozaik.analysis.data_structures.AnalysisDataStructure"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.analysis.data_structures.AnalysisDataStructure</span></tt></a> objects.</p>
+<p>The analysis results are addressed by the
+AnalysisDataStructure identifier. The call with this specification returns
+a set of AnalysisDataStructures that correspond to the above addressing.
+If further more specific &#8216;addressing&#8217; is required it
+has to be done by the corresponding visualization or analysis code that
+asked for the AnalysisDataStructure&#8217;s based on the knowledge of their
+content. Or a specific query filters can be written that understand the specific type
+of AnalysisDataStructure and can filter them based on their internal data.
+For more details on addressing experimental results or analysis data structures
+please reffer to <a class="reference internal" href="#module-mozaik.storage.queries" title="mozaik.storage.queries"><tt class="xref py py-mod docutils literal"><span class="pre">queries</span></tt></a> or <a class="reference internal" href="mozaik.tools.html#module-mozaik.tools.mozaik_parametrized" title="mozaik.tools.mozaik_parametrized"><tt class="xref py py-mod docutils literal"><span class="pre">mozaik.tools.mozaik_parametrized</span></tt></a> modules.</p>
+<p>DataStoreView also keeps a reference to a full <cite>.Datastore</cite> object
+from which it was originally created (this might have happened via a
+chain of DSVs). This is on order to allow for operations that work over DSV
+to insert their results into the original full datastore as this is
+(almost?) always the desired behaviours (note DSV does not actually have
+functions to add new recordings or analysis results).</p>
+<p>By default, the datastore will refuse to add a new AnalysisDataStructure 
+to the datastore if the new ADS has the same values of all its parameters as
+some other ADS already inserted in the datastore. This is so that each ADS
+stored in datastore is uniquely identifiable based on its parameters.
+If the datastore is created (loaded) with the replace flag set to True, in the situation
+of such conflict the datastore will replace the new ADS for the one already in the datastore.</p>
+<dl class="method">
+<dt id="mozaik.storage.datastore.DataStoreView.get_segments">
+<tt class="descname">get_segments</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.DataStoreView.get_segments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns list of all recordings (as neo segments) stored in the datastore.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.datastore.DataStoreView.sheets">
+<tt class="descname">sheets</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.DataStoreView.sheets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of all sheets that are present in at least one of the
+segments in the given DataStoreView.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.datastore.DataStoreView.get_neuron_postions">
+<tt class="descname">get_neuron_postions</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.DataStoreView.get_neuron_postions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the positions for all neurons in the model within their respective sheets.
+A dictionary is returned with keys names of sheets and values a 2d ndarray of size (2,number of neurons)
+holding the x and y positions of all neurons in the rows.</p>
+<p>Use <tt class="xref py py-func docutils literal"><span class="pre">get_sheet_indexes()</span></tt> to link the indexes in the returned array to neuron idds.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.datastore.DataStoreView.get_sheet_indexes">
+<tt class="descname">get_sheet_indexes</tt><big>(</big><em>sheet_name</em>, <em>neuron_id</em><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.DataStoreView.get_sheet_indexes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the indexes of neurons in the sheet given the idds (this should be primarily used with annotations data such as positions etc.)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.datastore.DataStoreView.get_sheet_ids">
+<tt class="descname">get_sheet_ids</tt><big>(</big><em>sheet_name</em>, <em>indexes=None</em><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.DataStoreView.get_sheet_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the idds of neurons in the sheet given the indexes (this should be primarily used with annotations data such as positions etc.)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.datastore.DataStoreView.get_neuron_annotations">
+<tt class="descname">get_neuron_annotations</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.DataStoreView.get_neuron_annotations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns neuron annotations.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.datastore.DataStoreView.get_stimuli">
+<tt class="descname">get_stimuli</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.DataStoreView.get_stimuli" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of stimuli (as strings). The order of the stimuli
+corresponds to the order of segments returned by the get_segments()
+call.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.datastore.DataStoreView.get_analysis_result">
+<tt class="descname">get_analysis_result</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.DataStoreView.get_analysis_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of ADSs, that match the parameter values specified in kwargs.</p>
+<p class="rubric">Examples</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">datastore</span><span class="o">.</span><span class="n">get_analysis_result</span><span class="p">(</span><span class="n">identifier</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;PerNeuronValue&#39;</span><span class="p">,</span><span class="s">&#39;SingleValue&#39;</span><span class="p">],</span><span class="n">sheet_name</span><span class="o">=</span><span class="n">sheet</span><span class="p">,</span><span class="n">value_name</span><span class="o">=</span><span class="s">&#39;orientation preference&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This command should return or ADS whose identifier is <em>PerNeuronValue</em> or <em>SingleValue</em>, and are associated with sheet named <em>sheet</em> and as their value name have &#8216;orientation preference&#8217;</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.datastore.DataStoreView.get_sensory_stimulus">
+<tt class="descname">get_sensory_stimulus</tt><big>(</big><em>stimuli=None</em><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.DataStoreView.get_sensory_stimulus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the raw sensory stimulus that has been presented to the model due to stimuli specified by the stimuli argument.
+If stimuli==None returns all sensory stimuli.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.datastore.DataStoreView.sensory_stimulus_copy">
+<tt class="descname">sensory_stimulus_copy</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.DataStoreView.sensory_stimulus_copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility function that makes a shallow copy of the dictionary holding sensory stimuli.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.datastore.DataStoreView.analysis_result_copy">
+<tt class="descname">analysis_result_copy</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.DataStoreView.analysis_result_copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility function that makes a shallow copy of the list holding analysis data structures.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.datastore.DataStoreView.recordings_copy">
+<tt class="descname">recordings_copy</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.DataStoreView.recordings_copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility function that makes a shallow copy of the list holding recordings.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.datastore.DataStoreView.fromDataStoreView">
+<tt class="descname">fromDataStoreView</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.DataStoreView.fromDataStoreView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a empty DSV that is linked to the same <cite>.DataStore</cite> as this DSV.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.datastore.DataStoreView.print_content">
+<tt class="descname">print_content</tt><big>(</big><em>full_recordings=False</em>, <em>full_ADS=False</em><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.DataStoreView.print_content" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints the content of the data store (specifically the list of recordings and ADSs in the DSV).</p>
+<p>If the</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>full_recordings</strong> : bool (optional)</p>
+<blockquote class="last">
+<div><blockquote>
+<div><p>If True each contained recording will be printed.
+Otherwise only the overview of the recordings based on stimulus type will be shown.</p>
+</div></blockquote>
+<dl class="docutils">
+<dt>full_ADS <span class="classifier-delimiter">:</span> <span class="classifier">bool (optional)</span></dt>
+<dd><p class="first last">If True each contained ADS will be printed (for each this will print the set of their mozaik parameters together with their values).
+Otherwise only the overview of the ADSs based on their identifier will be shown.</p>
+</dd>
+</dl>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.storage.datastore.DataStore">
+<em class="property">class </em><tt class="descclassname">mozaik.storage.datastore.</tt><tt class="descname">DataStore</tt><big>(</big><em>load</em>, <em>parameters</em>, <em>**params</em><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.DataStore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.storage.datastore.DataStoreView" title="mozaik.storage.datastore.DataStoreView"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.storage.datastore.DataStoreView</span></tt></a></p>
+<p>Abstract DataStore class that declares the <em>mozaik</em> data store interface.</p>
+<p>The role of mozaik data store is to store the recordings from simulation 
+(generally this means the spike trains and the various analog signals such as conductances or membrane potential),
+the analysis results and the various metedata that is generated during the model setup and it&#8217;s subsequent simulation.</p>
+<p>The recordings are send to the DataStore in the neo format and are expected to be returned in neo format as well.</p>
+<p>mozaik generetas one neo segment per each model sheet (see <tt class="xref py py-class docutils literal"><span class="pre">mozaik.sheets.Sheet</span></tt>) for each presented stimulus,
+that is stored in the <a class="reference internal" href="#mozaik.storage.datastore.DataStore" title="mozaik.storage.datastore.DataStore"><tt class="xref py py-class docutils literal"><span class="pre">DataStore</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>load</strong> : bool</p>
+<blockquote>
+<div><p>If False datastore will be created in the parameter.root_directory directory. 
+If True it will be loaded from the parameter.root_directory directory.</p>
+</div></blockquote>
+<p><strong>parameters</strong> : ParameterSet</p>
+<blockquote class="last">
+<div><p>The required parameter set.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="mozaik.storage.datastore.DataStore.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'root_directory': &lt;type 'str'&gt;}</em><a class="headerlink" href="#mozaik.storage.datastore.DataStore.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.datastore.DataStore.set_neuron_positions">
+<tt class="descname">set_neuron_positions</tt><big>(</big><em>neuron_positions</em><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.DataStore.set_neuron_positions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.datastore.DataStore.set_neuron_annotations">
+<tt class="descname">set_neuron_annotations</tt><big>(</big><em>neuron_annotations</em><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.DataStore.set_neuron_annotations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.datastore.DataStore.set_neuron_ids">
+<tt class="descname">set_neuron_ids</tt><big>(</big><em>neuron_ids</em><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.DataStore.set_neuron_ids" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.datastore.DataStore.identify_unpresented_stimuli">
+<tt class="descname">identify_unpresented_stimuli</tt><big>(</big><em>stimuli</em><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.DataStore.identify_unpresented_stimuli" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method filters out from a list of stimuli all those which have already been
+presented.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.datastore.DataStore.load">
+<tt class="descname">load</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.DataStore.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>The DataStore interface function to be implemented by a given backend. 
+It should load the datastore.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.datastore.DataStore.save">
+<tt class="descname">save</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.DataStore.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>The DataStore interface function to be implemented by a given backend. 
+It should store the datastore.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.datastore.DataStore.add_recording">
+<tt class="descname">add_recording</tt><big>(</big><em>segment</em>, <em>stimulus</em><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.DataStore.add_recording" title="Permalink to this definition">¶</a></dt>
+<dd><p>The DataStore interface function to be implemented by a given backend. 
+It should add a recording into the datastore.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.datastore.DataStore.add_analysis_result">
+<tt class="descname">add_analysis_result</tt><big>(</big><em>result</em><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.DataStore.add_analysis_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>The DataStore interface function to be implemented by a given backend. 
+It should add a ADS to the datastore.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.datastore.DataStore.add_stimulus">
+<tt class="descname">add_stimulus</tt><big>(</big><em>data</em>, <em>stimulus</em><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.DataStore.add_stimulus" title="Permalink to this definition">¶</a></dt>
+<dd><p>The DataStore interface function to be implemented by a given backend. 
+It should add a stimulus into the datastore.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.storage.datastore.Hdf5DataStore">
+<em class="property">class </em><tt class="descclassname">mozaik.storage.datastore.</tt><tt class="descname">Hdf5DataStore</tt><big>(</big><em>load</em>, <em>parameters</em>, <em>**params</em><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.Hdf5DataStore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.storage.datastore.DataStore" title="mozaik.storage.datastore.DataStore"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.storage.datastore.DataStore</span></tt></a></p>
+<p>An DataStore that saves all it&#8217;s data in a hdf5 file and an associated
+analysis results file, which just becomes the pickled self.analysis_results
+dictionary.</p>
+<dl class="method">
+<dt id="mozaik.storage.datastore.Hdf5DataStore.load">
+<tt class="descname">load</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.Hdf5DataStore.load" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.datastore.Hdf5DataStore.save">
+<tt class="descname">save</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.Hdf5DataStore.save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.datastore.Hdf5DataStore.add_recording">
+<tt class="descname">add_recording</tt><big>(</big><em>segments</em>, <em>stimulus</em><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.Hdf5DataStore.add_recording" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.datastore.Hdf5DataStore.add_stimulus">
+<tt class="descname">add_stimulus</tt><big>(</big><em>data</em>, <em>stimulus</em><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.Hdf5DataStore.add_stimulus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.datastore.Hdf5DataStore.add_analysis_result">
+<tt class="descname">add_analysis_result</tt><big>(</big><em>result</em><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.Hdf5DataStore.add_analysis_result" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.storage.datastore.PickledDataStore">
+<em class="property">class </em><tt class="descclassname">mozaik.storage.datastore.</tt><tt class="descname">PickledDataStore</tt><big>(</big><em>load</em>, <em>parameters</em>, <em>**params</em><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.PickledDataStore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.storage.datastore.Hdf5DataStore" title="mozaik.storage.datastore.Hdf5DataStore"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.storage.datastore.Hdf5DataStore</span></tt></a></p>
+<p>An DataStore that saves all it&#8217;s data as a simple pickled files</p>
+<dl class="method">
+<dt id="mozaik.storage.datastore.PickledDataStore.load">
+<tt class="descname">load</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.PickledDataStore.load" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.datastore.PickledDataStore.save">
+<tt class="descname">save</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.PickledDataStore.save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.datastore.PickledDataStore.add_recording">
+<tt class="descname">add_recording</tt><big>(</big><em>segments</em>, <em>stimulus</em><big>)</big><a class="headerlink" href="#mozaik.storage.datastore.PickledDataStore.add_recording" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-mozaik.storage.queries">
+<span id="queries-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">queries</span></tt> Module<a class="headerlink" href="#module-mozaik.storage.queries" title="Permalink to this headline">¶</a></h2>
+<p>This module contain query manipulation system that is used to filter information stored in data store (<a class="reference internal" href="#mozaik.storage.datastore.DataStore" title="mozaik.storage.datastore.DataStore"><tt class="xref py py-class docutils literal"><span class="pre">DataStore</span></tt></a>).</p>
+<p>The basic principle is that each query takes a existing <tt class="xref py py-class docutils literal"><span class="pre">DataSore</span></tt> (or <a class="reference internal" href="#mozaik.storage.datastore.DataStoreView" title="mozaik.storage.datastore.DataStoreView"><tt class="xref py py-class docutils literal"><span class="pre">DataStoreView</span></tt></a>) as an input and 
+returns and new <tt class="xref py py-class docutils literal"><span class="pre">DataSoreView</span></tt> that is a subset of the input DSV.</p>
+<dl class="class">
+<dt id="mozaik.storage.queries.Query">
+<em class="property">class </em><tt class="descclassname">mozaik.storage.queries.</tt><tt class="descname">Query</tt><big>(</big><em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.storage.queries.Query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="mozaik.html#mozaik.core.ParametrizedObject" title="mozaik.core.ParametrizedObject"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.core.ParametrizedObject</span></tt></a></p>
+<p>Query accepts a <a class="reference internal" href="#mozaik.storage.datastore.DataStoreView" title="mozaik.storage.datastore.DataStoreView"><tt class="xref py py-class docutils literal"><span class="pre">DataStoreView</span></tt></a> and returns a <a class="reference internal" href="#mozaik.storage.datastore.DataStoreView" title="mozaik.storage.datastore.DataStoreView"><tt class="xref py py-class docutils literal"><span class="pre">DataStoreView</span></tt></a> (or set of DSVs) with potentially
+reduced set of recorded data or analysis results</p>
+<p>We recommend to write queries in a way where it can be invoked via the
+ParamterSet method using a class, but also directly as a function with
+(potentially with default paramter values)</p>
+<p>See <a class="reference internal" href="#mozaik.storage.queries.ParamFilterQuery" title="mozaik.storage.queries.ParamFilterQuery"><tt class="xref py py-class docutils literal"><span class="pre">ParamFilterQuery</span></tt></a> for a simple example.</p>
+<dl class="attribute">
+<dt id="mozaik.storage.queries.Query.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {}</em><a class="headerlink" href="#mozaik.storage.queries.Query.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.queries.Query.query">
+<tt class="descname">query</tt><big>(</big><em>dsv</em><big>)</big><a class="headerlink" href="#mozaik.storage.queries.Query.query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract function to be implemented by each query.</p>
+<p>This is the function that executes the query. It receives a DSV as input and has to return a DSV (or set of DSVs).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.storage.queries.param_filter_query">
+<tt class="descclassname">mozaik.storage.queries.</tt><tt class="descname">param_filter_query</tt><big>(</big><em>dsv</em>, <em>ads_unique=False</em>, <em>rec_unique=False</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mozaik.storage.queries.param_filter_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>It will return DSV with only recordings and ADSs with mozaik parameters 
+whose values match the parameter values combinations provided in <cite>kwargs</cite>.</p>
+<p>To restrict mozaik parameters of the stimuli associated with the ADS or recordings 
+pre-pend &#8216;<a href="#id1"><span class="problematic" id="id2">st_</span></a>&#8216; to the parameter name.</p>
+<p>For the recordings, parameter sheet refers to the sheet for which the recording was done.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>dsv</strong> : DataStoreView</p>
+<blockquote>
+<div><p>The input DSV.</p>
+</div></blockquote>
+<p><strong>ads_unique</strong> : bool, optional</p>
+<blockquote>
+<div><p>If True the query will raise an exception if the query does not identify a unique ADS.</p>
+</div></blockquote>
+<p><strong>rec_unique</strong> : bool, optional</p>
+<blockquote>
+<div><p>If True the query will raise an exception if the query does not identify a unique recording.</p>
+</div></blockquote>
+<p><strong>**kwargs</strong> : dict</p>
+<blockquote class="last">
+<div><p>Remaining keyword arguments will be interepreted as the mozaik parameter names and their associated values that all ASDs
+or recordings have to match. The values of the parameters should be either directly the values to match or list of values in which
+case this list is interpreted as <em>one of</em> of the values that each returned recording or ASD has to match (thus effectively there
+is an <em>and</em> operation between the different parameters and <em>or</em> operation between the values specified for the given mozaik parameters).</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">datastore</span><span class="o">.</span><span class="n">param_filter_query</span><span class="p">(</span><span class="n">datastore</span><span class="p">,</span><span class="n">identifier</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;PerNeuronValue&#39;</span><span class="p">,</span><span class="s">&#39;SingleValue&#39;</span><span class="p">],</span><span class="n">sheet_name</span><span class="o">=</span><span class="n">sheet</span><span class="p">,</span><span class="n">value_name</span><span class="o">=</span><span class="s">&#39;orientation preference&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This command should return DSV containing all recordings and ADSs whose identifier is <em>PerNeuronValue</em> or <em>SingleValue</em>, and are associated with sheet named <em>sheet_name</em> and as their value name have &#8216;orientation preference&#8217;.
+Note that since recordings do not have these parameters, this query would return a DSV containing only ADSs.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">datastore</span><span class="o">.</span><span class="n">param_filter_query</span><span class="p">(</span><span class="n">datastore</span><span class="p">,</span><span class="n">st_orientation</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This command should return DSV containing all recordings and ADSs that are associated with stimuli whose mozaik parameter orientation has value 0.5.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.storage.queries.ParamFilterQuery">
+<em class="property">class </em><tt class="descclassname">mozaik.storage.queries.</tt><tt class="descname">ParamFilterQuery</tt><big>(</big><em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.storage.queries.ParamFilterQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.storage.queries.Query" title="mozaik.storage.queries.Query"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.storage.queries.Query</span></tt></a></p>
+<p>See <a class="reference internal" href="#mozaik.storage.queries.param_filter_query" title="mozaik.storage.queries.param_filter_query"><tt class="xref py py-func docutils literal"><span class="pre">param_filter_query()</span></tt></a> for description.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>params</strong> : ParameterSet</p>
+<blockquote>
+<div><p>The set of mozaik parameters and their associated values to which to restrict the DSV. (see **kwargs in :func:.`param_filter_query`)</p>
+</div></blockquote>
+<p><strong>ads_unique</strong> : bool, optional</p>
+<blockquote>
+<div><p>If True the query will raise an exception if the query does not identify a unique ADS.</p>
+</div></blockquote>
+<p><strong>rec_unique</strong> : bool, optional</p>
+<blockquote class="last">
+<div><p>If True the query will raise an exception if the query does not identify a unique recording.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="mozaik.storage.queries.ParamFilterQuery.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'rec_unique': &lt;type 'bool'&gt;, 'params': &lt;class 'parameters.ParameterSet'&gt;, 'ads_unique': &lt;type 'bool'&gt;}</em><a class="headerlink" href="#mozaik.storage.queries.ParamFilterQuery.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.queries.ParamFilterQuery.query">
+<tt class="descname">query</tt><big>(</big><em>dsv</em><big>)</big><a class="headerlink" href="#mozaik.storage.queries.ParamFilterQuery.query" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.storage.queries.tag_based_query">
+<tt class="descclassname">mozaik.storage.queries.</tt><tt class="descname">tag_based_query</tt><big>(</big><em>dsv</em>, <em>tags</em><big>)</big><a class="headerlink" href="#mozaik.storage.queries.tag_based_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>This query filters out all AnalysisDataStructure&#8217;s corresponding to the given tags.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>tags</strong> : list(str)</p>
+<blockquote class="last">
+<div><p>The list of tags that each ADS has to contain.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.storage.queries.TagBasedQuery">
+<em class="property">class </em><tt class="descclassname">mozaik.storage.queries.</tt><tt class="descname">TagBasedQuery</tt><big>(</big><em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.storage.queries.TagBasedQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.storage.queries.Query" title="mozaik.storage.queries.Query"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.storage.queries.Query</span></tt></a></p>
+<p>See  <a class="reference internal" href="#mozaik.storage.queries.tag_based_query" title="mozaik.storage.queries.tag_based_query"><tt class="xref py py-func docutils literal"><span class="pre">tag_based_query()</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>tags</strong> : list(str)</p>
+<blockquote class="last">
+<div><p>The list of tags that each ADS has to contain.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="mozaik.storage.queries.TagBasedQuery.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'tags': &lt;type 'list'&gt;}</em><a class="headerlink" href="#mozaik.storage.queries.TagBasedQuery.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.queries.TagBasedQuery.query">
+<tt class="descname">query</tt><big>(</big><em>dsv</em><big>)</big><a class="headerlink" href="#mozaik.storage.queries.TagBasedQuery.query" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.storage.queries.partition_by_stimulus_paramter_query">
+<tt class="descclassname">mozaik.storage.queries.</tt><tt class="descname">partition_by_stimulus_paramter_query</tt><big>(</big><em>dsv</em>, <em>parameter_list</em><big>)</big><a class="headerlink" href="#mozaik.storage.queries.partition_by_stimulus_paramter_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>This query will take all recordings and return list of DataStoreViews
+each holding recordings measured to the same stimulus with exception of
+the parameters reference by parameter_list.</p>
+<p>Note that in most cases one wants to do this only against datastore holding
+only single Stimulus type! In that case the datastore is partitioned into
+subsets each holding recordings to the same stimulus with the same paramter
+values, with the exception to the parameters in parameter_list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>dsv</strong> : DataStoreView</p>
+<blockquote>
+<div><p>The input DSV.</p>
+</div></blockquote>
+<p><strong>parameter_list</strong> : list(string)</p>
+<blockquote class="last">
+<div><p>The list of parameters of the associated stimuli that will vary in the returned DSVs, all other stimulus parameters will have the same value within each of the 
+returned DSVs.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.storage.queries.PartitionByStimulusParamterQuery">
+<em class="property">class </em><tt class="descclassname">mozaik.storage.queries.</tt><tt class="descname">PartitionByStimulusParamterQuery</tt><big>(</big><em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.storage.queries.PartitionByStimulusParamterQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.storage.queries.Query" title="mozaik.storage.queries.Query"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.storage.queries.Query</span></tt></a></p>
+<p>See  <a class="reference internal" href="#mozaik.storage.queries.partition_by_stimulus_paramter_query" title="mozaik.storage.queries.partition_by_stimulus_paramter_query"><tt class="xref py py-func docutils literal"><span class="pre">partition_by_stimulus_paramter_query()</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>parameter_list</strong> : list(string)</p>
+<blockquote class="last">
+<div><p>The list of parameters that will vary in the returned DSVs, all other parameters will have the same value within each of the 
+returned DSVs.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="mozaik.storage.queries.PartitionByStimulusParamterQuery.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'parameter_list': &lt;type 'list'&gt;}</em><a class="headerlink" href="#mozaik.storage.queries.PartitionByStimulusParamterQuery.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.queries.PartitionByStimulusParamterQuery.query">
+<tt class="descname">query</tt><big>(</big><em>dsv</em><big>)</big><a class="headerlink" href="#mozaik.storage.queries.PartitionByStimulusParamterQuery.query" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.storage.queries.partition_analysis_results_by_parameters_query">
+<tt class="descclassname">mozaik.storage.queries.</tt><tt class="descname">partition_analysis_results_by_parameters_query</tt><big>(</big><em>dsv</em>, <em>parameter_list=None</em>, <em>excpt=False</em><big>)</big><a class="headerlink" href="#mozaik.storage.queries.partition_analysis_results_by_parameters_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>This query will take all analysis results and return list of DataStoreViews
+each holding analysis results that have the same values of
+the parameters in parameter_list.</p>
+<p>Note that in most cases one wants to do this only against datastore holding
+only single analysis results type! In that case the datastore is partitioned into
+subsets each holding recordings to the same stimulus with the same paramter
+values, with the exception to the parameters in parameter_list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>dsv</strong> : DataStoreView</p>
+<blockquote>
+<div><p>The input DSV.</p>
+</div></blockquote>
+<p><strong>parameter_list</strong> : list(string)</p>
+<blockquote>
+<div><p>The list of parameters that will vary in the returned DSVs, all other parameters will have the same value within each of the 
+returned DSVs.</p>
+</div></blockquote>
+<p><strong>except</strong> : bool</p>
+<blockquote class="last">
+<div><p>If excpt is True the query is allowed only on DSVs holding the same AnalysisDataStructures.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.storage.queries.PartitionAnalysisResultsByParameterNameQuery">
+<em class="property">class </em><tt class="descclassname">mozaik.storage.queries.</tt><tt class="descname">PartitionAnalysisResultsByParameterNameQuery</tt><big>(</big><em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.storage.queries.PartitionAnalysisResultsByParameterNameQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.storage.queries.Query" title="mozaik.storage.queries.Query"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.storage.queries.Query</span></tt></a></p>
+<p>See  <a class="reference internal" href="#mozaik.storage.queries.partition_analysis_results_by_parameters_query" title="mozaik.storage.queries.partition_analysis_results_by_parameters_query"><tt class="xref py py-func docutils literal"><span class="pre">partition_analysis_results_by_parameters_query()</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>parameter_list</strong> : list(string)</p>
+<blockquote>
+<div><p>The list of parameters that will vary in the returned DSVs, all other parameters will have the same value within each of the 
+returned DSVs.</p>
+</div></blockquote>
+<p><strong>excpt</strong> : bool</p>
+<blockquote class="last">
+<div><p>If excpt is True the query is allowed only on DSVs holding the same AnalysisDataStructures.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="mozaik.storage.queries.PartitionAnalysisResultsByParameterNameQuery.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'parameter_list': &lt;type 'list'&gt;, 'excpt': &lt;type 'bool'&gt;}</em><a class="headerlink" href="#mozaik.storage.queries.PartitionAnalysisResultsByParameterNameQuery.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.queries.PartitionAnalysisResultsByParameterNameQuery.query">
+<tt class="descname">query</tt><big>(</big><em>dsv</em><big>)</big><a class="headerlink" href="#mozaik.storage.queries.PartitionAnalysisResultsByParameterNameQuery.query" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.storage.queries.partition_analysis_results_by_stimulus_parameters_query">
+<tt class="descclassname">mozaik.storage.queries.</tt><tt class="descname">partition_analysis_results_by_stimulus_parameters_query</tt><big>(</big><em>dsv</em>, <em>parameter_list=None</em>, <em>excpt=False</em><big>)</big><a class="headerlink" href="#mozaik.storage.queries.partition_analysis_results_by_stimulus_parameters_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>This query will take all analysis results and return list of DataStoreViews
+each holding analysis results that have the same values of
+of stimulus parameters in parameter_list.</p>
+<p>Note that in most cases one wants to do this only against datastore holding
+only analysis results  measured to the same stimulus type! In that case the datastore is partitioned into
+subsets each holding recordings to the same stimulus with the same paramter
+values, with the exception to the parameters in parameter_list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>dsv</strong> : DataStoreView</p>
+<blockquote>
+<div><p>The input DSV.</p>
+</div></blockquote>
+<p><strong>parameter_list</strong> : list(string)</p>
+<blockquote>
+<div><p>The list of stimulus parameters that will vary between the ASDs in the returned DSVs, all other parameters will have the same value within each of the 
+returned DSVs.</p>
+</div></blockquote>
+<p><strong>except</strong> : bool</p>
+<blockquote class="last">
+<div><p>If excpt is True the query is allowed only on DSVs holding the same AnalysisDataStructures.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.storage.queries.PartitionAnalysisResultsByStimulusParameterNameQuery">
+<em class="property">class </em><tt class="descclassname">mozaik.storage.queries.</tt><tt class="descname">PartitionAnalysisResultsByStimulusParameterNameQuery</tt><big>(</big><em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.storage.queries.PartitionAnalysisResultsByStimulusParameterNameQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.storage.queries.Query" title="mozaik.storage.queries.Query"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.storage.queries.Query</span></tt></a></p>
+<p>See  <a class="reference internal" href="#mozaik.storage.queries.partition_analysis_results_by_stimulus_parameters_query" title="mozaik.storage.queries.partition_analysis_results_by_stimulus_parameters_query"><tt class="xref py py-func docutils literal"><span class="pre">partition_analysis_results_by_stimulus_parameters_query()</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>parameter_list</strong> : list(string)</p>
+<blockquote>
+<div><p>The list of parameters that will vary in the returned DSVs, all other parameters will have the same value within each of the 
+returned DSVs.</p>
+</div></blockquote>
+<p><strong>excpt</strong> : bool</p>
+<blockquote class="last">
+<div><p>If excpt is True the query is allowed only on DSVs holding the same AnalysisDataStructures.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="mozaik.storage.queries.PartitionAnalysisResultsByStimulusParameterNameQuery.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'parameter_list': &lt;type 'list'&gt;, 'excpt': &lt;type 'bool'&gt;}</em><a class="headerlink" href="#mozaik.storage.queries.PartitionAnalysisResultsByStimulusParameterNameQuery.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.queries.PartitionAnalysisResultsByStimulusParameterNameQuery.query">
+<tt class="descname">query</tt><big>(</big><em>dsv</em><big>)</big><a class="headerlink" href="#mozaik.storage.queries.PartitionAnalysisResultsByStimulusParameterNameQuery.query" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.storage.queries.equal_stimulus_type">
+<tt class="descclassname">mozaik.storage.queries.</tt><tt class="descname">equal_stimulus_type</tt><big>(</big><em>dsv</em><big>)</big><a class="headerlink" href="#mozaik.storage.queries.equal_stimulus_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>This functions returns True if DSV contains only recordings associated
+with the same stimulus type. Otherwise False.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.storage.queries.equal_ads_except">
+<tt class="descclassname">mozaik.storage.queries.</tt><tt class="descname">equal_ads_except</tt><big>(</big><em>dsv</em>, <em>except_params</em><big>)</big><a class="headerlink" href="#mozaik.storage.queries.equal_ads_except" title="Permalink to this definition">¶</a></dt>
+<dd><p>This functions returns true if DSV contains only ADS of the same kind
+and parametrization with the exception of parameters listed in
+except_params. Otherwise False.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.storage.queries.equal_ads_type">
+<tt class="descclassname">mozaik.storage.queries.</tt><tt class="descname">equal_ads_type</tt><big>(</big><em>dsv</em><big>)</big><a class="headerlink" href="#mozaik.storage.queries.equal_ads_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the dsv contains ADS of the same type. Otherwise False.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.storage.queries.ads_with_equal_stimulus_type">
+<tt class="descclassname">mozaik.storage.queries.</tt><tt class="descname">ads_with_equal_stimulus_type</tt><big>(</big><em>dsv</em>, <em>allow_None=False</em><big>)</big><a class="headerlink" href="#mozaik.storage.queries.ads_with_equal_stimulus_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>This functions tests whether DSV contains only ADS associated
+with the same stimulus type.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>not_None</strong> : bool</p>
+<blockquote class="last">
+<div><p>If true it will not allow ADS that are not associated with stimulus</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="neo-neurotools-wrapper-module">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">neo_neurotools_wrapper</span></tt> Module<a class="headerlink" href="#neo-neurotools-wrapper-module" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-mozaik.storage.neo_neurotools_wrapper"></span><p>This module contains wrapper for the neo Segment, that add extra functionality to the class.
+Within mozaik the data are stored and passed in this format.</p>
+<p>Most of the included functionality should in future be provided directly by neo.
+When this happens most of this code should become irrelevant and the rest should be
+merged into the <a class="reference internal" href="#module-mozaik.storage.datastore" title="mozaik.storage.datastore"><tt class="xref py py-mod docutils literal"><span class="pre">datastore</span></tt></a> module.</p>
+<dl class="class">
+<dt id="mozaik.storage.neo_neurotools_wrapper.MozaikSegment">
+<em class="property">class </em><tt class="descclassname">mozaik.storage.neo_neurotools_wrapper.</tt><tt class="descname">MozaikSegment</tt><big>(</big><em>segment</em>, <em>identifier</em><big>)</big><a class="headerlink" href="#mozaik.storage.neo_neurotools_wrapper.MozaikSegment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">neo.core.segment.Segment</span></tt></p>
+<p>This class extends Neo segment with several convenience functions.</p>
+<p>The most important function is that it allows lazy loading of the data.</p>
+<p>It should be moved to datastore.py once the NeoNeurotoolsWrapper is
+obsolete and this file should be discarded.</p>
+<dl class="method">
+<dt id="mozaik.storage.neo_neurotools_wrapper.MozaikSegment.get_spiketrains">
+<tt class="descname">get_spiketrains</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.storage.neo_neurotools_wrapper.MozaikSegment.get_spiketrains" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of SpikeTrain objects stored in this segment.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.neo_neurotools_wrapper.MozaikSegment.set_spiketrains">
+<tt class="descname">set_spiketrains</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#mozaik.storage.neo_neurotools_wrapper.MozaikSegment.set_spiketrains" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mozaik.storage.neo_neurotools_wrapper.MozaikSegment.spiketrains">
+<tt class="descname">spiketrains</tt><a class="headerlink" href="#mozaik.storage.neo_neurotools_wrapper.MozaikSegment.spiketrains" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of SpikeTrain objects stored in this segment.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.neo_neurotools_wrapper.MozaikSegment.get_spiketrain">
+<tt class="descname">get_spiketrain</tt><big>(</big><em>neuron_id</em><big>)</big><a class="headerlink" href="#mozaik.storage.neo_neurotools_wrapper.MozaikSegment.get_spiketrain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a spiktrain or a list of spike train corresponding to id(s) listed in the <cite>neuron_id</cite> argument.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>neuron_id</strong> : int or list(int)</p>
+<blockquote>
+<div><p>An int or a list of ints containing the ids for which to return the spiketrains.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first last"><strong>A SpikeTrain object if neuron_id is int, or list of SpikeTrain objects if neuron_id is list, the order corresponds to the order in neuron_id argument.</strong> :</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.neo_neurotools_wrapper.MozaikSegment.get_vm">
+<tt class="descname">get_vm</tt><big>(</big><em>neuron_id</em><big>)</big><a class="headerlink" href="#mozaik.storage.neo_neurotools_wrapper.MozaikSegment.get_vm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the recorded membrane potential corresponding to neurons with id(s) listed in the <cite>neuron_id</cite> argument.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>neuron_id</strong> : int or list(int)</p>
+<blockquote>
+<div><p>An int or a list of ints containing the ids for which to return the AnalogSignal objects.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first last"><strong>A AnalogSignal object if neuron_id is int, or list of AnalogSignal objects if neuron_id is list, the order corresponds to the order in neuron_id argument.</strong> :</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.neo_neurotools_wrapper.MozaikSegment.get_esyn">
+<tt class="descname">get_esyn</tt><big>(</big><em>neuron_id</em><big>)</big><a class="headerlink" href="#mozaik.storage.neo_neurotools_wrapper.MozaikSegment.get_esyn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the recorded excitatory conductance corresponding to neurons with id(s) listed in the <cite>neuron_id</cite> argument.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>neuron_id</strong> : int or list(int)</p>
+<blockquote>
+<div><p>An int or a list of ints containing the ids for which to return the AnalogSignal objects.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first last"><strong>A AnalogSignal object if neuron_id is int, or list of AnalogSignal objects if neuron_id is list, the order corresponds to the order in neuron_id argument.</strong> :</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.neo_neurotools_wrapper.MozaikSegment.get_isyn">
+<tt class="descname">get_isyn</tt><big>(</big><em>neuron_id</em><big>)</big><a class="headerlink" href="#mozaik.storage.neo_neurotools_wrapper.MozaikSegment.get_isyn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the recorded inhibitory conductance corresponding to neurons with id(s) listed in the <cite>neuron_id</cite> argument.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>neuron_id</strong> : int or list(int)</p>
+<blockquote>
+<div><p>An int or a list of ints containing the ids for which to return the AnalogSignal objects.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first last"><strong>A AnalogSignal object if neuron_id is int, or list of AnalogSignal objects if neuron_id is list, the order corresponds to the order in neuron_id argument.</strong> :</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.neo_neurotools_wrapper.MozaikSegment.load_full">
+<tt class="descname">load_full</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.storage.neo_neurotools_wrapper.MozaikSegment.load_full" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.neo_neurotools_wrapper.MozaikSegment.neuron_num">
+<tt class="descname">neuron_num</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.storage.neo_neurotools_wrapper.MozaikSegment.neuron_num" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return number of stored neurons in this Segment.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.neo_neurotools_wrapper.MozaikSegment.get_stored_isyn_ids">
+<tt class="descname">get_stored_isyn_ids</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.storage.neo_neurotools_wrapper.MozaikSegment.get_stored_isyn_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns ids of neurons for which inhibitory conductance is stored in this segment.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.neo_neurotools_wrapper.MozaikSegment.get_stored_esyn_ids">
+<tt class="descname">get_stored_esyn_ids</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.storage.neo_neurotools_wrapper.MozaikSegment.get_stored_esyn_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns ids of neurons for which excitatory conductance is stored in this segment.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.neo_neurotools_wrapper.MozaikSegment.get_stored_vm_ids">
+<tt class="descname">get_stored_vm_ids</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.storage.neo_neurotools_wrapper.MozaikSegment.get_stored_vm_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns ids of neurons for which membrane potential is stored in this segment.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.neo_neurotools_wrapper.MozaikSegment.get_stored_spike_train_ids">
+<tt class="descname">get_stored_spike_train_ids</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.storage.neo_neurotools_wrapper.MozaikSegment.get_stored_spike_train_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns ids of neurons for which spikes are stored in this segment.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.neo_neurotools_wrapper.MozaikSegment.mean_rates">
+<tt class="descname">mean_rates</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.storage.neo_neurotools_wrapper.MozaikSegment.mean_rates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the mean rates of the spiketrains in spikes/s.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.neo_neurotools_wrapper.MozaikSegment.isi">
+<tt class="descname">isi</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.storage.neo_neurotools_wrapper.MozaikSegment.isi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an array containing arrays (one per each neurons) with the inter-spike intervals of the SpikeTrain objects.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.neo_neurotools_wrapper.MozaikSegment.cv_isi">
+<tt class="descname">cv_isi</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.storage.neo_neurotools_wrapper.MozaikSegment.cv_isi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return array with the coefficient of variation of the isis, one per each neuron.</p>
+<p>cv_isi is the ratio between the standard deviation and the mean of the ISI
+The irregularity of individual spike trains is measured by the squared
+coefficient of variation of the corresponding inter-spike interval (ISI)
+distribution.
+In point processes, low values reflect more regular spiking, a
+clock-like pattern yields CV2= 0. On the other hand, CV2 = 1 indicates
+Poisson-type behavior. As a measure for irregularity in the network one
+can use the average irregularity across all neurons.</p>
+<p><a class="reference external" href="http://en.wikipedia.org/wiki/Coefficient_of_variation">http://en.wikipedia.org/wiki/Coefficient_of_variation</a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.storage.neo_neurotools_wrapper.PickledDataStoreNeoWrapper">
+<em class="property">class </em><tt class="descclassname">mozaik.storage.neo_neurotools_wrapper.</tt><tt class="descname">PickledDataStoreNeoWrapper</tt><big>(</big><em>segment</em>, <em>identifier</em>, <em>datastore_path</em><big>)</big><a class="headerlink" href="#mozaik.storage.neo_neurotools_wrapper.PickledDataStoreNeoWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.storage.neo_neurotools_wrapper.MozaikSegment" title="mozaik.storage.neo_neurotools_wrapper.MozaikSegment"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.storage.neo_neurotools_wrapper.MozaikSegment</span></tt></a></p>
+<p>This is a Mozaik wrapper of neo segment, that enables pickling and lazy loading.</p>
+<dl class="method">
+<dt id="mozaik.storage.neo_neurotools_wrapper.PickledDataStoreNeoWrapper.load_full">
+<tt class="descname">load_full</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.storage.neo_neurotools_wrapper.PickledDataStoreNeoWrapper.load_full" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.storage.neo_neurotools_wrapper.PickledDataStoreNeoWrapper.release">
+<tt class="descname">release</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.storage.neo_neurotools_wrapper.PickledDataStoreNeoWrapper.release" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/mozaik_logo_small.svg" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mozaik.stimuli.vision.html"
+                        title="previous chapter">vision Package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mozaik.tools.html"
+                        title="next chapter">tools Package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/mozaik.storage.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mozaik.tools.html" title="tools Package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mozaik.stimuli.vision.html" title="vision Package"
+             >previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="mozaik.html" >mozaik API</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2013, mozaik authors and contributors &lt;&gt;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

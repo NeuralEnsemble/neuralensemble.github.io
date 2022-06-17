@@ -1,0 +1,614 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mozaik API &mdash; mozaik 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mozaik 0.1.0 documentation" href="index.html" />
+    <link rel="next" title="analysis Package" href="mozaik.analysis.html" />
+    <link rel="prev" title="Mozaik Tutorial 1" href="tutorial.1.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mozaik.analysis.html" title="analysis Package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="tutorial.1.html" title="Mozaik Tutorial 1"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="mozaik-api">
+<h1>mozaik API<a class="headerlink" href="#mozaik-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="mozaik.analysis.html">analysis Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mozaik.connectors.html">connector Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mozaik.experiments.html">experiments Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mozaik.sheets.html">sheets Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mozaik.models.html">models Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mozaik.stimuli.html">stimuli Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mozaik.storage.html">storage Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mozaik.tools.html">tools Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mozaik.visualization.html">visualization Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mozaik.meta_workflow.html">meta-workflow Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mozaik.sheets.html">sheets Package</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="module-mozaik.__init__">
+<span id="mozaik-package"></span><h2><a class="reference internal" href="index.html#module-mozaik" title="mozaik"><tt class="xref py py-mod docutils literal"><span class="pre">mozaik</span></tt></a> Package<a class="headerlink" href="#module-mozaik.__init__" title="Permalink to this headline">¶</a></h2>
+<p>The role of mozaik is to coordinate the workings of number of tools to provide a 
+consistent workflow experience for the user. Consequently the root mozaik package is very light,
+and majority of functionality is in the number of subpackages each addressing different parts of the workflow. 
+In future the number of subpackages is likely to grow, as the number of 
+areas that the mozaik workflow covers increases. It is also likely that 
+in future some of the subpackages will be removed (or replaced with dedicated packages)
+as the individual external tools overcome the &#8216;coordination&#8217; issues that 
+mozaik is currently trying to address.</p>
+<p>This module exposes several parameters to the rest of mozaik:</p>
+<div class="section" id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><dl class="docutils">
+<dt>rng <span class="classifier-delimiter">:</span> <span class="classifier">nest.RandomState</span></dt>
+<dd>The global mozaik random number generator. It is crucially any mozaik code using it has to make sure that it will ensure that the 
+random number generator will be in the same state on all processes after the codes execution.</dd>
+<dt>pynn_rng <span class="classifier-delimiter">:</span> <span class="classifier">pynn.random.NumpyRNG</span></dt>
+<dd>The random number generator that should be passed to all pynn objects requiring rng.</dd>
+<dt>mpi_comm <span class="classifier-delimiter">:</span> <span class="classifier">mpi4py.Comm</span></dt>
+<dd>The mpi communication object, None if MPI not available.</dd>
+</dl>
+</div></blockquote>
+<dl class="function">
+<dt id="mozaik.__init__.setup_mpi">
+<tt class="descclassname">mozaik.__init__.</tt><tt class="descname">setup_mpi</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.__init__.setup_mpi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests the presence of MPI and sets up mozaik wide random number generator.</p>
+<p class="rubric">Notes</p>
+<p>To obtain results repeatable over identical runs of mozaik
+one should use the mozaik.pynn_rng as the random noise generator passed to all pyNN
+functions that accept pynn_rng as one of their paramters</p>
+<p>Any other code using random numbers should instead use the mozaik.rng that hold a numpy RandomState instance.
+It is important to make sure that any piece of  code using this random generator draws from it 
+exactly the same number of numbers in each process, so that once the code is executed, the rng 
+is in exactly the same state in each mpi process!</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.__init__.get_seeds">
+<tt class="descclassname">mozaik.__init__.</tt><tt class="descname">get_seeds</tt><big>(</big><em>size=None</em><big>)</big><a class="headerlink" href="#mozaik.__init__.get_seeds" title="Permalink to this definition">¶</a></dt>
+<dd><p>This methods returns a set of inetegers that can be used as random seeds for RNGs. The main purpose
+is that these numbers are large and random, with extremely low probability that two of the same numbers
+are returned in a single simulation run.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><strong>A set of long integer as a ndarray of shape size. If size==None returns single seed. The integers have 64bit size.</strong> :</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>We recommand users to use this method whenever seeding a new random generator. It is 
+important that the same number of seeds are requested in each MPI process to ensure 
+reproducability of simulations!</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.__init__.getMozaikLogger">
+<tt class="descclassname">mozaik.__init__.</tt><tt class="descname">getMozaikLogger</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.__init__.getMozaikLogger" title="Permalink to this definition">¶</a></dt>
+<dd><p>To maintain consistent logging settings around mozaik use this method to obtain the logger isntance.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.__init__.load_component">
+<tt class="descclassname">mozaik.__init__.</tt><tt class="descname">load_component</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#mozaik.__init__.load_component" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function loads a model component (represented by a class instance) located with the path varialble.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>path</strong> : str</p>
+<blockquote>
+<div><p>The path to the module containing the component.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>component</strong> : object</p>
+<blockquote class="last">
+<div><p>The instance of the component class</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="mozaik-core-package">
+<h2><a class="reference internal" href="#module-mozaik.core" title="mozaik.core"><tt class="xref py py-mod docutils literal"><span class="pre">mozaik.core</span></tt></a> Package<a class="headerlink" href="#mozaik-core-package" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-mozaik.core"></span><p>Definition of the component interfaces. These interfaces are not currently directly checked or enforced.</p>
+<dl class="class">
+<dt id="mozaik.core.ParametrizedObject">
+<em class="property">class </em><tt class="descclassname">mozaik.core.</tt><tt class="descname">ParametrizedObject</tt><big>(</big><em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.core.ParametrizedObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Base class for for all Mozaik objects using the dynamic parameterization framework. See <a href="#id1"><span class="problematic" id="id2">`getting_started`_</span></a> for more details.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>parameters</strong> : dict</p>
+<blockquote class="last">
+<div><p>Dictionary of the parameter names and their values that has to match the required_parameters variable.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="mozaik.core.ParametrizedObject.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {}</em><a class="headerlink" href="#mozaik.core.ParametrizedObject.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mozaik.core.ParametrizedObject.version">
+<tt class="descname">version</tt><em class="property"> = '0.1.0'</em><a class="headerlink" href="#mozaik.core.ParametrizedObject.version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.core.ParametrizedObject.check_parameters">
+<tt class="descname">check_parameters</tt><big>(</big><em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.core.ParametrizedObject.check_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a function that checks whether all required (and no other) parameters have been specified and all their values have matching types.
+This function gets automatically executed during initialization of each :class:.ParametrizedObject object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>parameters</strong> : dict</p>
+<blockquote class="last">
+<div><p>Dictionary of the parameter names and their values that has to match the required_parameters variable.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.core.BaseComponent">
+<em class="property">class </em><tt class="descclassname">mozaik.core.</tt><tt class="descname">BaseComponent</tt><big>(</big><em>model</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.core.BaseComponent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.core.ParametrizedObject" title="mozaik.core.ParametrizedObject"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.core.ParametrizedObject</span></tt></a></p>
+<p>Base class for mozaik model components.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>model</strong> : Model</p>
+<blockquote class="last">
+<div><p>Reference to the model to which the component will belong.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.core.SensoryInputComponent">
+<em class="property">class </em><tt class="descclassname">mozaik.core.</tt><tt class="descname">SensoryInputComponent</tt><big>(</big><em>model</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.core.SensoryInputComponent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.core.BaseComponent" title="mozaik.core.BaseComponent"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.core.BaseComponent</span></tt></a></p>
+<p>Abstract API of sensory input component. Each mozaik sensory input component should 
+inherit from this class and implement its two abstrac methods.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><tt class="xref py py-obj docutils literal"><span class="pre">mozaik.models.vision</span></tt></dt>
+<dd>the implementation of retinal input</dd>
+</dl>
+</div>
+<dl class="method">
+<dt id="mozaik.core.SensoryInputComponent.process_input">
+<tt class="descname">process_input</tt><big>(</big><em>input_space</em>, <em>stimulus_id</em>, <em>duration=None</em>, <em>offset=0</em><big>)</big><a class="headerlink" href="#mozaik.core.SensoryInputComponent.process_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is responsible for presenting the content of input_space
+to the sensory input component, and all the mechanisms that are responsible to
+passing the output of the retina (in whatever form desired) to the Sheet
+objects that are connected to it and thus represent the interface
+between the input space component and the rest of the model.</p>
+<p>The method should return the sensory input that has been effectivitly presented to 
+the model, currently the format of it is not specified.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.core.SensoryInputComponent.provide_null_input">
+<tt class="descname">provide_null_input</tt><big>(</big><em>input_space</em>, <em>duration=None</em>, <em>offset=0</em><big>)</big><a class="headerlink" href="#mozaik.core.SensoryInputComponent.provide_null_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is responsible generating sensory input in the case of no
+stimulus. This method should correspond to the special case of
+process_input method where the input_space contains &#8216;zero&#8217;
+input. This methods exists for optimization purposes as the &#8216;zero&#8217; input
+is presented often due to it&#8217;s presentation between different sensory
+stimuli to allow for models to return to spontaneous activity state.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-mozaik.space">
+<span id="space-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">space</span></tt> Module<a class="headerlink" href="#module-mozaik.space" title="Permalink to this headline">¶</a></h2>
+<p>This modules implements the API for input space.</p>
+<dl class="class">
+<dt id="mozaik.space.InputSpace">
+<em class="property">class </em><tt class="descclassname">mozaik.space.</tt><tt class="descname">InputSpace</tt><big>(</big><em>params</em><big>)</big><a class="headerlink" href="#mozaik.space.InputSpace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.core.ParametrizedObject" title="mozaik.core.ParametrizedObject"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.core.ParametrizedObject</span></tt></a></p>
+<p>A class to structure and unify operations taking place in the respective sensory space, such as stimulus presentation.</p>
+<p>The basic idea of the InputSpace API is following:</p>
+<p>The InputSpace assumes there is a scene, and a set of stimuli in this scene (visual objects, sounds, smells etc.).
+These objects can be removed or added to the scene. After each interval lasting  <cite>update_interval</cite> miliseconds all the stimuli in the scene
+are sequentially updated (following some rules of overlapping, this is left for the specific implementation of the input space).
+After that update the scene is ready to be pased to the associated input sheet of the given model, which will use it to 
+generate the responses of neurons in the input sheet.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>update_interval</strong> : float (ms)</p>
+<blockquote class="last">
+<div><p>How often does the input space update.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mozaik.space.InputSpace.add_object">
+<tt class="descname">add_object</tt><big>(</big><em>name</em>, <em>input_object</em><big>)</big><a class="headerlink" href="#mozaik.space.InputSpace.add_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an inputObject to the input scene.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.space.InputSpace.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.space.InputSpace.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset each Object in the scene to its initial state.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.space.InputSpace.clear">
+<tt class="descname">clear</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.space.InputSpace.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the input space and clear stimuli in it.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.space.InputSpace.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.space.InputSpace.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tell each Object in the scene to update itself.
+Returns the current time within the scene.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.space.InputSpace.get_maximum_duration">
+<tt class="descname">get_maximum_duration</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.space.InputSpace.get_maximum_duration" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum duration of any of the stimuli in the inpust space.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.space.InputSpace.get_duration">
+<tt class="descname">get_duration</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.space.InputSpace.get_duration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the duration of the stimulation in the input space.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.space.InputSpace.set_duration">
+<tt class="descname">set_duration</tt><big>(</big><em>duration</em><big>)</big><a class="headerlink" href="#mozaik.space.InputSpace.set_duration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the duration of the stimulation in the input space.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.space.InputSpace.time_points">
+<tt class="descname">time_points</tt><big>(</big><em>duration=None</em><big>)</big><a class="headerlink" href="#mozaik.space.InputSpace.time_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the time points of updates in the period 0,duration.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.space.VisualSpace">
+<em class="property">class </em><tt class="descclassname">mozaik.space.</tt><tt class="descname">VisualSpace</tt><big>(</big><em>params</em><big>)</big><a class="headerlink" href="#mozaik.space.VisualSpace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.space.InputSpace" title="mozaik.space.InputSpace"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.space.InputSpace</span></tt></a></p>
+<p>A class to structure and simplify operations taking place in visual
+space, such as stimulus presentation.</p>
+<p>In VisualSpace the stimuli are sequentially drawn into the scene in the order in which
+thay have been added to the scene (thus later stimuli will draw over earlier added ones).
+Stimuli can specify areas in which they are transparent by using the <cite>TRANSPARENT</cite> value.</p>
+<p>The key operation of VisualSpace is the <tt class="xref py py-func docutils literal"><span class="pre">view()</span></tt> function that recieves a region and resolution 
+and returns rendered scene as a 2D array, within that region and down-sampled to the specified 
+resolution. This allows for implementation of a visual system that changes the viewed area of the scene.
+The <tt class="xref py py-func docutils literal"><span class="pre">view()</span></tt> function itself makes sequential calls to the <tt class="xref py py-func docutils literal"><span class="pre">mozaik.visual_stimulus.VisualStimulus.display()</span></tt> 
+function passing the region and pixel size, which have to render themselves within the region and 
+return 2D array of luminance values. <tt class="xref py py-func docutils literal"><span class="pre">view()</span></tt> then assambles the final scene rendering from this data.</p>
+<p class="rubric">Notes</p>
+<p>For now, we deal only with two-dimensions, i.e. everything projected onto a
+plane. We ignore distortions in going from a flat plane to the curved retina.
+Could consider using matplotlib.transforms for some of this.</p>
+<dl class="method">
+<dt id="mozaik.space.VisualSpace.view">
+<tt class="descname">view</tt><big>(</big><em>region</em>, <em>pixel_size</em><big>)</big><a class="headerlink" href="#mozaik.space.VisualSpace.view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show the scene within a specific region.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>region</strong> : VisualRegion</p>
+<blockquote>
+<div><p>Should be a VisualRegion object.</p>
+</div></blockquote>
+<p><strong>pixel_size</strong> : float (degrees)</p>
+<blockquote>
+<div><p>The size of a single pixel in degrees of visual field.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>array</strong> : nd_array</p>
+<blockquote class="last">
+<div><p>A numpy 2D array containing luminance values, corresponding to 
+to the visual scene in the visual region specified in <cite>region</cite> 
+downsample such that one pixel has <cite>pixel_size</cite> degree.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.space.VisualSpace.get_max_luminance">
+<tt class="descname">get_max_luminance</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.space.VisualSpace.get_max_luminance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the maximum luminance in the scene.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.space.VisualSpace.export">
+<tt class="descname">export</tt><big>(</big><em>region</em>, <em>pixel_size</em>, <em>output_dir='.'</em><big>)</big><a class="headerlink" href="#mozaik.space.VisualSpace.export" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export a sequence of views of the visual space as image files.
+Return a list of file paths.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.space.VisualRegion">
+<em class="property">class </em><tt class="descclassname">mozaik.space.</tt><tt class="descname">VisualRegion</tt><big>(</big><em>location_x</em>, <em>location_y</em>, <em>size_x</em>, <em>size_y</em><big>)</big><a class="headerlink" href="#mozaik.space.VisualRegion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>A rectangular region of visual space.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>location_x</strong> : float (degrees)</p>
+<blockquote>
+<div><p>The x coordinate of the center of the region in the visual space.</p>
+</div></blockquote>
+<p><strong>location_y</strong> : float (degrees)</p>
+<blockquote>
+<div><p>The y coordinate of the center of the region in the visual space.</p>
+</div></blockquote>
+<p><strong>size_x</strong> : float (degrees)</p>
+<blockquote>
+<div><p>The x size of the region in the visual space.</p>
+</div></blockquote>
+<p><strong>size_y</strong> : float (degrees)</p>
+<blockquote class="last">
+<div><p>The y size of the region in the visual space.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mozaik.space.VisualRegion.overlaps">
+<tt class="descname">overlaps</tt><big>(</big><em>another_region</em><big>)</big><a class="headerlink" href="#mozaik.space.VisualRegion.overlaps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether this region overlaps with the one in the <cite>another_region</cite> argument.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.space.VisualRegion.intersection">
+<tt class="descname">intersection</tt><big>(</big><em>another_region</em><big>)</big><a class="headerlink" href="#mozaik.space.VisualRegion.intersection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns VisualRegion corresponding to the intersection of this VisualRegion and the one in the <cite>another_region</cite> argument.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-mozaik.controller">
+<span id="controller-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">controller</span></tt> Module<a class="headerlink" href="#module-mozaik.controller" title="Permalink to this headline">¶</a></h2>
+<p>This is the nexus of workflow execution controll of <em>mozaik</em>.</p>
+<dl class="class">
+<dt id="mozaik.controller.Global">
+<em class="property">class </em><tt class="descclassname">mozaik.controller.</tt><tt class="descname">Global</tt><a class="headerlink" href="#mozaik.controller.Global" title="Permalink to this definition">¶</a></dt>
+<dd><p>global variable container currently only containing the root_directory variable that points to the root directory of the model specification</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.controller.setup_logging">
+<tt class="descclassname">mozaik.controller.</tt><tt class="descname">setup_logging</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.controller.setup_logging" title="Permalink to this definition">¶</a></dt>
+<dd><p>This functions sets up logging.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.controller.run_workflow">
+<tt class="descclassname">mozaik.controller.</tt><tt class="descname">run_workflow</tt><big>(</big><em>simulation_name</em>, <em>model_class</em>, <em>create_experiments</em><big>)</big><a class="headerlink" href="#mozaik.controller.run_workflow" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is the main function that executes a workflow.</p>
+<p>It expects it gets the simulation, class of the model, and a function that will create_experiments.
+The create experiments function get a instance of a model as the only parameter and it is expected to return 
+a list of Experiment instances that should be executed over the model.</p>
+<p>The run workflow will automatically parse the command line to determine the simulator to be used and the path to the root parameter file. 
+It will also accept . (point) delimited path to parameteres in the configuration tree, and corresponding values. It will replace each such provided
+parameter&#8217;s value with the provided one on the command line.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>simulation_name</strong> : str</p>
+<blockquote>
+<div><p>The name of the simulation.</p>
+</div></blockquote>
+<p><strong>model_class</strong> : class</p>
+<blockquote>
+<div><p>The class from which the model instance will be created from.</p>
+</div></blockquote>
+<p><strong>create_experiments</strong> : func</p>
+<blockquote class="last">
+<div><p>The function that returns the list of experiments that will be executed on the model.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<p>The intended syntax of the commandline is as follows (note that the simulation run name is the last argument):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">python</span> <span class="n">userscript</span> <span class="n">simulator_name</span> <span class="n">num_threads</span> <span class="n">parameter_file_path</span> <span class="n">modified_parameter_path_1</span> <span class="n">modified_parameter_value_1</span> <span class="o">...</span> <span class="n">modified_parameter_path_n</span> <span class="n">modified_parameter_value_n</span> <span class="n">simulation_run_name</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="mozaik.controller.run_experiments">
+<tt class="descclassname">mozaik.controller.</tt><tt class="descname">run_experiments</tt><big>(</big><em>model</em>, <em>experiment_list</em>, <em>load_from=None</em><big>)</big><a class="headerlink" href="#mozaik.controller.run_experiments" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is function called by :func:.run_workflow that executes the experiments in the <cite>experiment_list</cite> over the model. 
+Alternatively, if load_from is specified it will load an existing simulation from the path specified in load_from.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>model</strong> : Model</p>
+<blockquote>
+<div><p>The model to execute experiments on.</p>
+</div></blockquote>
+<p><strong>experiment_list</strong> : list</p>
+<blockquote>
+<div><p>The list of experiments to execute.</p>
+</div></blockquote>
+<p><strong>load_from</strong> : str</p>
+<blockquote>
+<div><p>If not None it will load the simulation from the specified directory.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>data_store</strong> : DataStore</p>
+<blockquote class="last">
+<div><p>The data store containing the recordings.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/mozaik_logo_small.svg" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="tutorial.1.html"
+                        title="previous chapter">Mozaik Tutorial 1</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mozaik.analysis.html"
+                        title="next chapter">analysis Package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/mozaik.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mozaik.analysis.html" title="analysis Package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="tutorial.1.html" title="Mozaik Tutorial 1"
+             >previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2013, mozaik authors and contributors &lt;&gt;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

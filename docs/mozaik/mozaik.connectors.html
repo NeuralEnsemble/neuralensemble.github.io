@@ -1,0 +1,576 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>connector Package &mdash; mozaik 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mozaik 0.1.0 documentation" href="index.html" />
+    <link rel="up" title="mozaik API" href="mozaik.html" />
+    <link rel="next" title="experiments Package" href="mozaik.experiments.html" />
+    <link rel="prev" title="analysis Package" href="mozaik.analysis.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mozaik.experiments.html" title="experiments Package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mozaik.analysis.html" title="analysis Package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="mozaik.html" accesskey="U">mozaik API</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="connector-package">
+<h1>connector Package<a class="headerlink" href="#connector-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-mozaik.connectors.__init__">
+<span id="connectors-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">connectors</span></tt> Module<a class="headerlink" href="#module-mozaik.connectors.__init__" title="Permalink to this headline">¶</a></h2>
+<p>Mozaik connector interface.</p>
+<dl class="class">
+<dt id="mozaik.connectors.__init__.Connector">
+<em class="property">class </em><tt class="descclassname">mozaik.connectors.__init__.</tt><tt class="descname">Connector</tt><big>(</big><em>model</em>, <em>name</em>, <em>source</em>, <em>target</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.connectors.__init__.Connector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="mozaik.html#mozaik.core.BaseComponent" title="mozaik.core.BaseComponent"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.core.BaseComponent</span></tt></a></p>
+<p>An abstract interface class for Connectors in mozaik. Each mozaik connector should derive from this class and implement 
+the _connect function. The usage is: create the instance of MozaikConnector and call connect() to realize the connections.</p>
+<dl class="attribute">
+<dt id="mozaik.connectors.__init__.Connector.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'short_term_plasticity': {'tau_psc': &lt;type 'float'&gt;, 'u': &lt;type 'float'&gt;, 'tau_rec': &lt;type 'float'&gt;, 'tau_fac': &lt;type 'float'&gt;}, 'target_synapses': &lt;type 'str'&gt;}</em><a class="headerlink" href="#mozaik.connectors.__init__.Connector.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.connectors.__init__.Connector.init_synaptic_mechanisms">
+<tt class="descname">init_synaptic_mechanisms</tt><big>(</big><em>weights=None</em>, <em>delays=None</em><big>)</big><a class="headerlink" href="#mozaik.connectors.__init__.Connector.init_synaptic_mechanisms" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.connectors.__init__.Connector.connect">
+<tt class="descname">connect</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.connectors.__init__.Connector.connect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.connectors.__init__.Connector.connection_field_plot_continuous">
+<tt class="descname">connection_field_plot_continuous</tt><big>(</big><em>index</em>, <em>afferent=True</em>, <em>density=30</em><big>)</big><a class="headerlink" href="#mozaik.connectors.__init__.Connector.connection_field_plot_continuous" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.connectors.__init__.Connector.store_connections">
+<tt class="descname">store_connections</tt><big>(</big><em>datastore</em><big>)</big><a class="headerlink" href="#mozaik.connectors.__init__.Connector.store_connections" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.connectors.__init__.SpecificArborization">
+<em class="property">class </em><tt class="descclassname">mozaik.connectors.__init__.</tt><tt class="descname">SpecificArborization</tt><big>(</big><em>network</em>, <em>source</em>, <em>target</em>, <em>connection_matrix</em>, <em>delay_matrix</em>, <em>parameters</em>, <em>name</em><big>)</big><a class="headerlink" href="#mozaik.connectors.__init__.SpecificArborization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.connectors.__init__.Connector" title="mozaik.connectors.__init__.Connector"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.connectors.__init__.Connector</span></tt></a></p>
+<p>Generic connector which gets directly list of connections as the list of
+quadruplets as accepted by the pyNN FromListConnector.</p>
+<p>This connector cannot be parametrized directly via the parameter file
+because that does not support list of tuples.</p>
+<p>This connector also gets rid of very weak synapses (below one-hundreth of the maximum synapse)</p>
+<dl class="attribute">
+<dt id="mozaik.connectors.__init__.SpecificArborization.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'weight_factor': &lt;type 'float'&gt;}</em><a class="headerlink" href="#mozaik.connectors.__init__.SpecificArborization.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.connectors.__init__.SpecificProbabilisticArborization">
+<em class="property">class </em><tt class="descclassname">mozaik.connectors.__init__.</tt><tt class="descname">SpecificProbabilisticArborization</tt><big>(</big><em>network</em>, <em>source</em>, <em>target</em>, <em>connection_matrix</em>, <em>delay_matrix</em>, <em>parameters</em>, <em>name</em><big>)</big><a class="headerlink" href="#mozaik.connectors.__init__.SpecificProbabilisticArborization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.connectors.__init__.Connector" title="mozaik.connectors.__init__.Connector"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.connectors.__init__.Connector</span></tt></a></p>
+<p>Generic connector which gets directly list of connections as the list
+of quadruplets as accepted by the pyNN FromListConnector.</p>
+<p>It interprets the weights as proportional probabilities of connectivity,
+and for each neuron out connections it samples num_samples of
+connections that actually get realized according to these weights.
+Each such sample connections will have weight equal to
+weight_factor/num_samples but note that there can be multiple
+connections between a pair of neurons in this sample (in which case the
+weights are set to the multiple of the base weights times the number of
+occurrences in the sample).</p>
+<p>This connector cannot be parameterized directly via the parameter file
+because that does not support list of tuples.</p>
+<dl class="attribute">
+<dt id="mozaik.connectors.__init__.SpecificProbabilisticArborization.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'weight_factor': &lt;type 'float'&gt;, 'num_samples': &lt;type 'int'&gt;}</em><a class="headerlink" href="#mozaik.connectors.__init__.SpecificProbabilisticArborization.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-mozaik.connectors.fast">
+<span id="connectors-fast-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">connectors.fast</span></tt> Module<a class="headerlink" href="#module-mozaik.connectors.fast" title="Permalink to this headline">¶</a></h2>
+<p>This file contains connectors that were written for speed - as a general rule 
+they tend to use the more native pyNN or even backend specific pyNN methods.</p>
+<p>To obtain speed they generally sacrifice ease customization.</p>
+<dl class="class">
+<dt id="mozaik.connectors.fast.DistanceDependentProbabilisticArborization">
+<em class="property">class </em><tt class="descclassname">mozaik.connectors.fast.</tt><tt class="descname">DistanceDependentProbabilisticArborization</tt><big>(</big><em>model</em>, <em>name</em>, <em>source</em>, <em>target</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.connectors.fast.DistanceDependentProbabilisticArborization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">mozaik.connectors.Connector</span></tt></p>
+<p>A abstract connector that implements distance dependent connection.
+Each implementation just needs to implement the arborization_function and delay function.
+The distance input is in the &#8216;native&#8217; metric of the sheets, i.e. degrees of visual field 
+in RetinalSheet or micrometers in CorticalSheet.</p>
+<dl class="attribute">
+<dt id="mozaik.connectors.fast.DistanceDependentProbabilisticArborization.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'map_location': &lt;type 'str'&gt;, 'weights': &lt;type 'float'&gt;}</em><a class="headerlink" href="#mozaik.connectors.fast.DistanceDependentProbabilisticArborization.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.connectors.fast.DistanceDependentProbabilisticArborization.arborization_function">
+<tt class="descname">arborization_function</tt><big>(</big><em>distance</em><big>)</big><a class="headerlink" href="#mozaik.connectors.fast.DistanceDependentProbabilisticArborization.arborization_function" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.connectors.fast.DistanceDependentProbabilisticArborization.delay_function">
+<tt class="descname">delay_function</tt><big>(</big><em>distance</em><big>)</big><a class="headerlink" href="#mozaik.connectors.fast.DistanceDependentProbabilisticArborization.delay_function" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.connectors.fast.ExponentialProbabilisticArborization">
+<em class="property">class </em><tt class="descclassname">mozaik.connectors.fast.</tt><tt class="descname">ExponentialProbabilisticArborization</tt><big>(</big><em>model</em>, <em>name</em>, <em>source</em>, <em>target</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.connectors.fast.ExponentialProbabilisticArborization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.connectors.fast.DistanceDependentProbabilisticArborization" title="mozaik.connectors.fast.DistanceDependentProbabilisticArborization"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.connectors.fast.DistanceDependentProbabilisticArborization</span></tt></a></p>
+<p>Distance dependent arborization with exponential fall-off of the probability, and linear spike propagation.</p>
+<dl class="attribute">
+<dt id="mozaik.connectors.fast.ExponentialProbabilisticArborization.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'propagation_constant': &lt;type 'float'&gt;, 'arborization_constant': &lt;type 'float'&gt;, 'arborization_scaler': &lt;type 'float'&gt;}</em><a class="headerlink" href="#mozaik.connectors.fast.ExponentialProbabilisticArborization.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.connectors.fast.ExponentialProbabilisticArborization.arborization_function">
+<tt class="descname">arborization_function</tt><big>(</big><em>distance</em><big>)</big><a class="headerlink" href="#mozaik.connectors.fast.ExponentialProbabilisticArborization.arborization_function" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.connectors.fast.ExponentialProbabilisticArborization.delay_function">
+<tt class="descname">delay_function</tt><big>(</big><em>distance</em><big>)</big><a class="headerlink" href="#mozaik.connectors.fast.ExponentialProbabilisticArborization.delay_function" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.connectors.fast.UniformProbabilisticArborization">
+<em class="property">class </em><tt class="descclassname">mozaik.connectors.fast.</tt><tt class="descname">UniformProbabilisticArborization</tt><big>(</big><em>model</em>, <em>name</em>, <em>source</em>, <em>target</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.connectors.fast.UniformProbabilisticArborization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">mozaik.connectors.Connector</span></tt></p>
+<p>Connects source with target with equal probability between any two neurons.</p>
+<dl class="attribute">
+<dt id="mozaik.connectors.fast.UniformProbabilisticArborization.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'delay': &lt;type 'float'&gt;, 'connection_probability': &lt;type 'float'&gt;, 'weights': &lt;type 'float'&gt;}</em><a class="headerlink" href="#mozaik.connectors.fast.UniformProbabilisticArborization.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.connectors.fast.FixedKConnector">
+<em class="property">class </em><tt class="descclassname">mozaik.connectors.fast.</tt><tt class="descname">FixedKConnector</tt><big>(</big><em>model</em>, <em>name</em>, <em>source</em>, <em>target</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.connectors.fast.FixedKConnector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">mozaik.connectors.Connector</span></tt></p>
+<p>Connects source with target such that each neuron will have the same number of presynaptic neurons chosen randomly.</p>
+<dl class="attribute">
+<dt id="mozaik.connectors.fast.FixedKConnector.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'delay': &lt;type 'float'&gt;, 'k': &lt;type 'int'&gt;, 'weights': &lt;type 'float'&gt;}</em><a class="headerlink" href="#mozaik.connectors.fast.FixedKConnector.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-mozaik.connectors.modular">
+<span id="connectors-modular-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">connectors.modular</span></tt> Module<a class="headerlink" href="#module-mozaik.connectors.modular" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="mozaik.connectors.modular.ModularConnector">
+<em class="property">class </em><tt class="descclassname">mozaik.connectors.modular.</tt><tt class="descname">ModularConnector</tt><big>(</big><em>network</em>, <em>name</em>, <em>source</em>, <em>target</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.connectors.modular.ModularConnector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">mozaik.connectors.Connector</span></tt></p>
+<p>An abstract connector than allows for mixing of various factors that can affect the connectivity.</p>
+<p>The connector sepparates the implementation of delays from the implementation of weights.</p>
+<p>It receives a dictionary of weight functions and a dictonary of delays functions each being an instance of ModularConnectorFunction. 
+In both cases the list of functions is combined by using expression string which is a parameter of this class (see parameters for details).</p>
+<p>The values returned by the ModularConnectorFunction will be considered to be in miliseconds when used for specifying delays, or the units used by pyNN for weights 
+in case of specifying weights.</p>
+<p>The ModularConnector then sets such computed values of weights and delays directly in the connections.</p>
+<dl class="attribute">
+<dt id="mozaik.connectors.modular.ModularConnector.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'weight_expression': &lt;type 'str'&gt;, 'weight_functions': &lt;class 'parameters.ParameterSet'&gt;, 'delay_functions': &lt;class 'parameters.ParameterSet'&gt;, 'delay_expression': &lt;type 'str'&gt;}</em><a class="headerlink" href="#mozaik.connectors.modular.ModularConnector.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.connectors.modular.ModularSamplingProbabilisticConnector">
+<em class="property">class </em><tt class="descclassname">mozaik.connectors.modular.</tt><tt class="descname">ModularSamplingProbabilisticConnector</tt><big>(</big><em>network</em>, <em>name</em>, <em>source</em>, <em>target</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.connectors.modular.ModularSamplingProbabilisticConnector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.connectors.modular.ModularConnector" title="mozaik.connectors.modular.ModularConnector"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.connectors.modular.ModularConnector</span></tt></a></p>
+<p>ModularConnector that interprets the weights as proportional probabilities of connectivity
+and for each neuron out connections it samples num_samples of
+connections that actually get realized according to these weights.
+Each such sample connections will have weight equal to
+base_weight/num_samples but note that there can be multiple
+connections between a pair of neurons in this sample (in which case the
+weights are set to the multiple of the base weights times the number of
+occurrences in the sample).</p>
+<dl class="attribute">
+<dt id="mozaik.connectors.modular.ModularSamplingProbabilisticConnector.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'base_weight': &lt;type 'float'&gt;, 'num_samples': &lt;type 'int'&gt;}</em><a class="headerlink" href="#mozaik.connectors.modular.ModularSamplingProbabilisticConnector.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.connectors.modular.ModularSingleWeightProbabilisticConnector">
+<em class="property">class </em><tt class="descclassname">mozaik.connectors.modular.</tt><tt class="descname">ModularSingleWeightProbabilisticConnector</tt><big>(</big><em>network</em>, <em>name</em>, <em>source</em>, <em>target</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.connectors.modular.ModularSingleWeightProbabilisticConnector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.connectors.modular.ModularConnector" title="mozaik.connectors.modular.ModularConnector"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.connectors.modular.ModularConnector</span></tt></a></p>
+<p>ModularConnector that interprets the weights as proportional probabilities of connectivity.
+The parameter connection_probability is interepreted as the average probability that two neurons will be connected in this 
+projection. For each pair this connecter will make one random choice of connecting them (where the probability of this choice
+is determined as the proportional probability of the corresponding weight normalized by the connection_probability parameter).
+It will set each connections to the weight base_weight.</p>
+<dl class="attribute">
+<dt id="mozaik.connectors.modular.ModularSingleWeightProbabilisticConnector.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'base_weight': &lt;type 'float'&gt;, 'connection_probability': &lt;type 'float'&gt;}</em><a class="headerlink" href="#mozaik.connectors.modular.ModularSingleWeightProbabilisticConnector.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-mozaik.connectors.modular_connector_functions">
+<span id="connectors-modular-connector-functions-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">connectors.modular_connector_functions</span></tt> Module<a class="headerlink" href="#module-mozaik.connectors.modular_connector_functions" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="mozaik.connectors.modular_connector_functions.ModularConnectorFunction">
+<em class="property">class </em><tt class="descclassname">mozaik.connectors.modular_connector_functions.</tt><tt class="descname">ModularConnectorFunction</tt><big>(</big><em>source</em>, <em>target</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.connectors.modular_connector_functions.ModularConnectorFunction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="mozaik.html#mozaik.core.ParametrizedObject" title="mozaik.core.ParametrizedObject"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.core.ParametrizedObject</span></tt></a></p>
+<p>Abstract class defining the interface of nodular connector functions.</p>
+<p>Each instance has to implement the evaluate(u) function that returns the pre-synaptic weights
+of neuron i.</p>
+<dl class="method">
+<dt id="mozaik.connectors.modular_connector_functions.ModularConnectorFunction.evaluate">
+<tt class="descname">evaluate</tt><big>(</big><em>index</em><big>)</big><a class="headerlink" href="#mozaik.connectors.modular_connector_functions.ModularConnectorFunction.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.connectors.modular_connector_functions.ConstantModularConnectorFunction">
+<em class="property">class </em><tt class="descclassname">mozaik.connectors.modular_connector_functions.</tt><tt class="descname">ConstantModularConnectorFunction</tt><big>(</big><em>source</em>, <em>target</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.connectors.modular_connector_functions.ConstantModularConnectorFunction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.connectors.modular_connector_functions.ModularConnectorFunction" title="mozaik.connectors.modular_connector_functions.ModularConnectorFunction"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.connectors.modular_connector_functions.ModularConnectorFunction</span></tt></a></p>
+<p>Triavial modular connection function assigning each connections the same weight</p>
+<dl class="method">
+<dt id="mozaik.connectors.modular_connector_functions.ConstantModularConnectorFunction.evaluate">
+<tt class="descname">evaluate</tt><big>(</big><em>index</em><big>)</big><a class="headerlink" href="#mozaik.connectors.modular_connector_functions.ConstantModularConnectorFunction.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.connectors.modular_connector_functions.PyNNDistributionConnectorFunction">
+<em class="property">class </em><tt class="descclassname">mozaik.connectors.modular_connector_functions.</tt><tt class="descname">PyNNDistributionConnectorFunction</tt><big>(</big><em>source</em>, <em>target</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.connectors.modular_connector_functions.PyNNDistributionConnectorFunction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.connectors.modular_connector_functions.ModularConnectorFunction" title="mozaik.connectors.modular_connector_functions.ModularConnectorFunction"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.connectors.modular_connector_functions.ModularConnectorFunction</span></tt></a></p>
+<p>ConnectorFunction which draws the values from the PyNNDistribution</p>
+<dl class="attribute">
+<dt id="mozaik.connectors.modular_connector_functions.PyNNDistributionConnectorFunction.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'pynn_distribution': &lt;class 'mozaik.tools.distribution_parametrization.PyNNDistribution'&gt;}</em><a class="headerlink" href="#mozaik.connectors.modular_connector_functions.PyNNDistributionConnectorFunction.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.connectors.modular_connector_functions.PyNNDistributionConnectorFunction.evaluate">
+<tt class="descname">evaluate</tt><big>(</big><em>index</em><big>)</big><a class="headerlink" href="#mozaik.connectors.modular_connector_functions.PyNNDistributionConnectorFunction.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.connectors.modular_connector_functions.DistanceDependentModularConnectorFunction">
+<em class="property">class </em><tt class="descclassname">mozaik.connectors.modular_connector_functions.</tt><tt class="descname">DistanceDependentModularConnectorFunction</tt><big>(</big><em>source</em>, <em>target</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.connectors.modular_connector_functions.DistanceDependentModularConnectorFunction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.connectors.modular_connector_functions.ModularConnectorFunction" title="mozaik.connectors.modular_connector_functions.ModularConnectorFunction"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.connectors.modular_connector_functions.ModularConnectorFunction</span></tt></a></p>
+<p>Helper abstract class to ease the definitions of purely distance dependent connector functions.</p>
+<p>The distance is defined as the <em>horizontal</em> distance between the retinotopical positions of the neurons (one in source and one in destination sheet). 
+The distane is translated into the native coordinates of the target sheet (e.g. micrometers for CorticlaSheet)!</p>
+<p>For the special case where source = target, this coresponds to the intuitive lateral distance of the neurons.</p>
+<dl class="method">
+<dt id="mozaik.connectors.modular_connector_functions.DistanceDependentModularConnectorFunction.distance_dependent_function">
+<tt class="descname">distance_dependent_function</tt><big>(</big><em>distance</em><big>)</big><a class="headerlink" href="#mozaik.connectors.modular_connector_functions.DistanceDependentModularConnectorFunction.distance_dependent_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>The is the function, dependent only on distance that each DistanceDependentModularConnectorFunction has to implement.
+The distance can be matrix.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.connectors.modular_connector_functions.DistanceDependentModularConnectorFunction.evaluate">
+<tt class="descname">evaluate</tt><big>(</big><em>index</em><big>)</big><a class="headerlink" href="#mozaik.connectors.modular_connector_functions.DistanceDependentModularConnectorFunction.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.connectors.modular_connector_functions.GaussianDecayModularConnectorFunction">
+<em class="property">class </em><tt class="descclassname">mozaik.connectors.modular_connector_functions.</tt><tt class="descname">GaussianDecayModularConnectorFunction</tt><big>(</big><em>source</em>, <em>target</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.connectors.modular_connector_functions.GaussianDecayModularConnectorFunction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.connectors.modular_connector_functions.DistanceDependentModularConnectorFunction" title="mozaik.connectors.modular_connector_functions.DistanceDependentModularConnectorFunction"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.connectors.modular_connector_functions.DistanceDependentModularConnectorFunction</span></tt></a></p>
+<p>Distance dependent arborization with gaussian fall-off of the connections: k * exp(-0.5*(distance/a)*2) / (a*sqrt(2*pi))
+where a = arborization_constant, k = arborization_scaler</p>
+<dl class="attribute">
+<dt id="mozaik.connectors.modular_connector_functions.GaussianDecayModularConnectorFunction.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'arborization_constant': &lt;type 'float'&gt;, 'arborization_scaler': &lt;type 'float'&gt;}</em><a class="headerlink" href="#mozaik.connectors.modular_connector_functions.GaussianDecayModularConnectorFunction.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.connectors.modular_connector_functions.GaussianDecayModularConnectorFunction.distance_dependent_function">
+<tt class="descname">distance_dependent_function</tt><big>(</big><em>distance</em><big>)</big><a class="headerlink" href="#mozaik.connectors.modular_connector_functions.GaussianDecayModularConnectorFunction.distance_dependent_function" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.connectors.modular_connector_functions.ExponentialDecayModularConnectorFunction">
+<em class="property">class </em><tt class="descclassname">mozaik.connectors.modular_connector_functions.</tt><tt class="descname">ExponentialDecayModularConnectorFunction</tt><big>(</big><em>source</em>, <em>target</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.connectors.modular_connector_functions.ExponentialDecayModularConnectorFunction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.connectors.modular_connector_functions.DistanceDependentModularConnectorFunction" title="mozaik.connectors.modular_connector_functions.DistanceDependentModularConnectorFunction"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.connectors.modular_connector_functions.DistanceDependentModularConnectorFunction</span></tt></a></p>
+<p>Distance dependent arborization with exponential fall-off of the connections: k * exp(-distance/a)</p>
+<dl class="attribute">
+<dt id="mozaik.connectors.modular_connector_functions.ExponentialDecayModularConnectorFunction.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'arborization_constant': &lt;type 'float'&gt;, 'arborization_scaler': &lt;type 'float'&gt;}</em><a class="headerlink" href="#mozaik.connectors.modular_connector_functions.ExponentialDecayModularConnectorFunction.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.connectors.modular_connector_functions.ExponentialDecayModularConnectorFunction.distance_dependent_function">
+<tt class="descname">distance_dependent_function</tt><big>(</big><em>distance</em><big>)</big><a class="headerlink" href="#mozaik.connectors.modular_connector_functions.ExponentialDecayModularConnectorFunction.distance_dependent_function" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.connectors.modular_connector_functions.LinearModularConnectorFunction">
+<em class="property">class </em><tt class="descclassname">mozaik.connectors.modular_connector_functions.</tt><tt class="descname">LinearModularConnectorFunction</tt><big>(</big><em>source</em>, <em>target</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.connectors.modular_connector_functions.LinearModularConnectorFunction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.connectors.modular_connector_functions.DistanceDependentModularConnectorFunction" title="mozaik.connectors.modular_connector_functions.DistanceDependentModularConnectorFunction"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.connectors.modular_connector_functions.DistanceDependentModularConnectorFunction</span></tt></a></p>
+<p>Corresponds to: distance*linear_scaler + constant_scaler, where distance is in micrometers</p>
+<dl class="attribute">
+<dt id="mozaik.connectors.modular_connector_functions.LinearModularConnectorFunction.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'constant_scaler': &lt;type 'float'&gt;, 'linear_scaler': &lt;type 'float'&gt;}</em><a class="headerlink" href="#mozaik.connectors.modular_connector_functions.LinearModularConnectorFunction.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.connectors.modular_connector_functions.LinearModularConnectorFunction.distance_dependent_function">
+<tt class="descname">distance_dependent_function</tt><big>(</big><em>distance</em><big>)</big><a class="headerlink" href="#mozaik.connectors.modular_connector_functions.LinearModularConnectorFunction.distance_dependent_function" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.connectors.modular_connector_functions.HyperbolicModularConnectorFunction">
+<em class="property">class </em><tt class="descclassname">mozaik.connectors.modular_connector_functions.</tt><tt class="descname">HyperbolicModularConnectorFunction</tt><big>(</big><em>source</em>, <em>target</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.connectors.modular_connector_functions.HyperbolicModularConnectorFunction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.connectors.modular_connector_functions.DistanceDependentModularConnectorFunction" title="mozaik.connectors.modular_connector_functions.DistanceDependentModularConnectorFunction"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.connectors.modular_connector_functions.DistanceDependentModularConnectorFunction</span></tt></a></p>
+<p>Corresponds to: exp(-alpha*distance*sqrt(   heta^2 + distance^2)) , where distance is in micrometers
+And is the best fit I could so far find to the data from: 
+Stepanyants, A., Hirsch, J. a, Martinez, L. M., Kisvárday, Z. F., Ferecskó, A. S., &amp; Chklovskii, D. B. (2008). 
+Local potential connectivity in cat primary visual cortex. Cerebral cortex, 18(1), 13–28. doi:10.1093/cercor/bhm027</p>
+<dl class="attribute">
+<dt id="mozaik.connectors.modular_connector_functions.HyperbolicModularConnectorFunction.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'alpha': &lt;type 'float'&gt;, 'theta': &lt;type 'float'&gt;}</em><a class="headerlink" href="#mozaik.connectors.modular_connector_functions.HyperbolicModularConnectorFunction.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.connectors.modular_connector_functions.HyperbolicModularConnectorFunction.distance_dependent_function">
+<tt class="descname">distance_dependent_function</tt><big>(</big><em>distance</em><big>)</big><a class="headerlink" href="#mozaik.connectors.modular_connector_functions.HyperbolicModularConnectorFunction.distance_dependent_function" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-mozaik.connectors.vision">
+<span id="connectors-vision-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">connectors.vision</span></tt> Module<a class="headerlink" href="#module-mozaik.connectors.vision" title="Permalink to this headline">¶</a></h2>
+<p>Vision specific connectors.</p>
+<dl class="class">
+<dt id="mozaik.connectors.vision.MapDependentModularConnectorFunction">
+<em class="property">class </em><tt class="descclassname">mozaik.connectors.vision.</tt><tt class="descname">MapDependentModularConnectorFunction</tt><big>(</big><em>source</em>, <em>target</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.connectors.vision.MapDependentModularConnectorFunction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.connectors.modular_connector_functions.ModularConnectorFunction" title="mozaik.connectors.modular_connector_functions.ModularConnectorFunction"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.connectors.modular_connector_functions.ModularConnectorFunction</span></tt></a></p>
+<p>Corresponds to: distance*linear_scaler + constant_scaler</p>
+<dl class="attribute">
+<dt id="mozaik.connectors.vision.MapDependentModularConnectorFunction.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'map_location': &lt;type 'str'&gt;, 'periodic': &lt;type 'bool'&gt;, 'sigma': &lt;type 'float'&gt;}</em><a class="headerlink" href="#mozaik.connectors.vision.MapDependentModularConnectorFunction.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.connectors.vision.MapDependentModularConnectorFunction.evaluate">
+<tt class="descname">evaluate</tt><big>(</big><em>index</em><big>)</big><a class="headerlink" href="#mozaik.connectors.vision.MapDependentModularConnectorFunction.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.connectors.vision.V1PushPullArborization">
+<em class="property">class </em><tt class="descclassname">mozaik.connectors.vision.</tt><tt class="descname">V1PushPullArborization</tt><big>(</big><em>source</em>, <em>target</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.connectors.vision.V1PushPullArborization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.connectors.modular_connector_functions.ModularConnectorFunction" title="mozaik.connectors.modular_connector_functions.ModularConnectorFunction"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.connectors.modular_connector_functions.ModularConnectorFunction</span></tt></a></p>
+<p>This connector function implements the standard V1 functionally specific
+connection rule:</p>
+<p>Excitatory synapses are more likely on cooriented in-phase neurons
+Inhibitory synapses are more likely to cooriented anti-phase neurons</p>
+<p class="rubric">Notes</p>
+<p>The <cite>push_pull_ratio</cite> parameter essentially adds constant to the probability distribution
+over the orientation and phase dependent connectivity probability space. The formula looks
+like this: push_pull_ratio + (1-push_pull_ratio) * push_pull_term. Where the push_pull_term
+is the term determining the pure push pull connectivity. However note that due to the Gaussian
+terms being 0 in infinity and the finite distances in the orientation and phase space, the push-pull
+connectivity effectively itself adds a constant probability to all phase and orientation combinations, and 
+the value of this constant is dependent on the phase and orientation sigma parameters.
+Therefore one has to be carefull in interpreting the push_pull_ratio parameter. If the phase and/or
+orientation sigma parameters are rather small, it is however safe to interpret it as the ratio 
+of connections that were drawn randomly to the number of connection drawn based on push-pull type of connectivity.</p>
+<dl class="attribute">
+<dt id="mozaik.connectors.vision.V1PushPullArborization.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'push_pull_ratio': &lt;type 'float'&gt;, 'phase_sigma': &lt;type 'float'&gt;, 'target_synapses': &lt;type 'str'&gt;, 'or_sigma': &lt;type 'float'&gt;}</em><a class="headerlink" href="#mozaik.connectors.vision.V1PushPullArborization.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.connectors.vision.V1PushPullArborization.evaluate">
+<tt class="descname">evaluate</tt><big>(</big><em>index</em><big>)</big><a class="headerlink" href="#mozaik.connectors.vision.V1PushPullArborization.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="mozaik-connectors-meta-connectors-package">
+<h2><a class="reference internal" href="#module-mozaik.connectors.meta_connectors" title="mozaik.connectors.meta_connectors"><tt class="xref py py-mod docutils literal"><span class="pre">mozaik.connectors.meta_connectors</span></tt></a> Package<a class="headerlink" href="#mozaik-connectors-meta-connectors-package" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-mozaik.connectors.meta_connectors"></span><dl class="function">
+<dt id="mozaik.connectors.meta_connectors.gabor">
+<tt class="descclassname">mozaik.connectors.meta_connectors.</tt><tt class="descname">gabor</tt><big>(</big><em>x1</em>, <em>y1</em>, <em>x2</em>, <em>y2</em>, <em>orientation</em>, <em>frequency</em>, <em>phase</em>, <em>size</em>, <em>aspect_ratio</em><big>)</big><a class="headerlink" href="#mozaik.connectors.meta_connectors.gabor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="mozaik.connectors.meta_connectors.GaborConnector">
+<em class="property">class </em><tt class="descclassname">mozaik.connectors.meta_connectors.</tt><tt class="descname">GaborConnector</tt><big>(</big><em>network</em>, <em>lgn_on</em>, <em>lgn_off</em>, <em>target</em>, <em>parameters</em>, <em>name</em><big>)</big><a class="headerlink" href="#mozaik.connectors.meta_connectors.GaborConnector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="mozaik.html#mozaik.core.BaseComponent" title="mozaik.core.BaseComponent"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.core.BaseComponent</span></tt></a></p>
+<p>Connector that creates Gabor projections.</p>
+<p>The individual Gabor parameters are drawn from distributions specified in
+the parameter set:</p>
+<p><cite>aspect_ratio</cite>  -  aspect ratio of the gabor
+<cite>size</cite>          -  the size of the gabor  RFs in degrees of visual field
+<cite>orientation</cite>   -  the orientation of the gabor RFs
+<cite>phase</cite>         -  the phase of the gabor RFs
+<cite>frequency</cite>     -  the frequency of the gabor in degrees of visual field</p>
+<p>Other parameters:</p>
+<dl class="docutils">
+<dt><cite>topological</cite>          -  should the receptive field centers vary with the</dt>
+<dd>position of the given neurons in the target sheet
+(note positions of neurons are always stored in
+visual field coordinates)</dd>
+<dt><cite>probabilistic</cite>        -  should the weights be probabilistic or directly</dt>
+<dd>proportianal to the gabor profile</dd>
+</dl>
+<p><cite>delay</cite>                -  (ms/μm) the delay on the projections</p>
+<p><cite>or_map</cite>             - is an orientation map supplied?
+<cite>or_map_location</cite>    - if or_map is True where can one find the map. It</p>
+<blockquote>
+<div>has to be a file containing a single pickled 2d
+numpy array</div></blockquote>
+<p><cite>phase_map</cite>          - is a phase map supplied?
+<cite>phase_map_location</cite> - if phase_map is True where can one find the map.</p>
+<blockquote>
+<div>It has to be a file containing a single pickled 2d
+numpy array</div></blockquote>
+<dl class="attribute">
+<dt id="mozaik.connectors.meta_connectors.GaborConnector.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'orientation_preference': &lt;class 'parameters.random.ParameterDist'&gt;, 'phase_map': &lt;type 'bool'&gt;, 'specific_arborization': &lt;class 'parameters.ParameterSet'&gt;, 'topological': &lt;type 'bool'&gt;, 'delay': &lt;type 'float'&gt;, 'aspect_ratio': &lt;class 'parameters.random.ParameterDist'&gt;, 'frequency': &lt;class 'parameters.random.ParameterDist'&gt;, 'or_map_location': &lt;type 'str'&gt;, 'or_map': &lt;type 'bool'&gt;, 'phase': &lt;class 'parameters.random.ParameterDist'&gt;, 'probabilistic': &lt;type 'bool'&gt;, 'phase_map_location': &lt;type 'str'&gt;, 'size': &lt;class 'parameters.random.ParameterDist'&gt;}</em><a class="headerlink" href="#mozaik.connectors.meta_connectors.GaborConnector.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/mozaik_logo_small.svg" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mozaik.analysis.html"
+                        title="previous chapter">analysis Package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mozaik.experiments.html"
+                        title="next chapter">experiments Package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/mozaik.connectors.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mozaik.experiments.html" title="experiments Package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mozaik.analysis.html" title="analysis Package"
+             >previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="mozaik.html" >mozaik API</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2013, mozaik authors and contributors &lt;&gt;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

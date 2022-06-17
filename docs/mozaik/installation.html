@@ -1,0 +1,378 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installation intructions &mdash; mozaik 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mozaik 0.1.0 documentation" href="index.html" />
+    <link rel="next" title="Introduction" href="introduction.html" />
+    <link rel="prev" title="Documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="introduction.html" title="Introduction"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Documentation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="installation-intructions">
+<h1>Installation intructions<a class="headerlink" href="#installation-intructions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>python 2.7</li>
+<li>scipy/numpy</li>
+<li>nest (latest release, compiled with mpi)</li>
+<li>mpi4py</li>
+<li>pyNN (neo_output branch)</li>
+<li>imagen</li>
+<li>parameters</li>
+<li>quantities</li>
+<li>neo</li>
+</ul>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Instructions:</p>
+<div class="highlight-python"><pre>git clone https://github.com/antolikjan/mozaik.git
+cd mozaik
+python setup.py install</pre>
+</div>
+<dl class="docutils">
+<dt>Please see below:</dt>
+<dd><ul class="first last simple">
+<li>the installation of the dependencies.</li>
+<li>the installation on Ubuntu Linux</li>
+<li>how to run the examples</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="detailed-instructions">
+<span id="ref-detailed"></span><h2>Detailed instructions<a class="headerlink" href="#detailed-instructions" title="Permalink to this headline">¶</a></h2>
+<p>Mozaik requires currently some &#8220;non-standard&#8221; branches of software like the
+pyNN which will be resolved in the future. Therefore more detailed installation
+instructions follow.</p>
+<div class="section" id="virtual-env">
+<span id="ref-virtual-env"></span><h3>Virtual env<a class="headerlink" href="#virtual-env" title="Permalink to this headline">¶</a></h3>
+<p>We recommend to install mozaik using the virtualenv python environment manager (<a class="reference external" href="http://pypi.python.org/pypi/virtualenv/">http://pypi.python.org/pypi/virtualenv/</a>) , to prevent potential
+conflicts with standard versions of required libraries. Users can follow for example <a class="reference external" href="http://simononsoftware.com/virtualenv-tutorial">http://simononsoftware.com/virtualenv-tutorial</a> tutorial or just do the following steps:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">Install virtualenv</p>
+</li>
+<li><p class="first">Create (for example in your home directory) a directory where all virtual environments will be created home/virt_env</p>
+</li>
+<li><p class="first">Create the virtual environment for mozaik:</p>
+<div class="highlight-python"><pre>virtualenv virt_env/virt_env_mozaik/ --verbose --no-site-packages</pre>
+</div>
+</li>
+<li><p class="first">Load the virtual environment for mozaik by:</p>
+<div class="highlight-python"><pre>source virt_env/virt_env_mozaik/bin/activate</pre>
+</div>
+</li>
+</ul>
+</div></blockquote>
+<p>Your shell should look now something like:</p>
+<div class="highlight-python"><pre>(virt_env_mozaik)Username@Machinename:~$</pre>
+</div>
+<p>You can use pip to view the installed packages:</p>
+<div class="highlight-python"><pre>pip freeze</pre>
+</div>
+</div>
+<div class="section" id="id1">
+<h3>Dependencies<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Note that if the installation is done in your virtualenv environment, it doesn&#8217;t require any root privilege.</p>
+<blockquote>
+<div><ul>
+<li><p class="first">scipy</p>
+</li>
+<li><p class="first">numpy</p>
+</li>
+<li><p class="first">mpi4py</p>
+</li>
+<li><p class="first">matplotlib (1.1 and higher)</p>
+</li>
+<li><p class="first">quantities</p>
+</li>
+<li><p class="first">PyNN:</p>
+<div class="highlight-python"><pre>git clone https://github.com/NeuralEnsemble/PyNN.git</pre>
+</div>
+<ul>
+<li><p class="first">Then, in your virtual environment:</p>
+<div class="highlight-python"><pre>python setup.py install</pre>
+</div>
+</li>
+</ul>
+</li>
+<li><p class="first">Neo:</p>
+<div class="highlight-python"><pre>git clone https://github.com/apdavison/python-neo python-neo
+cd python-neo
+python setup.py install</pre>
+</div>
+</li>
+<li><p class="first">imagen:</p>
+<div class="highlight-python"><pre>pip install --user imagen</pre>
+</div>
+</li>
+<li><p class="first">parameters:</p>
+<div class="highlight-python"><pre>git clone https://github.com/apdavison/parameters.git parameters
+cd parameters
+python setup.py install</pre>
+</div>
+</li>
+<li><p class="first">NeuroTools:</p>
+<div class="highlight-python"><pre>svn co https://neuralensemble.org/svn/NeuroTools/trunk NeuroTools
+python setup.py install</pre>
+</div>
+</li>
+</ul>
+</div></blockquote>
+<p>For mozaik itself, you need to clone with the help of git:</p>
+<div class="highlight-python"><pre>git clone https://github.com/antolikjan/mozaik.git
+python setup.py install</pre>
+</div>
+<p>VIRTUALENV NOTE: You might already have some of the above packages
+if you&#8217;ve used the option &#8211;system-site-packages when creating the virtual environment for mozaik.
+You can list the packages you have e.g. with the help of yolk):
+If you&#8217;ve set up the virt_env with the option &#8211;system-site-packages and
+you&#8217;re using scipy, numpy, matplotlib anyway you don&#8217;t have to install those in your virt_env.</p>
+</div>
+</div>
+<div class="section" id="ubuntu">
+<span id="ref-ubuntu"></span><h2>Ubuntu<a class="headerlink" href="#ubuntu" title="Permalink to this headline">¶</a></h2>
+<p>Following these instruction should give you a working copy of mozaik on a
+fresh installation of Ubuntu (at the time of the writing the version was 12.04)</p>
+<p>First the list of ubuntu package dependencies:</p>
+<div class="highlight-python"><pre>sudo apt-get install python2.7 python-dev python-pip python-nose subversion git libopenmpi-dev g++ libjpeg8 libjpeg8-dev libfreetype6 libfreetype6-dev zlib1g-dev libpng++-dev libncurses5 libncurses5-dev libreadline-dev liblapack-dev libblas-dev gfortran libgsl0-dev openmpi-bin</pre>
+</div>
+<div class="section" id="id2">
+<h3>Virtual env<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Then python virtualenv and virtualenvwrapper (an handy way to manage python virtual environments):</p>
+<div class="highlight-python"><pre>$ sudo pip install virtualenv
+$ sudo pip install virtualenvwrapper</pre>
+</div>
+<p>To setup <a class="reference external" href="http://virtualenvwrapper.readthedocs.org/en/latest//">virtualenvwrapper</a> add the following lines at the top of ~/.bash_profile (create it if you don&#8217;t have one):</p>
+<div class="highlight-python"><pre># virtualenvwrapper
+export WORKON_HOME=~/.virtualenvs
+source /usr/local/bin/virtualenvwrapper.sh
+export PIP_VIRTUALENV_BASE=$WORKON_HOME
+export PIP_RESPECT_VIRTUALENV=true</pre>
+</div>
+<p>For the first time, run bash_profile (the next times it will be loaded by your terminal):</p>
+<div class="highlight-python"><pre>$ source .bash_profile</pre>
+</div>
+<p>To create a new managed virtualenv you just need to:</p>
+<div class="highlight-python"><pre>$ mkvirtualenv --no-site-packages mozaik
+$ workon mozaik
+(mozaik)$&gt;</pre>
+</div>
+<p>To produce a requirement file (it will list all the installed package in the virtual environment, so that pip can reinstall the same set of packages):</p>
+<div class="highlight-python"><pre>(mozaik)$&gt; pip freeze &gt; requirements.txt</pre>
+</div>
+<p>Then you can use it to replicate installation:</p>
+<div class="highlight-python"><pre>(mozaik)$&gt; pip install -r requirements.txt</pre>
+</div>
+<p>To exit the environment:</p>
+<div class="highlight-python"><pre>(mozaik)$&gt; deactivate</pre>
+</div>
+</div>
+<div class="section" id="id3">
+<h3>Dependencies<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>Now you can install in this protected environment all other dependencies:</p>
+<div class="highlight-python"><pre>pip install --upgrade distribute
+pip install numpy mpi4py
+pip install scipy matplotlib quantities lazyarray
+pip install imagen interval PIL</pre>
+</div>
+<p>Now we can install <em>Nest</em> (always in the virtual environment):</p>
+<blockquote>
+<div><ul>
+<li><p class="first">download the latest version from their <a class="reference external" href="http://www.nest-initiative.org/index.php/Software:Download">website</a></p>
+</li>
+<li><p class="first">untar and cd into it:</p>
+<div class="highlight-python"><pre>tar xvfz nest-2.2.2.tar.gz
+cd nest-2.2.2</pre>
+</div>
+</li>
+<li><p class="first">then configure, choose if you want mpi. And, if you decide to have nest installed somewhere else from normal places add it with a prefix, then you also need to specify the pynest prefix. So if &#8216;mozaik&#8217; is your virtual environment, and if the directory of all the virtual environments is virt_env, then the configure line should look like:</p>
+<div class="highlight-python"><pre>(mozaik)$ ./configure --with-mpi --prefix=$HOME/opt/nest --with-pynest-prefix=$HOME/virt_env/mozaik</pre>
+</div>
+</li>
+<li><p class="first">finally, by launching make and install, it installs PyNest in</p>
+<div class="highlight-python"><pre>(mozaik)$ make
+(mozaik)$ make install</pre>
+</div>
+</li>
+<li><p class="first">in the ./~nestrc, uncomment the lines regarding mpirun, and check that the mpirun executables are installed. Then:</p>
+<div class="highlight-python"><pre>make installcheck</pre>
+</div>
+</li>
+<li><p class="first">nest will reside in $HOME/virt_env/mozaik/lib/python2.7/site-packages. Check that the package is seen by python using:</p>
+<div class="highlight-python"><pre>python -c 'import nest'</pre>
+</div>
+</li>
+</ul>
+</div></blockquote>
+<p>Install PyNN:</p>
+<div class="highlight-python"><pre>git clone https://github.com/NeuralEnsemble/PyNN.git
+cd PyNN/
+python setup.py install</pre>
+</div>
+<p>that will reside in $HOME/virt_env/mozaik/lib/python2.7/site-packages/PyNN-0.8dev-py2.7.egg-info. Check:</p>
+<div class="highlight-python"><pre>python -c 'import pyNN'</pre>
+</div>
+<p>Install NEO:</p>
+<div class="highlight-python"><pre>git clone https://github.com/apdavison/python-neo python-neo
+cd python-neo/
+python setup.py install</pre>
+</div>
+<p>Install Parameters package:</p>
+<div class="highlight-python"><pre>git clone https://github.com/apdavison/parameters.git parameters
+cd parameters/
+python setup.py install</pre>
+</div>
+<p>Install NeuroTools:</p>
+<div class="highlight-python"><pre>svn co https://neuralensemble.org/svn/NeuroTools/trunk NeuroTools
+cd NeuroTools/
+python setup.py install</pre>
+</div>
+<p>Install TableIO (not always necessary). Download it from <a class="reference external" href="http://kochanski.org/gpk/misc/TableIO.html">http://kochanski.org/gpk/misc/TableIO.html</a>:</p>
+<div class="highlight-python"><pre>tar xvzf TableIO-1.2.tgz
+python setup.py install</pre>
+</div>
+<p>And, finally, Mozaik:</p>
+<div class="highlight-python"><pre>git clone https://github.com/antolikjan/mozaik.git
+cd mozaik/
+python setup.py install</pre>
+</div>
+</div>
+</div>
+<div class="section" id="running-examples">
+<span id="ref-run"></span><h2>Running examples<a class="headerlink" href="#running-examples" title="Permalink to this headline">¶</a></h2>
+<p>If you use mpi and mpirun, you should install first the mpi executables if not already done:</p>
+<div class="highlight-python"><pre>sudo apt-get install openmpi-bin</pre>
+</div>
+<p>Then, you go to the examples directory in the mozaik loaded from github (see above) and launch the model VogelsAbbott2005:</p>
+<div class="highlight-python"><pre>cd examples
+cd VogelsAbbott2005
+mpirun python run.py nest 2 param/defaults 'test'</pre>
+</div>
+<p>This will launch the example with the nest simulator, on 2 nodes, using the parameter param/defaults. Last, &#8216;test&#8217; is the name of this run.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright 2011-2013 by the <em>mozaik</em> team, see AUTHORS.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">license:</th><td class="field-body"><a class="reference external" href="http://www.cecill.info/">CECILL</a>, see LICENSE for details.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/mozaik_logo_small.svg" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="introduction.html"
+                        title="next chapter">Introduction</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/installation.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="introduction.html" title="Introduction"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Documentation"
+             >previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2013, mozaik authors and contributors &lt;&gt;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

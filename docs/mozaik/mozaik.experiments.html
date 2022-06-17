@@ -1,0 +1,613 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>experiments Package &mdash; mozaik 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mozaik 0.1.0 documentation" href="index.html" />
+    <link rel="up" title="mozaik API" href="mozaik.html" />
+    <link rel="next" title="sheets Package" href="mozaik.sheets.html" />
+    <link rel="prev" title="connector Package" href="mozaik.connectors.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mozaik.sheets.html" title="sheets Package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mozaik.connectors.html" title="connector Package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="mozaik.html" accesskey="U">mozaik API</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="experiments-package">
+<h1>experiments Package<a class="headerlink" href="#experiments-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-mozaik.experiments.__init__">
+<span id="mozaik-experiments-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">mozaik.experiments</span></tt> Module<a class="headerlink" href="#module-mozaik.experiments.__init__" title="Permalink to this headline">¶</a></h2>
+<p>Module containing the experiment API.</p>
+<dl class="class">
+<dt id="mozaik.experiments.__init__.Experiment">
+<em class="property">class </em><tt class="descclassname">mozaik.experiments.__init__.</tt><tt class="descname">Experiment</tt><big>(</big><em>model</em><big>)</big><a class="headerlink" href="#mozaik.experiments.__init__.Experiment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>The abastract class for an experiment. The experiment defines the list of 
+stimuli that it needs to present to the brain.These stimuli presentations have to be independent - e.g. should not
+temporarily depend on each other. Experiment should also specify the analysis of the
+recorded results that it performs. This can be left empty if analysis will
+be done later.</p>
+<p>The experiment has to also define the <cite>direct_stimulation</cite> variable which should contain a list of dictionaries one per each stimulus.
+The keys in these dictionaries are sheet names and values are list of <tt class="xref py py-class docutils literal"><span class="pre">mozail.sheets.direct_stimulator.DirectStimulator</span></tt> instances,
+that specify what direct stimulations should be applied to given layers during the corresponding stimulus. Layers to which no direct stimulation 
+is applied can stay empty. Also if the direct_stimulation is set to None, empty dictionaries will be automatically passed to the model, 
+indicating no direct stimulation is required.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>model</strong> : Model</p>
+<blockquote class="last">
+<div><p>The model on which to execute the experiment.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mozaik.experiments.__init__.Experiment.return_stimuli">
+<tt class="descname">return_stimuli</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.experiments.__init__.Experiment.return_stimuli" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is called by mozaik to retrieve the list of stimuli the experiment requires to be presented to the model.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.experiments.__init__.Experiment.run">
+<tt class="descname">run</tt><big>(</big><em>data_store</em>, <em>stimuli</em><big>)</big><a class="headerlink" href="#mozaik.experiments.__init__.Experiment.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is called to execute the experiment.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>data_store</strong> : DataStore</p>
+<blockquote>
+<div><p>The data store into which to store the recorded data.</p>
+</div></blockquote>
+<p><strong>stimuli</strong> : list(Stimulus)</p>
+<blockquote>
+<div><p>The list of stimuli to present to the model.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>strsum</strong> : int (s)</p>
+<blockquote class="last">
+<div><p>The overal simulation time it took to execute the experiment.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>The reason why this function gets a list of stimuli as input is that even though the experiment itself defines the list of stimuli
+to present to the model, some of these might have already been presented. The module <cite>mozaik.controller</cite> filters
+the list of stimuli which to present to prevent repetitions, and lets this function know via the stimuli argument which stimuli to actually present.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.experiments.__init__.Experiment.do_analysis">
+<tt class="descname">do_analysis</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.experiments.__init__.Experiment.do_analysis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.experiments.__init__.PoissonNetworkKick">
+<em class="property">class </em><tt class="descclassname">mozaik.experiments.__init__.</tt><tt class="descname">PoissonNetworkKick</tt><big>(</big><em>model</em>, <em>duration</em>, <em>sheet_list</em>, <em>drive_period</em>, <em>recording_configuration</em>, <em>lambda_list</em>, <em>weight_list</em><big>)</big><a class="headerlink" href="#mozaik.experiments.__init__.PoissonNetworkKick" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.experiments.__init__.Experiment" title="mozaik.experiments.__init__.Experiment"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.experiments.__init__.Experiment</span></tt></a></p>
+<p>This experiment does not show any stimulus.
+Importantly for the duration of the experiment it will stimulate neurons 
+definded by the recording configurations in recording_configuration_list
+in the sheets specified in the sheet_list with Poisson spike train of mean 
+frequency determined by the corresponding values in lambda_list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>model</strong> : Model</p>
+<blockquote>
+<div><p>The model on which to execute the experiment.</p>
+</div></blockquote>
+<p><strong>duration</strong> : str</p>
+<blockquote>
+<div><p>The duration of single presentation of the stimulus.</p>
+</div></blockquote>
+<p><strong>sheet_list</strong> : int</p>
+<blockquote>
+<div><p>The list of sheets in which to do stimulation</p>
+</div></blockquote>
+<p><strong>drive_period</strong> : float (ms)</p>
+<blockquote>
+<div><p>The length of the constant drive, after which it will be linearly taken down to 0 at the end of the stimulation.</p>
+</div></blockquote>
+<p><strong>recording_configuration</strong> : ParameterSet</p>
+<blockquote>
+<div><p>The parameter set for recording configuration specifing neurons to which the kick will be administered.</p>
+</div></blockquote>
+<p><strong>lambda_list</strong> : list</p>
+<blockquote>
+<div><p>List of the means of the Poisson spike train to be injected into the neurons specified in recording_configuration_list (one per each sheet).</p>
+</div></blockquote>
+<p><strong>weight_list</strong> : list</p>
+<blockquote class="last">
+<div><p>List of spike sizes of the Poisson spike train to be injected into the neurons specified in recording_configuration_list (one per each sheet).</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.experiments.__init__.NoStimulation">
+<em class="property">class </em><tt class="descclassname">mozaik.experiments.__init__.</tt><tt class="descname">NoStimulation</tt><big>(</big><em>model</em>, <em>duration</em><big>)</big><a class="headerlink" href="#mozaik.experiments.__init__.NoStimulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.experiments.__init__.Experiment" title="mozaik.experiments.__init__.Experiment"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.experiments.__init__.Experiment</span></tt></a></p>
+<p>This experiment does not show any stimulus for the duration of the experiment.</p>
+<p class="rubric">Notes</p>
+<p>Unlike <a class="reference internal" href="#mozaik.experiments.vision.MeasureSpontaneousActivity" title="mozaik.experiments.vision.MeasureSpontaneousActivity"><tt class="xref py py-class docutils literal"><span class="pre">MeasureSpontaneousActivity</span></tt></a> this can be used in model with no sensory input sheet.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="mozaik-experiments-vision-module">
+<h2><a class="reference internal" href="#module-mozaik.experiments.vision" title="mozaik.experiments.vision"><tt class="xref py py-mod docutils literal"><span class="pre">mozaik.experiments.vision</span></tt></a> Module<a class="headerlink" href="#mozaik-experiments-vision-module" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-mozaik.experiments.vision"></span><dl class="class">
+<dt id="mozaik.experiments.vision.VisualExperiment">
+<em class="property">class </em><tt class="descclassname">mozaik.experiments.vision.</tt><tt class="descname">VisualExperiment</tt><big>(</big><em>model</em><big>)</big><a class="headerlink" href="#mozaik.experiments.vision.VisualExperiment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">mozaik.experiments.Experiment</span></tt></p>
+<p>Visual experiment. On top of Experiment class it defines a new variable background_luminance, 
+that it sets to be the background luminance of the model&#8217;s input space, and new variable density
+which is set to over the spatial_resolution of the input layer&#8217;s receptive field spatial resolution.
+All experiments in the visual sensory domain should be derived from this class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>model</strong> : Model</p>
+<blockquote class="last">
+<div><p>The model on which to execute the experiment.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.experiments.vision.MeasureOrientationTuningFullfield">
+<em class="property">class </em><tt class="descclassname">mozaik.experiments.vision.</tt><tt class="descname">MeasureOrientationTuningFullfield</tt><big>(</big><em>model</em>, <em>num_orientations</em>, <em>spatial_frequency</em>, <em>temporal_frequency</em>, <em>grating_duration</em>, <em>contrasts</em>, <em>num_trials</em><big>)</big><a class="headerlink" href="#mozaik.experiments.vision.MeasureOrientationTuningFullfield" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.experiments.vision.VisualExperiment" title="mozaik.experiments.vision.VisualExperiment"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.experiments.vision.VisualExperiment</span></tt></a></p>
+<p>Measure orientation tuning using a fullfiled sinusoidal grating.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>model</strong> : Model</p>
+<blockquote>
+<div><p>The model on which to execute the experiment.</p>
+</div></blockquote>
+<p><strong>num_orientations</strong> : int</p>
+<blockquote>
+<div><p>Number of orientation to present.</p>
+</div></blockquote>
+<p><strong>spatial_frequency</strong> : float</p>
+<blockquote>
+<div><p>Spatial frequency of the grating.</p>
+</div></blockquote>
+<p><strong>temporal_frequency</strong> : float</p>
+<blockquote>
+<div><p>Temporal frequency of the grating.</p>
+</div></blockquote>
+<p><strong>grating_duration</strong> : float</p>
+<blockquote>
+<div><p>The duration of single presentation of a grating.</p>
+</div></blockquote>
+<p><strong>contrasts</strong> : list(float)</p>
+<blockquote>
+<div><p>List of contrasts (expressed as % : 0-100%) at which to measure the orientation tuning.</p>
+</div></blockquote>
+<p><strong>num_trials</strong> : int</p>
+<blockquote class="last">
+<div><p>Number of trials each each stimulus is shown.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mozaik.experiments.vision.MeasureOrientationTuningFullfield.do_analysis">
+<tt class="descname">do_analysis</tt><big>(</big><em>data_store</em><big>)</big><a class="headerlink" href="#mozaik.experiments.vision.MeasureOrientationTuningFullfield.do_analysis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.experiments.vision.MeasureSizeTuning">
+<em class="property">class </em><tt class="descclassname">mozaik.experiments.vision.</tt><tt class="descname">MeasureSizeTuning</tt><big>(</big><em>model</em>, <em>num_sizes</em>, <em>max_size</em>, <em>orientation</em>, <em>spatial_frequency</em>, <em>temporal_frequency</em>, <em>grating_duration</em>, <em>contrasts</em>, <em>num_trials</em><big>)</big><a class="headerlink" href="#mozaik.experiments.vision.MeasureSizeTuning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.experiments.vision.VisualExperiment" title="mozaik.experiments.vision.VisualExperiment"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.experiments.vision.VisualExperiment</span></tt></a></p>
+<p>Measure size tuning using expanding sinusoidal grating disk.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>model</strong> : Model</p>
+<blockquote>
+<div><p>The model on which to execute the experiment.</p>
+</div></blockquote>
+<p><strong>num_sizes</strong> : int</p>
+<blockquote>
+<div><p>Number of sizes to present.</p>
+</div></blockquote>
+<p><strong>max_size</strong> : float (degrees of visual field)</p>
+<blockquote>
+<div><p>Maximum size to present.</p>
+</div></blockquote>
+<p><strong>orientation</strong> : float</p>
+<blockquote>
+<div><p>The orientation (in radians) at which to measure the size tuning. (in future this will become automated)</p>
+</div></blockquote>
+<p><strong>spatial_frequency</strong> : float</p>
+<blockquote>
+<div><p>Spatial frequency of the grating.</p>
+</div></blockquote>
+<p><strong>temporal_frequency</strong> : float</p>
+<blockquote>
+<div><p>Temporal frequency of the grating.</p>
+</div></blockquote>
+<p><strong>grating_duration</strong> : float</p>
+<blockquote>
+<div><p>The duration of single presentation of a grating.</p>
+</div></blockquote>
+<p><strong>contrasts</strong> : list(float)</p>
+<blockquote>
+<div><p>List of contrasts (expressed as % : 0-100%) at which to measure the orientation tuning.</p>
+</div></blockquote>
+<p><strong>num_trials</strong> : int</p>
+<blockquote class="last">
+<div><p>Number of trials each each stimulus is shown.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mozaik.experiments.vision.MeasureSizeTuning.do_analysis">
+<tt class="descname">do_analysis</tt><big>(</big><em>data_store</em><big>)</big><a class="headerlink" href="#mozaik.experiments.vision.MeasureSizeTuning.do_analysis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.experiments.vision.MeasureOrientationContrastTuning">
+<em class="property">class </em><tt class="descclassname">mozaik.experiments.vision.</tt><tt class="descname">MeasureOrientationContrastTuning</tt><big>(</big><em>model</em>, <em>num_orientations</em>, <em>orientation</em>, <em>center_radius</em>, <em>surround_radius</em>, <em>spatial_frequency</em>, <em>temporal_frequency</em>, <em>grating_duration</em>, <em>contrasts</em>, <em>num_trials</em><big>)</big><a class="headerlink" href="#mozaik.experiments.vision.MeasureOrientationContrastTuning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.experiments.vision.VisualExperiment" title="mozaik.experiments.vision.VisualExperiment"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.experiments.vision.VisualExperiment</span></tt></a></p>
+<p>Measure orientation contrast tuning using. This measures the orientation dependence of the surround of 
+a visual neuron. This is done by stimulating the center of the RF with optimal (spatial,temporal frequency and orientation) 
+sine grating, surrounded by another sinusoidal grating ring whose orientation is varied.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>model</strong> : Model</p>
+<blockquote>
+<div><p>The model on which to execute the experiment.</p>
+</div></blockquote>
+<p><strong>num_orientations</strong> : int</p>
+<blockquote>
+<div><p>Number of orientation of the surround to present.</p>
+</div></blockquote>
+<p><strong>orientation</strong> : float</p>
+<blockquote>
+<div><p>The orientation (in radians) at which to present the center stimulus. (in future this will become automated)</p>
+</div></blockquote>
+<p><strong>center_radius</strong> : float</p>
+<blockquote>
+<div><p>The radius of the center grating disk.</p>
+</div></blockquote>
+<p><strong>surround_radius</strong> : float</p>
+<blockquote>
+<div><p>The outer radius of the surround grating ring.</p>
+</div></blockquote>
+<p><strong>spatial_frequency</strong> : float</p>
+<blockquote>
+<div><p>Spatial frequency of the center and surround grating.</p>
+</div></blockquote>
+<p><strong>temporal_frequency</strong> : float</p>
+<blockquote>
+<div><p>Temporal frequency of the center and surround the grating.</p>
+</div></blockquote>
+<p><strong>grating_duration</strong> : float</p>
+<blockquote>
+<div><p>The duration of single presentation of the stimulus.</p>
+</div></blockquote>
+<p><strong>contrasts</strong> : list(float)</p>
+<blockquote>
+<div><p>List of contrasts (expressed as % : 0-100%) of the center and surround grating.</p>
+</div></blockquote>
+<p><strong>num_trials</strong> : int</p>
+<blockquote class="last">
+<div><p>Number of trials each each stimulus is shown.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mozaik.experiments.vision.MeasureOrientationContrastTuning.do_analysis">
+<tt class="descname">do_analysis</tt><big>(</big><em>data_store</em><big>)</big><a class="headerlink" href="#mozaik.experiments.vision.MeasureOrientationContrastTuning.do_analysis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.experiments.vision.MeasureNaturalImagesWithEyeMovement">
+<em class="property">class </em><tt class="descclassname">mozaik.experiments.vision.</tt><tt class="descname">MeasureNaturalImagesWithEyeMovement</tt><big>(</big><em>model</em>, <em>stimulus_duration</em>, <em>num_trials</em><big>)</big><a class="headerlink" href="#mozaik.experiments.vision.MeasureNaturalImagesWithEyeMovement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.experiments.vision.VisualExperiment" title="mozaik.experiments.vision.VisualExperiment"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.experiments.vision.VisualExperiment</span></tt></a></p>
+<p>Stimulate the model with a natural image with simulated eye movement.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>model</strong> : Model</p>
+<blockquote>
+<div><p>The model on which to execute the experiment.</p>
+</div></blockquote>
+<p><strong>stimulus_duration</strong> : str</p>
+<blockquote>
+<div><p>The duration of single presentation of the stimulus.</p>
+</div></blockquote>
+<p><strong>num_trials</strong> : int</p>
+<blockquote class="last">
+<div><p>Number of trials each each stimulus is shown.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Currently this implementation bound to have the image and the eye path saved in in files <em>./image_naturelle_HIGH.bmp</em> and <em>./eye_path.pickle</em>.
+In future we need to make this more general.</p>
+<dl class="method">
+<dt id="mozaik.experiments.vision.MeasureNaturalImagesWithEyeMovement.do_analysis">
+<tt class="descname">do_analysis</tt><big>(</big><em>data_store</em><big>)</big><a class="headerlink" href="#mozaik.experiments.vision.MeasureNaturalImagesWithEyeMovement.do_analysis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.experiments.vision.MeasureDriftingSineGratingWithEyeMovement">
+<em class="property">class </em><tt class="descclassname">mozaik.experiments.vision.</tt><tt class="descname">MeasureDriftingSineGratingWithEyeMovement</tt><big>(</big><em>model</em>, <em>stimulus_duration</em>, <em>num_trials</em>, <em>spatial_frequency</em>, <em>temporal_frequency</em>, <em>contrast</em><big>)</big><a class="headerlink" href="#mozaik.experiments.vision.MeasureDriftingSineGratingWithEyeMovement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.experiments.vision.VisualExperiment" title="mozaik.experiments.vision.VisualExperiment"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.experiments.vision.VisualExperiment</span></tt></a></p>
+<p>Stimulate the model with a drifting sine grating with simulated eye movement.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>model</strong> : Model</p>
+<blockquote>
+<div><p>The model on which to execute the experiment.</p>
+</div></blockquote>
+<p><strong>spatial_frequency</strong> : float</p>
+<blockquote>
+<div><p>Spatial frequency of the center and surround grating.</p>
+</div></blockquote>
+<p><strong>temporal_frequency</strong> : float</p>
+<blockquote>
+<div><p>Temporal frequency of the center and surround the grating.</p>
+</div></blockquote>
+<p><strong>duration</strong> : float</p>
+<blockquote>
+<div><p>The duration of single presentation of the stimulus.</p>
+</div></blockquote>
+<p><strong>contrast</strong> : float</p>
+<blockquote>
+<div><p>Contrast (expressed as % : 0-100%) of the grating.</p>
+</div></blockquote>
+<p><strong>num_trials</strong> : int</p>
+<blockquote class="last">
+<div><p>Number of trials each each stimulus is shown.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mozaik.experiments.vision.MeasureDriftingSineGratingWithEyeMovement.do_analysis">
+<tt class="descname">do_analysis</tt><big>(</big><em>data_store</em><big>)</big><a class="headerlink" href="#mozaik.experiments.vision.MeasureDriftingSineGratingWithEyeMovement.do_analysis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.experiments.vision.MeasureSpontaneousActivity">
+<em class="property">class </em><tt class="descclassname">mozaik.experiments.vision.</tt><tt class="descname">MeasureSpontaneousActivity</tt><big>(</big><em>model</em>, <em>duration</em>, <em>num_trials</em><big>)</big><a class="headerlink" href="#mozaik.experiments.vision.MeasureSpontaneousActivity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.experiments.vision.VisualExperiment" title="mozaik.experiments.vision.VisualExperiment"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.experiments.vision.VisualExperiment</span></tt></a></p>
+<p>Measure spontaneous activity while presenting blank stimulus (all pixels set to background luminance).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>model</strong> : Model</p>
+<blockquote>
+<div><p>The model on which to execute the experiment.</p>
+</div></blockquote>
+<p><strong>duration</strong> : str</p>
+<blockquote>
+<div><p>The duration of single presentation of the stimulus.</p>
+</div></blockquote>
+<p><strong>num_trials</strong> : int</p>
+<blockquote class="last">
+<div><p>Number of trials each each stimulus is shown.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mozaik.experiments.vision.MeasureSpontaneousActivity.do_analysis">
+<tt class="descname">do_analysis</tt><big>(</big><em>data_store</em><big>)</big><a class="headerlink" href="#mozaik.experiments.vision.MeasureSpontaneousActivity.do_analysis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mozaik.experiments.vision.MeasureSpontaneousActivityWithPoissonStimulation">
+<em class="property">class </em><tt class="descclassname">mozaik.experiments.vision.</tt><tt class="descname">MeasureSpontaneousActivityWithPoissonStimulation</tt><big>(</big><em>model</em>, <em>duration</em>, <em>sheet_list</em>, <em>drive_period</em>, <em>recording_configuration</em>, <em>lambda_list</em>, <em>weight_list</em><big>)</big><a class="headerlink" href="#mozaik.experiments.vision.MeasureSpontaneousActivityWithPoissonStimulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mozaik.experiments.vision.VisualExperiment" title="mozaik.experiments.vision.VisualExperiment"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.experiments.vision.VisualExperiment</span></tt></a></p>
+<p>Measure spontaneous activity while presenting blank stimulus (all pixels set to background luminance).
+Importantly for the duration of the experiment it will stimulate neurons 
+definded by the recording configurations in recording_configuration
+in the sheets specified in the sheet_list with Poisson spike train of mean 
+frequency determined by the corresponding values in lambda_list via synpases of size weight_list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>model</strong> : Model</p>
+<blockquote>
+<div><p>The model on which to execute the experiment.</p>
+</div></blockquote>
+<p><strong>duration</strong> : str</p>
+<blockquote>
+<div><p>The duration of single presentation of the stimulus.</p>
+</div></blockquote>
+<p><strong>sheet_list</strong> : int</p>
+<blockquote>
+<div><p>The list of sheets in which to do stimulation</p>
+</div></blockquote>
+<p><strong>drive_period</strong> : float (ms)</p>
+<blockquote>
+<div><p>The length of the constant drive, after which it will be linearly taken down to 0 at the end of the stimulation.</p>
+</div></blockquote>
+<p><strong>recording_configuration</strong> : list</p>
+<blockquote>
+<div><p>The list of recording configurations (one per each sheet).</p>
+</div></blockquote>
+<p><strong>lambda_list</strong> : list</p>
+<blockquote>
+<div><p>List of the means of the Poisson spike train to be injected into the neurons specified in recording_configuration_list (one per each sheet).</p>
+</div></blockquote>
+<p><strong>weight_list</strong> : list</p>
+<blockquote class="last">
+<div><p>List of spike sizes of the Poisson spike train to be injected into the neurons specified in recording_configuration_list (one per each sheet).</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mozaik.experiments.vision.MeasureSpontaneousActivityWithPoissonStimulation.do_analysis">
+<tt class="descname">do_analysis</tt><big>(</big><em>data_store</em><big>)</big><a class="headerlink" href="#mozaik.experiments.vision.MeasureSpontaneousActivityWithPoissonStimulation.do_analysis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/mozaik_logo_small.svg" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mozaik.connectors.html"
+                        title="previous chapter">connector Package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mozaik.sheets.html"
+                        title="next chapter">sheets Package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/mozaik.experiments.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mozaik.sheets.html" title="sheets Package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mozaik.connectors.html" title="connector Package"
+             >previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="mozaik.html" >mozaik API</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2013, mozaik authors and contributors &lt;&gt;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

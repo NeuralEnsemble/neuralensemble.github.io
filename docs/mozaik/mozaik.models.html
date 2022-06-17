@@ -1,0 +1,302 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>models Package &mdash; mozaik 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mozaik 0.1.0 documentation" href="index.html" />
+    <link rel="up" title="mozaik API" href="mozaik.html" />
+    <link rel="next" title="vision Package" href="mozaik.models.vision.html" />
+    <link rel="prev" title="sheets Package" href="mozaik.sheets.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mozaik.models.vision.html" title="vision Package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mozaik.sheets.html" title="sheets Package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="mozaik.html" accesskey="U">mozaik API</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="models-package">
+<h1>models Package<a class="headerlink" href="#models-package" title="Permalink to this headline">¶</a></h1>
+<p>This package defines the API for model definition in <em>mozaik</em>, and the <cite>mozaik.models.retinal</cite> subpackage
+contains implementations for models of retina.</p>
+<div class="section" id="models-module">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">models</span></tt> Module<a class="headerlink" href="#models-module" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-mozaik.models.__init__"></span><p>This module contains the implementation of a Model API.</p>
+<p>Each simulation contains one model, that overarches the neural network that has been built using 
+the basic <em>mozaik</em> components (sheets and connectors) and some additional structures such as the recording configurations.</p>
+<dl class="class">
+<dt id="mozaik.models.__init__.Model">
+<em class="property">class </em><tt class="descclassname">mozaik.models.__init__.</tt><tt class="descname">Model</tt><big>(</big><em>sim</em>, <em>num_threads</em>, <em>parameters</em><big>)</big><a class="headerlink" href="#mozaik.models.__init__.Model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="mozaik.html#mozaik.core.BaseComponent" title="mozaik.core.BaseComponent"><tt class="xref py py-class docutils literal"><span class="pre">mozaik.core.BaseComponent</span></tt></a></p>
+<p>Model encapsulates a mozaik model.</p>
+<p>Each mozaik model has to derive from this class,
+and in its constructor it has to construct the model from
+the basic <em>mozaik</em> building blocks (sheets and connectors),
+and set the variable <cite>input_layer</cite> to the sheet corresponding to the sensory input sheet.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>name</strong> : str</p>
+<blockquote>
+<div><p>The name of the model.</p>
+</div></blockquote>
+<p><strong>results_dir</strong> : str</p>
+<blockquote>
+<div><p>Path to a directory where to store the results.</p>
+</div></blockquote>
+<p><strong>rest</strong> : bool</p>
+<blockquote>
+<div><p>If True the pyNN.reset() is used to reset the network between stimulus presentations. 
+Otherwise a blank stimulus is shown for a period of time defined by the parameter null_stimulus_period.</p>
+</div></blockquote>
+<p><strong>null_stimulus_period</strong> : float</p>
+<blockquote>
+<div><p>The length of blank stimulus presentation during the simulation.</p>
+</div></blockquote>
+<p><strong>input_space</strong> : ParameterSet</p>
+<blockquote>
+<div><p>The parameters for the InputSpace object that will become the sensory input space for the model.</p>
+</div></blockquote>
+<p><strong>input_space_type</strong> : str</p>
+<blockquote class="last">
+<div><p>The python class of the InputSpace object to use.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="mozaik.models.__init__.Model.required_parameters">
+<tt class="descname">required_parameters</tt><em class="property"> = {'reset': &lt;type 'bool'&gt;, 'input_space': &lt;class 'parameters.ParameterSet'&gt;, 'name': &lt;type 'str'&gt;, 'results_dir': &lt;type 'str'&gt;, 'input_space_type': &lt;type 'str'&gt;, 'null_stimulus_period': &lt;type 'float'&gt;}</em><a class="headerlink" href="#mozaik.models.__init__.Model.required_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mozaik.models.__init__.Model.present_stimulus_and_record">
+<tt class="descname">present_stimulus_and_record</tt><big>(</big><em>stimulus</em>, <em>artificial_stimulators</em><big>)</big><a class="headerlink" href="#mozaik.models.__init__.Model.present_stimulus_and_record" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is the core of the model execution control. It ensures that a <cite>stimulus</cite> is presented
+to the model, the simulation is ran for the duration of the stimulus, and all the data recorded during 
+this period are retieved from the simulator. It also makes sure a blank stimulus preceds each stimulus presntation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>stimulus</strong> : Stimulus</p>
+<blockquote>
+<div><p>Stimulus to be presented.</p>
+</div></blockquote>
+<p><strong>artificial_stimulators</strong> : dict</p>
+<blockquote>
+<div><p>Dictionary where keys are sheet names, and values are lists of DirectStimulator instances to be applied in the corresponding sheet.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>segments</strong> : list</p>
+<blockquote>
+<div><p>List of segments holding the recorded data, one per each sheet.</p>
+</div></blockquote>
+<p><strong>sensory_input</strong> : object</p>
+<blockquote>
+<div><p>The &#8216;raw&#8217; sensory input that has been shown to the network - the structure of this object depends on the sensory component.</p>
+</div></blockquote>
+<p><strong>sim_run_time</strong> : float (seconds)</p>
+<blockquote class="last">
+<div><p>The biological time of the simulation up to this point (including blank presentations).</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.models.__init__.Model.run">
+<tt class="descname">run</tt><big>(</big><em>tstop</em><big>)</big><a class="headerlink" href="#mozaik.models.__init__.Model.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run&#8217;s the simulation for tstop time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>tstop</strong> : float (seconds)</p>
+<blockquote>
+<div><p>The duration for which to run the simulation.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>time</strong> : float (seconds)</p>
+<blockquote class="last">
+<div><p>The wall clock time for which the simulator ran.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.models.__init__.Model.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.models.__init__.Model.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rests the network. Depending on the self.parameters.reset this is done either 
+by using the pyNN <cite>reset</cite> function or by presenting a blank stimulus for self.parameters.null_stimulus_period
+seconds.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.models.__init__.Model.register_sheet">
+<tt class="descname">register_sheet</tt><big>(</big><em>sheet</em><big>)</big><a class="headerlink" href="#mozaik.models.__init__.Model.register_sheet" title="Permalink to this definition">¶</a></dt>
+<dd><p>This functions has to called to add a new sheet is added to the model.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.models.__init__.Model.register_connector">
+<tt class="descname">register_connector</tt><big>(</big><em>connector</em><big>)</big><a class="headerlink" href="#mozaik.models.__init__.Model.register_connector" title="Permalink to this definition">¶</a></dt>
+<dd><p>This functions has to called to add a new connector to the model.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.models.__init__.Model.neuron_ids">
+<tt class="descname">neuron_ids</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.models.__init__.Model.neuron_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of ids of neurons in the model.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.models.__init__.Model.neuron_positions">
+<tt class="descname">neuron_positions</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.models.__init__.Model.neuron_positions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the positions of neurons in the model. 
+The positions are return as a dictionary where each key
+corresponds to a sheet name, and the value contains a 2D array of size (2,number_of_neurons)
+containing the x and y coordinates of the neurons in the given sheet.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mozaik.models.__init__.Model.neuron_annotations">
+<tt class="descname">neuron_annotations</tt><big>(</big><big>)</big><a class="headerlink" href="#mozaik.models.__init__.Model.neuron_annotations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the neuron annotations, as a dictionary with sheet names as keys, and corresponding annotation
+dictionaries as values.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="mozaik.models.vision.html">vision Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mozaik.models.vision.html#module-mozaik.models.vision.cai97"><tt class="docutils literal"><span class="pre">cai97</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mozaik.models.vision.html#module-mozaik.models.vision.spatiotemporalfilter"><tt class="docutils literal"><span class="pre">spatiotemporalfilter</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/mozaik_logo_small.svg" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mozaik.sheets.html"
+                        title="previous chapter">sheets Package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mozaik.models.vision.html"
+                        title="next chapter">vision Package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/mozaik.models.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mozaik.models.vision.html" title="vision Package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mozaik.sheets.html" title="sheets Package"
+             >previous</a> |</li>
+        <li><a href="index.html">mozaik 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="mozaik.html" >mozaik API</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2013, mozaik authors and contributors &lt;&gt;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>
