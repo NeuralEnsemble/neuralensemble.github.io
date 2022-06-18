@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Representing spatial structure and calculating distances &#8212; PyNN 0.7 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.7',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Running parallel simulations" href="parallel.html" />
+    <link rel="prev" title="Using non-standard/native cell and synapse models" href="nonstandardmodels.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="parallel.html" title="Running parallel simulations"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="nonstandardmodels.html" title="Using non-standard/native cell and synapse models"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.7 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="representing-spatial-structure-and-calculating-distances">
+<h1>Representing spatial structure and calculating distances<a class="headerlink" href="#representing-spatial-structure-and-calculating-distances" title="Permalink to this headline">¶</a></h1>
+<p>The <code class="docutils literal"><span class="pre">space</span></code> module contains classes for specifying the locations of neurons
+in space and for calculating the distances between them.</p>
+<p>Neuron positions can be defined either manually, using the <code class="docutils literal"><span class="pre">positions</span></code>
+attribute of a <code class="docutils literal"><span class="pre">Population</span></code> or using a <code class="docutils literal"><span class="pre">Structure</span></code> instance which is passed
+to the <code class="docutils literal"><span class="pre">Population</span></code> constructor.</p>
+<p>A number of different structures are available in <code class="docutils literal"><span class="pre">space</span></code>. It is simple to
+define your own <code class="docutils literal"><span class="pre">Structure</span></code> sub-class if you need something that is not
+already provided.</p>
+<p>The simplest structure is a grid, whether 1D, 2D or 3D, e.g.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyNN.space</span> <span class="k">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span> <span class="o">=</span> <span class="n">Line</span><span class="p">(</span><span class="n">dx</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">200.0</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mf">500.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">generate_positions</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="go">array([[   0., 100., 200., 300., 400., 500., 600.],</span>
+<span class="go">       [ 200., 200., 200., 200., 200., 200., 200.],</span>
+<span class="go">       [ 500., 500., 500., 500., 500., 500., 500.]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span> <span class="o">=</span> <span class="n">Grid2D</span><span class="p">(</span><span class="n">aspect_ratio</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">dy</span><span class="o">=</span><span class="mf">25.0</span><span class="p">,</span> <span class="n">z</span><span class="o">=-</span><span class="mf">3.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span><span class="o">.</span><span class="n">generate_positions</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">array([[  0., 10., 20.],</span>
+<span class="go">       [  0.,  0.,  0.],</span>
+<span class="go">       [ -3., -3., -3.]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span><span class="o">.</span><span class="n">generate_positions</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+<span class="go">array([[  0.,  0., 10., 10., 20., 20., 30., 30., 40., 40., 50., 50.],</span>
+<span class="go">       [  0., 25.,  0., 25.,  0., 25.,  0., 25.,  0., 25.,  0., 25.],</span>
+<span class="go">       [ -3., -3., -3., -3., -3., -3., -3., -3., -3., -3., -3., -3.]])</span>
+</pre></div>
+</div>
+<p>Here we have specified an <em>x</em>:<em>y</em> ratio of 3, so if we ask the grid to
+generate positions for 3 neurons, we get a 3x1 grid, 12 neurons a 6x2 grid,
+27 neurons 9x3, etc.</p>
+<p>BY default, grid positions are filled sequentially, iterating first over the <em>z</em>
+dimension, then <em>y</em>, then <em>x</em>, but we can also fill the grid randomly:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">rgrid</span> <span class="o">=</span> <span class="n">Grid2D</span><span class="p">(</span><span class="n">aspect_ratio</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">dy</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">fill_order</span><span class="o">=</span><span class="s">&#39;random&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rgrid</span><span class="o">.</span><span class="n">generate_positions</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+<span class="go">array([[ 20., 20., 20.,  0., 10.,  0., 10.,  0., 10.],</span>
+<span class="go">       [ 10.,  0., 20., 10.,  0., 20., 10.,  0., 20.],</span>
+<span class="go">       [  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.]])</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">space</span></code> module also provides the <code class="docutils literal"><span class="pre">RandomStructure</span></code> class, which
+distributes neurons randomly and uniformly within a given volume:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">glomerulus</span> <span class="o">=</span> <span class="n">RandomStructure</span><span class="p">(</span><span class="n">boundary</span><span class="o">=</span><span class="n">Sphere</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mf">200.0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">glomerulus</span><span class="o">.</span><span class="n">generate_positions</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">array([[  4.81853231e+01, -2.49317729e+01,  1.08294461e+02,  1.72125819e-01,  -1.25552649e+02],</span>
+<span class="go">       [  3.96588073e+01,  1.75426143e+02,  3.19290169e+01,  1.65050459e+02,  -1.32092198e+00],</span>
+<span class="go">       [ -1.00801053e+02, -8.51701627e+01, -1.39804442e+02, -4.97765369e+01,   3.94241050e+01]])</span>
+</pre></div>
+</div>
+<p>The volume classes currently available are <code class="docutils literal"><span class="pre">Sphere</span></code> and <code class="docutils literal"><span class="pre">Cuboid</span></code>.</p>
+<p>Defining your own <code class="docutils literal"><span class="pre">Structure</span></code> classes is straightforward, just inherit from
+<code class="docutils literal"><span class="pre">BaseStructure</span></code> and implement a <code class="docutils literal"><span class="pre">generate_positions(n)</span></code> method:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="k">class</span> <span class="nc">MyStructure</span><span class="p">(</span><span class="n">BaseStructure</span><span class="p">):</span>
+    <span class="n">parameter_names</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;spam&quot;</span><span class="p">,</span> <span class="s">&quot;eggs&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spam</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">eggs</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="o">...</span>
+
+    <span class="k">def</span> <span class="nf">generate_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="o">...</span>
+        <span class="c"># must return a 3xn numpy array</span>
+</pre></div>
+</div>
+<p>To definite your own <code class="docutils literal"><span class="pre">Shape</span></code> class for use with <code class="docutils literal"><span class="pre">RandomStructure</span></code>, subclass
+<code class="docutils literal"><span class="pre">Shape</span></code> and implement a <code class="docutils literal"><span class="pre">sample(n,</span> <span class="pre">rng)</span></code> method:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Tetrahedron</span><span class="p">(</span><span class="n">Shape</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">side_length</span><span class="p">):</span>
+        <span class="o">...</span>
+
+    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">rng</span><span class="p">):</span>
+       <span class="o">...</span>
+       <span class="c"># return a nx3 numpy array.</span>
+</pre></div>
+</div>
+<p>Note that rotation of structures is currently missing, but will be implemented
+in the next release.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="nonstandardmodels.html"
+                        title="previous chapter">Using non-standard/native cell and synapse models</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="parallel.html"
+                        title="next chapter">Running parallel simulations</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/space.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="parallel.html" title="Running parallel simulations"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="nonstandardmodels.html" title="Using non-standard/native cell and synapse models"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.7 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2017, the PyNN community.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>

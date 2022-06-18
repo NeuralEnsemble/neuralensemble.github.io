@@ -1,0 +1,597 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>PyNN API version 0.3 &#8212; PyNN 0.7 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.7',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="PyNN API version 0.4" href="api-0.4.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="api-0.4.html" title="PyNN API version 0.4"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.7 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api.html" accesskey="U">API documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pynn-api-version-0-3">
+<h1>PyNN API version 0.3<a class="headerlink" href="#pynn-api-version-0-3" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="data">
+<h2>Data<a class="headerlink" href="#data" title="Permalink to this headline">¶</a></h2>
+<p><strong>__name__</strong> = pyNN.common</p>
+<p><strong>__version__</strong> = $Revision: 77 $</p>
+<p><strong>dt</strong> = 0.1</p>
+</div>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<p><strong>connect(source, target, weight=None, delay=None, synapse_type=None, p=1, rng=None)</strong></p>
+<p>Connect a source of spikes to a synaptic target. source and target can
+both be individual cells or lists of cells, in which case all possible
+connections are made with probability p, using either the random number
+generator supplied, or the default rng otherwise.
+Weights should be in nA or uS.</p>
+<p><strong>create(cellclass, paramDict=None, n=1)</strong></p>
+<p>Create n cells all of the same type.</p>
+<p>If n &gt; 1, return a list of cell ids/references.</p>
+<p>If n==1, return just the single id.</p>
+<p><strong>end(compatible_output=True)</strong></p>
+<p>Do any necessary cleaning up before exiting.</p>
+<p><strong>record(source, filename)</strong></p>
+<p>Record spikes to a file. source can be an individual cell or a list of
+cells.</p>
+<p><strong>record_v(source, filename)</strong></p>
+<p>Record membrane potential to a file. source can be an individual cell or
+a list of cells.</p>
+<p><strong>run(simtime)</strong></p>
+<p>Run the simulation for simtime ms.</p>
+<p><strong>set(cells, cellclass, param, val=None)</strong></p>
+<p>Set one or more parameters of an individual cell or list of cells.
+param can be a dict, in which case val should not be supplied, or a string
+giving the parameter name, in which case val is the parameter value.
+cellclass must be supplied for doing translation of parameter names.</p>
+<p><strong>setRNGseeds(seedList)</strong></p>
+<p>Globally set rng seeds.</p>
+<p><strong>setup(timestep=0.1, min_delay=0.1, max_delay=0.1, debug=False, **extra_params)</strong></p>
+<p>Should be called at the very beginning of a script.
+extra_params contains any keyword arguments that are required by a given
+simulator but not by others.</p>
+</div>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="if-cond-alpha">
+<h3>IF_cond_alpha<a class="headerlink" href="#if-cond-alpha" title="Permalink to this headline">¶</a></h3>
+<p>Leaky integrate and fire model with fixed threshold and alpha-function-
+shaped post-synaptic conductance.</p>
+<p><strong>__init__(self, parameters)</strong></p>
+<p><strong>checkParameters(self, supplied_parameters, with_defaults=False)</strong></p>
+<p>Checks that the parameters exist and have values of the correct type.</p>
+<p><strong>translate(self, parameters)</strong></p>
+<p>Translate standardized model names to simulator specific names.</p>
+<p><strong>default_parameters</strong> = {</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="57%" />
+<col width="43%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head">&#160;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#8216;tau_refrac&#8217;</td>
+<td>: 0.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;tau_m&#8217;</td>
+<td>: 20.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;e_rev_E&#8217;</td>
+<td>: 0.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;i_offset&#8217;</td>
+<td>: 0.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;cm&#8217;</td>
+<td>: 1.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;e_rev_I&#8217;</td>
+<td>: -70.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;v_init&#8217;</td>
+<td>: -65.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;v_thresh&#8217;</td>
+<td>: -50.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;tau_syn_E&#8217;</td>
+<td>: 5.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;v_rest&#8217;</td>
+<td>: -65.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;tau_syn_I&#8217;</td>
+<td>: 5.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;v_reset&#8217;</td>
+<td>: -65.0</td>
+</tr>
+</tbody>
+</table>
+<p>}</p>
+<p><strong>translations</strong> = {}</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="if-curr-alpha">
+<h3>IF_curr_alpha<a class="headerlink" href="#if-curr-alpha" title="Permalink to this headline">¶</a></h3>
+<p>Leaky integrate and fire model with fixed threshold and alpha-function-
+shaped post-synaptic current.</p>
+<p><strong>__init__(self, parameters)</strong></p>
+<p><strong>checkParameters(self, supplied_parameters, with_defaults=False)</strong></p>
+<p>Checks that the parameters exist and have values of the correct type.</p>
+<p><strong>translate(self, parameters)</strong></p>
+<p>Translate standardized model names to simulator specific names.</p>
+<p><strong>default_parameters</strong> = {</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="57%" />
+<col width="43%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head">&#160;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#8216;tau_refrac&#8217;</td>
+<td>: 0.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;tau_m&#8217;</td>
+<td>: 20.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;i_offset&#8217;</td>
+<td>: 0.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;cm&#8217;</td>
+<td>: 1.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;v_init&#8217;</td>
+<td>: -65.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;v_thresh&#8217;</td>
+<td>: -50.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;v_rest&#8217;</td>
+<td>: -65.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;tau_syn&#8217;</td>
+<td>: 5.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;v_reset&#8217;</td>
+<td>: -65.0</td>
+</tr>
+</tbody>
+</table>
+<p>}</p>
+<p><strong>translations</strong> = {}</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="if-curr-exp">
+<h3>IF_curr_exp<a class="headerlink" href="#if-curr-exp" title="Permalink to this headline">¶</a></h3>
+<p>Leaky integrate and fire model with fixed threshold and
+decaying-exponential post-synaptic current. (Separate synaptic currents for
+excitatory and inhibitory synapses</p>
+<p><strong>__init__(self, parameters)</strong></p>
+<p><strong>checkParameters(self, supplied_parameters, with_defaults=False)</strong></p>
+<p>Checks that the parameters exist and have values of the correct type.</p>
+<p><strong>translate(self, parameters)</strong></p>
+<p>Translate standardized model names to simulator specific names.</p>
+<p><strong>default_parameters</strong> = {</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="57%" />
+<col width="43%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head">&#160;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#8216;tau_refrac&#8217;</td>
+<td>: 0.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;tau_m&#8217;</td>
+<td>: 20.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;i_offset&#8217;</td>
+<td>: 0.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;cm&#8217;</td>
+<td>: 1.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;v_init&#8217;</td>
+<td>: -65.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;v_thresh&#8217;</td>
+<td>: -50.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;tau_syn_E&#8217;</td>
+<td>: 5.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;v_rest&#8217;</td>
+<td>: -65.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;tau_syn_I&#8217;</td>
+<td>: 5.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;v_reset&#8217;</td>
+<td>: -65.0</td>
+</tr>
+</tbody>
+</table>
+<p>}</p>
+<p><strong>translations</strong> = {}</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="spikesourcearray">
+<h3>SpikeSourceArray<a class="headerlink" href="#spikesourcearray" title="Permalink to this headline">¶</a></h3>
+<p>Spike source generating spikes at the times given in the spike_times array.</p>
+<p><strong>__init__(self, parameters)</strong></p>
+<p><strong>checkParameters(self, supplied_parameters, with_defaults=False)</strong></p>
+<p>Checks that the parameters exist and have values of the correct type.</p>
+<p><strong>translate(self, parameters)</strong></p>
+<p>Translate standardized model names to simulator specific names.</p>
+<p><strong>default_parameters</strong> = {</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="57%" />
+<col width="43%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head">&#160;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#8216;spike_times&#8217;</td>
+<td>: []</td>
+</tr>
+</tbody>
+</table>
+<p>}</p>
+<p><strong>translations</strong> = {}</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="spikesourcepoisson">
+<h3>SpikeSourcePoisson<a class="headerlink" href="#spikesourcepoisson" title="Permalink to this headline">¶</a></h3>
+<p>Spike source, generating spikes according to a Poisson process.</p>
+<p><strong>__init__(self, parameters)</strong></p>
+<p><strong>checkParameters(self, supplied_parameters, with_defaults=False)</strong></p>
+<p>Checks that the parameters exist and have values of the correct type.</p>
+<p><strong>translate(self, parameters)</strong></p>
+<p>Translate standardized model names to simulator specific names.</p>
+<p><strong>default_parameters</strong> = {</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="44%" />
+<col width="56%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head">&#160;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#8216;duration&#8217;</td>
+<td>: 1000000000.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;start&#8217;</td>
+<td>: 0.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;rate&#8217;</td>
+<td>: 0.0</td>
+</tr>
+</tbody>
+</table>
+<p>}</p>
+<p><strong>translations</strong> = {}</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="standardcelltype">
+<h3>StandardCellType<a class="headerlink" href="#standardcelltype" title="Permalink to this headline">¶</a></h3>
+<p>Base class for standardized cell model classes.</p>
+<p><strong>__init__(self, parameters)</strong></p>
+<p><strong>checkParameters(self, supplied_parameters, with_defaults=False)</strong></p>
+<p>Checks that the parameters exist and have values of the correct type.</p>
+<p><strong>translate(self, parameters)</strong></p>
+<p>Translate standardized model names to simulator specific names.</p>
+<p><strong>default_parameters = {}</strong></p>
+<p><strong>translations</strong> = {}</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="id">
+<h3>ID<a class="headerlink" href="#id" title="Permalink to this headline">¶</a></h3>
+<p>This class is experimental. The idea is that instead of storing ids as
+integers, we store them as ID objects, which allows a syntax like:
+p[3,4].set(&#8216;tau_m&#8217;,20.0)
+where p is a Population object. The question is, how big a memory/performance
+hit is it to replace integers with ID objects?</p>
+<p><strong>__init__(self, n)</strong></p>
+<p><strong>get(self, param)</strong></p>
+<p><strong>getPosition(self)</strong></p>
+<p><strong>set(self, param, val=None)</strong></p>
+<p><strong>setCellClass(self, cellclass)</strong></p>
+<p><strong>setPosition(self, pos)</strong></p>
+</div>
+<hr class="docutils" />
+<div class="section" id="population">
+<h3>Population<a class="headerlink" href="#population" title="Permalink to this headline">¶</a></h3>
+<p>An array of neurons all of the same type. &#8216;Population&#8217; is used as a generic
+term intended to include layers, columns, nuclei, etc., of cells.</p>
+<p><strong>__getitem__(self, addr)</strong></p>
+<p>Returns a representation of the cell with coordinates given by addr,
+suitable for being passed to other methods that require a cell id.
+Note that !__getitem!__ is called when using [] access, e.g.</p>
+<p>p = Population(...)</p>
+<p>p[2,3] is equivalent to p.!__getitem!__((2,3)).</p>
+<p><strong>__init__(self, dims, cellclass, cellparams=None, label=None)</strong></p>
+<p>dims should be a tuple containing the population dimensions, or a single
+integer, for a one-dimensional population.
+e.g., (10,10) will create a two-dimensional population of size 10x10.
+cellclass should either be a standardized cell class (a class inheriting
+from common.!StandardCellType) or a string giving the name of the
+simulator-specific model that makes up the population.
+cellparams should be a dict which is passed to the neuron model constructor label is an optional name for the population.</p>
+<p><strong>__len__(self)</strong></p>
+<p>Returns the total number of cells in the population.</p>
+<p><strong>meanSpikeCount(self, gather=True)</strong></p>
+<p>Returns the mean number of spikes per neuron.</p>
+<p><strong>printSpikes(self, filename, gather=True, compatible_output=True)</strong></p>
+<p>Writes spike times to file. If compatible_output is True, the format is &#8220;spiketime cell_id&#8221;, where cell_id is the index of the cell counting along rows and down columns (and the extension of that for 3-D).
+This allows easy plotting of a &#8216;raster&#8217; plot of spiketimes, with one
+line for each cell.
+The timestep and number of data points per cell is written as a header,
+indicated by a &#8216;#&#8217; at the beginning of the line.</p>
+<p>If compatible_output is False, the raw format produced by the simulator
+is used. This may be faster, since it avoids any post-processing of the
+spike files.</p>
+<p>If gather is True, the file will only be created on the master node,
+otherwise, a file will be written on each node.</p>
+<p><strong>print_v(self, filename, gather=True, compatible_output=True)</strong></p>
+<p>Write membrane potential traces to file. If compatible_output is True, the format is           &#8220;v cell_id&#8221;, where cell_id is the index of the cell counting along rows and down
+columns (and the extension of that for 3-D).
+This allows easy plotting of a &#8216;raster&#8217; plot of spiketimes, with one
+line for each cell.
+The timestep and number of data points per cell is written as a header,
+indicated by a &#8216;#&#8217; at the beginning of the line.</p>
+<p>If compatible_output is False, the raw format produced by the simulator
+is used. This may be faster, since it avoids any post-processing of the
+voltage files.</p>
+<p><strong>randomInit(self, rand_distr)</strong></p>
+<p>Sets initial membrane potentials for all the cells in the population to
+random values.</p>
+<p><strong>record(self, record_from=None, rng=None)</strong></p>
+<p>If record_from is not given, record spikes from all cells in the Population.
+record_from can be an integer - the number of cells to record from, chosen
+at random (in this case a random number generator can also be supplied)
+- or a list containing the ids of the cells to record.</p>
+<p><strong>record_v(self, record_from=None, rng=None)</strong></p>
+<p>If record_from is not given, record the membrane potential for all cells in
+the Population.
+record_from can be an integer - the number of cells to record from, chosen
+at random (in this case a random number generator can also be supplied)
+- or a list containing the ids of the cells to record.</p>
+<p><strong>rset(self, parametername, rand_distr)</strong></p>
+<p>&#8216;Random&#8217; set. Sets the value of parametername to a value taken from
+rand_distr, which should be a !RandomDistribution object.</p>
+<p><strong>set(self, param, val=None)</strong></p>
+<p>Set one or more parameters for every cell in the population. param
+can be a dict, in which case val should not be supplied, or a string
+giving the parameter name, in which case val is the parameter value.
+val can be a numeric value, or list of such (e.g. for setting spike times).</p>
+<p>e.g. p.set(&#8220;tau_m&#8221;,20.0).</p>
+<p>p.set({&#8216;tau_m&#8217;:20,&#8217;v_rest&#8217;:-65})</p>
+<p><strong>tset(self, parametername, valueArray)</strong></p>
+<p>&#8216;Topographic&#8217; set. Sets the value of parametername to the values in
+valueArray, which must have the same dimensions as the Population.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="projection">
+<h3>Projection<a class="headerlink" href="#projection" title="Permalink to this headline">¶</a></h3>
+<p>A container for all the connections between two populations, together with
+methods to set parameters of those connections, including of plasticity
+mechanisms.</p>
+<p><strong>__init__(self, presynaptic_population, postsynaptic_population, method=&#8217;allToAll&#8217;, methodParameters=None, source=None, target=None, label=None, rng=None)</strong></p>
+<p>presynaptic_population and postsynaptic_population - Population objects.</p>
+<p>source - string specifying which attribute of the presynaptic cell signals action potentials</p>
+<p>target - string specifying which synapse on the postsynaptic cell to connect to
+If source and/or target are not given, default values are used.</p>
+<p>method - string indicating which algorithm to use in determining connections.
+Allowed methods are &#8216;allToAll&#8217;, &#8216;oneToOne&#8217;, &#8216;fixedProbability&#8217;,
+&#8216;distanceDependentProbability&#8217;, &#8216;fixedNumberPre&#8217;, &#8216;fixedNumberPost&#8217;,
+&#8216;fromFile&#8217;, &#8216;fromList&#8217;</p>
+<p>methodParameters - dict containing parameters needed by the connection method,
+although we should allow this to be a number or string if there is only
+one parameter.</p>
+<p>rng - since most of the connection methods need uniform random numbers,
+it is probably more convenient to specify a RNG object here rather
+than within methodParameters, particularly since some methods also use
+random numbers to give variability in the number of connections per cell.</p>
+<p><strong>__len__(self)</strong></p>
+<p>Return the total number of connections.</p>
+<p><strong>printWeights(self, filename, format=None, gather=True)</strong></p>
+<p>Print synaptic weights to file.</p>
+<p><strong>randomizeDelays(self, rand_distr)</strong></p>
+<p>Set delays to random values taken from rand_distr.</p>
+<p><strong>randomizeWeights(self, rand_distr)</strong></p>
+<p>Set weights to random values taken from rand_distr.</p>
+<p><strong>saveConnections(self, filename, gather=False)</strong></p>
+<p>Save connections to file in a format suitable for reading in with the
+&#8216;fromFile&#8217; method.</p>
+<p><strong>setDelays(self, d)</strong></p>
+<p>d can be a single number, in which case all delays are set to this
+value, or a list/1D array of length equal to the number of connections
+in the population.</p>
+<p><strong>setMaxWeight(self, wmax)</strong></p>
+<p>Note that not all STDP models have maximum or minimum weights.</p>
+<p><strong>setMinWeight(self, wmin)</strong></p>
+<p>Note that not all STDP models have maximum or minimum weights.</p>
+<p><strong>setThreshold(self, threshold)</strong></p>
+<p>Where the emission of a spike is determined by watching for a
+threshold crossing, set the value of this threshold.</p>
+<p><strong>setWeights(self, w)</strong></p>
+<p>w can be a single number, in which case all weights are set to this
+value, or a list/1D array of length equal to the number of connections
+in the population.
+Weights should be in nA for current-based and µS for conductance-based
+synapses.</p>
+<p><strong>setupSTDP(self, stdp_model, parameterDict)</strong></p>
+<p>Set-up STDP.</p>
+<p><strong>toggleSTDP(self, onoff)</strong></p>
+<p>Turn plasticity on or off.</p>
+<p><strong>weightHistogram(self, min=None, max=None, nbins=10)</strong></p>
+<p>Return a histogram of synaptic weights.
+If min and max are not given, the minimum and maximum weights are
+calculated automatically.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="timer">
+<h3>Timer<a class="headerlink" href="#timer" title="Permalink to this headline">¶</a></h3>
+<p>For timing script execution.</p>
+<p><strong>elapsedTime()</strong></p>
+<p>Return the elapsed time but keep the clock running.</p>
+<p><strong>reset()</strong></p>
+<p>Reset the time to zero, and start the clock.</p>
+<p><strong>start()</strong></p>
+<p>Start timing.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="connectionerror">
+<h3>ConnectionError<a class="headerlink" href="#connectionerror" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="invaliddimensionserror">
+<h3>InvalidDimensionsError<a class="headerlink" href="#invaliddimensionserror" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="invalidparametervalueerror">
+<h3>InvalidParameterValueError<a class="headerlink" href="#invalidparametervalueerror" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="nonexistentparametererror">
+<h3>NonExistentParameterError<a class="headerlink" href="#nonexistentparametererror" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">PyNN API version 0.3</a><ul>
+<li><a class="reference internal" href="#data">Data</a></li>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#classes">Classes</a><ul>
+<li><a class="reference internal" href="#if-cond-alpha">IF_cond_alpha</a></li>
+<li><a class="reference internal" href="#if-curr-alpha">IF_curr_alpha</a></li>
+<li><a class="reference internal" href="#if-curr-exp">IF_curr_exp</a></li>
+<li><a class="reference internal" href="#spikesourcearray">SpikeSourceArray</a></li>
+<li><a class="reference internal" href="#spikesourcepoisson">SpikeSourcePoisson</a></li>
+<li><a class="reference internal" href="#standardcelltype">StandardCellType</a></li>
+<li><a class="reference internal" href="#id">ID</a></li>
+<li><a class="reference internal" href="#population">Population</a></li>
+<li><a class="reference internal" href="#projection">Projection</a></li>
+<li><a class="reference internal" href="#timer">Timer</a></li>
+<li><a class="reference internal" href="#connectionerror">ConnectionError</a></li>
+<li><a class="reference internal" href="#invaliddimensionserror">InvalidDimensionsError</a></li>
+<li><a class="reference internal" href="#invalidparametervalueerror">InvalidParameterValueError</a></li>
+<li><a class="reference internal" href="#nonexistentparametererror">NonExistentParameterError</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="api-0.4.html"
+                        title="previous chapter">PyNN API version 0.4</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/api-0.3.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="api-0.4.html" title="PyNN API version 0.4"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.7 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api.html" >API documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2017, the PyNN community.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>

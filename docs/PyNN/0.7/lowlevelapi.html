@@ -1,0 +1,263 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The procedural API &#8212; PyNN 0.7 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.7',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples" href="examples.html" />
+    <link rel="prev" title="File formats" href="fileformats.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="examples.html" title="Examples"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="fileformats.html" title="File formats"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.7 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="the-procedural-api">
+<h1>The procedural API<a class="headerlink" href="#the-procedural-api" title="Permalink to this headline">¶</a></h1>
+<p>The procedural API (also previously known as the &#8220;low-level&#8221; API) gives a view of a model that is centred more on individual neurons and connections, rather than on populations of neurons and projections between them. This viewpoint may be more suited for small networks, or when porting a model from a simulator that has a neuron-centred viewpoint. It should be noted, however, that this API is just a wrapper around the main, object-oriented API. For example, the <code class="docutils literal"><span class="pre">create()</span></code> function returns a <code class="docutils literal"><span class="pre">Population</span></code> object, it is just that it is then treated as a list of neurons rather than as a single object.</p>
+<div class="section" id="creating-neurons">
+<h2>Creating neurons<a class="headerlink" href="#creating-neurons" title="Permalink to this headline">¶</a></h2>
+<p>Neurons are created with the <code class="docutils literal"><span class="pre">create()</span></code> function. To create a single integrate-and-fire neuron, type:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">create</span><span class="p">(</span><span class="n">IF_curr_alpha</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To create many neurons at once, add the <code class="docutils literal"><span class="pre">n</span></code> argument, e.g.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cells</span> <span class="o">=</span> <span class="n">create</span><span class="p">(</span><span class="n">IF_curr_alpha</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Although the return value is actually a <code class="docutils literal"><span class="pre">Population</span></code> object, it can be treated in most ways like a list, accessing individual items:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">cells</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tau_m</span>
+<span class="go">20.0</span>
+</pre></div>
+</div>
+<p>or a range of items:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">cells</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">8</span><span class="p">]:</span>
+<span class="gp">... </span>    <span class="n">cell</span><span class="o">.</span><span class="n">cm</span> <span class="o">=</span> <span class="mf">0.5</span>
+</pre></div>
+</div>
+<p>or adding two lists together:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">more_cells</span> <span class="o">=</span> <span class="n">create</span><span class="p">(</span><span class="n">IF_cond_exp</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">all_cells</span> <span class="o">=</span> <span class="n">cells</span> <span class="o">+</span> <span class="n">more_cells</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">some_cells</span> <span class="o">=</span> <span class="n">cells</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span> <span class="o">+</span> <span class="n">more_cells</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>(note that <code class="docutils literal"><span class="pre">all_cells</span></code> and <code class="docutils literal"><span class="pre">some_cells</span></code> here are <code class="docutils literal"><span class="pre">Assembly</span></code> objects).</p>
+</div>
+<div class="section" id="connecting-neurons">
+<h2>Connecting neurons<a class="headerlink" href="#connecting-neurons" title="Permalink to this headline">¶</a></h2>
+<p>Lists of neurons (<code class="docutils literal"><span class="pre">Population``s</span> <span class="pre">or</span> <span class="pre">``Assembly``s)</span> <span class="pre">can</span> <span class="pre">be</span> <span class="pre">connected</span> <span class="pre">using</span> <span class="pre">the</span> <span class="pre">``connect()</span></code> function, e.g.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">spike_source</span> <span class="o">=</span> <span class="n">create</span><span class="p">(</span><span class="n">SpikeSourceArray</span><span class="p">,</span> <span class="n">cellparams</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;spike_times&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mf">30.0</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">connect</span><span class="p">(</span><span class="n">spike_source</span><span class="p">,</span> <span class="n">cells</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In this case we connect a spike-generating mechanism (<code class="docutils literal"><span class="pre">SpikeSourceArray</span></code> is a &#8216;standard cell&#8217; model that emits spikes at times specified by the <code class="docutils literal"><span class="pre">spike_times</span></code> parameter) to each cell in the list <code class="docutils literal"><span class="pre">cells</span></code>, i.e. we create 10 connections at once.</p>
+<p>The <code class="docutils literal"><span class="pre">connect()</span></code> function behaves similarly to creating a <code class="docutils literal"><span class="pre">Projection</span></code>, but without the
+flexibility to choose the connection algorithm, or to have plastic synapses.</p>
+<p>If the source or target is a list of cells (a <code class="docutils literal"><span class="pre">Population</span></code>, etc.), each source (presynaptic) cell is connected to every target (postsynaptic) cell with probability given by the optional argument <cite>p</cite>, which defaults to 1, e.g.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">source_list</span> <span class="o">=</span> <span class="n">cells</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">target_list</span> <span class="o">=</span> <span class="n">more_cells</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">connect</span><span class="p">(</span><span class="n">source_list</span><span class="p">,</span> <span class="n">target_list</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When specifying connections as above, default values are given to the synaptic weight and delay.
+These values are seldom very useful, and it is better to specify the <code class="docutils literal"><span class="pre">weight</span></code> and <code class="docutils literal"><span class="pre">delay</span></code> arguments of <code class="docutils literal"><span class="pre">connect()</span></code>, e.g.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">connect</span><span class="p">(</span><span class="n">source_list</span><span class="p">,</span> <span class="n">target_list</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Weights are specified in nA for &#8216;current-based&#8217; synapses or µS for &#8216;conductance-based&#8217; synapses.
+Delays are in ms.
+For current-based synapses, weights should be negative for inhibitory synapses.
+For conductance-based synapses, weights should always be positive, since the effect of a synapse is determined by its reversal potential.</p>
+<p>If the neuron model has more than one synapse mechanism, or more than one synaptic location, the particular synapse to which the connection should be made is specified with the <code class="docutils literal"><span class="pre">synapse_type</span></code> argument, e.g.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">connect</span><span class="p">(</span><span class="n">source_list</span><span class="p">,</span> <span class="n">target_list</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">synapse_type</span><span class="o">=</span><span class="s">&#39;inhibitory&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(the attribute <code class="docutils literal"><span class="pre">synapse_types</span></code> of all standard cell objects contains a list of the synapse types for that cell type).</p>
+</div>
+<div class="section" id="setting-neuron-parameters">
+<h2>Setting neuron parameters<a class="headerlink" href="#setting-neuron-parameters" title="Permalink to this headline">¶</a></h2>
+<p>There are many ways to change the parameters for individual neurons and post-synaptic mechanisms after creation of the neuron.
+To change a single parameter of a single neuron, just set the relevant attribute of the neuron ID object, e.g.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cells</span> <span class="o">=</span> <span class="n">create</span><span class="p">(</span><span class="n">IF_curr_exp</span><span class="p">,</span> <span class="n">cellparams</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;v_thresh&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">50.0</span><span class="p">},</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cells</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tau_m</span>
+<span class="go">20.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cells</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tau_m</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cells</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tau_m</span>
+<span class="go">15.0</span>
+</pre></div>
+</div>
+<p>To change several parameters at once for a single neuron, use the <code class="docutils literal"><span class="pre">set_parameters()</span></code> method of the neuron ID, e.g.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cells</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_parameters</span><span class="p">(</span><span class="n">tau_m</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">cm</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cells</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tau_m</span>
+<span class="go">10.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cells</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">cm</span>
+<span class="go">0.5</span>
+</pre></div>
+</div>
+<p>To change parameters for several cells at once, use the <code class="docutils literal"><span class="pre">set()</span></code> function, e.g.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">set</span><span class="p">(</span><span class="n">cells</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">],</span> <span class="n">param</span><span class="o">=</span><span class="s">&#39;v_thresh&#39;</span><span class="p">,</span> <span class="n">val</span><span class="o">=-</span><span class="mf">55.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">cells</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">v_thresh</span>
+<span class="go">-55.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">cells</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">v_thresh</span>
+<span class="go">-50.0</span>
+</pre></div>
+</div>
+<p>Individual parameters can be set using the <code class="docutils literal"><span class="pre">param</span></code> and <code class="docutils literal"><span class="pre">val</span></code> arguments, as above, or multiple parameters can be set at once by passing a dictionary of name:value pairs as the <code class="docutils literal"><span class="pre">param</span></code> argument, with <code class="docutils literal"><span class="pre">val</span></code> empty, e.g.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">set</span><span class="p">(</span><span class="n">cells</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;tau_refrac&#39;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span> <span class="s">&#39;tau_syn_E&#39;</span><span class="p">:</span> <span class="mf">5.0</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="injecting-current">
+<h2>Injecting current<a class="headerlink" href="#injecting-current" title="Permalink to this headline">¶</a></h2>
+<p>If you want to inject a current (which may be time varying), create a
+<code class="docutils literal"><span class="pre">CurrentSource</span></code> object and connect it to the neuron either using the <code class="docutils literal"><span class="pre">inject()</span></code> method of the
+neuron ID or using the <code class="docutils literal"><span class="pre">inject_into()</span></code> method of the <code class="docutils literal"><span class="pre">CurrentSource</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">DCSource</span><span class="p">(</span><span class="n">amplitude</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mf">80.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">steps</span> <span class="o">=</span> <span class="n">StepCurrentSource</span><span class="p">(</span><span class="n">times</span><span class="o">=</span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">50.0</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">],</span> <span class="n">amplitudes</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span><span class="o">.</span><span class="n">inject_into</span><span class="p">(</span><span class="n">cells</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">7</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cells</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="recording-spikes-and-membrane-potential">
+<h2>Recording spikes and membrane potential<a class="headerlink" href="#recording-spikes-and-membrane-potential" title="Permalink to this headline">¶</a></h2>
+<p>To record action potentials use the <code class="docutils literal"><span class="pre">record()</span></code> function, to record membrane potential use the <code class="docutils literal"><span class="pre">record_v()</span></code> function and to record synaptic conductances use the <code class="docutils literal"><span class="pre">record_gsyn()</span></code> function.
+The arguments for all three functions are a cell id (or a <code class="docutils literal"><span class="pre">Population</span></code>, <code class="docutils literal"><span class="pre">Assembly</span></code> or <code class="docutils literal"><span class="pre">PopulationView</span></code>), and a filename, e.g.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="s">&quot;spikes.dat&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record_v</span><span class="p">(</span><span class="n">cells</span><span class="p">,</span> <span class="s">&quot;Vm.dat&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In some cases it is more efficient to write files in the simulator&#8217;s native format, rather than the standard PyNN format.
+In this case, use the <code class="docutils literal"><span class="pre">compatible_output=False</span></code> argument to the <code class="docutils literal"><span class="pre">end()</span></code> function.</p>
+<p>For recording to binary (e.g. HDF5) rather than text files, see the chapter on file formats.</p>
+</div>
+<div class="section" id="running-a-simulation">
+<h2>Running a simulation<a class="headerlink" href="#running-a-simulation" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal"><span class="pre">run()</span></code> function runs the simulation for a given number of milliseconds, e.g.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">run</span><span class="p">(</span><span class="mf">1000.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="finishing-up">
+<h2>Finishing up<a class="headerlink" href="#finishing-up" title="Permalink to this headline">¶</a></h2>
+<p>Just as a simulation must be begun with a call to <code class="docutils literal"><span class="pre">setup()</span></code>, it must be ended with a call to <code class="docutils literal"><span class="pre">end()</span></code>. For the procedural API, this is also the point at which data gets written to file.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>There are several example scripts in the <code class="docutils literal"><span class="pre">examples</span></code> directory of the source distribution.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">The procedural API</a><ul>
+<li><a class="reference internal" href="#creating-neurons">Creating neurons</a></li>
+<li><a class="reference internal" href="#connecting-neurons">Connecting neurons</a></li>
+<li><a class="reference internal" href="#setting-neuron-parameters">Setting neuron parameters</a></li>
+<li><a class="reference internal" href="#injecting-current">Injecting current</a></li>
+<li><a class="reference internal" href="#recording-spikes-and-membrane-potential">Recording spikes and membrane potential</a></li>
+<li><a class="reference internal" href="#running-a-simulation">Running a simulation</a></li>
+<li><a class="reference internal" href="#finishing-up">Finishing up</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="fileformats.html"
+                        title="previous chapter">File formats</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="examples.html"
+                        title="next chapter">Examples</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/lowlevelapi.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="examples.html" title="Examples"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="fileformats.html" title="File formats"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.7 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2017, the PyNN community.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>

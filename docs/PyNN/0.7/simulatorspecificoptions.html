@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Simulator-specific options &#8212; PyNN 0.7 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.7',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Simulator-specific optimizations" href="simulatorspecificoptimizations.html" />
+    <link rel="prev" title="IF network based on the CUBA and COBA models of Vogels &amp; Abbott (2005) J Neurosci 25:10786-95" href="examples/VogelsAbbott.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="simulatorspecificoptimizations.html" title="Simulator-specific optimizations"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="examples/VogelsAbbott.html" title="IF network based on the CUBA and COBA models of Vogels &amp; Abbott (2005) J Neurosci 25:10786-95"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.7 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="simulator-specific-options">
+<h1>Simulator-specific options<a class="headerlink" href="#simulator-specific-options" title="Permalink to this headline">¶</a></h1>
+<p>This page explains the setup() options that are specific to individual simulators.</p>
+<p>TO BE COMPLETED.</p>
+<div class="section" id="nest">
+<h2>NEST<a class="headerlink" href="#nest" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="solver-options">
+<h2>Solver options<a class="headerlink" href="#solver-options" title="Permalink to this headline">¶</a></h2>
+<p>PyNN is a simulator independent language for the specification of neuronal network simulations. The language primarily specifies the network model and leaves the task of choosing an appropriate integration method to the simulator backends.</p>
+<p>For certain model it is however useful to provide the backend with an instruction of how to integrate the dynamics. For example, the researcher may require a certain accuracy of the membrane potential or requires a solver where spikes times are represented in continuous time and are not constrained to the temporal grid spanned by the computation step size.</p>
+<p>At present pyNN.nest accepts the following solver options:</p>
+<ul class="simple">
+<li><a class="reference internal" href="timespikeinteraction.html"><span class="doc">Continuous time spike interaction</span></a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Simulator-specific options</a><ul>
+<li><a class="reference internal" href="#nest">NEST</a></li>
+<li><a class="reference internal" href="#solver-options">Solver options</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="examples/VogelsAbbott.html"
+                        title="previous chapter">IF network based on the CUBA and COBA models of Vogels &amp; Abbott (2005) J Neurosci 25:10786-95</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="simulatorspecificoptimizations.html"
+                        title="next chapter">Simulator-specific optimizations</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/simulatorspecificoptions.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="simulatorspecificoptimizations.html" title="Simulator-specific optimizations"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="examples/VogelsAbbott.html" title="IF network based on the CUBA and COBA models of Vogels &amp; Abbott (2005) J Neurosci 25:10786-95"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.7 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2017, the PyNN community.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>

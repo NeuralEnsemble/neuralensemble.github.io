@@ -1,0 +1,341 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Balanced random network based on Brunel N (2000) Dynamics of sparsely connected networks of excitatory and inhibitory spiking neurons. J Comput Neurosci 8:183-208. &#8212; PyNN 0.7 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.7',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="IF network based on the CUBA and COBA models of Vogels &amp; Abbott (2005) J Neurosci 25:10786-95" href="VogelsAbbott.html" />
+    <link rel="prev" title="Example of depressing and facilitating synapses" href="TsodyksMarkram.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="VogelsAbbott.html" title="IF network based on the CUBA and COBA models of Vogels &amp; Abbott (2005) J Neurosci 25:10786-95"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="TsodyksMarkram.html" title="Example of depressing and facilitating synapses"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.7 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../examples.html" accesskey="U">Examples</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="balanced-random-network-based-on-brunel-n-2000-dynamics-of-sparsely-connected-networks-of-excitatory-and-inhibitory-spiking-neurons-j-comput-neurosci-8-183-208">
+<h1>Balanced random network based on Brunel N (2000) Dynamics of sparsely connected networks of excitatory and inhibitory spiking neurons. J Comput Neurosci 8:183-208.<a class="headerlink" href="#balanced-random-network-based-on-brunel-n-2000-dynamics-of-sparsely-connected-networks-of-excitatory-and-inhibitory-spiking-neurons-j-comput-neurosci-8-183-208" title="Permalink to this headline">¶</a></h1>
+<p>Based on:</p>
+<p>Brunel N (2000) Dynamics of sparsely connected networks of excitatory and inhibitory spiking neurons. J Comput Neurosci 8:183-208 [ <a class="reference external" href="https://www.ncbi.nlm.nih.gov/pubmed/10809012?dopt=Abstract">PubMed</a>]</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Conversion of the Brunel network implemented in nest-1.0.13/examples/brunel.sli</span>
+<span class="sd">to use PyNN.</span>
+
+<span class="sd">Brunel N (2000) Dynamics of sparsely connected networks of excitatory and inhibitory spiking neurons. J Comput Neurosci 8:183-208</span>
+
+<span class="sd">Andrew Davison, UNIC, CNRS</span>
+<span class="sd">May 2006</span>
+
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">pyNN.utility</span> <span class="k">import</span> <span class="n">get_script_args</span><span class="p">,</span> <span class="n">Timer</span>
+
+<span class="n">simulator_name</span> <span class="o">=</span> <span class="n">get_script_args</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  
+<span class="n">exec</span><span class="p">(</span><span class="s">&quot;from pyNN.%s import *&quot;</span> <span class="o">%</span> <span class="n">simulator_name</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">pyNN.random</span> <span class="k">import</span> <span class="n">NumpyRNG</span><span class="p">,</span> <span class="n">RandomDistribution</span>
+
+<span class="n">timer</span> <span class="o">=</span> <span class="n">Timer</span><span class="p">()</span>
+
+<span class="c"># === Define parameters ========================================================</span>
+
+<span class="n">downscale</span>   <span class="o">=</span> <span class="mi">50</span>      <span class="c"># scale number of neurons down by this factor</span>
+                      <span class="c"># scale synaptic weights up by this factor to</span>
+                      <span class="c"># obtain similar dynamics independent of size</span>
+<span class="n">order</span>       <span class="o">=</span> <span class="mi">50000</span>  <span class="c"># determines size of network:</span>
+                      <span class="c"># 4*order excitatory neurons</span>
+                      <span class="c"># 1*order inhibitory neurons</span>
+<span class="n">Nrec</span>        <span class="o">=</span> <span class="mi">50</span>      <span class="c"># number of neurons to record from, per population</span>
+<span class="n">epsilon</span>     <span class="o">=</span> <span class="mf">0.1</span>     <span class="c"># connectivity: proportion of neurons each neuron projects to</span>
+    
+<span class="c"># Parameters determining model dynamics, cf Brunel (2000), Figs 7, 8 and Table 1</span>
+<span class="c"># here: Case C, asynchronous irregular firing, ~35 Hz</span>
+<span class="n">eta</span>         <span class="o">=</span> <span class="mf">2.0</span>     <span class="c"># rel rate of external input</span>
+<span class="n">g</span>           <span class="o">=</span> <span class="mf">5.0</span>     <span class="c"># rel strength of inhibitory synapses</span>
+<span class="n">J</span>           <span class="o">=</span> <span class="mf">0.1</span>     <span class="c"># synaptic weight [mV]</span>
+<span class="n">delay</span>       <span class="o">=</span> <span class="mf">1.5</span>     <span class="c"># synaptic delay, all connections [ms]  </span>
+
+<span class="c"># single neuron parameters</span>
+<span class="n">tauMem</span>      <span class="o">=</span> <span class="mf">20.0</span>    <span class="c"># neuron membrane time constant [ms]</span>
+<span class="n">tauSyn</span>      <span class="o">=</span> <span class="mf">0.1</span>     <span class="c"># synaptic time constant [ms]</span>
+<span class="n">tauRef</span>      <span class="o">=</span> <span class="mf">2.0</span>     <span class="c"># refractory time [ms]</span>
+<span class="n">U0</span>          <span class="o">=</span> <span class="mf">0.0</span>     <span class="c"># resting potential [mV]</span>
+<span class="n">theta</span>       <span class="o">=</span> <span class="mf">20.0</span>    <span class="c"># threshold </span>
+
+<span class="c"># simulation-related parameters  </span>
+<span class="n">simtime</span>     <span class="o">=</span> <span class="mf">100.0</span>   <span class="c"># simulation time [ms] </span>
+<span class="n">dt</span>          <span class="o">=</span> <span class="mf">0.1</span>     <span class="c"># simulation step length [ms]   </span>
+
+<span class="c"># seed for random generator used when building connections</span>
+<span class="n">connectseed</span> <span class="o">=</span> <span class="mi">12345789</span>   
+<span class="n">use_RandomArray</span> <span class="o">=</span> <span class="k">True</span> <span class="c"># use Python rng rather than NEST rng</span>
+
+<span class="c"># seed for random generator(s) used during simulation</span>
+<span class="n">kernelseed</span>  <span class="o">=</span> <span class="mi">43210987</span>      
+  
+<span class="c"># === Calculate derived parameters =============================================</span>
+
+<span class="c"># scaling: compute effective order and synaptic strength</span>
+<span class="n">order_eff</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">order</span><span class="p">)</span><span class="o">/</span><span class="n">downscale</span><span class="p">)</span>
+<span class="n">J_eff</span>     <span class="o">=</span> <span class="n">J</span><span class="o">*</span><span class="n">downscale</span>
+  
+<span class="c"># compute neuron numbers</span>
+<span class="n">NE</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">order_eff</span><span class="p">)</span>  <span class="c"># number of excitatory neurons</span>
+<span class="n">NI</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="o">*</span><span class="n">order_eff</span><span class="p">)</span>  <span class="c"># number of inhibitory neurons</span>
+<span class="n">N</span>  <span class="o">=</span> <span class="n">NI</span> <span class="o">+</span> <span class="n">NE</span>           <span class="c"># total number of neurons</span>
+
+<span class="c"># compute synapse numbers</span>
+<span class="n">CE</span>   <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">epsilon</span><span class="o">*</span><span class="n">NE</span><span class="p">)</span>  <span class="c"># number of excitatory synapses on neuron</span>
+<span class="n">CI</span>   <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">epsilon</span><span class="o">*</span><span class="n">NI</span><span class="p">)</span>  <span class="c"># number of inhibitory synapses on neuron</span>
+<span class="n">C</span>    <span class="o">=</span> <span class="n">CE</span> <span class="o">+</span> <span class="n">CI</span>          <span class="c"># total number of internal synapses per n.   </span>
+<span class="n">Cext</span> <span class="o">=</span> <span class="n">CE</span>               <span class="c"># number of external synapses on neuron  </span>
+
+<span class="c"># synaptic weights, scaled for alpha functions, such that</span>
+<span class="c"># for constant membrane potential, charge J would be deposited</span>
+<span class="n">fudge</span> <span class="o">=</span> <span class="mf">0.00041363506632638</span> <span class="c"># ensures dV = J at V=0  </span>
+  
+<span class="c"># excitatory weight: JE = J_eff / tauSyn * fudge</span>
+<span class="n">JE</span> <span class="o">=</span> <span class="p">(</span><span class="n">J_eff</span><span class="o">/</span><span class="n">tauSyn</span><span class="p">)</span><span class="o">*</span><span class="n">fudge</span> 
+  
+<span class="c"># inhibitory weight: JI = - g * JE</span>
+<span class="n">JI</span> <span class="o">=</span> <span class="o">-</span><span class="n">g</span><span class="o">*</span><span class="n">JE</span>  
+  
+<span class="c"># threshold, external, and Poisson generator rates:</span>
+<span class="n">nu_thresh</span> <span class="o">=</span> <span class="n">theta</span><span class="o">/</span><span class="p">(</span><span class="n">J_eff</span><span class="o">*</span><span class="n">CE</span><span class="o">*</span><span class="n">tauMem</span><span class="p">)</span>
+<span class="n">nu_ext</span>    <span class="o">=</span> <span class="n">eta</span><span class="o">*</span><span class="n">nu_thresh</span>     <span class="c"># external rate per synapse</span>
+<span class="n">p_rate</span>    <span class="o">=</span> <span class="mi">1000</span><span class="o">*</span><span class="n">nu_ext</span><span class="o">*</span><span class="n">Cext</span>  <span class="c"># external input rate per neuron (Hz)</span>
+                                    
+<span class="c"># number of synapses---just so we know</span>
+<span class="n">Nsyn</span> <span class="o">=</span> <span class="p">(</span><span class="n">C</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">N</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">Nrec</span>  <span class="c"># number of neurons * (internal synapses + 1 synapse from PoissonGenerator) + 2synapses&quot; to spike detectors</span>
+
+<span class="c"># put cell parameters into a dict</span>
+<span class="n">cell_params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;tau_m&#39;</span>      <span class="p">:</span> <span class="n">tauMem</span><span class="p">,</span>
+               <span class="s">&#39;tau_syn_E&#39;</span>  <span class="p">:</span> <span class="n">tauSyn</span><span class="p">,</span>
+               <span class="s">&#39;tau_syn_I&#39;</span>  <span class="p">:</span> <span class="n">tauSyn</span><span class="p">,</span>
+               <span class="s">&#39;tau_refrac&#39;</span> <span class="p">:</span> <span class="n">tauRef</span><span class="p">,</span>
+               <span class="s">&#39;v_rest&#39;</span>     <span class="p">:</span> <span class="n">U0</span><span class="p">,</span>
+               <span class="s">&#39;v_reset&#39;</span>    <span class="p">:</span> <span class="n">U0</span><span class="p">,</span>
+               <span class="s">&#39;v_thresh&#39;</span>   <span class="p">:</span> <span class="n">theta</span><span class="p">,</span>
+               <span class="s">&#39;cm&#39;</span>         <span class="p">:</span> <span class="mf">0.001</span><span class="p">}</span>     <span class="c"># (nF)</span>
+
+<span class="c"># === Build the network ========================================================</span>
+
+<span class="c"># clear all existing network elements and set resolution and limits on delays.</span>
+<span class="c"># For NEST, limits must be set BEFORE connecting any elements</span>
+
+<span class="c">#extra = {&#39;threads&#39; : 2}</span>
+<span class="n">extra</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="n">rank</span> <span class="o">=</span> <span class="n">setup</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">max_delay</span><span class="o">=</span><span class="n">delay</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">)</span>
+<span class="n">np</span> <span class="o">=</span> <span class="n">num_processes</span><span class="p">()</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="n">host_name</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">()</span>
+<span class="nb">print</span> <span class="s">&quot;Host #%d is on %s&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rank</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">host_name</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">extra</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="s">&#39;threads&#39;</span><span class="p">):</span>
+    <span class="nb">print</span> <span class="s">&quot;%d Initialising the simulator with %d threads...&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">extra</span><span class="p">[</span><span class="s">&#39;threads&#39;</span><span class="p">])</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span> <span class="s">&quot;%d Initialising the simulator with single thread...&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">rank</span><span class="p">)</span>
+
+<span class="c"># Small function to display information only on node 1</span>
+<span class="k">def</span> <span class="nf">nprint</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="nb">print</span> <span class="n">s</span>
+
+<span class="n">timer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span> <span class="c"># start timer on construction    </span>
+
+<span class="nb">print</span> <span class="s">&quot;%d Setting up random number generator&quot;</span> <span class="o">%</span><span class="n">rank</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">NumpyRNG</span><span class="p">(</span><span class="n">kernelseed</span><span class="p">,</span> <span class="n">parallel_safe</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+
+<span class="nb">print</span> <span class="s">&quot;%d Creating excitatory population with %d neurons.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">NE</span><span class="p">)</span>
+<span class="n">E_net</span> <span class="o">=</span> <span class="n">Population</span><span class="p">(</span><span class="n">NE</span><span class="p">,</span> <span class="n">IF_curr_alpha</span><span class="p">,</span> <span class="n">cell_params</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;E_net&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span> <span class="s">&quot;%d Creating inhibitory population with %d neurons.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">NI</span><span class="p">)</span>
+<span class="n">I_net</span> <span class="o">=</span> <span class="n">Population</span><span class="p">(</span><span class="n">NI</span><span class="p">,</span> <span class="n">IF_curr_alpha</span><span class="p">,</span> <span class="n">cell_params</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;I_net&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span> <span class="s">&quot;%d Initialising membrane potential to random values between %g mV and %g mV.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">U0</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+<span class="n">uniformDistr</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="s">&#39;uniform&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">U0</span><span class="p">,</span> <span class="n">theta</span><span class="p">],</span> <span class="n">rng</span><span class="p">)</span>
+<span class="n">E_net</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="s">&#39;v&#39;</span><span class="p">,</span> <span class="n">uniformDistr</span><span class="p">)</span>
+<span class="n">I_net</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="s">&#39;v&#39;</span><span class="p">,</span> <span class="n">uniformDistr</span><span class="p">)</span>
+
+<span class="nb">print</span> <span class="s">&quot;%d Creating excitatory Poisson generator with rate %g spikes/s.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">p_rate</span><span class="p">)</span>
+<span class="n">expoisson</span> <span class="o">=</span> <span class="n">Population</span><span class="p">(</span><span class="n">NE</span><span class="p">,</span> <span class="n">SpikeSourcePoisson</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;rate&#39;</span><span class="p">:</span> <span class="n">p_rate</span><span class="p">},</span> <span class="s">&quot;expoisson&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span> <span class="s">&quot;%d Creating inhibitory Poisson generator with the same rate.&quot;</span> <span class="o">%</span> <span class="n">rank</span>
+<span class="n">inpoisson</span> <span class="o">=</span> <span class="n">Population</span><span class="p">(</span><span class="n">NI</span><span class="p">,</span> <span class="n">SpikeSourcePoisson</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;rate&#39;</span><span class="p">:</span> <span class="n">p_rate</span><span class="p">},</span> <span class="s">&quot;inpoisson&quot;</span><span class="p">)</span>
+
+<span class="c"># Record spikes</span>
+<span class="nb">print</span> <span class="s">&quot;%d Setting up recording in excitatory population.&quot;</span> <span class="o">%</span> <span class="n">rank</span>
+<span class="n">E_net</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="n">Nrec</span><span class="p">)</span>
+<span class="n">E_net</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">record_v</span><span class="p">()</span>
+
+<span class="nb">print</span> <span class="s">&quot;%d Setting up recording in inhibitory population.&quot;</span> <span class="o">%</span> <span class="n">rank</span>
+<span class="n">I_net</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="n">Nrec</span><span class="p">)</span>
+<span class="n">I_net</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">record_v</span><span class="p">()</span>
+
+<span class="n">E_Connector</span> <span class="o">=</span> <span class="n">FixedProbabilityConnector</span><span class="p">(</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">JE</span><span class="p">,</span> <span class="n">delays</span><span class="o">=</span><span class="n">delay</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+<span class="n">I_Connector</span> <span class="o">=</span> <span class="n">FixedProbabilityConnector</span><span class="p">(</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">JI</span><span class="p">,</span> <span class="n">delays</span><span class="o">=</span><span class="n">delay</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+<span class="n">ext_Connector</span> <span class="o">=</span> <span class="n">OneToOneConnector</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">JE</span><span class="p">,</span> <span class="n">delays</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+
+<span class="nb">print</span> <span class="s">&quot;%d Connecting excitatory population with connection probability %g, weight %g nA and delay %g ms.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">JE</span><span class="p">,</span> <span class="n">delay</span><span class="p">)</span>
+<span class="n">E_to_E</span> <span class="o">=</span> <span class="n">Projection</span><span class="p">(</span><span class="n">E_net</span><span class="p">,</span> <span class="n">E_net</span><span class="p">,</span> <span class="n">E_Connector</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s">&quot;excitatory&quot;</span><span class="p">)</span>
+<span class="nb">print</span> <span class="s">&quot;E --&gt; E</span><span class="se">\t\t</span><span class="s">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">E_to_E</span><span class="p">),</span> <span class="s">&quot;connections&quot;</span>
+<span class="n">I_to_E</span> <span class="o">=</span> <span class="n">Projection</span><span class="p">(</span><span class="n">I_net</span><span class="p">,</span> <span class="n">E_net</span><span class="p">,</span> <span class="n">I_Connector</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s">&quot;inhibitory&quot;</span><span class="p">)</span>
+<span class="nb">print</span> <span class="s">&quot;I --&gt; E</span><span class="se">\t\t</span><span class="s">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">I_to_E</span><span class="p">),</span> <span class="s">&quot;connections&quot;</span>
+<span class="n">input_to_E</span> <span class="o">=</span> <span class="n">Projection</span><span class="p">(</span><span class="n">expoisson</span><span class="p">,</span> <span class="n">E_net</span><span class="p">,</span> <span class="n">ext_Connector</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s">&quot;excitatory&quot;</span><span class="p">)</span>
+<span class="nb">print</span> <span class="s">&quot;input --&gt; E</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_to_E</span><span class="p">),</span> <span class="s">&quot;connections&quot;</span>
+
+<span class="nb">print</span> <span class="s">&quot;%d Connecting inhibitory population with connection probability %g, weight %g nA and delay %g ms.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">JI</span><span class="p">,</span> <span class="n">delay</span><span class="p">)</span>
+<span class="n">E_to_I</span> <span class="o">=</span> <span class="n">Projection</span><span class="p">(</span><span class="n">E_net</span><span class="p">,</span> <span class="n">I_net</span><span class="p">,</span> <span class="n">E_Connector</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s">&quot;excitatory&quot;</span><span class="p">)</span>
+<span class="nb">print</span> <span class="s">&quot;E --&gt; I</span><span class="se">\t\t</span><span class="s">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">E_to_I</span><span class="p">),</span> <span class="s">&quot;connections&quot;</span>
+<span class="n">I_to_I</span> <span class="o">=</span> <span class="n">Projection</span><span class="p">(</span><span class="n">I_net</span><span class="p">,</span> <span class="n">I_net</span><span class="p">,</span> <span class="n">I_Connector</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s">&quot;inhibitory&quot;</span><span class="p">)</span>
+<span class="nb">print</span> <span class="s">&quot;I --&gt; I</span><span class="se">\t\t</span><span class="s">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">I_to_I</span><span class="p">),</span> <span class="s">&quot;connections&quot;</span>
+<span class="n">input_to_I</span> <span class="o">=</span> <span class="n">Projection</span><span class="p">(</span><span class="n">inpoisson</span><span class="p">,</span> <span class="n">I_net</span><span class="p">,</span> <span class="n">ext_Connector</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s">&quot;excitatory&quot;</span><span class="p">)</span>
+<span class="nb">print</span> <span class="s">&quot;input --&gt; I</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_to_I</span><span class="p">),</span> <span class="s">&quot;connections&quot;</span>
+
+<span class="c"># read out time used for building</span>
+<span class="n">buildCPUTime</span> <span class="o">=</span> <span class="n">timer</span><span class="o">.</span><span class="n">elapsedTime</span><span class="p">()</span>
+<span class="c"># === Run simulation ===========================================================</span>
+
+<span class="c"># run, measure computer time</span>
+<span class="n">timer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span> <span class="c"># start timer on construction</span>
+<span class="nb">print</span> <span class="s">&quot;%d Running simulation for %g ms.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">simtime</span><span class="p">)</span>
+<span class="n">run</span><span class="p">(</span><span class="n">simtime</span><span class="p">)</span>
+<span class="n">simCPUTime</span> <span class="o">=</span> <span class="n">timer</span><span class="o">.</span><span class="n">elapsedTime</span><span class="p">()</span>
+
+<span class="nb">print</span> <span class="s">&quot;%d Writing data to file.&quot;</span> <span class="o">%</span> <span class="n">rank</span>
+<span class="n">exfilename</span>  <span class="o">=</span> <span class="s">&quot;Results/Brunel_exc_np%d_%s.ras&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">np</span><span class="p">,</span> <span class="n">simulator_name</span><span class="p">)</span> <span class="c"># output file for excit. population  </span>
+<span class="n">infilename</span>  <span class="o">=</span> <span class="s">&quot;Results/Brunel_inh_np%d_%s.ras&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">np</span><span class="p">,</span> <span class="n">simulator_name</span><span class="p">)</span> <span class="c"># output file for inhib. population  </span>
+<span class="n">vexfilename</span> <span class="o">=</span> <span class="s">&quot;Results/Brunel_exc_np%d_%s.v&quot;</span>   <span class="o">%</span> <span class="p">(</span><span class="n">np</span><span class="p">,</span> <span class="n">simulator_name</span><span class="p">)</span> <span class="c"># output file for membrane potential traces</span>
+<span class="n">vinfilename</span> <span class="o">=</span> <span class="s">&quot;Results/Brunel_inh_np%d_%s.v&quot;</span>   <span class="o">%</span> <span class="p">(</span><span class="n">np</span><span class="p">,</span> <span class="n">simulator_name</span><span class="p">)</span> <span class="c"># output file for membrane potential traces</span>
+
+<span class="c"># write data to file</span>
+<span class="n">E_net</span><span class="o">.</span><span class="n">printSpikes</span><span class="p">(</span><span class="n">exfilename</span><span class="p">)</span>
+<span class="n">I_net</span><span class="o">.</span><span class="n">printSpikes</span><span class="p">(</span><span class="n">infilename</span><span class="p">)</span>
+<span class="n">E_net</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">print_v</span><span class="p">(</span><span class="n">vexfilename</span><span class="p">)</span>
+<span class="n">I_net</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">print_v</span><span class="p">(</span><span class="n">vinfilename</span><span class="p">)</span>
+
+<span class="n">E_rate</span> <span class="o">=</span> <span class="n">E_net</span><span class="o">.</span><span class="n">meanSpikeCount</span><span class="p">()</span><span class="o">*</span><span class="mf">1000.0</span><span class="o">/</span><span class="n">simtime</span>
+<span class="n">I_rate</span> <span class="o">=</span> <span class="n">I_net</span><span class="o">.</span><span class="n">meanSpikeCount</span><span class="p">()</span><span class="o">*</span><span class="mf">1000.0</span><span class="o">/</span><span class="n">simtime</span>
+
+<span class="c"># write a short report</span>
+<span class="n">nprint</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">--- Brunel Network Simulation ---&quot;</span><span class="p">)</span>
+<span class="n">nprint</span><span class="p">(</span><span class="s">&quot;Nodes              : %d&quot;</span> <span class="o">%</span> <span class="n">np</span><span class="p">)</span>
+<span class="n">nprint</span><span class="p">(</span><span class="s">&quot;Number of Neurons  : %d&quot;</span> <span class="o">%</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">nprint</span><span class="p">(</span><span class="s">&quot;Number of Synapses : %d&quot;</span> <span class="o">%</span> <span class="n">Nsyn</span><span class="p">)</span>
+<span class="n">nprint</span><span class="p">(</span><span class="s">&quot;Input firing rate  : %g&quot;</span> <span class="o">%</span> <span class="n">p_rate</span><span class="p">)</span>
+<span class="n">nprint</span><span class="p">(</span><span class="s">&quot;Excitatory weight  : %g&quot;</span> <span class="o">%</span> <span class="n">JE</span><span class="p">)</span>
+<span class="n">nprint</span><span class="p">(</span><span class="s">&quot;Inhibitory weight  : %g&quot;</span> <span class="o">%</span> <span class="n">JI</span><span class="p">)</span>
+<span class="n">nprint</span><span class="p">(</span><span class="s">&quot;Excitatory rate    : %g Hz&quot;</span> <span class="o">%</span> <span class="n">E_rate</span><span class="p">)</span>
+<span class="n">nprint</span><span class="p">(</span><span class="s">&quot;Inhibitory rate    : %g Hz&quot;</span> <span class="o">%</span> <span class="n">I_rate</span><span class="p">)</span>
+<span class="n">nprint</span><span class="p">(</span><span class="s">&quot;Build time         : %g s&quot;</span> <span class="o">%</span> <span class="n">buildCPUTime</span><span class="p">)</span>   
+<span class="n">nprint</span><span class="p">(</span><span class="s">&quot;Simulation time    : %g s&quot;</span> <span class="o">%</span> <span class="n">simCPUTime</span><span class="p">)</span>
+  
+<span class="c"># === Clean up and quit ========================================================</span>
+
+<span class="n">end</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="TsodyksMarkram.html"
+                        title="previous chapter">Example of depressing and facilitating synapses</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="VogelsAbbott.html"
+                        title="next chapter">IF network based on the CUBA and COBA models of Vogels &amp; Abbott (2005) J Neurosci 25:10786-95</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/examples/Brunel.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="VogelsAbbott.html" title="IF network based on the CUBA and COBA models of Vogels &amp; Abbott (2005) J Neurosci 25:10786-95"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="TsodyksMarkram.html" title="Example of depressing and facilitating synapses"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.7 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../examples.html" >Examples</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2017, the PyNN community.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>

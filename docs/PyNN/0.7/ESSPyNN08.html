@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installation of the ESS (PyNN 0.8) &#8212; PyNN 0.7 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.7',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API documentation" href="api.html" />
+    <link rel="prev" title="Installation of the ESS (PyNN 0.7)" href="ESSPyNN07.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="api.html" title="API documentation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ESSPyNN07.html" title="Installation of the ESS (PyNN 0.7)"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.7 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="neuromorphichardware.html" accesskey="U">Using the neuromorphic hardware (ESS) : Install and FAQ</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="installation-of-the-ess-pynn-0-8">
+<h1>Installation of the ESS (PyNN 0.8)<a class="headerlink" href="#installation-of-the-ess-pynn-0-8" title="Permalink to this headline">¶</a></h1>
+<p>By following this guideline, you will successfully install the current (october 2014) symap2ic software stack of Heidelberg, containing the ESS, emulator of the BrainScaleS hardware. You will have installed it together with the compatible PyNN version (0.8). As agreed during the Barcelona BrainScaleS workshop, for all the BrainScaleS demos, having the relevant parts of the model run on this ESS is a requirement for everybody who wants to run the neural model on the true hardware.</p>
+<p>In the year 2014, a new software stack, the PyHMF, will be released by the Heidelberg team. It will be compatible with PyNN 0.8.</p>
+<div class="section" id="prerequisites-tested-on-a-naive-ubuntu-saucy-13-10-on-a-64-bit-machine">
+<h2>Prerequisites (tested on a naive Ubuntu saucy 13.10 on a 64-bit machine)<a class="headerlink" href="#prerequisites-tested-on-a-naive-ubuntu-saucy-13-10-on-a-64-bit-machine" title="Permalink to this headline">¶</a></h2>
+<p>To be able to configure and compile the symap2ic project, you need to install the following libraries:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">git</span> <span class="n">python</span><span class="o">-</span><span class="n">pip</span> <span class="n">python</span><span class="o">-</span><span class="n">dev</span> <span class="n">build</span><span class="o">-</span><span class="n">essential</span> <span class="n">libgtest</span><span class="o">-</span><span class="n">dev</span> <span class="n">libboost</span><span class="o">-</span><span class="nb">all</span><span class="o">-</span><span class="n">dev</span> <span class="n">libpng12</span><span class="o">-</span><span class="n">dev</span> <span class="n">libssl</span><span class="o">-</span><span class="n">dev</span> <span class="n">libmongo</span><span class="o">-</span><span class="n">client</span><span class="o">-</span><span class="n">dev</span> <span class="n">mongodb</span> <span class="n">liblog4cxx10</span><span class="o">-</span><span class="n">dev</span> <span class="n">autotools</span><span class="o">-</span><span class="n">dev</span> <span class="n">automake</span>
+</pre></div>
+</div>
+<p>The ESS expects the 64-bit libraries to lie either in /lib64 or /usr/lib64. However, in Ubuntu 13.10, the 64-bit libraries lie in /usr/lib/x86_64-linux-gnu. So, yo u need to make the following symbolic links:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">x86_64</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnu</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib64</span>
+<span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">libmongoclient</span><span class="o">.</span><span class="n">a</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">x86_64</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnu</span><span class="o">/</span><span class="n">libmongoclient</span><span class="o">.</span><span class="n">a</span>
+</pre></div>
+</div>
+<p>To be able to run the tests and to use the ESS, you also need to install:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">libgsl0</span><span class="o">-</span><span class="n">dev</span> <span class="n">libncurses5</span><span class="o">-</span><span class="n">dev</span> <span class="n">libreadline</span><span class="o">-</span><span class="n">dev</span> <span class="n">gfortran</span> <span class="n">libfreetype6</span><span class="o">-</span><span class="n">dev</span> <span class="n">libblas</span><span class="o">-</span><span class="n">dev</span> <span class="n">liblapack</span><span class="o">-</span><span class="n">dev</span> <span class="n">r</span><span class="o">-</span><span class="n">base</span> <span class="n">python</span><span class="o">-</span><span class="n">rpy</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">scipy</span> <span class="n">matplotlib</span> <span class="n">PIL</span> <span class="n">NeuroTools</span> <span class="n">mpi4py</span> <span class="n">xmlrunner</span>
+</pre></div>
+</div>
+<p>Then, you install nest:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">nest</span><span class="o">-</span><span class="n">initiative</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">download</span><span class="o">/</span><span class="n">gplreleases</span><span class="o">/</span><span class="n">nest</span><span class="o">-</span><span class="mf">2.2</span><span class="o">.</span><span class="mf">2.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">tar</span> <span class="n">xvzf</span> <span class="n">nest</span><span class="o">-</span><span class="mf">2.2</span><span class="o">.</span><span class="mf">2.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">cd</span> <span class="n">nest</span><span class="o">-</span><span class="mf">2.2</span><span class="o">.</span><span class="mi">2</span>
+<span class="o">./</span><span class="n">configure</span> <span class="o">--</span><span class="k">with</span><span class="o">-</span><span class="n">mpi</span> <span class="o">--</span><span class="n">prefix</span><span class="o">=/</span><span class="n">opt</span><span class="o">/</span><span class="n">nest</span> <span class="o">--</span><span class="k">with</span><span class="o">-</span><span class="n">pynest</span><span class="o">-</span><span class="n">prefix</span><span class="o">=/</span><span class="n">usr</span>
+<span class="n">make</span>
+<span class="n">make</span> <span class="n">install</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s">&#39;import nest&#39;</span>
+</pre></div>
+</div>
+<p>You install pyNN (version 0.8 from the github NeuralEnsemble repository):</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="n">cd</span>
+<span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">NeuralEnsemble</span><span class="o">/</span><span class="n">PyNN</span><span class="o">.</span><span class="n">git</span> <span class="n">PyNN</span><span class="o">-</span><span class="mi">8</span>
+<span class="n">cd</span> <span class="n">PyNN</span><span class="o">-</span><span class="mi">8</span>
+<span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s">&#39;import pyNN.nest as sim&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="installation-of-the-ess">
+<h2>Installation of the ESS<a class="headerlink" href="#installation-of-the-ess" title="Permalink to this headline">¶</a></h2>
+<p>You should first obtain an account from heidelberg. Then, on your computer, you generate a rsa key:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="n">ssh</span><span class="o">-</span><span class="n">keygen</span> <span class="o">-</span><span class="n">t</span> <span class="n">rsa</span>
+</pre></div>
+</div>
+<p>Suppose that you have saved the key in the file ~/.ssh/id_rsa. In the heidelberg website, you go to &#8216;My account&#8217; (upper-right). You click on &#8216;Public Key&#8217; in the upper-right corner. You click on &#8216;New value&#8217; and paste the content of your computer&#8217;s id_rsa.pub. Wait until the activation is done.</p>
+<p>Then, you can download and install the ESS on your computer:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="n">cd</span>
+<span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nd">@brainscales</span><span class="o">-</span><span class="n">r</span><span class="o">.</span><span class="n">kip</span><span class="o">.</span><span class="n">uni</span><span class="o">-</span><span class="n">heidelberg</span><span class="o">.</span><span class="n">de</span><span class="p">:</span><span class="n">symap2ic</span><span class="o">.</span><span class="n">git</span>
+<span class="n">cd</span> <span class="n">symap2ic</span>
+<span class="o">.</span> <span class="n">bootstrap</span><span class="o">.</span><span class="n">sh</span><span class="o">.</span><span class="n">UHEI</span> <span class="o">.</span>
+<span class="o">./</span><span class="n">waf</span> <span class="n">set_config</span> <span class="n">systemsim</span><span class="o">-</span><span class="n">pynn8</span>
+<span class="o">./</span><span class="n">waf</span> <span class="n">update</span>
+</pre></div>
+</div>
+<p>If you have had problems in the execution of the 4 lines above, you have some read access right problems from the repositories. Please consult Eric Müller or the person in charge from Heidelberg. Please now go on by configuring and installing the system:</p>
+<div class="highlight-default"><div class="highlight"><pre>./waf configure --stage=brainscales --use-systemsim --without-hardware --prefix=$HOME/symap2ic
+./waf install
+</pre></div>
+</div>
+<p>You now set the environment variables:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="n">echo</span> <span class="s">&#39;export SYMAP2IC_PATH=$HOME/symap2ic&#39;</span> <span class="o">&gt;&gt;</span> <span class="o">~/.</span><span class="n">bashrc</span>
+<span class="n">echo</span> <span class="s">&#39;export PYTHONPATH=$PYTHONPATH:$SYMAP2IC_PATH/lib&#39;</span> <span class="o">&gt;&gt;</span> <span class="o">~/.</span><span class="n">bashrc</span>
+<span class="n">echo</span> <span class="s">&#39;export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SYMAP2IC_PATH/lib&#39;</span> <span class="o">&gt;&gt;</span> <span class="o">~/.</span><span class="n">bashrc</span>
+<span class="n">bash</span>
+</pre></div>
+</div>
+<p>You test that the hardware backend is accessible:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s">&#39;import pyNN.hardware.brainscales as sim&#39;</span>
+</pre></div>
+</div>
+<p>To test your installation, you can run the PyNN 0.8 unit- and system tests:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="n">cd</span> <span class="o">~/</span><span class="n">PyNN</span><span class="o">-</span><span class="mi">8</span><span class="o">/</span><span class="n">test</span>
+<span class="n">cd</span> <span class="n">unittests</span><span class="o">/</span><span class="n">backends</span>
+<span class="n">nosetests</span> <span class="n">test_mock</span><span class="o">.</span><span class="n">py</span>
+<span class="n">nosetests</span> <span class="n">test_hardware_brainscales</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="mailing-list">
+<h2>Mailing List<a class="headerlink" href="#mailing-list" title="Permalink to this headline">¶</a></h2>
+<p>If you run into problems during the installation of the ESS or have any issues / questions that are not covered by the FAQ, please consider the Mailing List for BrainScaleS/HBP wafers-scale hardware and ESS users:  <a class="reference external" href="http://listserv.uni-heidelberg.de/cgi-bin/wa?A0=KIP-NMPM-USERS">http://listserv.uni-heidelberg.de/cgi-bin/wa?A0=KIP-NMPM-USERS</a></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Installation of the ESS (PyNN 0.8)</a><ul>
+<li><a class="reference internal" href="#prerequisites-tested-on-a-naive-ubuntu-saucy-13-10-on-a-64-bit-machine">Prerequisites (tested on a naive Ubuntu saucy 13.10 on a 64-bit machine)</a></li>
+<li><a class="reference internal" href="#installation-of-the-ess">Installation of the ESS</a></li>
+<li><a class="reference internal" href="#mailing-list">Mailing List</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ESSPyNN07.html"
+                        title="previous chapter">Installation of the ESS (PyNN 0.7)</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="api.html"
+                        title="next chapter">API documentation</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/ESSPyNN08.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="api.html" title="API documentation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ESSPyNN07.html" title="Installation of the ESS (PyNN 0.7)"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.7 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="neuromorphichardware.html" >Using the neuromorphic hardware (ESS) : Install and FAQ</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2017, the PyNN community.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>

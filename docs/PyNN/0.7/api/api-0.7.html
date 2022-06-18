@@ -1,0 +1,2036 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>PyNN API version 0.7 &#8212; PyNN 0.7 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.7',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="PyNN API version 0.6" href="api-0.6.html" />
+    <link rel="prev" title="API documentation" href="../api.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="api-0.6.html" title="PyNN API version 0.6"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../api.html" title="API documentation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.7 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api.html" accesskey="U">API documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pynn-api-version-0-7">
+<h1>PyNN API version 0.7<a class="headerlink" href="#pynn-api-version-0-7" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="simulation-setup-and-control">
+<h2>Simulation setup and control<a class="headerlink" href="#simulation-setup-and-control" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="setup-timestep-0-1-min-delay-0-1-max-delay-10-0-extra-params">
+<h3>setup(timestep=0.1, min_delay=0.1, max_delay=10.0, **extra_params)<a class="headerlink" href="#setup-timestep-0-1-min-delay-0-1-max-delay-10-0-extra-params" title="Permalink to this headline">¶</a></h3>
+<p>Should be called at the very beginning of a script.
+extra_params contains any keyword arguments that are required by a given
+simulator but not by others.</p>
+</div>
+<div class="section" id="end-compatible-output-true">
+<h3>end(compatible_output=True)<a class="headerlink" href="#end-compatible-output-true" title="Permalink to this headline">¶</a></h3>
+<p>Do any necessary cleaning up before exiting.</p>
+</div>
+<div class="section" id="run-simtime">
+<h3>run(simtime)<a class="headerlink" href="#run-simtime" title="Permalink to this headline">¶</a></h3>
+<p>Run the simulation for simtime ms.</p>
+<p><code class="docutils literal"><span class="pre">run()</span></code> may be called multiple times during a simulation.
+In between calls to <code class="docutils literal"><span class="pre">run()</span></code> it is possible to retrieve data
+and modify neuron/synapse parameters. Some backends allow modification of
+the network structure. <code class="docutils literal"><span class="pre">run(x</span> <span class="pre">+</span> <span class="pre">y)</span></code> is equivalent to <code class="docutils literal"><span class="pre">run(x)</span></code>
+followed by <code class="docutils literal"><span class="pre">run(y)</span></code>. If you wish to reset the simulation state to
+the initial conditions (time <code class="docutils literal"><span class="pre">t</span> <span class="pre">=</span> <span class="pre">0</span></code>), use the <code class="docutils literal"><span class="pre">reset()</span></code> function.</p>
+</div>
+<div class="section" id="reset">
+<h3>reset()<a class="headerlink" href="#reset" title="Permalink to this headline">¶</a></h3>
+<p>Reset the time to zero, neuron membrane potentials and synaptic weights to
+their initial values, and delete any recorded data. The network structure
+is not changed, nor is the specification of which neurons to record from.</p>
+</div>
+<div class="section" id="get-time-step">
+<h3>get_time_step()<a class="headerlink" href="#get-time-step" title="Permalink to this headline">¶</a></h3>
+<p>Return the integration time step.</p>
+</div>
+<div class="section" id="get-current-time">
+<h3>get_current_time()<a class="headerlink" href="#get-current-time" title="Permalink to this headline">¶</a></h3>
+<p>Return the current time in the simulation.</p>
+</div>
+<div class="section" id="get-min-delay">
+<h3>get_min_delay()<a class="headerlink" href="#get-min-delay" title="Permalink to this headline">¶</a></h3>
+<p>Return the minimum allowed synaptic delay.</p>
+</div>
+<div class="section" id="get-max-delay">
+<h3>get_max_delay()<a class="headerlink" href="#get-max-delay" title="Permalink to this headline">¶</a></h3>
+<p>Return the maximum allowed synaptic delay.</p>
+</div>
+<div class="section" id="rank">
+<h3>rank()<a class="headerlink" href="#rank" title="Permalink to this headline">¶</a></h3>
+<p>Return the MPI rank of the current node.</p>
+</div>
+<div class="section" id="num-processes">
+<h3>num_processes()<a class="headerlink" href="#num-processes" title="Permalink to this headline">¶</a></h3>
+<p>Return the number of MPI processes.</p>
+</div>
+</div>
+<div class="section" id="object-oriented-interface-for-creating-and-recording-networks">
+<h2>Object-oriented interface for creating and recording networks<a class="headerlink" href="#object-oriented-interface-for-creating-and-recording-networks" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="population">
+<h3>Population<a class="headerlink" href="#population" title="Permalink to this headline">¶</a></h3>
+<p>An array of neurons all of the same type. &#8216;Population&#8217; is used as a generic
+term intended to include layers, columns, nuclei, etc., of cells.</p>
+<p><strong>__add__(self, other)</strong></p>
+<p>A Population/PopulationView can be added to another Population,
+PopulationView or Assembly, returning an Assembly.</p>
+<p><strong>__getitem__(self, index)</strong></p>
+<p>Return either a single cell (ID object) from the Population, if index
+is an integer, or a subset of the cells (PopulationView object), if
+index is a slice or array.</p>
+<p>Note that __getitem__ is called when using [] access, e.g.</p>
+<blockquote>
+<div><p>p = Population(...)</p>
+<p>p[2] is equivalent to p.__getitem__(2).</p>
+<p>p[3:6] is equivalent to p.__getitem__(slice(3, 6))</p>
+</div></blockquote>
+<p><strong>__init__(self, size, cellclass, cellparams=None, structure=None, label=None)</strong></p>
+<p>Create a population of neurons all of the same type.
+size - number of cells in the Population. For backwards-compatibility,</p>
+<blockquote>
+<div>n may also be a tuple giving the dimensions of a grid,
+e.g. n=(10,10) is equivalent to n=100 with structure=Grid2D()</div></blockquote>
+<p>cellclass should either be a standardized cell class (a class inheriting
+from common.standardmodels.StandardCellType) or a string giving the
+name of the simulator-specific model that makes up the population.
+cellparams should be a dict which is passed to the neuron model</p>
+<blockquote>
+<div>constructor</div></blockquote>
+<p>structure should be a Structure instance.
+label is an optional name for the population.</p>
+<p><strong>__iter__(self)</strong></p>
+<p>Iterator over cell ids on the local node.</p>
+<p><strong>__len__(self)</strong></p>
+<p>Return the total number of cells in the population (all nodes).</p>
+<p><strong>all(self)</strong></p>
+<p>Iterator over cell ids on all nodes.</p>
+<p><strong>can_record(self, variable)</strong></p>
+<p>Determine whether <cite>variable</cite> can be recorded from this population.</p>
+<p><strong>describe(self, template=&#8217;population_default.txt&#8217;, engine=&#8217;default&#8217;)</strong></p>
+<p>Returns a human-readable description of the population.
+The output may be customized by specifying a different template
+togther with an associated template engine (see <code class="docutils literal"><span class="pre">pyNN.descriptions</span></code>).
+If template is None, then a dictionary containing the template context
+will be returned.</p>
+<p><strong>get(self, parameter_name, gather=False)</strong></p>
+<p>Get the values of a parameter for every local cell in the population.</p>
+<p><strong>getSpikes(self, gather=True, compatible_output=True)</strong></p>
+<p>Return a 2-column numpy array containing cell ids and spike times for
+recorded cells.
+Useful for small populations, for example for single neuron Monte-Carlo.</p>
+<p><strong>get_gsyn(self, gather=True, compatible_output=True)</strong></p>
+<p>Return a 4-column numpy array containing cell ids, times and excitatory and inhibitory synaptic
+conductances for recorded cells.</p>
+<p><strong>get_spike_counts(self, gather=True)</strong></p>
+<p>Returns the number of spikes for each neuron.</p>
+<p><strong>get_v(self, gather=True, compatible_output=True)</strong></p>
+<p>Return a 3-column numpy array containing cell ids, times and Vm for
+recorded cells.</p>
+<p><strong>id_to_index(self, id)</strong></p>
+<p>Given the ID(s) of cell(s) in the Population, return its (their) index
+(order in the Population).</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">p</span><span class="o">.</span><span class="n">id_to_index</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span> <span class="o">==</span> <span class="mi">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">p</span><span class="o">.</span><span class="n">id_to_index</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">index</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]))</span> <span class="o">==</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+<p><strong>id_to_local_index(self, id)</strong></p>
+<p>Given the ID(s) of cell(s) in the Population, return its (their) index
+(order in the Population), counting only cells on the local MPI node.</p>
+<p><strong>initialize(self, variable, value)</strong></p>
+<p>Set the initial value of one of the state variables of the neurons in
+this population.</p>
+<dl class="docutils">
+<dt><cite>value</cite> may either be a numeric value (all neurons set to the same</dt>
+<dd>value) or a <cite>RandomDistribution</cite> object (each neuron gets a
+different value)</dd>
+</dl>
+<p><strong>inject(self, current_source)</strong></p>
+<p>Connect a current source to all cells in the Population.</p>
+<p><strong>is_local(self, id)</strong></p>
+<p>Determine whether the cell with the given ID exists on the local MPI node.</p>
+<p><strong>meanSpikeCount(self, gather=True)</strong></p>
+<p>Returns the mean number of spikes per neuron.</p>
+<p><strong>nearest(self, position)</strong></p>
+<p>Return the neuron closest to the specified position.</p>
+<p><strong>printSpikes(self, file, gather=True, compatible_output=True)</strong></p>
+<p>Write spike times to file.
+file should be either a filename or a PyNN File object.
+If compatible_output is True, the format is &#8220;spiketime cell_id&#8221;,
+where cell_id is the index of the cell counting along rows and down
+columns (and the extension of that for 3-D).
+This allows easy plotting of a &#8216;raster&#8217; plot of spiketimes, with one
+line for each cell.
+The timestep, first id, last id, and number of data points per cell are
+written in a header, indicated by a &#8216;#&#8217; at the beginning of the line.
+If compatible_output is False, the raw format produced by the simulator
+is used. This may be faster, since it avoids any post-processing of the
+spike files.
+For parallel simulators, if gather is True, all data will be gathered
+to the master node and a single output file created there. Otherwise, a
+file will be written on each node, containing only the cells simulated
+on that node.</p>
+<p><strong>print_gsyn(self, file, gather=True, compatible_output=True)</strong></p>
+<p>Write synaptic conductance traces to file.
+file should be either a filename or a PyNN File object.
+If compatible_output is True, the format is &#8220;g_exc g_inh cell_id&#8221;,
+where cell_id is the index of the cell counting along rows and down
+columns (and the extension of that for 3-D).
+The timestep, first id, last id, and number of data points per cell are
+written in a header, indicated by a &#8216;#&#8217; at the beginning of the line.
+If compatible_output is False, the raw format produced by the simulator
+is used. This may be faster, since it avoids any post-processing of the
+voltage files.</p>
+<p><strong>print_v(self, file, gather=True, compatible_output=True)</strong></p>
+<p>Write membrane potential traces to file.
+file should be either a filename or a PyNN File object.
+If compatible_output is True, the format is &#8220;v cell_id&#8221;,
+where cell_id is the index of the cell counting along rows and down
+columns (and the extension of that for 3-D).
+The timestep, first id, last id, and number of data points per cell are
+written in a header, indicated by a &#8216;#&#8217; at the beginning of the line.
+If compatible_output is False, the raw format produced by the simulator
+is used. This may be faster, since it avoids any post-processing of the
+voltage files.
+For parallel simulators, if gather is True, all data will be gathered
+to the master node and a single output file created there. Otherwise, a
+file will be written on each node, containing only the cells simulated
+on that node.</p>
+<p><strong>randomInit(self, rand_distr)</strong></p>
+<p>Set initial membrane potentials for all the cells in the population to
+random values.</p>
+<p><strong>record(self, to_file=True)</strong></p>
+<p>Record spikes from all cells in the Population.</p>
+<p><strong>record_gsyn(self, to_file=True)</strong></p>
+<p>Record synaptic conductances for all cells in the Population.</p>
+<p><strong>record_v(self, to_file=True)</strong></p>
+<p>Record the membrane potential for all cells in the Population.</p>
+<p><strong>rset(self, parametername, rand_distr)</strong></p>
+<p>&#8216;Random&#8217; set. Set the value of parametername to a value taken from
+rand_distr, which should be a RandomDistribution object.</p>
+<p><strong>sample(self, n, rng=None)</strong></p>
+<p>Randomly sample n cells from the Population, and return a PopulationView
+object.</p>
+<p><strong>save_positions(self, file)</strong></p>
+<p>Save positions to file. The output format is id x y z</p>
+<p><strong>set(self, param, val=None)</strong></p>
+<p>Set one or more parameters for every cell in the population.</p>
+<p>param can be a dict, in which case val should not be supplied, or a string
+giving the parameter name, in which case val is the parameter value.
+val can be a numeric value, or list of such (e.g. for setting spike times).</p>
+<dl class="docutils">
+<dt>e.g. p.set(&#8220;tau_m&#8221;,20.0).</dt>
+<dd>p.set({&#8216;tau_m&#8217;:20,&#8217;v_rest&#8217;:-65})</dd>
+</dl>
+<p><strong>tset(self, parametername, value_array)</strong></p>
+<p>&#8216;Topographic&#8217; set. Set the value of parametername to the values in
+value_array, which must have the same dimensions as the Population.</p>
+</div>
+<div class="section" id="populationview">
+<h3>PopulationView<a class="headerlink" href="#populationview" title="Permalink to this headline">¶</a></h3>
+<p>A view of a subset of neurons within a Population.</p>
+<p>In most ways, Populations and PopulationViews have the same behaviour, i.e.
+they can be recorded, connected with Projections, etc. It should be noted
+that any changes to neurons in a PopulationView will be reflected in the
+parent Population and vice versa.</p>
+<p>It is possible to have views of views.</p>
+<p><strong>__add__(self, other)</strong></p>
+<p>A Population/PopulationView can be added to another Population,
+PopulationView or Assembly, returning an Assembly.</p>
+<p><strong>__getitem__(self, index)</strong></p>
+<p>Return either a single cell (ID object) from the Population, if index
+is an integer, or a subset of the cells (PopulationView object), if
+index is a slice or array.</p>
+<p>Note that __getitem__ is called when using [] access, e.g.</p>
+<blockquote>
+<div><p>p = Population(...)</p>
+<p>p[2] is equivalent to p.__getitem__(2).</p>
+<p>p[3:6] is equivalent to p.__getitem__(slice(3, 6))</p>
+</div></blockquote>
+<p><strong>__init__(self, parent, selector, label=None)</strong></p>
+<p>Create a view of a subset of neurons within a parent Population or
+PopulationView.</p>
+<dl class="docutils">
+<dt>selector - a slice or numpy mask array. The mask array should either be</dt>
+<dd><p class="first">a boolean array of the same size as the parent, or an
+integer array containing cell indices, i.e. if p.size == 5,</p>
+<blockquote>
+<div><p>PopulationView(p, array([False, False, True, False, True]))</p>
+<p>PopulationView(p, array([2,4]))</p>
+<p>PopulationView(p, slice(2,5,2))</p>
+</div></blockquote>
+<p class="last">will all create the same view.</p>
+</dd>
+</dl>
+<p><strong>__iter__(self)</strong></p>
+<p>Iterator over cell ids on the local node.</p>
+<p><strong>__len__(self)</strong></p>
+<p>Return the total number of cells in the population (all nodes).</p>
+<p><strong>all(self)</strong></p>
+<p>Iterator over cell ids on all nodes.</p>
+<p><strong>can_record(self, variable)</strong></p>
+<p>Determine whether <cite>variable</cite> can be recorded from this population.</p>
+<p><strong>describe(self, template=&#8217;populationview_default.txt&#8217;, engine=&#8217;default&#8217;)</strong></p>
+<p>Returns a human-readable description of the population view.
+The output may be customized by specifying a different template
+togther with an associated template engine (see <code class="docutils literal"><span class="pre">pyNN.descriptions</span></code>).
+If template is None, then a dictionary containing the template context
+will be returned.</p>
+<p><strong>get(self, parameter_name, gather=False)</strong></p>
+<p>Get the values of a parameter for every local cell in the population.</p>
+<p><strong>getSpikes(self, gather=True, compatible_output=True)</strong></p>
+<p>Return a 2-column numpy array containing cell ids and spike times for
+recorded cells.
+Useful for small populations, for example for single neuron Monte-Carlo.</p>
+<p><strong>get_gsyn(self, gather=True, compatible_output=True)</strong></p>
+<p>Return a 4-column numpy array containing cell ids, times and excitatory and inhibitory synaptic
+conductances for recorded cells.</p>
+<p><strong>get_spike_counts(self, gather=True)</strong></p>
+<p>Returns the number of spikes for each neuron.</p>
+<p><strong>get_v(self, gather=True, compatible_output=True)</strong></p>
+<p>Return a 3-column numpy array containing cell ids, times and Vm for
+recorded cells.</p>
+<p><strong>id_to_index(self, id)</strong></p>
+<p>Given the ID(s) of cell(s) in the PopulationView, return its/their
+index/indices (order in the PopulationView).</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">id_to_index</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span> <span class="o">==</span> <span class="mi">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">id_to_index</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">index</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]))</span> <span class="o">==</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+<p><strong>initialize(self, variable, value)</strong></p>
+<p>Set initial values of state variables, e.g. the membrane potential.
+<cite>value</cite> may either be a numeric value (all neurons set to the same</p>
+<blockquote>
+<div>value) or a <cite>RandomDistribution</cite> object (each neuron gets a
+different value)</div></blockquote>
+<p><strong>inject(self, current_source)</strong></p>
+<p>Connect a current source to all cells in the Population.</p>
+<p><strong>is_local(self, id)</strong></p>
+<p>Determine whether the cell with the given ID exists on the local MPI node.</p>
+<p><strong>meanSpikeCount(self, gather=True)</strong></p>
+<p>Returns the mean number of spikes per neuron.</p>
+<p><strong>nearest(self, position)</strong></p>
+<p>Return the neuron closest to the specified position.</p>
+<p><strong>printSpikes(self, file, gather=True, compatible_output=True)</strong></p>
+<p>Write spike times to file.
+file should be either a filename or a PyNN File object.
+If compatible_output is True, the format is &#8220;spiketime cell_id&#8221;,
+where cell_id is the index of the cell counting along rows and down
+columns (and the extension of that for 3-D).
+This allows easy plotting of a &#8216;raster&#8217; plot of spiketimes, with one
+line for each cell.
+The timestep, first id, last id, and number of data points per cell are
+written in a header, indicated by a &#8216;#&#8217; at the beginning of the line.
+If compatible_output is False, the raw format produced by the simulator
+is used. This may be faster, since it avoids any post-processing of the
+spike files.
+For parallel simulators, if gather is True, all data will be gathered
+to the master node and a single output file created there. Otherwise, a
+file will be written on each node, containing only the cells simulated
+on that node.</p>
+<p><strong>print_gsyn(self, file, gather=True, compatible_output=True)</strong></p>
+<p>Write synaptic conductance traces to file.
+file should be either a filename or a PyNN File object.
+If compatible_output is True, the format is &#8220;g_exc g_inh cell_id&#8221;,
+where cell_id is the index of the cell counting along rows and down
+columns (and the extension of that for 3-D).
+The timestep, first id, last id, and number of data points per cell are
+written in a header, indicated by a &#8216;#&#8217; at the beginning of the line.
+If compatible_output is False, the raw format produced by the simulator
+is used. This may be faster, since it avoids any post-processing of the
+voltage files.</p>
+<p><strong>print_v(self, file, gather=True, compatible_output=True)</strong></p>
+<p>Write membrane potential traces to file.
+file should be either a filename or a PyNN File object.
+If compatible_output is True, the format is &#8220;v cell_id&#8221;,
+where cell_id is the index of the cell counting along rows and down
+columns (and the extension of that for 3-D).
+The timestep, first id, last id, and number of data points per cell are
+written in a header, indicated by a &#8216;#&#8217; at the beginning of the line.
+If compatible_output is False, the raw format produced by the simulator
+is used. This may be faster, since it avoids any post-processing of the
+voltage files.
+For parallel simulators, if gather is True, all data will be gathered
+to the master node and a single output file created there. Otherwise, a
+file will be written on each node, containing only the cells simulated
+on that node.</p>
+<p><strong>randomInit(self, rand_distr)</strong></p>
+<p>Set initial membrane potentials for all the cells in the population to
+random values.</p>
+<p><strong>record(self, to_file=True)</strong></p>
+<p>Record spikes from all cells in the Population.</p>
+<p><strong>record_gsyn(self, to_file=True)</strong></p>
+<p>Record synaptic conductances for all cells in the Population.</p>
+<p><strong>record_v(self, to_file=True)</strong></p>
+<p>Record the membrane potential for all cells in the Population.</p>
+<p><strong>rset(self, parametername, rand_distr)</strong></p>
+<p>&#8216;Random&#8217; set. Set the value of parametername to a value taken from
+rand_distr, which should be a RandomDistribution object.</p>
+<p><strong>sample(self, n, rng=None)</strong></p>
+<p>Randomly sample n cells from the Population, and return a PopulationView
+object.</p>
+<p><strong>save_positions(self, file)</strong></p>
+<p>Save positions to file. The output format is id x y z</p>
+<p><strong>set(self, param, val=None)</strong></p>
+<p>Set one or more parameters for every cell in the population. param
+can be a dict, in which case val should not be supplied, or a string
+giving the parameter name, in which case val is the parameter value.
+val can be a numeric value, or list of such (e.g. for setting spike
+times).</p>
+<dl class="docutils">
+<dt>e.g. p.set(&#8220;tau_m&#8221;,20.0).</dt>
+<dd>p.set({&#8216;tau_m&#8217;:20,&#8217;v_rest&#8217;:-65})</dd>
+</dl>
+<p><strong>tset(self, parametername, value_array)</strong></p>
+<p>&#8216;Topographic&#8217; set. Set the value of parametername to the values in
+value_array, which must have the same dimensions as the Population.</p>
+</div>
+<div class="section" id="assembly">
+<h3>Assembly<a class="headerlink" href="#assembly" title="Permalink to this headline">¶</a></h3>
+<p>A group of neurons, may be heterogeneous, in contrast to a Population where
+all the neurons are of the same type.</p>
+<p><strong>__add__(self, other)</strong></p>
+<p>An Assembly may be added to a Population, PopulationView or Assembly
+with the &#8216;+&#8217; operator, returning a new Assembly, e.g.:</p>
+<blockquote>
+<div>a2 = a1 + p</div></blockquote>
+<p><strong>__getitem__(self, index)</strong></p>
+<p>Where index is an integer, return an ID.
+Where index is a slice, list or numpy array, return a new Assembly</p>
+<blockquote>
+<div>consisting of appropriate populations and (possibly newly created)
+population views.</div></blockquote>
+<p><strong>__iadd__(self, other)</strong></p>
+<p>A Population, PopulationView or Assembly may be added to an existing
+Assembly using the &#8216;+=&#8217; operator, e.g.:</p>
+<blockquote>
+<div>a += p</div></blockquote>
+<p><strong>__init__(self, *populations, **kwargs)</strong></p>
+<p>Create an Assembly of Populations and/or PopulationViews.</p>
+<p>kwargs may contain a keyword argument &#8216;label&#8217;.</p>
+<p><strong>__iter__(self)</strong></p>
+<p>Iterator over cells in all populations within the Assembly, for cells
+on the local MPI node.</p>
+<p><strong>__len__(self)</strong></p>
+<p>Return the total number of cells in the population (all nodes).</p>
+<p><strong>describe(self, template=&#8217;assembly_default.txt&#8217;, engine=&#8217;default&#8217;)</strong></p>
+<p>Returns a human-readable description of the assembly.
+The output may be customized by specifying a different template
+togther with an associated template engine (see <code class="docutils literal"><span class="pre">pyNN.descriptions</span></code>).
+If template is None, then a dictionary containing the template context
+will be returned.</p>
+<p><strong>get_gsyn(self, gather=True, compatible_output=True)</strong></p>
+<p>Return a 4-column numpy array containing cell ids, times and excitatory and inhibitory synaptic
+conductances for recorded cells.</p>
+<p><strong>get_population(self, label)</strong></p>
+<p>Return the Population/PopulationView from within the Assembly that has
+the given label. If no such Population exists, raise KeyError.</p>
+<p><strong>get_spike_counts(self, gather=True)</strong></p>
+<p>Returns the number of spikes for each neuron.</p>
+<p><strong>get_v(self, gather=True, compatible_output=True)</strong></p>
+<p>Return a 3-column numpy array containing cell ids, times and Vm for
+recorded cells.</p>
+<p><strong>id_to_index(self, id)</strong></p>
+<p>Given the ID(s) of cell(s) in the Assembly, return its (their) index
+(order in the Assembly).</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">p</span><span class="o">.</span><span class="n">id_to_index</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span> <span class="o">==</span> <span class="mi">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">p</span><span class="o">.</span><span class="n">id_to_index</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">index</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]))</span> <span class="o">==</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+<p><strong>initialize(self, variable, value)</strong></p>
+<p>Set the initial value of one of the state variables of the neurons in
+this assembly.
+value` may either be a numeric value (all neurons set to the same
+value) or a <cite>!!RandomDistribution</cite> object (each neuron gets a
+different value)</p>
+<p><strong>inject(self, current_source)</strong></p>
+<p>Connect a current source to all cells in the Assembly.</p>
+<p><strong>meanSpikeCount(self, gather=True)</strong></p>
+<p>Returns the mean number of spikes per neuron.</p>
+<p><strong>printSpikes(self, file, gather=True, compatible_output=True)</strong></p>
+<p>Write spike times to file.
+file should be either a filename or a PyNN File object.
+If compatible_output is True, the format is &#8220;spiketime cell_id&#8221;,
+where cell_id is the index of the cell counting along rows and down
+columns (and the extension of that for 3-D).
+This allows easy plotting of a &#8216;raster&#8217; plot of spiketimes, with one
+line for each cell.
+The timestep, first id, last id, and number of data points per cell are
+written in a header, indicated by a &#8216;#&#8217; at the beginning of the line.
+If compatible_output is False, the raw format produced by the simulator
+is used. This may be faster, since it avoids any post-processing of the
+spike files.
+For parallel simulators, if gather is True, all data will be gathered
+to the master node and a single output file created there. Otherwise, a
+file will be written on each node, containing only the cells simulated
+on that node.</p>
+<p><strong>print_gsyn(self, file, gather=True, compatible_output=True)</strong></p>
+<p>Write synaptic conductance traces to file.
+file should be either a filename or a PyNN File object.
+If compatible_output is True, the format is &#8220;g_exc g_inh cell_id&#8221;,
+where cell_id is the index of the cell counting along rows and down
+columns (and the extension of that for 3-D).
+The timestep, first id, last id, and number of data points per cell are
+written in a header, indicated by a &#8216;#&#8217; at the beginning of the line.
+If compatible_output is False, the raw format produced by the simulator
+is used. This may be faster, since it avoids any post-processing of the
+voltage files.</p>
+<p><strong>print_v(self, file, gather=True, compatible_output=True)</strong></p>
+<p>Write membrane potential traces to file.
+file should be either a filename or a PyNN File object.
+If compatible_output is True, the format is &#8220;v cell_id&#8221;,
+where cell_id is the index of the cell counting along rows and down
+columns (and the extension of that for 3-D).
+The timestep, first id, last id, and number of data points per cell are
+written in a header, indicated by a &#8216;#&#8217; at the beginning of the line.
+If compatible_output is False, the raw format produced by the simulator
+is used. This may be faster, since it avoids any post-processing of the
+voltage files.
+For parallel simulators, if gather is True, all data will be gathered
+to the master node and a single output file created there. Otherwise, a
+file will be written on each node, containing only the cells simulated
+on that node.</p>
+<p><strong>record(self, to_file=True)</strong></p>
+<p>Record spikes from all cells in the Assembly.</p>
+<p><strong>record_gsyn(self, to_file=True)</strong></p>
+<p>Record synaptic conductances from all cells in the Assembly.</p>
+<p><strong>record_v(self, to_file=True)</strong></p>
+<p>Record the membrane potential from all cells in the Assembly.</p>
+<p><strong>save_positions(self, file)</strong></p>
+<p>Save positions to file. The output format is id x y z</p>
+</div>
+</div>
+<div class="section" id="classes-for-defining-spatial-structure">
+<h2>Classes for defining spatial structure<a class="headerlink" href="#classes-for-defining-spatial-structure" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="space">
+<h3>Space<a class="headerlink" href="#space" title="Permalink to this headline">¶</a></h3>
+<p>Class representing a space within distances can be calculated. The space
+is Cartesian, may be 1-, 2- or 3-dimensional, and may have periodic
+boundaries in any of the dimensions.</p>
+<p><strong>__init__(self, axes=None, scale_factor=1.0, offset=0.0, periodic_boundaries=None)</strong></p>
+<dl class="docutils">
+<dt>axes &#8211; if not supplied, then the 3D distance is calculated. If supplied,</dt>
+<dd>axes should be a string containing the axes to be used, e.g. &#8216;x&#8217;, or
+&#8216;yz&#8217;. axes=&#8217;xyz&#8217; is the same as axes=None.</dd>
+<dt>scale_factor &#8211; it may be that the pre and post populations use</dt>
+<dd>different units for position, e.g. degrees and µm. In this case,
+<cite>scale_factor</cite> can be specified, which is applied to the positions
+in the post-synaptic population.</dd>
+<dt>offset &#8211; if the origins of the coordinate systems of the pre- and post-</dt>
+<dd>synaptic populations are different, <cite>offset</cite> can be used to adjust
+for this difference. The offset is applied before any scaling.</dd>
+<dt>periodic_boundaries &#8211; either <cite>None</cite>, or a tuple giving the boundaries</dt>
+<dd>for each dimension, e.g. <cite>((x_min, x_max), None, (z_min, z_max))</cite>.</dd>
+</dl>
+<p><strong>distance_generator(self, f, g)</strong></p>
+<p>Return a function that calculates the distance matrix as a function of
+indices i,j, given two functions f(i) and g(j) that return coordinates.</p>
+<p><strong>distances(self, A, B, expand=False)</strong></p>
+<p>Calculate the distance matrix between two sets of coordinates, given
+the topology of the current space.
+From <a class="reference external" href="http://projects.scipy.org/pipermail/numpy-discussion/2007-April/027203.html">http://projects.scipy.org/pipermail/numpy-discussion/2007-April/027203.html</a></p>
+</div>
+<div class="section" id="line">
+<h3>Line<a class="headerlink" href="#line" title="Permalink to this headline">¶</a></h3>
+<p>Represents a structure with neurons distributed evenly on a straight line.</p>
+<p><strong>__eq__(self, other)</strong></p>
+<p><strong>__init__(self, dx=1.0, x0=0.0, y0=0.0, z0=0.0)</strong></p>
+<p><strong>describe(self, template=&#8217;structure_default.txt&#8217;, engine=&#8217;default&#8217;)</strong></p>
+<p>Returns a human-readable description of the network structure.</p>
+<p>The output may be customized by specifying a different template
+togther with an associated template engine (see <code class="docutils literal"><span class="pre">pyNN.descriptions</span></code>).</p>
+<p>If template is None, then a dictionary containing the template context
+will be returned.</p>
+<p><strong>generate_positions(self, n)</strong></p>
+<p><strong>get_parameters(self)</strong></p>
+</div>
+<div class="section" id="grid2d">
+<h3>Grid2D<a class="headerlink" href="#grid2d" title="Permalink to this headline">¶</a></h3>
+<p>Represents a structure with neurons distributed on a 2D grid.</p>
+<p><strong>__eq__(self, other)</strong></p>
+<p><strong>__init__(self, aspect_ratio=1.0, dx=1.0, dy=1.0, x0=0.0, y0=0.0, z=0, fill_order=&#8217;sequential&#8217;)</strong></p>
+<dl class="docutils">
+<dt>aspect_ratio - ratio of the number of grid points per side (not the ratio</dt>
+<dd>of the side lengths, unless dx == dy)</dd>
+</dl>
+<p><strong>calculate_size(self, n)</strong></p>
+<p><strong>describe(self, template=&#8217;structure_default.txt&#8217;, engine=&#8217;default&#8217;)</strong></p>
+<p>Returns a human-readable description of the network structure.</p>
+<p>The output may be customized by specifying a different template
+togther with an associated template engine (see <code class="docutils literal"><span class="pre">pyNN.descriptions</span></code>).</p>
+<p>If template is None, then a dictionary containing the template context
+will be returned.</p>
+<p><strong>generate_positions(self, n)</strong></p>
+<p><strong>get_parameters(self)</strong></p>
+</div>
+<div class="section" id="grid3d">
+<h3>Grid3D<a class="headerlink" href="#grid3d" title="Permalink to this headline">¶</a></h3>
+<p>Represents a structure with neurons distributed on a 3D grid.</p>
+<p><strong>__eq__(self, other)</strong></p>
+<p><strong>__init__(self, aspect_ratioXY=1.0, aspect_ratioXZ=1.0, dx=1.0, dy=1.0, dz=1.0, x0=0.0, y0=0.0, z0=0, fill_order=&#8217;sequential&#8217;)</strong></p>
+<p>If fill_order is &#8216;sequential&#8217;, the z-index will be filled first, then y then x, i.e.
+the first cell will be at (0,0,0) (given default values for the other arguments),
+the second at (0,0,1), etc.</p>
+<p><strong>calculate_size(self, n)</strong></p>
+<p><strong>describe(self, template=&#8217;structure_default.txt&#8217;, engine=&#8217;default&#8217;)</strong></p>
+<p>Returns a human-readable description of the network structure.</p>
+<p>The output may be customized by specifying a different template
+togther with an associated template engine (see <code class="docutils literal"><span class="pre">pyNN.descriptions</span></code>).</p>
+<p>If template is None, then a dictionary containing the template context
+will be returned.</p>
+<p><strong>generate_positions(self, n)</strong></p>
+<p><strong>get_parameters(self)</strong></p>
+</div>
+<div class="section" id="randomstructure">
+<h3>RandomStructure<a class="headerlink" href="#randomstructure" title="Permalink to this headline">¶</a></h3>
+<p>Represents a structure with neurons distributed randomly within a given
+volume.</p>
+<p><strong>__eq__(self, other)</strong></p>
+<p><strong>__init__(self, boundary, origin=(0.0, 0.0, 0.0), rng=None)</strong></p>
+<p><cite>boundary</cite> - a subclass of Shape
+<cite>origin</cite> - a coordinate tuple (x,y,z)</p>
+<p><strong>describe(self, template=&#8217;structure_default.txt&#8217;, engine=&#8217;default&#8217;)</strong></p>
+<p>Returns a human-readable description of the network structure.</p>
+<p>The output may be customized by specifying a different template
+togther with an associated template engine (see <code class="docutils literal"><span class="pre">pyNN.descriptions</span></code>).</p>
+<p>If template is None, then a dictionary containing the template context
+will be returned.</p>
+<p><strong>generate_positions(self, n)</strong></p>
+<p><strong>get_parameters(self)</strong></p>
+</div>
+<div class="section" id="cuboid">
+<h3>Cuboid<a class="headerlink" href="#cuboid" title="Permalink to this headline">¶</a></h3>
+<p>Represents a cuboidal volume within which neurons may be distributed.</p>
+<p><strong>__init__(self, width, height, depth)</strong></p>
+<p>height: extent in y direction
+width: extent in x direction
+depth: extent in z direction</p>
+<p><strong>sample(self, n, rng)</strong></p>
+</div>
+<div class="section" id="sphere">
+<h3>Sphere<a class="headerlink" href="#sphere" title="Permalink to this headline">¶</a></h3>
+<p>Represents a spherical volume within which neurons may be distributed.</p>
+<p><strong>__init__(self, radius)</strong></p>
+<p><strong>sample(self, n, rng)</strong></p>
+</div>
+</div>
+<div class="section" id="object-oriented-interface-for-connecting-populations-of-neurons">
+<h2>Object-oriented interface for connecting populations of neurons<a class="headerlink" href="#object-oriented-interface-for-connecting-populations-of-neurons" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="projection">
+<h3>Projection<a class="headerlink" href="#projection" title="Permalink to this headline">¶</a></h3>
+<p>A container for all the connections of a given type (same synapse type and
+plasticity mechanisms) between two populations, together with methods to set
+parameters of those connections, including of plasticity mechanisms.</p>
+<p><strong>__getitem__(self, i)</strong></p>
+<p>Return the <a href="#id1"><span class="problematic" id="id2">`</span></a>i`th connection within the Projection.</p>
+<p><strong>__init__(self, presynaptic_population, postsynaptic_population, method, source=None, target=None, synapse_dynamics=None, label=None, rng=None)</strong></p>
+<p>presynaptic_population and postsynaptic_population - Population objects.</p>
+<dl class="docutils">
+<dt>source - string specifying which attribute of the presynaptic cell</dt>
+<dd>signals action potentials</dd>
+<dt>target - string specifying which synapse on the postsynaptic cell to</dt>
+<dd>connect to</dd>
+</dl>
+<p>If source and/or target are not given, default values are used.</p>
+<dl class="docutils">
+<dt>method - a Connector object, encapsulating the algorithm to use for</dt>
+<dd>connecting the neurons.</dd>
+</dl>
+<p>synapse_dynamics - a <cite>SynapseDynamics</cite> object specifying which
+synaptic plasticity mechanisms to use.</p>
+<p>rng - specify an RNG object to be used by the Connector.</p>
+<p><strong>__len__(self)</strong></p>
+<p>Return the total number of local connections.</p>
+<p><strong>describe(self, template=&#8217;projection_default.txt&#8217;, engine=&#8217;default&#8217;)</strong></p>
+<p>Returns a human-readable description of the projection.
+The output may be customized by specifying a different template
+togther with an associated template engine (see <code class="docutils literal"><span class="pre">pyNN.descriptions</span></code>).
+If template is None, then a dictionary containing the template context
+will be returned.</p>
+<p><strong>getDelays(self, format=&#8217;list&#8217;, gather=True)</strong></p>
+<p>Get synaptic delays for all connections in this Projection.
+Possible formats are: a list of length equal to the number of connections
+in the projection, a 2D delay array (with NaN for non-existent
+connections).</p>
+<p><strong>getSynapseDynamics(self, parameter_name, format=&#8217;list&#8217;, gather=True)</strong></p>
+<p>Get parameters of the dynamic synapses for all connections in this
+Projection.</p>
+<p><strong>getWeights(self, format=&#8217;list&#8217;, gather=True)</strong></p>
+<p>Get synaptic weights for all connections in this Projection.
+Possible formats are: a list of length equal to the number of connections
+in the projection, a 2D weight array (with NaN for non-existent
+connections). Note that for the array format, if there is more than
+one connection between two cells, the summed weight will be given.</p>
+<p><strong>printWeights(self, file, format=&#8217;list&#8217;, gather=True)</strong></p>
+<p>Print synaptic weights to file. In the array format, zeros are printed
+for non-existent connections.</p>
+<p><strong>randomizeDelays(self, rand_distr)</strong></p>
+<p>Set weights to random values taken from rand_distr.</p>
+<p><strong>randomizeSynapseDynamics(self, param, rand_distr)</strong></p>
+<p>Set parameters of the synapse dynamics to values taken from rand_distr</p>
+<p><strong>randomizeWeights(self, rand_distr)</strong></p>
+<p>Set weights to random values taken from rand_distr.</p>
+<p><strong>saveConnections(self, file, gather=True, compatible_output=True)</strong></p>
+<p>Save connections to file in a format suitable for reading in with a
+FromFileConnector.</p>
+<p><strong>setDelays(self, d)</strong></p>
+<p>d can be a single number, in which case all delays are set to this
+value, or a list/1D array of length equal to the number of connections
+in the projection, or a 2D array with the same dimensions as the
+connectivity matrix (as returned by <cite>getDelays(format=&#8217;array&#8217;)</cite>).</p>
+<p><strong>setSynapseDynamics(self, param, value)</strong></p>
+<p>Set parameters of the dynamic synapses for all connections in this
+projection.</p>
+<p><strong>setWeights(self, w)</strong></p>
+<p>w can be a single number, in which case all weights are set to this
+value, or a list/1D array of length equal to the number of connections
+in the projection, or a 2D array with the same dimensions as the
+connectivity matrix (as returned by <cite>getWeights(format=&#8217;array&#8217;)</cite>).
+Weights should be in nA for current-based and µS for conductance-based
+synapses.</p>
+<p><strong>size(self, gather=True)</strong></p>
+<dl class="docutils">
+<dt>Return the total number of connections.</dt>
+<dd><ul class="first last simple">
+<li>only local connections, if gather is False,</li>
+<li>all connections, if gather is True (default)</li>
+</ul>
+</dd>
+</dl>
+<p><strong>weightHistogram(self, min=None, max=None, nbins=10)</strong></p>
+<p>Return a histogram of synaptic weights.
+If min and max are not given, the minimum and maximum weights are
+calculated automatically.</p>
+</div>
+<div class="section" id="alltoallconnector">
+<h3>AllToAllConnector<a class="headerlink" href="#alltoallconnector" title="Permalink to this headline">¶</a></h3>
+<p>Connects all cells in the presynaptic population to all cells in the
+postsynaptic population.</p>
+<p><strong>__init__(self, allow_self_connections=True, weights=0.0, delays=None, space=&lt;pyNN.space.Space object at 0x62749f0&gt;, safe=True, verbose=False)</strong></p>
+<p>Create a new connector.</p>
+<dl class="docutils">
+<dt><cite>allow_self_connections</cite> &#8211; if the connector is used to connect a</dt>
+<dd>Population to itself, this flag determines whether a neuron is
+allowed to connect to itself, or only to other neurons in the
+Population.</dd>
+<dt><cite>weights</cite> &#8211; may either be a float, a RandomDistribution object, a list/</dt>
+<dd>1D array with at least as many items as connections to be
+created. Units nA.</dd>
+<dt><cite>delays</cite>  &#8211; as <cite>weights</cite>. If <cite>None</cite>, all synaptic delays will be set</dt>
+<dd>to the global minimum delay.</dd>
+<dt><cite>space</cite> &#8211; a <cite>Space</cite> object, needed if you wish to specify distance-</dt>
+<dd>dependent weights or delays</dd>
+</dl>
+</div>
+<div class="section" id="onetooneconnector">
+<h3>OneToOneConnector<a class="headerlink" href="#onetooneconnector" title="Permalink to this headline">¶</a></h3>
+<p>Where the pre- and postsynaptic populations have the same size, connect
+cell i in the presynaptic population to cell i in the postsynaptic
+population for all i.</p>
+<p><strong>__init__(self, weights=0.0, delays=None, space=&lt;pyNN.space.Space object at 0x17d30e50&gt;, safe=True, verbose=False)</strong></p>
+<p>Create a new connector.</p>
+<dl class="docutils">
+<dt><cite>weights</cite> &#8211; may either be a float, a RandomDistribution object, a list/</dt>
+<dd>1D array with at least as many items as connections to be
+created. Units nA.</dd>
+<dt><cite>delays</cite>  &#8211; as <cite>weights</cite>. If <cite>None</cite>, all synaptic delays will be set</dt>
+<dd>to the global minimum delay.</dd>
+</dl>
+</div>
+<div class="section" id="fixedprobabilityconnector">
+<h3>FixedProbabilityConnector<a class="headerlink" href="#fixedprobabilityconnector" title="Permalink to this headline">¶</a></h3>
+<p>For each pair of pre-post cells, the connection probability is constant.</p>
+<p><strong>__init__(self, p_connect, allow_self_connections=True, weights=0.0, delays=None, space=&lt;pyNN.space.Space object at 0x5912970&gt;, safe=True, verbose=False)</strong></p>
+<p>Create a new connector.</p>
+<dl class="docutils">
+<dt><cite>p_connect</cite> &#8211; a float between zero and one. Each potential connection</dt>
+<dd>is created with this probability.</dd>
+<dt><cite>allow_self_connections</cite> &#8211; if the connector is used to connect a</dt>
+<dd>Population to itself, this flag determines whether a neuron is
+allowed to connect to itself, or only to other neurons in the
+Population.</dd>
+<dt><cite>weights</cite> &#8211; may either be a float, a RandomDistribution object, a list/</dt>
+<dd>1D array with at least as many items as connections to be
+created. Units nA.</dd>
+<dt><cite>delays</cite>  &#8211; as <cite>weights</cite>. If <cite>None</cite>, all synaptic delays will be set</dt>
+<dd>to the global minimum delay.</dd>
+<dt><cite>space</cite> &#8211; a <cite>Space</cite> object, needed if you wish to specify distance-</dt>
+<dd>dependent weights or delays</dd>
+</dl>
+</div>
+<div class="section" id="distancedependentprobabilityconnector">
+<h3>DistanceDependentProbabilityConnector<a class="headerlink" href="#distancedependentprobabilityconnector" title="Permalink to this headline">¶</a></h3>
+<p>For each pair of pre-post cells, the connection probability depends on distance.</p>
+<p><strong>__init__(self, d_expression, allow_self_connections=True, weights=0.0, delays=None, space=&lt;pyNN.space.Space object at 0x58ae570&gt;, safe=True, verbose=False, n_connections=None)</strong></p>
+<p>Create a new connector.</p>
+<dl class="docutils">
+<dt><cite>d_expression</cite> &#8211; the right-hand side of a valid python expression for</dt>
+<dd>probability, involving &#8216;d&#8217;, e.g. &#8220;exp(-abs(d))&#8221;, or &#8220;d&lt;3&#8221;</dd>
+</dl>
+<p><cite>n_connections</cite>  &#8211; The number of efferent synaptic connections per neuron.</p>
+<p><cite>space</cite> &#8211; a Space object.</p>
+<dl class="docutils">
+<dt><cite>weights</cite> &#8211; may either be a float, a RandomDistribution object, a list/</dt>
+<dd>1D array with at least as many items as connections to be
+created, or a DistanceDependence object. Units nA.</dd>
+<dt><cite>delays</cite>  &#8211; as <cite>weights</cite>. If <cite>None</cite>, all synaptic delays will be set</dt>
+<dd>to the global minimum delay.</dd>
+</dl>
+</div>
+<div class="section" id="fixednumberpreconnector">
+<h3>FixedNumberPreConnector<a class="headerlink" href="#fixednumberpreconnector" title="Permalink to this headline">¶</a></h3>
+<p>Each post-synaptic neuron is connected to exactly n pre-synaptic neurons
+chosen at random.</p>
+<p>If n is less than the size of the pre-synaptic population, there are no
+multiple connections, i.e., no instances of the same pair of neurons being
+multiply connected. If n is greater than the size of the pre-synaptic
+population, all possible single connections are made before starting to add
+duplicate connections.</p>
+<p><strong>__init__(self, n, allow_self_connections=True, weights=0.0, delays=None, space=&lt;pyNN.space.Space object at 0x17d30e10&gt;, safe=True, verbose=False)</strong></p>
+<p>Create a new connector.</p>
+<dl class="docutils">
+<dt><cite>n</cite> &#8211; either a positive integer, or a <cite>RandomDistribution</cite> that produces</dt>
+<dd>positive integers. If <cite>n</cite> is a <cite>RandomDistribution</cite>, then the
+number of pre-synaptic neurons is drawn from this distribution
+for each post-synaptic neuron.</dd>
+<dt><cite>allow_self_connections</cite> &#8211; if the connector is used to connect a</dt>
+<dd>Population to itself, this flag determines whether a neuron is
+allowed to connect to itself, or only to other neurons in the
+Population.</dd>
+<dt><cite>weights</cite> &#8211; may either be a float, a RandomDistribution object, a list/</dt>
+<dd>1D array with at least as many items as connections to be
+created. Units nA.</dd>
+<dt><cite>delays</cite>  &#8211; as <cite>weights</cite>. If <cite>None</cite>, all synaptic delays will be set</dt>
+<dd>to the global minimum delay.</dd>
+</dl>
+</div>
+<div class="section" id="fixednumberpostconnector">
+<h3>FixedNumberPostConnector<a class="headerlink" href="#fixednumberpostconnector" title="Permalink to this headline">¶</a></h3>
+<p>Each pre-synaptic neuron is connected to exactly n post-synaptic neurons
+chosen at random.</p>
+<p>If n is less than the size of the post-synaptic population, there are no
+multiple connections, i.e., no instances of the same pair of neurons being
+multiply connected. If n is greater than the size of the post-synaptic
+population, all possible single connections are made before starting to add
+duplicate connections.</p>
+<p><strong>__init__(self, n, allow_self_connections=True, weights=0.0, delays=None, space=&lt;pyNN.space.Space object at 0x58aead0&gt;, safe=True, verbose=False)</strong></p>
+<p>Create a new connector.</p>
+<dl class="docutils">
+<dt><cite>n</cite> &#8211; either a positive integer, or a <cite>RandomDistribution</cite> that produces</dt>
+<dd>positive integers. If <cite>n</cite> is a <cite>RandomDistribution</cite>, then the
+number of post-synaptic neurons is drawn from this distribution
+for each pre-synaptic neuron.</dd>
+<dt><cite>allow_self_connections</cite> &#8211; if the connector is used to connect a</dt>
+<dd>Population to itself, this flag determines whether a neuron is
+allowed to connect to itself, or only to other neurons in the
+Population.</dd>
+<dt><cite>weights</cite> &#8211; may either be a float, a RandomDistribution object, a list/</dt>
+<dd>1D array with at least as many items as connections to be
+created. Units nA.</dd>
+<dt><cite>delays</cite>  &#8211; as <cite>weights</cite>. If <cite>None</cite>, all synaptic delays will be set</dt>
+<dd>to the global minimum delay.</dd>
+</dl>
+</div>
+<div class="section" id="fromlistconnector">
+<h3>FromListConnector<a class="headerlink" href="#fromlistconnector" title="Permalink to this headline">¶</a></h3>
+<p>Make connections according to a list.</p>
+<p><strong>__init__(self, conn_list, safe=True, verbose=False)</strong></p>
+<p>Create a new connector.</p>
+<dl class="docutils">
+<dt><cite>conn_list</cite> &#8211; a list of tuples, one tuple for each connection. Each</dt>
+<dd><dl class="first docutils">
+<dt>tuple should contain:</dt>
+<dd>(pre_idx, post_idx, weight, delay)</dd>
+</dl>
+<p class="last">where pre_idx is the index (i.e. order in the Population,
+not the ID) of the presynaptic neuron, and post_idx is
+the index of the postsynaptic neuron.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="fromfileconnector">
+<h3>FromFileConnector<a class="headerlink" href="#fromfileconnector" title="Permalink to this headline">¶</a></h3>
+<p>Make connections according to a list read from a file.</p>
+<p><strong>__init__(self, file, distributed=False, safe=True, verbose=False)</strong></p>
+<p>Create a new connector.</p>
+<dl class="docutils">
+<dt><cite>file</cite>        &#8211; file object containing a list of connections, in</dt>
+<dd>the format required by <cite>FromListConnector</cite>.</dd>
+<dt><cite>distributed</cite> &#8211; if this is True, then each node will read connections</dt>
+<dd>from a file called <cite>filename.x</cite>, where <cite>x</cite> is the MPI
+rank. This speeds up loading connections for
+distributed simulations.</dd>
+</dl>
+</div>
+<div class="section" id="smallworldconnector">
+<h3>SmallWorldConnector<a class="headerlink" href="#smallworldconnector" title="Permalink to this headline">¶</a></h3>
+<p>For each pair of pre-post cells, the connection probability depends on distance.</p>
+<p><strong>__init__(self, degree, rewiring, allow_self_connections=True, weights=0.0, delays=None, space=&lt;pyNN.space.Space object at 0x17d30e90&gt;, safe=True, verbose=False)</strong></p>
+<p>Create a new connector.</p>
+<p><cite>degree</cite> &#8211; the region lenght where nodes will be connected locally</p>
+<p><cite>rewiring</cite> &#8211; the probability of rewiring each eadges</p>
+<p><cite>space</cite> &#8211; a Space object.</p>
+<dl class="docutils">
+<dt><cite>allow_self_connections</cite> &#8211; if the connector is used to connect a</dt>
+<dd>Population to itself, this flag determines whether a neuron is
+allowed to connect to itself, or only to other neurons in the
+Population.</dd>
+<dt><cite>weights</cite> &#8211; may either be a float, a RandomDistribution object, a list/</dt>
+<dd>1D array with at least as many items as connections to be
+created, or a DistanceDependence object. Units nA.</dd>
+<dt><cite>delays</cite>  &#8211; as <cite>weights</cite>. If <cite>None</cite>, all synaptic delays will be set</dt>
+<dd>to the global minimum delay.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="procedural-interface-for-creating-connecting-and-recording-networks">
+<h2>Procedural interface for creating, connecting and recording networks<a class="headerlink" href="#procedural-interface-for-creating-connecting-and-recording-networks" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="create-cellclass-cellparams-none-n-1">
+<h3>create(cellclass, cellparams=None, n=1)<a class="headerlink" href="#create-cellclass-cellparams-none-n-1" title="Permalink to this headline">¶</a></h3>
+<p>Create n cells all of the same type.
+If n &gt; 1, return a list of cell ids/references.
+If n==1, return just the single id.</p>
+</div>
+<div class="section" id="connect-source-target-weight-0-0-delay-none-synapse-type-none-p-1-rng-none">
+<h3>connect(source, target, weight=0.0, delay=None, synapse_type=None, p=1, rng=None)<a class="headerlink" href="#connect-source-target-weight-0-0-delay-none-synapse-type-none-p-1-rng-none" title="Permalink to this headline">¶</a></h3>
+<p>Connect a source of spikes to a synaptic target.
+source and target can both be individual cells or lists of cells, in
+which case all possible connections are made with probability p, using
+either the random number generator supplied, or the default rng
+otherwise. Weights should be in nA or µS.</p>
+</div>
+<div class="section" id="set-cells-param-val-none">
+<h3>set(cells, param, val=None)<a class="headerlink" href="#set-cells-param-val-none" title="Permalink to this headline">¶</a></h3>
+<p>Set one or more parameters of an individual cell or list of cells.
+param can be a dict, in which case val should not be supplied, or a string
+giving the parameter name, in which case val is the parameter value.</p>
+</div>
+<div class="section" id="initialize-cells-variable-value">
+<h3>initialize(cells, variable, value)<a class="headerlink" href="#initialize-cells-variable-value" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="record-source-filename">
+<h3>record(source, filename)<a class="headerlink" href="#record-source-filename" title="Permalink to this headline">¶</a></h3>
+<p>Record spikes to a file. source can be an individual cell, a Population,
+PopulationView or Assembly.</p>
+</div>
+<div class="section" id="id3">
+<h3>record(source, filename)<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>Record membrane potential to a file. source can be an individual
+cell, a Population, PopulationView or Assembly.</p>
+</div>
+<div class="section" id="id4">
+<h3>record(source, filename)<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>Record synaptic conductances to a file. source can be an individual
+cell, a Population, PopulationView or Assembly.</p>
+</div>
+</div>
+<div class="section" id="standard-neuron-models">
+<h2>Standard neuron models<a class="headerlink" href="#standard-neuron-models" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="if-curr-exp">
+<h3>IF_curr_exp<a class="headerlink" href="#if-curr-exp" title="Permalink to this headline">¶</a></h3>
+<p>Leaky integrate and fire model with fixed threshold and
+decaying-exponential post-synaptic current. (Separate synaptic currents for
+excitatory and inhibitory synapses.</p>
+<p><strong>__init__(self, parameters)</strong></p>
+<p><strong>default_parameters</strong> = {</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="57%" />
+<col width="43%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head">&#160;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#8216;tau_refrac&#8217;:</td>
+<td>0.1</td>
+</tr>
+<tr class="row-odd"><td>&#8216;v_thresh&#8217;:</td>
+<td>-50.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;tau_m&#8217;:</td>
+<td>20.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;tau_syn_E&#8217;:</td>
+<td>5.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;v_rest&#8217;:</td>
+<td>-65.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;cm&#8217;:</td>
+<td>1.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;v_reset&#8217;:</td>
+<td>-65.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;tau_syn_I&#8217;:</td>
+<td>5.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;i_offset&#8217;:</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+<p>}</p>
+</div>
+<div class="section" id="if-curr-alpha">
+<h3>IF_curr_alpha<a class="headerlink" href="#if-curr-alpha" title="Permalink to this headline">¶</a></h3>
+<p>Leaky integrate and fire model with fixed threshold and alpha-function-
+shaped post-synaptic current.</p>
+<p><strong>__init__(self, parameters)</strong></p>
+<p><strong>default_parameters</strong> = {</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="57%" />
+<col width="43%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head">&#160;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#8216;tau_refrac&#8217;:</td>
+<td>0.1</td>
+</tr>
+<tr class="row-odd"><td>&#8216;v_thresh&#8217;:</td>
+<td>-50.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;tau_m&#8217;:</td>
+<td>20.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;tau_syn_E&#8217;:</td>
+<td>0.5</td>
+</tr>
+<tr class="row-even"><td>&#8216;v_rest&#8217;:</td>
+<td>-65.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;cm&#8217;:</td>
+<td>1.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;v_reset&#8217;:</td>
+<td>-65.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;tau_syn_I&#8217;:</td>
+<td>0.5</td>
+</tr>
+<tr class="row-even"><td>&#8216;i_offset&#8217;:</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+<p>}</p>
+</div>
+<div class="section" id="if-cond-exp">
+<h3>IF_cond_exp<a class="headerlink" href="#if-cond-exp" title="Permalink to this headline">¶</a></h3>
+<p>Leaky integrate and fire model with fixed threshold and
+exponentially-decaying post-synaptic conductance.</p>
+<p><strong>__init__(self, parameters)</strong></p>
+<p><strong>default_parameters</strong> = {</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="57%" />
+<col width="43%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head">&#160;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#8216;tau_refrac&#8217;:</td>
+<td>0.1</td>
+</tr>
+<tr class="row-odd"><td>&#8216;cm&#8217;:</td>
+<td>1.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;tau_syn_E&#8217;:</td>
+<td>5.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;v_rest&#8217;:</td>
+<td>-65.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;tau_syn_I&#8217;:</td>
+<td>5.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;tau_m&#8217;:</td>
+<td>20.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;e_rev_E&#8217;:</td>
+<td>0.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;i_offset&#8217;:</td>
+<td>0.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;e_rev_I&#8217;:</td>
+<td>-70.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;v_thresh&#8217;:</td>
+<td>-50.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;v_reset&#8217;:</td>
+<td>-65.0</td>
+</tr>
+</tbody>
+</table>
+<p>}</p>
+</div>
+<div class="section" id="if-cond-alpha">
+<h3>IF_cond_alpha<a class="headerlink" href="#if-cond-alpha" title="Permalink to this headline">¶</a></h3>
+<p>Leaky integrate and fire model with fixed threshold and alpha-function-
+shaped post-synaptic conductance.</p>
+<p><strong>__init__(self, parameters)</strong></p>
+<p><strong>default_parameters</strong> = {</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="57%" />
+<col width="43%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head">&#160;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#8216;tau_refrac&#8217;:</td>
+<td>0.1</td>
+</tr>
+<tr class="row-odd"><td>&#8216;cm&#8217;:</td>
+<td>1.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;tau_syn_E&#8217;:</td>
+<td>0.3</td>
+</tr>
+<tr class="row-odd"><td>&#8216;v_rest&#8217;:</td>
+<td>-65.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;tau_syn_I&#8217;:</td>
+<td>0.5</td>
+</tr>
+<tr class="row-odd"><td>&#8216;tau_m&#8217;:</td>
+<td>20.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;e_rev_E&#8217;:</td>
+<td>0.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;i_offset&#8217;:</td>
+<td>0.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;e_rev_I&#8217;:</td>
+<td>-70.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;v_thresh&#8217;:</td>
+<td>-50.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;v_reset&#8217;:</td>
+<td>-65.0</td>
+</tr>
+</tbody>
+</table>
+<p>}</p>
+</div>
+<div class="section" id="eif-cond-exp-isfa-ista">
+<h3>EIF_cond_exp_isfa_ista<a class="headerlink" href="#eif-cond-exp-isfa-ista" title="Permalink to this headline">¶</a></h3>
+<p>Exponential integrate and fire neuron with spike triggered and sub-threshold
+adaptation currents (isfa, ista reps.) according to:</p>
+<p>Brette R and Gerstner W (2005) Adaptive Exponential Integrate-and-Fire Model as
+an Effective Description of Neuronal Activity. J Neurophysiol 94:3637-3642
+See also: IF_cond_exp_gsfa_grr</p>
+<p><strong>__init__(self, parameters)</strong></p>
+<p><strong>default_parameters</strong> = {</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="57%" />
+<col width="43%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head">&#160;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#8216;tau_refrac&#8217;:</td>
+<td>0.1</td>
+</tr>
+<tr class="row-odd"><td>&#8216;a&#8217;:</td>
+<td>4.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;tau_m&#8217;:</td>
+<td>9.3667</td>
+</tr>
+<tr class="row-odd"><td>&#8216;e_rev_E&#8217;:</td>
+<td>0.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;i_offset&#8217;:</td>
+<td>0.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;cm&#8217;:</td>
+<td>0.281</td>
+</tr>
+<tr class="row-even"><td>&#8216;delta_T&#8217;:</td>
+<td>2.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;e_rev_I&#8217;:</td>
+<td>-80.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;v_thresh&#8217;:</td>
+<td>-50.4</td>
+</tr>
+<tr class="row-odd"><td>&#8216;b&#8217;:</td>
+<td>0.0805</td>
+</tr>
+<tr class="row-even"><td>&#8216;tau_syn_E&#8217;:</td>
+<td>5.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;v_reset&#8217;:</td>
+<td>-70.6</td>
+</tr>
+<tr class="row-even"><td>&#8216;v_spike&#8217;:</td>
+<td>-40.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;tau_syn_I&#8217;:</td>
+<td>5.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;tau_w&#8217;:</td>
+<td>144.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;v_rest&#8217;:</td>
+<td>-70.6</td>
+</tr>
+</tbody>
+</table>
+<p>}</p>
+</div>
+<div class="section" id="eif-cond-alpha-isfa-ista">
+<h3>EIF_cond_alpha_isfa_ista<a class="headerlink" href="#eif-cond-alpha-isfa-ista" title="Permalink to this headline">¶</a></h3>
+<p>Exponential integrate and fire neuron with spike triggered and sub-threshold
+adaptation currents (isfa, ista reps.) according to:</p>
+<p>Brette R and Gerstner W (2005) Adaptive Exponential Integrate-and-Fire Model as
+an Effective Description of Neuronal Activity. J Neurophysiol 94:3637-3642
+See also: IF_cond_exp_gsfa_grr</p>
+<p><strong>__init__(self, parameters)</strong></p>
+<p><strong>default_parameters</strong> = {</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="57%" />
+<col width="43%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head">&#160;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#8216;tau_refrac&#8217;:</td>
+<td>0.1</td>
+</tr>
+<tr class="row-odd"><td>&#8216;a&#8217;:</td>
+<td>4.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;tau_m&#8217;:</td>
+<td>9.3667</td>
+</tr>
+<tr class="row-odd"><td>&#8216;e_rev_E&#8217;:</td>
+<td>0.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;i_offset&#8217;:</td>
+<td>0.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;cm&#8217;:</td>
+<td>0.281</td>
+</tr>
+<tr class="row-even"><td>&#8216;delta_T&#8217;:</td>
+<td>2.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;e_rev_I&#8217;:</td>
+<td>-80.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;v_thresh&#8217;:</td>
+<td>-50.4</td>
+</tr>
+<tr class="row-odd"><td>&#8216;b&#8217;:</td>
+<td>0.0805</td>
+</tr>
+<tr class="row-even"><td>&#8216;tau_syn_E&#8217;:</td>
+<td>5.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;v_reset&#8217;:</td>
+<td>-70.6</td>
+</tr>
+<tr class="row-even"><td>&#8216;v_spike&#8217;:</td>
+<td>-40.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;tau_syn_I&#8217;:</td>
+<td>5.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;tau_w&#8217;:</td>
+<td>144.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;v_rest&#8217;:</td>
+<td>-70.6</td>
+</tr>
+</tbody>
+</table>
+<p>}</p>
+</div>
+<div class="section" id="if-facets-hardware1">
+<h3>IF_facets_hardware1<a class="headerlink" href="#if-facets-hardware1" title="Permalink to this headline">¶</a></h3>
+<p>Leaky integrate and fire model with conductance-based synapses and fixed
+threshold as it is resembled by the FACETS Hardware Stage 1. For further
+details regarding the hardware model see the FACETS-internal Wiki:
+<a class="reference external" href="https://facets.kip.uni-heidelberg.de/private/wiki/index.php/WP7_NNM">https://facets.kip.uni-heidelberg.de/private/wiki/index.php/WP7_NNM</a></p>
+<p><strong>__init__(self, parameters)</strong></p>
+<p><strong>default_parameters</strong> = {</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="57%" />
+<col width="43%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head">&#160;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#8216;g_leak&#8217;:</td>
+<td>40.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;e_rev_I&#8217;:</td>
+<td>-80.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;v_thresh&#8217;:</td>
+<td>-55.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;tau_syn_E&#8217;:</td>
+<td>30.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;v_rest&#8217;:</td>
+<td>-65.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;tau_syn_I&#8217;:</td>
+<td>30.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;v_reset&#8217;:</td>
+<td>-80.0</td>
+</tr>
+</tbody>
+</table>
+<p>}</p>
+</div>
+<div class="section" id="hh-cond-exp">
+<h3>HH_cond_exp<a class="headerlink" href="#hh-cond-exp" title="Permalink to this headline">¶</a></h3>
+<p>Single-compartment Hodgkin-Huxley model.</p>
+<p><strong>__init__(self, parameters)</strong></p>
+<p><strong>default_parameters</strong> = {</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="57%" />
+<col width="43%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head">&#160;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#8216;gbar_K&#8217;:</td>
+<td>6.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;cm&#8217;:</td>
+<td>0.2</td>
+</tr>
+<tr class="row-even"><td>&#8216;e_rev_Na&#8217;:</td>
+<td>50.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;tau_syn_E&#8217;:</td>
+<td>0.2</td>
+</tr>
+<tr class="row-even"><td>&#8216;tau_syn_I&#8217;:</td>
+<td>2.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;i_offset&#8217;:</td>
+<td>0.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;g_leak&#8217;:</td>
+<td>0.01</td>
+</tr>
+<tr class="row-odd"><td>&#8216;e_rev_E&#8217;:</td>
+<td>0.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;gbar_Na&#8217;:</td>
+<td>20.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;e_rev_leak&#8217;:</td>
+<td>-65.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;e_rev_I&#8217;:</td>
+<td>-80.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;e_rev_K&#8217;:</td>
+<td>-90.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;v_offset&#8217;:</td>
+<td>-63.0</td>
+</tr>
+</tbody>
+</table>
+<p>}</p>
+</div>
+<div class="section" id="spikesourcepoisson">
+<h3>SpikeSourcePoisson<a class="headerlink" href="#spikesourcepoisson" title="Permalink to this headline">¶</a></h3>
+<p>Spike source, generating spikes according to a Poisson process.</p>
+<p><strong>__init__(self, parameters)</strong></p>
+<p><strong>default_parameters</strong> = {</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="46%" />
+<col width="54%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head">&#160;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#8216;duration&#8217;:</td>
+<td>10000000000.0</td>
+</tr>
+<tr class="row-odd"><td>&#8216;start&#8217;:</td>
+<td>0.0</td>
+</tr>
+<tr class="row-even"><td>&#8216;rate&#8217;:</td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+<p>}</p>
+</div>
+<div class="section" id="spikesourcearray">
+<h3>SpikeSourceArray<a class="headerlink" href="#spikesourcearray" title="Permalink to this headline">¶</a></h3>
+<p>Spike source generating spikes at the times given in the spike_times array.</p>
+<p><strong>__init__(self, parameters)</strong></p>
+<p><strong>default_parameters</strong> = {</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="48%" />
+<col width="52%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head">&#160;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#8216;spike_times&#8217;:</td>
+<td>[]</td>
+</tr>
+</tbody>
+</table>
+<p>}</p>
+</div>
+</div>
+<div class="section" id="specification-of-synaptic-plasticity">
+<h2>Specification of synaptic plasticity<a class="headerlink" href="#specification-of-synaptic-plasticity" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="synapsedynamics">
+<h3>SynapseDynamics<a class="headerlink" href="#synapsedynamics" title="Permalink to this headline">¶</a></h3>
+<p>For specifying synapse short-term (faciliation, depression) and long-term
+(STDP) plasticity. To be passed as the <cite>synapse_dynamics</cite> argument to
+<cite>Projection.__init__()</cite> or <cite>connect()</cite>.</p>
+<p><strong>__init__(self, fast=None, slow=None)</strong></p>
+<p>Create a new specification for a dynamic synapse, combining a <cite>fast</cite>
+component (short-term facilitation/depression) and a <cite>slow</cite> component
+(long-term potentiation/depression).</p>
+<p><strong>describe(self, template=&#8217;synapsedynamics_default.txt&#8217;, engine=&#8217;default&#8217;)</strong></p>
+<p>Returns a human-readable description of the synapse dynamics.</p>
+<p>The output may be customized by specifying a different template
+togther with an associated template engine (see <code class="docutils literal"><span class="pre">pyNN.descriptions</span></code>).</p>
+<p>If template is None, then a dictionary containing the template context
+will be returned.</p>
+</div>
+<div class="section" id="stdpmechanism">
+<h3>STDPMechanism<a class="headerlink" href="#stdpmechanism" title="Permalink to this headline">¶</a></h3>
+<p>Specification of STDP models.</p>
+<p><strong>__init__(self, timing_dependence=None, weight_dependence=None, voltage_dependence=None, dendritic_delay_fraction=1.0)</strong></p>
+<p><strong>describe(self, template=&#8217;stdpmechanism_default.txt&#8217;, engine=&#8217;default&#8217;)</strong></p>
+<p>Returns a human-readable description of the STDP mechanism.</p>
+<p>The output may be customized by specifying a different template
+togther with an associated template engine (see <code class="docutils literal"><span class="pre">pyNN.descriptions</span></code>).</p>
+<p>If template is None, then a dictionary containing the template context
+will be returned.</p>
+</div>
+<div class="section" id="tsodyksmarkrammechanism">
+<h3>TsodyksMarkramMechanism<a class="headerlink" href="#tsodyksmarkrammechanism" title="Permalink to this headline">¶</a></h3>
+<p><strong>__init__(self, U=0.5, tau_rec=100.0, tau_facil=0.0, u0=0.0, x0=1.0, y0=0.0)</strong></p>
+</div>
+<div class="section" id="additiveweightdependence">
+<h3>AdditiveWeightDependence<a class="headerlink" href="#additiveweightdependence" title="Permalink to this headline">¶</a></h3>
+<p>The amplitude of the weight change is fixed for depression (<cite>A_minus</cite>)
+and for potentiation (<cite>A_plus</cite>).
+If the new weight would be less than <cite>w_min</cite> it is set to <cite>w_min</cite>. If it would
+be greater than <cite>w_max</cite> it is set to <cite>w_max</cite>.</p>
+<p><strong>__init__(self, w_min=0.0, w_max=1.0, A_plus=0.01, A_minus=0.01)</strong></p>
+</div>
+<div class="section" id="multiplicativeweightdependence">
+<h3>MultiplicativeWeightDependence<a class="headerlink" href="#multiplicativeweightdependence" title="Permalink to this headline">¶</a></h3>
+<p>The amplitude of the weight change depends on the current weight.
+For depression, Dw propto w-w_min
+For potentiation, Dw propto w_max-w</p>
+<p><strong>__init__(self, w_min=0.0, w_max=1.0, A_plus=0.01, A_minus=0.01)</strong></p>
+</div>
+<div class="section" id="additivepotentiationmultiplicativedepression">
+<h3>AdditivePotentiationMultiplicativeDepression<a class="headerlink" href="#additivepotentiationmultiplicativedepression" title="Permalink to this headline">¶</a></h3>
+<p>The amplitude of the weight change depends on the current weight for
+depression (Dw propto w-w_min) and is fixed for potentiation.</p>
+<p><strong>__init__(self, w_min=0.0, w_max=1.0, A_plus=0.01, A_minus=0.01)</strong></p>
+</div>
+<div class="section" id="gutigweightdependence">
+<h3>GutigWeightDependence<a class="headerlink" href="#gutigweightdependence" title="Permalink to this headline">¶</a></h3>
+<p>The amplitude of the weight change depends on the current weight.
+For depression, Dw propto w-w_min
+For potentiation, Dw propto w_max-w</p>
+<p><strong>__init__(self, w_min=0.0, w_max=1.0, A_plus=0.01, A_minus=0.01, mu_plus=0.5, mu_minus=0.5)</strong></p>
+</div>
+<div class="section" id="spikepairrule">
+<h3>SpikePairRule<a class="headerlink" href="#spikepairrule" title="Permalink to this headline">¶</a></h3>
+<p><strong>__init__(self, tau_plus=20.0, tau_minus=20.0)</strong></p>
+</div>
+</div>
+<div class="section" id="current-injection">
+<h2>Current injection<a class="headerlink" href="#current-injection" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="dcsource">
+<h3>DCSource<a class="headerlink" href="#dcsource" title="Permalink to this headline">¶</a></h3>
+<p>Source producing a single pulse of current of constant amplitude.</p>
+<p><strong>__init__(self, amplitude=1.0, start=0.0, stop=None)</strong></p>
+<p>Construct the current source.</p>
+<blockquote>
+<div><p>Arguments:</p>
+<blockquote>
+<div><p>start     &#8211; onset time of pulse in ms</p>
+<p>stop      &#8211; end of pulse in ms</p>
+<p>amplitude &#8211; pulse amplitude in nA</p>
+</div></blockquote>
+</div></blockquote>
+<p><strong>inject_into(self, cell_list)</strong></p>
+<p>Inject this current source into some cells.</p>
+</div>
+<div class="section" id="stepcurrentsource">
+<h3>StepCurrentSource<a class="headerlink" href="#stepcurrentsource" title="Permalink to this headline">¶</a></h3>
+<p>A step-wise time-varying current source.</p>
+<p><strong>__init__(self, times, amplitudes)</strong></p>
+<p>Construct the current source.</p>
+<blockquote>
+<div><p>Arguments:</p>
+<blockquote>
+<div><p>times      &#8211; list/array of times at which the injected current changes.</p>
+<dl class="docutils">
+<dt>amplitudes &#8211; list/array of current amplitudes to be injected at the</dt>
+<dd>times specified in <cite>times</cite>.</dd>
+</dl>
+</div></blockquote>
+<p>The injected current will be zero up until the first time in <cite>times</cite>. The
+current will continue at the final value in <cite>amplitudes</cite> until the end
+of the simulation.</p>
+</div></blockquote>
+<p><strong>inject_into(self, cell_list)</strong></p>
+<p>Inject this current source into some cells.</p>
+</div>
+<div class="section" id="acsource">
+<h3>ACSource<a class="headerlink" href="#acsource" title="Permalink to this headline">¶</a></h3>
+<p>Source producing a single pulse of current of constant amplitude.</p>
+<p><strong>__init__(self, amplitude=1.0, offset=0.0, frequency=10, phase=0.0, start=0.0, stop=None)</strong></p>
+<p>Construct the current source.</p>
+<blockquote>
+<div><p>Arguments:</p>
+<blockquote>
+<div><p>start     &#8211; onset time of pulse in ms</p>
+<p>stop      &#8211; end of pulse in ms</p>
+<p>amplitude &#8211; pulse amplitude in nA</p>
+<p>sine_amp  &#8211; sine amplitude in nA</p>
+<p>frequency &#8211; frequency in Hz</p>
+<p>phase     &#8211; phase in degree</p>
+</div></blockquote>
+</div></blockquote>
+<p><strong>inject_into(self, cell_list)</strong></p>
+<p>Inject this current source into some cells.</p>
+</div>
+<div class="section" id="noisycurrentsource">
+<h3>NoisyCurrentSource<a class="headerlink" href="#noisycurrentsource" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>A Gaussian &#8220;white&#8221; noise current source. The current amplitude changes at fixed</dt>
+<dd>intervals, with the new value drawn from a Gaussian distribution.</dd>
+</dl>
+<p><strong>__init__(self, mean, stdev, dt=None, start=0.0, stop=None, rng=None)</strong></p>
+<p>Construct the current source.</p>
+<blockquote>
+<div><p>Required arguments:</p>
+<blockquote>
+<div><p>mean  &#8211; mean current amplitude in nA</p>
+<p>stdev &#8211; standard deviation of the current amplitude in nA</p>
+</div></blockquote>
+<p>Optional arguments:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>dt    &#8211; interval between updates of the current amplitude. Must be</dt>
+<dd>a multiple of the simulation time step. If not specified,
+the simulation time step will be used.</dd>
+<dt>start &#8211; onset of the current injection in ms. If not specified, the</dt>
+<dd>current will begin at the start of the simulation.</dd>
+<dt>stop  &#8211; end of the current injection in ms. If not specified, the</dt>
+<dd>current will continue until the end of the simulation.</dd>
+<dt>rng   &#8211; an RNG object from the <cite>pyNN.random</cite> module. For speed,</dt>
+<dd>this should be a <cite>NativeRNG</cite> instance (uses the simulator&#8217;s
+internal random number generator). For reproducibility
+across simulators, use one of the other RNG types. If not
+specified, a NumpyRNG is used.</dd>
+</dl>
+</div></blockquote>
+</div></blockquote>
+<p><strong>inject_into(self, cell_list)</strong></p>
+<p>Inject this current source into some cells.</p>
+</div>
+</div>
+<div class="section" id="file-formats">
+<h2>File formats<a class="headerlink" href="#file-formats" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="basefile">
+<h3>BaseFile<a class="headerlink" href="#basefile" title="Permalink to this headline">¶</a></h3>
+<p>Base class for PyNN File classes.</p>
+<p><strong>__init__(self, filename, mode=&#8217;r&#8217;)</strong></p>
+<p>Open a file with the given filename and mode.</p>
+<p><strong>close(self)</strong></p>
+<p>Close the file.</p>
+<p><strong>get_metadata(self)</strong></p>
+<p>Read metadata from the file and return a dict.</p>
+<p><strong>read(self)</strong></p>
+<p>Read data from the file and return a NumPy array.</p>
+<p><strong>rename(self, filename)</strong></p>
+<p><strong>write(self, data, metadata)</strong></p>
+<p>Write data and metadata to file. <cite>data</cite> should be a NumPy array,
+<cite>metadata</cite> should be a dictionary.</p>
+</div>
+<div class="section" id="standardtextfile">
+<h3>StandardTextFile<a class="headerlink" href="#standardtextfile" title="Permalink to this headline">¶</a></h3>
+<p>Data and metadata is written as text. Metadata is written at the top of the
+file, with each line preceded by &#8220;#&#8221;. Data is written with one data point per line.</p>
+</div>
+<div class="section" id="picklefile">
+<h3>PickleFile<a class="headerlink" href="#picklefile" title="Permalink to this headline">¶</a></h3>
+<p>Data and metadata are pickled and saved to file.</p>
+</div>
+<div class="section" id="numpybinaryfile">
+<h3>NumpyBinaryFile<a class="headerlink" href="#numpybinaryfile" title="Permalink to this headline">¶</a></h3>
+<p>Data and metadata are saved in .npz format, which is a zipped archive of
+arrays.</p>
+</div>
+<div class="section" id="hdf5arrayfile">
+<h3>HDF5ArrayFile<a class="headerlink" href="#hdf5arrayfile" title="Permalink to this headline">¶</a></h3>
+<p>Data are saved as an array within a node named &#8220;data&#8221;. Metadata are
+saved as attributes of this node.</p>
+</div>
+</div>
+<div class="section" id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="invalidparametervalueerror">
+<h3>InvalidParameterValueError<a class="headerlink" href="#invalidparametervalueerror" title="Permalink to this headline">¶</a></h3>
+<p>Inappropriate parameter value</p>
+</div>
+<div class="section" id="nonexistentparametererror">
+<h3>NonExistentParameterError<a class="headerlink" href="#nonexistentparametererror" title="Permalink to this headline">¶</a></h3>
+<p>Model parameter does not exist.</p>
+</div>
+<div class="section" id="invaliddimensionserror">
+<h3>InvalidDimensionsError<a class="headerlink" href="#invaliddimensionserror" title="Permalink to this headline">¶</a></h3>
+<p>Argument has inappropriate shape/dimensions.</p>
+</div>
+<div class="section" id="connectionerror">
+<h3>ConnectionError<a class="headerlink" href="#connectionerror" title="Permalink to this headline">¶</a></h3>
+<p>Attempt to create an invalid connection or access a non-existent connection.</p>
+</div>
+<div class="section" id="invalidmodelerror">
+<h3>InvalidModelError<a class="headerlink" href="#invalidmodelerror" title="Permalink to this headline">¶</a></h3>
+<p>Attempt to use a non-existent model type.</p>
+</div>
+<div class="section" id="roundingwarning">
+<h3>RoundingWarning<a class="headerlink" href="#roundingwarning" title="Permalink to this headline">¶</a></h3>
+<p>The argument has been rounded to a lower level of precision by the simulator.</p>
+</div>
+<div class="section" id="nothingtowriteerror">
+<h3>NothingToWriteError<a class="headerlink" href="#nothingtowriteerror" title="Permalink to this headline">¶</a></h3>
+<p>There is no data available to write.</p>
+</div>
+<div class="section" id="invalidweighterror">
+<h3>InvalidWeightError<a class="headerlink" href="#invalidweighterror" title="Permalink to this headline">¶</a></h3>
+<p>Invalid value for the synaptic weight.</p>
+</div>
+<div class="section" id="notlocalerror">
+<h3>NotLocalError<a class="headerlink" href="#notlocalerror" title="Permalink to this headline">¶</a></h3>
+<p>Attempt to access a cell or connection that does not exist on this node (but exists elsewhere).</p>
+</div>
+<div class="section" id="recordingerror">
+<h3>RecordingError<a class="headerlink" href="#recordingerror" title="Permalink to this headline">¶</a></h3>
+<p>Attempt to record a variable that does not exist for this cell type.</p>
+</div>
+</div>
+<div class="section" id="the-random-module">
+<h2>The random module<a class="headerlink" href="#the-random-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="numpyrng">
+<h3>NumpyRNG<a class="headerlink" href="#numpyrng" title="Permalink to this headline">¶</a></h3>
+<p>Wrapper for the numpy.random.RandomState class (Mersenne Twister PRNG).</p>
+<p><strong>__getattr__(self, name)</strong></p>
+<p>This is to give the PyNN RNGs the same methods as the wrapped RNGs
+(numpy.random.RandomState or the GSL RNGs.)</p>
+<p><strong>__init__(self, seed=None, parallel_safe=True)</strong></p>
+<p><strong>describe(self)</strong></p>
+<p><strong>next(self, n=1, distribution=&#8217;uniform&#8217;, parameters=[], mask_local=None)</strong></p>
+<p>Return n random numbers from the distribution.</p>
+<blockquote>
+<div>If n &gt;= 0, return a numpy array,
+if n &lt; 0, raise an Exception.</div></blockquote>
+</div>
+<div class="section" id="gslrng">
+<h3>GSLRNG<a class="headerlink" href="#gslrng" title="Permalink to this headline">¶</a></h3>
+<p>Wrapper for the GSL random number generators.</p>
+<p><strong>__getattr__(self, name)</strong></p>
+<p>This is to give GSLRNG the same methods as the GSL RNGs.</p>
+<p><strong>__init__(self, seed=None, type=&#8217;mt19937&#8217;, parallel_safe=True)</strong></p>
+<p><strong>next(self, n=1, distribution=&#8217;uniform&#8217;, parameters=[], mask_local=None)</strong></p>
+<p>Return n random numbers from the distribution.</p>
+<blockquote>
+<div><p>If n &gt;= 0, return a numpy array,</p>
+<p>if n &lt; 0, raise an Exception.</p>
+</div></blockquote>
+</div>
+<div class="section" id="nativerng">
+<h3>NativeRNG<a class="headerlink" href="#nativerng" title="Permalink to this headline">¶</a></h3>
+<p>Signals that the simulator&#8217;s own native RNG should be used.
+Each simulator module should implement a class of the same name which
+inherits from this and which sets the seed appropriately.</p>
+<p><strong>__init__(self, seed=None)</strong></p>
+<p><strong>next(self, n=1, distribution=&#8217;uniform&#8217;, parameters=[], mask_local=None)</strong></p>
+<p>Return n random numbers from the distribution.</p>
+<blockquote>
+<div><p>If n is 1, return a float, if n &gt; 1, return a Numpy array,</p>
+<p>if n &lt;= 0, raise an Exception.</p>
+</div></blockquote>
+</div>
+<div class="section" id="randomdistribution">
+<h3>RandomDistribution<a class="headerlink" href="#randomdistribution" title="Permalink to this headline">¶</a></h3>
+<p>Class which defines a next(n) method which returns an array of n random
+numbers from a given distribution.</p>
+<p><strong>__init__(self, distribution=&#8217;uniform&#8217;, parameters=[], rng=None, boundaries=None, constrain=&#8217;clip&#8217;)</strong></p>
+<p>If present, rng should be a NumpyRNG or GSLRNG object.
+distribution should be the name of a method supported by the underlying</p>
+<blockquote>
+<div>random number generator object.</div></blockquote>
+<dl class="docutils">
+<dt>parameters should be a list or tuple containing the arguments expected</dt>
+<dd>by the underlying method in the correct order. named arguments are
+not yet supported.</dd>
+<dt>boundaries is a tuple (min, max) used to specify explicitly, for distribution</dt>
+<dd>like Gaussian, Gamma or others, hard boundaries for the parameters. If
+parameters are drawn outside those boundaries, the policy applied will depend
+on the constrain parameter.</dd>
+<dt>constrain control the policy for weights out of the specified boundaries.</dt>
+<dd>If &#8220;clip&#8221;, random numbers are clipped to the boundaries.
+If &#8220;redraw&#8221;, random numbers are drawn till they fall within the boundaries.</dd>
+<dt>Note that NumpyRNG and GSLRNG distributions may not have the same names,</dt>
+<dd>e.g., &#8216;normal&#8217; for NumpyRNG and &#8216;gaussian&#8217; for GSLRNG, and the
+arguments may also differ.</dd>
+</dl>
+<p><strong>next(self, n=1, mask_local=None)</strong></p>
+<p>Return n random numbers from the distribution.</p>
+</div>
+</div>
+<div class="section" id="the-utility-module">
+<h2>The utility module<a class="headerlink" href="#the-utility-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="colour-col-text">
+<h3>colour(col, text)<a class="headerlink" href="#colour-col-text" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="notify-msg-simulation-finished-subject-simulation-finished-smtphost-none-address-none">
+<h3>notify(msg=&#8217;Simulation finished.&#8217;, subject=&#8217;Simulation finished.&#8217;, smtphost=None, address=None)<a class="headerlink" href="#notify-msg-simulation-finished-subject-simulation-finished-smtphost-none-address-none" title="Permalink to this headline">¶</a></h3>
+<p>Send an e-mail stating that the simulation has finished.</p>
+</div>
+<div class="section" id="get-script-args-n-args-usage">
+<h3>get_script_args(n_args, usage=&#8217;&#8216;)<a class="headerlink" href="#get-script-args-n-args-usage" title="Permalink to this headline">¶</a></h3>
+<p>Get command line arguments.</p>
+<p>This works by finding the name of the main script and assuming any
+arguments after this in sys.argv are arguments to the script.
+It would be nicer to use optparse, but this doesn&#8217;t seem to work too well
+with nrniv or mpirun.</p>
+</div>
+<div class="section" id="init-logging-logfile-debug-false-num-processes-1-rank-0-level-none">
+<h3>init_logging(logfile, debug=False, num_processes=1, rank=0, level=None)<a class="headerlink" href="#init-logging-logfile-debug-false-num-processes-1-rank-0-level-none" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="timer">
+<h3>Timer<a class="headerlink" href="#timer" title="Permalink to this headline">¶</a></h3>
+<p>For timing script execution.</p>
+<p><strong>time_in_words(s)</strong></p>
+<dl class="docutils">
+<dt>Formats a time in seconds as a string containing the time in days,</dt>
+<dd><p class="first">hours, minutes, seconds. Examples:</p>
+<div class="last highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">time_in_words</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">1 second</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">time_in_words</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
+<span class="go">2 minutes, 3 seconds</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">time_in_words</span><span class="p">(</span><span class="mi">24</span><span class="o">*</span><span class="mi">3600</span><span class="p">)</span>
+<span class="go">1 day</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p><strong>__init__(self)</strong></p>
+<p><strong>diff(self, format=None)</strong></p>
+<p>Return the time since the last time elapsedTime() or diff() was called.</p>
+<p><strong>elapsedTime(self, format=None)</strong></p>
+<p>Return the elapsed time in seconds but keep the clock running.</p>
+<p><strong>reset(self)</strong></p>
+<p>Reset the time to zero, and start the clock.</p>
+<p><strong>start(self)</strong></p>
+<p>Start timing.</p>
+</div>
+<div class="section" id="progressbar">
+<h3>ProgressBar<a class="headerlink" href="#progressbar" title="Permalink to this headline">¶</a></h3>
+<p>Create a progress bar in the shell.</p>
+<p><strong>__init__(self, min_value=0, max_value=100, width=77, **kwargs)</strong></p>
+<p><strong>build_bar(self)</strong></p>
+<p>Figure new percent complete, and rebuild the bar string base on
+self.amount.</p>
+<p><strong>increment_amount(self, add_amount=1)</strong></p>
+<p>Increment self.amount by &#8216;add_ammount&#8217; or default to incrementing
+by 1, and then rebuild the bar string.</p>
+<p><strong>update_amount(self, new_amount=None)</strong></p>
+<p>Update self.amount with &#8216;new_amount&#8217;, and then rebuild the bar
+string.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">PyNN API version 0.7</a><ul>
+<li><a class="reference internal" href="#simulation-setup-and-control">Simulation setup and control</a><ul>
+<li><a class="reference internal" href="#setup-timestep-0-1-min-delay-0-1-max-delay-10-0-extra-params">setup(timestep=0.1, min_delay=0.1, max_delay=10.0, **extra_params)</a></li>
+<li><a class="reference internal" href="#end-compatible-output-true">end(compatible_output=True)</a></li>
+<li><a class="reference internal" href="#run-simtime">run(simtime)</a></li>
+<li><a class="reference internal" href="#reset">reset()</a></li>
+<li><a class="reference internal" href="#get-time-step">get_time_step()</a></li>
+<li><a class="reference internal" href="#get-current-time">get_current_time()</a></li>
+<li><a class="reference internal" href="#get-min-delay">get_min_delay()</a></li>
+<li><a class="reference internal" href="#get-max-delay">get_max_delay()</a></li>
+<li><a class="reference internal" href="#rank">rank()</a></li>
+<li><a class="reference internal" href="#num-processes">num_processes()</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#object-oriented-interface-for-creating-and-recording-networks">Object-oriented interface for creating and recording networks</a><ul>
+<li><a class="reference internal" href="#population">Population</a></li>
+<li><a class="reference internal" href="#populationview">PopulationView</a></li>
+<li><a class="reference internal" href="#assembly">Assembly</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#classes-for-defining-spatial-structure">Classes for defining spatial structure</a><ul>
+<li><a class="reference internal" href="#space">Space</a></li>
+<li><a class="reference internal" href="#line">Line</a></li>
+<li><a class="reference internal" href="#grid2d">Grid2D</a></li>
+<li><a class="reference internal" href="#grid3d">Grid3D</a></li>
+<li><a class="reference internal" href="#randomstructure">RandomStructure</a></li>
+<li><a class="reference internal" href="#cuboid">Cuboid</a></li>
+<li><a class="reference internal" href="#sphere">Sphere</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#object-oriented-interface-for-connecting-populations-of-neurons">Object-oriented interface for connecting populations of neurons</a><ul>
+<li><a class="reference internal" href="#projection">Projection</a></li>
+<li><a class="reference internal" href="#alltoallconnector">AllToAllConnector</a></li>
+<li><a class="reference internal" href="#onetooneconnector">OneToOneConnector</a></li>
+<li><a class="reference internal" href="#fixedprobabilityconnector">FixedProbabilityConnector</a></li>
+<li><a class="reference internal" href="#distancedependentprobabilityconnector">DistanceDependentProbabilityConnector</a></li>
+<li><a class="reference internal" href="#fixednumberpreconnector">FixedNumberPreConnector</a></li>
+<li><a class="reference internal" href="#fixednumberpostconnector">FixedNumberPostConnector</a></li>
+<li><a class="reference internal" href="#fromlistconnector">FromListConnector</a></li>
+<li><a class="reference internal" href="#fromfileconnector">FromFileConnector</a></li>
+<li><a class="reference internal" href="#smallworldconnector">SmallWorldConnector</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#procedural-interface-for-creating-connecting-and-recording-networks">Procedural interface for creating, connecting and recording networks</a><ul>
+<li><a class="reference internal" href="#create-cellclass-cellparams-none-n-1">create(cellclass, cellparams=None, n=1)</a></li>
+<li><a class="reference internal" href="#connect-source-target-weight-0-0-delay-none-synapse-type-none-p-1-rng-none">connect(source, target, weight=0.0, delay=None, synapse_type=None, p=1, rng=None)</a></li>
+<li><a class="reference internal" href="#set-cells-param-val-none">set(cells, param, val=None)</a></li>
+<li><a class="reference internal" href="#initialize-cells-variable-value">initialize(cells, variable, value)</a></li>
+<li><a class="reference internal" href="#record-source-filename">record(source, filename)</a></li>
+<li><a class="reference internal" href="#id3">record(source, filename)</a></li>
+<li><a class="reference internal" href="#id4">record(source, filename)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#standard-neuron-models">Standard neuron models</a><ul>
+<li><a class="reference internal" href="#if-curr-exp">IF_curr_exp</a></li>
+<li><a class="reference internal" href="#if-curr-alpha">IF_curr_alpha</a></li>
+<li><a class="reference internal" href="#if-cond-exp">IF_cond_exp</a></li>
+<li><a class="reference internal" href="#if-cond-alpha">IF_cond_alpha</a></li>
+<li><a class="reference internal" href="#eif-cond-exp-isfa-ista">EIF_cond_exp_isfa_ista</a></li>
+<li><a class="reference internal" href="#eif-cond-alpha-isfa-ista">EIF_cond_alpha_isfa_ista</a></li>
+<li><a class="reference internal" href="#if-facets-hardware1">IF_facets_hardware1</a></li>
+<li><a class="reference internal" href="#hh-cond-exp">HH_cond_exp</a></li>
+<li><a class="reference internal" href="#spikesourcepoisson">SpikeSourcePoisson</a></li>
+<li><a class="reference internal" href="#spikesourcearray">SpikeSourceArray</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#specification-of-synaptic-plasticity">Specification of synaptic plasticity</a><ul>
+<li><a class="reference internal" href="#synapsedynamics">SynapseDynamics</a></li>
+<li><a class="reference internal" href="#stdpmechanism">STDPMechanism</a></li>
+<li><a class="reference internal" href="#tsodyksmarkrammechanism">TsodyksMarkramMechanism</a></li>
+<li><a class="reference internal" href="#additiveweightdependence">AdditiveWeightDependence</a></li>
+<li><a class="reference internal" href="#multiplicativeweightdependence">MultiplicativeWeightDependence</a></li>
+<li><a class="reference internal" href="#additivepotentiationmultiplicativedepression">AdditivePotentiationMultiplicativeDepression</a></li>
+<li><a class="reference internal" href="#gutigweightdependence">GutigWeightDependence</a></li>
+<li><a class="reference internal" href="#spikepairrule">SpikePairRule</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#current-injection">Current injection</a><ul>
+<li><a class="reference internal" href="#dcsource">DCSource</a></li>
+<li><a class="reference internal" href="#stepcurrentsource">StepCurrentSource</a></li>
+<li><a class="reference internal" href="#acsource">ACSource</a></li>
+<li><a class="reference internal" href="#noisycurrentsource">NoisyCurrentSource</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#file-formats">File formats</a><ul>
+<li><a class="reference internal" href="#basefile">BaseFile</a></li>
+<li><a class="reference internal" href="#standardtextfile">StandardTextFile</a></li>
+<li><a class="reference internal" href="#picklefile">PickleFile</a></li>
+<li><a class="reference internal" href="#numpybinaryfile">NumpyBinaryFile</a></li>
+<li><a class="reference internal" href="#hdf5arrayfile">HDF5ArrayFile</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#exceptions">Exceptions</a><ul>
+<li><a class="reference internal" href="#invalidparametervalueerror">InvalidParameterValueError</a></li>
+<li><a class="reference internal" href="#nonexistentparametererror">NonExistentParameterError</a></li>
+<li><a class="reference internal" href="#invaliddimensionserror">InvalidDimensionsError</a></li>
+<li><a class="reference internal" href="#connectionerror">ConnectionError</a></li>
+<li><a class="reference internal" href="#invalidmodelerror">InvalidModelError</a></li>
+<li><a class="reference internal" href="#roundingwarning">RoundingWarning</a></li>
+<li><a class="reference internal" href="#nothingtowriteerror">NothingToWriteError</a></li>
+<li><a class="reference internal" href="#invalidweighterror">InvalidWeightError</a></li>
+<li><a class="reference internal" href="#notlocalerror">NotLocalError</a></li>
+<li><a class="reference internal" href="#recordingerror">RecordingError</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-random-module">The random module</a><ul>
+<li><a class="reference internal" href="#numpyrng">NumpyRNG</a></li>
+<li><a class="reference internal" href="#gslrng">GSLRNG</a></li>
+<li><a class="reference internal" href="#nativerng">NativeRNG</a></li>
+<li><a class="reference internal" href="#randomdistribution">RandomDistribution</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-utility-module">The utility module</a><ul>
+<li><a class="reference internal" href="#colour-col-text">colour(col, text)</a></li>
+<li><a class="reference internal" href="#notify-msg-simulation-finished-subject-simulation-finished-smtphost-none-address-none">notify(msg=&#8217;Simulation finished.&#8217;, subject=&#8217;Simulation finished.&#8217;, smtphost=None, address=None)</a></li>
+<li><a class="reference internal" href="#get-script-args-n-args-usage">get_script_args(n_args, usage=&#8217;&#8216;)</a></li>
+<li><a class="reference internal" href="#init-logging-logfile-debug-false-num-processes-1-rank-0-level-none">init_logging(logfile, debug=False, num_processes=1, rank=0, level=None)</a></li>
+<li><a class="reference internal" href="#timer">Timer</a></li>
+<li><a class="reference internal" href="#progressbar">ProgressBar</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../api.html"
+                        title="previous chapter">API documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="api-0.6.html"
+                        title="next chapter">PyNN API version 0.6</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/api-0.7.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="api-0.6.html" title="PyNN API version 0.6"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../api.html" title="API documentation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.7 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api.html" >API documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2017, the PyNN community.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>

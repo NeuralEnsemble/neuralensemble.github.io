@@ -1,0 +1,334 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Developers’ guide &#8212; PyNN 0.7 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.7',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.7 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="developers-guide">
+<h1>Developers&#8217; guide<a class="headerlink" href="#developers-guide" title="Permalink to this headline">¶</a></h1>
+<p>This guide contains information about contributing to PyNN development, and aims
+to explain the overall architecture and some of the internal details of the
+PyNN codebase.</p>
+<p>Discussions about PyNN take place in the <a class="reference external" href="http://groups.google.com/group/neuralensemble">NeuralEnsemble Google Group</a>.</p>
+<div class="section" id="contributing-to-pynn">
+<h2>Contributing to PyNN<a class="headerlink" href="#contributing-to-pynn" title="Permalink to this headline">¶</a></h2>
+<p>If you find a bug or would like to add a new feature to PyNN, the first thing to
+do is to create a ticket for it at <a class="reference external" href="http://neuralensemble.org/trac/PyNN/newticket">http://neuralensemble.org/trac/PyNN/newticket</a>.
+You do not need an account, but it is better if you do have one since then we
+can see who reported it, and you have a better chance of avoiding the spam filter.</p>
+<p>If you know how to fix the bug, please attach a patch to the ticket, and please
+also provide a unit test that fails with the original code and passes when your
+patch is applied. If you would like commit rights for the Subversion repository,
+please contact us.</p>
+<p>If you do have commit rights, please make sure <em>all</em> the tests pass before you
+make a commit (see below).</p>
+</div>
+<div class="section" id="code-style">
+<h2>Code style<a class="headerlink" href="#code-style" title="Permalink to this headline">¶</a></h2>
+<p>We try to stay fairly close to <a class="reference external" href="http://www.python.org/dev/peps/pep-0008/">PEP8</a>. Please note in particular:</p>
+<blockquote>
+<div><ul class="simple">
+<li>indentation of four spaces, no tabs</li>
+<li>single space around most operators, but no space around the &#8216;=&#8217; sign when
+used to indicate a keyword argument or a default parameter value.</li>
+<li>some function/method names in PyNN use <code class="docutils literal"><span class="pre">mixedCase</span></code>, but these will
+gradually be deprecated and replaced with <code class="docutils literal"><span class="pre">lower_case_with_underscores</span></code>.
+Any new functions or methods should use the latter.</li>
+<li>we currently target versions 2.5 to 2.7. The main consequence of this is
+that <code class="docutils literal"><span class="pre">except</span> <span class="pre">Exception</span></code> can&#8217;t use the <code class="docutils literal"><span class="pre">as</span></code> statement, since this is
+not supported in 2.5.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
+<p>Running the PyNN test suite requires the <em>nose_</em> and <em>mock_</em> packages, and
+optionally the <em>coverage_</em> package. To run the entire test suite, in the
+<code class="docutils literal"><span class="pre">test</span></code> subdirectory of the source tree:</p>
+<div class="highlight-default"><div class="highlight"><pre>$ nosetests
+</pre></div>
+</div>
+<p>To see how well the codebase is covered by the tests, run:</p>
+<div class="highlight-default"><div class="highlight"><pre>$ nosetests --with-coverage --cover-package=pyNN --cover-erase
+</pre></div>
+</div>
+<p>There are currently two sorts of tests, unit tests, which aim to exercise
+small pieces of code such as individual functions and methods, and system tests
+which aim to test that all the pieces of the system work together as expected.</p>
+<p>If you add a new feature to PyNN, you should write both unit and system tests.</p>
+<p>Unit tests should where necessary make use of mock/fake/stub/dummy objects to
+isolate the component under test as well as possible. Except when testing a
+specific simulator interface, unit tests should be able to run without a
+simulator installed.</p>
+<p>System tests should be written so that they can run with any of the simulators.
+The suggested way to do this is to write test functions in a separate file that
+take a simulator module as an argument, and then call these functions from
+<code class="docutils literal"><span class="pre">test_neuron.py</span></code>, <code class="docutils literal"><span class="pre">test_nest.py</span></code>, etc.</p>
+<p>The <code class="docutils literal"><span class="pre">test/unsorted</span></code> directory contains a number of old tests that are either
+no longer useful or have not yet been adapted to the nose framework. These are
+not part of the test suite, but we are gradually adapting those tests that are
+useful and deleting the others.</p>
+</div>
+<div class="section" id="structure-of-the-codebase">
+<h2>Structure of the codebase<a class="headerlink" href="#structure-of-the-codebase" title="Permalink to this headline">¶</a></h2>
+<p>PyNN is both an API for simulator-independent model descriptions and an
+implementation of that API for a number of simulators.</p>
+<p>If you wish to add PyNN support for your own simulator, you are welcome to add
+it as part of the main PyNN codebase, or you can maintain it separately. The
+advantage of the former is that we can help maintain it, and keep it up to date
+as the API evolves.</p>
+<p>A PyNN-compliant interface is not required to use any of the code from the
+<code class="docutils literal"><span class="pre">pyNN</span></code> package, it can implement the API entirely independently. However, by
+basing an interface on the &#8220;common&#8221; implementation you can save yourself a lot
+of work, since once you implement a small number of low-level functions and
+classes, you get the rest of the API for free.</p>
+<div class="section" id="the-common-implementation">
+<h3>The common implementation<a class="headerlink" href="#the-common-implementation" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="recording">
+<h4>Recording<a class="headerlink" href="#recording" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal"><span class="pre">recording</span></code> modules provides a base class <code class="docutils literal"><span class="pre">Recorder</span></code> that exposes
+methods <code class="docutils literal"><span class="pre">record()</span></code>, <code class="docutils literal"><span class="pre">get()</span></code>, <code class="docutils literal"><span class="pre">write()</span></code> and <code class="docutils literal"><span class="pre">count()</span></code>. Each simulator
+using the common implementation then subclasses this base class, and must
+implement at least the methods <code class="docutils literal"><span class="pre">_record()</span></code>, <code class="docutils literal"><span class="pre">_get()</span></code> and <code class="docutils literal"><span class="pre">_local_count()</span></code>.
+Each <code class="docutils literal"><span class="pre">Recorder</span></code> instance records only a single variable, whose name is passed
+in the constructor.</p>
+<p>By default, PyNN scales recorded data to the standard PyNN units (mV for voltage,
+etc.), reorders columns if necessary, and adds initial values to the beginning
+of the recording if the simulator does not record the value at time 0. In this
+way, the structure of the output data is harmonized between simulators. For
+large datasets, this can be very time-consuming, and so this restructuring can
+be turned off by setting the <code class="docutils literal"><span class="pre">compatible_output</span></code> flag to <code class="docutils literal"><span class="pre">False</span></code>.</p>
+</div>
+</div>
+<div class="section" id="the-nest-interface">
+<h3>The NEST interface<a class="headerlink" href="#the-nest-interface" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="the-neuron-interface">
+<h3>The NEURON interface<a class="headerlink" href="#the-neuron-interface" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="the-pcsim-interface">
+<h3>The PCSIM interface<a class="headerlink" href="#the-pcsim-interface" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="the-brian-interface">
+<h3>The Brian interface<a class="headerlink" href="#the-brian-interface" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="adding-a-new-simulator-interface">
+<h2>Adding a new simulator interface<a class="headerlink" href="#adding-a-new-simulator-interface" title="Permalink to this headline">¶</a></h2>
+<p>The quickest way to add an interface for a new simulator is to implement the
+&#8220;internal API&#8221;, described below. Each simulator interface is implemented as
+a sub-package within the <code class="docutils literal"><span class="pre">pyNN</span></code> package. The suggested layout for this
+sub-package is as follows:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="o">|</span>\<span class="n">_</span>   <span class="n">__init__</span><span class="o">.</span><span class="n">py</span>
+<span class="o">|</span>\<span class="n">_</span>   <span class="n">cells</span><span class="o">.</span><span class="n">py</span>
+<span class="o">|</span>\<span class="n">_</span>   <span class="n">connectors</span><span class="o">.</span><span class="n">py</span>
+<span class="o">|</span>\<span class="n">_</span>   <span class="n">electrodes</span><span class="o">.</span><span class="n">py</span>
+<span class="o">|</span>\<span class="n">_</span>   <span class="n">recording</span><span class="o">.</span><span class="n">py</span>
+<span class="o">|</span>\<span class="n">_</span>   <span class="n">simulator</span><span class="o">.</span><span class="n">py</span>
+ \<span class="n">_</span>   <span class="n">synapses</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>The only two files that are <em>required</em> are <code class="docutils literal"><span class="pre">__init__.py</span></code> and <code class="docutils literal"><span class="pre">simulator.py</span></code>:
+the contents of all the other modules being imported into <code class="docutils literal"><span class="pre">__init__.py</span></code>.</p>
+<p>[Maybe just provide a template, rather than discussing the whole thing]</p>
+<dl class="docutils">
+<dt>__init__:</dt>
+<dd>list_standard_models()  [surely this could be in common?]
+setup()
+end(), run(), set(), reset(), initialize(), get_X(), num_processes(), rank() may be
+imported from common provided common.simulator is set to the local
+<code class="docutils literal"><span class="pre">simulator</span></code> module.
+create -&gt; common.build_create(Population)
+connect = common.build_connect(Projection, FixedProbabilityConnector)
+record = common.build_record(&#8216;spikes&#8217;, simulator)
+record_v = common.build_record(&#8216;v&#8217;, simulator)
+record_gsyn = common.build_record(&#8216;gsyn&#8217;, simulator)</dd>
+</dl>
+</div>
+<div class="section" id="a-walk-through-the-lifecycle-of-a-simulation">
+<h2>A walk through the lifecycle of a simulation<a class="headerlink" href="#a-walk-through-the-lifecycle-of-a-simulation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="import-phase">
+<h3>Import phase<a class="headerlink" href="#import-phase" title="Permalink to this headline">¶</a></h3>
+<p>[What happens on import]</p>
+</div>
+<div class="section" id="setup-phase">
+<h3>Setup phase<a class="headerlink" href="#setup-phase" title="Permalink to this headline">¶</a></h3>
+<p>[What happens when calling setup()]</p>
+</div>
+<div class="section" id="creating-neurons">
+<h3>Creating neurons<a class="headerlink" href="#creating-neurons" title="Permalink to this headline">¶</a></h3>
+<p>On creating a Population...</p>
+<ul>
+<li><p class="first">create default structure, if none specified</p>
+</li>
+<li><dl class="first docutils">
+<dt>create StandardCellType instance (if using standard cells)</dt>
+<dd><ul class="first last simple">
+<li>check and translate parameters, translated parameters stored in parameters attribute</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">create recorders</p>
+</li>
+<li><p class="first">create neurons, determine local_mask</p>
+</li>
+</ul>
+<p>Finally, we set initial values for all neurons&#8217; state variables, e.g. membrane
+potential. The user may set these values later with a call to the initialize()
+method, but in case they don&#8217;t we set them here to default values. Defaults are
+set on a model-by-model basis: each StandardCellType subclass has a dictionary
+attribute called default_initial_values. [For now, these must be numeric values.
+It would be nice to allow them to be the names of parameters, allowing the
+initial membrane potential to be set to the resting membrane potential, for
+example]. This of course causes a problem - not yet resolved - for non
+standard cells. These initial values are immediately passed through to the
+simulator. We set initial values using the initialize() method, which in turn
+updates the initial_values attribute - we do not modify initial_values directly:
+probably it should be read-only.</p>
+</div>
+<div class="section" id="creating-connectors">
+<h3>Creating connectors<a class="headerlink" href="#creating-connectors" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="composing-synaptic-plasticity-models">
+<h3>Composing synaptic plasticity models<a class="headerlink" href="#composing-synaptic-plasticity-models" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="connecting-neurons">
+<h3>Connecting neurons<a class="headerlink" href="#connecting-neurons" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="instrumenting-the-network">
+<h3>Instrumenting the network<a class="headerlink" href="#instrumenting-the-network" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="running-a-simulation">
+<h3>Running a simulation<a class="headerlink" href="#running-a-simulation" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="retrieving-saving-recorded-data">
+<h3>Retrieving/saving recorded data<a class="headerlink" href="#retrieving-saving-recorded-data" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="finishing-up-or-resetting-for-a-new-run">
+<h3>Finishing up, or resetting for a new run<a class="headerlink" href="#finishing-up-or-resetting-for-a-new-run" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Developers&#8217; guide</a><ul>
+<li><a class="reference internal" href="#contributing-to-pynn">Contributing to PyNN</a></li>
+<li><a class="reference internal" href="#code-style">Code style</a></li>
+<li><a class="reference internal" href="#testing">Testing</a></li>
+<li><a class="reference internal" href="#structure-of-the-codebase">Structure of the codebase</a><ul>
+<li><a class="reference internal" href="#the-common-implementation">The common implementation</a><ul>
+<li><a class="reference internal" href="#recording">Recording</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-nest-interface">The NEST interface</a></li>
+<li><a class="reference internal" href="#the-neuron-interface">The NEURON interface</a></li>
+<li><a class="reference internal" href="#the-pcsim-interface">The PCSIM interface</a></li>
+<li><a class="reference internal" href="#the-brian-interface">The Brian interface</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#adding-a-new-simulator-interface">Adding a new simulator interface</a></li>
+<li><a class="reference internal" href="#a-walk-through-the-lifecycle-of-a-simulation">A walk through the lifecycle of a simulation</a><ul>
+<li><a class="reference internal" href="#import-phase">Import phase</a></li>
+<li><a class="reference internal" href="#setup-phase">Setup phase</a></li>
+<li><a class="reference internal" href="#creating-neurons">Creating neurons</a></li>
+<li><a class="reference internal" href="#creating-connectors">Creating connectors</a></li>
+<li><a class="reference internal" href="#composing-synaptic-plasticity-models">Composing synaptic plasticity models</a></li>
+<li><a class="reference internal" href="#connecting-neurons">Connecting neurons</a></li>
+<li><a class="reference internal" href="#instrumenting-the-network">Instrumenting the network</a></li>
+<li><a class="reference internal" href="#running-a-simulation">Running a simulation</a></li>
+<li><a class="reference internal" href="#retrieving-saving-recorded-data">Retrieving/saving recorded data</a></li>
+<li><a class="reference internal" href="#finishing-up-or-resetting-for-a-new-run">Finishing up, or resetting for a new run</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/developers_guide.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.7 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2017, the PyNN community.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>

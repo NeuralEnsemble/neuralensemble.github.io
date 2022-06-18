@@ -1,0 +1,303 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Standardised current sources &#8212; PyNN 0.7 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.7',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Synaptic plasticity" href="dynamicsynapses.html" />
+    <link rel="prev" title="Standardised neuron models" href="standardmodels.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="dynamicsynapses.html" title="Synaptic plasticity"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="standardmodels.html" title="Standardised neuron models"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.7 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="standardised-current-sources">
+<h1>Standardised current sources<a class="headerlink" href="#standardised-current-sources" title="Permalink to this headline">¶</a></h1>
+<p>Standard current sources are current sources models that are available in at least two of the simulation engines supported by PyNN. PyNN performs automatic translation of parameter names, types and units. Only a handful of models are currently available, but the list will be expanded in future releases.</p>
+<div class="section" id="current-sources">
+<h2>Current Sources<a class="headerlink" href="#current-sources" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="dcsource">
+<h3>DCSource<a class="headerlink" href="#dcsource" title="Permalink to this headline">¶</a></h3>
+<p>Source producing a single pulse of current of constant amplitude.</p>
+<p>Availability: NEST, NEURON, Brian</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="23%" />
+<col width="9%" />
+<col width="44%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Default value</th>
+<th class="head">Units</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>amplitude</td>
+<td>1.0</td>
+<td>nA</td>
+<td>pulse amplitude in nA</td>
+</tr>
+<tr class="row-odd"><td>start</td>
+<td>0</td>
+<td>ms</td>
+<td>onset time of pulse in ms</td>
+</tr>
+<tr class="row-even"><td>stop</td>
+<td>1000000.0</td>
+<td>ms</td>
+<td>end of pulse in ms</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="stepcurrentsource">
+<h3>StepCurrentSource<a class="headerlink" href="#stepcurrentsource" title="Permalink to this headline">¶</a></h3>
+<p>A step-wise time-varying current source.</p>
+<p>Availability: NEST, NEURON, Brian</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="14%" />
+<col width="6%" />
+<col width="64%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Default value</th>
+<th class="head">Units</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>amplitudes</td>
+<td>[]</td>
+<td>nA</td>
+<td>list/array of times at which the injected current changes.</td>
+</tr>
+<tr class="row-odd"><td>times</td>
+<td>[]</td>
+<td>ms</td>
+<td>list/array of times at which the injected current changes.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="acsource">
+<h3>ACSource<a class="headerlink" href="#acsource" title="Permalink to this headline">¶</a></h3>
+<p>A sine wave modulated current source</p>
+<p>Availability: NEST, NEURON, Brian</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="20%" />
+<col width="8%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Default value</th>
+<th class="head">Units</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>amplitude</td>
+<td>1.0</td>
+<td>nA</td>
+<td>pulse amplitude in nA</td>
+</tr>
+<tr class="row-odd"><td>start</td>
+<td>0</td>
+<td>ms</td>
+<td>onset time of pulse in ms</td>
+</tr>
+<tr class="row-even"><td>stop</td>
+<td>1000000.0</td>
+<td>ms</td>
+<td>end of pulse in ms</td>
+</tr>
+<tr class="row-odd"><td>frequency</td>
+<td>10.0</td>
+<td>Hz</td>
+<td>frequency of the oscillation</td>
+</tr>
+<tr class="row-even"><td>phase</td>
+<td>0</td>
+<td>deg</td>
+<td>phase in degree</td>
+</tr>
+<tr class="row-odd"><td>offset</td>
+<td>0</td>
+<td>nA</td>
+<td>offset of the oscillation in nA</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="noisycurrentsource">
+<h3>NoisyCurrentSource<a class="headerlink" href="#noisycurrentsource" title="Permalink to this headline">¶</a></h3>
+<p>A Gaussian &#8220;white&#8221; noise current source. The current amplitude changes at fixed
+intervals, with the new value drawn from a Gaussian distribution.</p>
+<p>Availability: NEST, NEURON, Brian</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="18%" />
+<col width="7%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Default value</th>
+<th class="head">Units</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>mean</td>
+<td>0.0</td>
+<td>nA</td>
+<td>mean value of the noise</td>
+</tr>
+<tr class="row-odd"><td>stdev</td>
+<td>1.0</td>
+<td>nA</td>
+<td>standard deviation of the noise</td>
+</tr>
+<tr class="row-even"><td>start</td>
+<td>0</td>
+<td>ms</td>
+<td>onset time of pulse in ms</td>
+</tr>
+<tr class="row-odd"><td>stop</td>
+<td>1000000.0</td>
+<td>ms</td>
+<td>end of pulse in ms</td>
+</tr>
+<tr class="row-even"><td>dt</td>
+<td>0.1</td>
+<td>ms</td>
+<td>interval between updates of the current</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Standardised current sources</a><ul>
+<li><a class="reference internal" href="#current-sources">Current Sources</a><ul>
+<li><a class="reference internal" href="#dcsource">DCSource</a></li>
+<li><a class="reference internal" href="#stepcurrentsource">StepCurrentSource</a></li>
+<li><a class="reference internal" href="#acsource">ACSource</a></li>
+<li><a class="reference internal" href="#noisycurrentsource">NoisyCurrentSource</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="standardmodels.html"
+                        title="previous chapter">Standardised neuron models</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="dynamicsynapses.html"
+                        title="next chapter">Synaptic plasticity</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/standardsources.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="dynamicsynapses.html" title="Synaptic plasticity"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="standardmodels.html" title="Standardised neuron models"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.7 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2017, the PyNN community.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>

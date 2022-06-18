@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Synaptic plasticity &#8212; PyNN 0.7 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.7',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Using non-standard/native cell and synapse models" href="nonstandardmodels.html" />
+    <link rel="prev" title="Standardised current sources" href="standardsources.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="nonstandardmodels.html" title="Using non-standard/native cell and synapse models"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="standardsources.html" title="Standardised current sources"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.7 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="synaptic-plasticity">
+<h1>Synaptic plasticity<a class="headerlink" href="#synaptic-plasticity" title="Permalink to this headline">¶</a></h1>
+<p>The default type of synaptic connection in PyNN is static, with fixed synaptic
+weights. To model dynamic synapses, for which the synaptic weight (and possibly
+other properties, such as rise-time) varies depending on the recent history of
+post- and/or pre-synaptic activity, we use the same idea as for neurons, of
+standardized, named models that have the same interface and behaviour across
+simulators, even if the underlying implementation may be very different.</p>
+<p>Where the approach for dynamic synapses differs from that for neurons is that
+we attempt a greater degree of compositionality, i.e. we decompose models into
+a number of components, for example for short-term and long-term dynamics, or
+for the timing-dependence and the weight-dependence of STDP rules, that can
+then be composed in different ways.</p>
+<p>The advantage of this is that if we have <code class="docutils literal"><span class="pre">n</span></code> differerent models for  component
+&#8216;&#8217;A&#8217;&#8217; and <code class="docutils literal"><span class="pre">m</span></code> models for component &#8216;&#8217;B&#8217;&#8216;, then we require only <code class="docutils literal"><span class="pre">n</span> <span class="pre">+</span> <span class="pre">m</span></code> models
+rather than <code class="docutils literal"><span class="pre">n</span> <span class="pre">x</span> <span class="pre">m</span></code>, which had advantages in terms of code-simplicity and in
+shorter model names. The disadvantage is that not all combinations may exist, if
+the underlying simulator implements composite models rather than using
+components itself: in this situation, PyNN checks whether a given composite model
+<code class="docutils literal"><span class="pre">AB</span></code> exists for a given simulator and raises an Exception if it does not.</p>
+<p>The composite approach may be extended to neuron models in future versions of the
+PyNN interface depending on the experience with composite synapse models.</p>
+<p>To set the model of synapse dynamics to use for the connections of a given
+<code class="docutils literal"><span class="pre">Projection</span></code>, we pass a <code class="docutils literal"><span class="pre">SynapseDynamics</span></code> object as the <code class="docutils literal"><span class="pre">synapse_dynamics</span></code>
+keyword argument to the <code class="docutils literal"><span class="pre">Projection</span></code> constructor.</p>
+<p>The <code class="docutils literal"><span class="pre">SynapseDynamics</span></code> object is simply a container that has attributes <code class="docutils literal"><span class="pre">fast</span></code>,
+which, if set, is an instance of a subclass of the abstract class
+<code class="docutils literal"><span class="pre">ShortTermPlasticityMechanism</span></code>, and <code class="docutils literal"><span class="pre">slow</span></code>, which is an instance of a
+subclass of the abstract class <code class="docutils literal"><span class="pre">STDPMechanism</span></code>.</p>
+<p>Only a single subclass of <code class="docutils literal"><span class="pre">ShortTermPlasticityMechanism</span></code> is currently available in
+PyNN: <code class="docutils literal"><span class="pre">TsodkysMarkramMechanism</span></code>.</p>
+<p><code class="docutils literal"><span class="pre">STDPMechanism</span></code> objects are further decomposed into components for the
+timing-dependence, weight-dependence and post-synaptic voltage-dependence of
+the mechanism.</p>
+<p>An example of defining a <code class="docutils literal"><span class="pre">Projection</span></code> with depressing synapses,
+but no long-term plasticity:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">pre</span> <span class="o">=</span> <span class="n">post</span> <span class="o">=</span> <span class="n">Population</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">IF_cond_exp</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;U&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s">&#39;tau_rec&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span> <span class="s">&#39;tau_facil&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">depressing_syn</span> <span class="o">=</span> <span class="n">SynapseDynamics</span><span class="p">(</span><span class="n">fast</span><span class="o">=</span><span class="n">TsodyksMarkramMechanism</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">prj</span> <span class="o">=</span> <span class="n">Projection</span><span class="p">(</span><span class="n">pre</span><span class="p">,</span> <span class="n">post</span><span class="p">,</span> <span class="n">AllToAllConnector</span><span class="p">(),</span>
+<span class="gp">... </span>                 <span class="n">synapse_dynamics</span> <span class="o">=</span> <span class="n">depressing_syn</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and one with long-term plasticity, using a spike-pair rule and with additive
+weight updates (i.e. the weight change is independent of the current weight
+value):</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">stdp_model</span> <span class="o">=</span> <span class="n">STDPMechanism</span><span class="p">(</span>
+<span class="gp">... </span>   <span class="n">timing_dependence</span><span class="o">=</span><span class="n">SpikePairRule</span><span class="p">(</span><span class="n">tau_plus</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">tau_minus</span><span class="o">=</span><span class="mf">20.0</span><span class="p">),</span>
+<span class="gp">... </span>   <span class="n">weight_dependence</span><span class="o">=</span><span class="n">AdditiveWeightDependence</span><span class="p">(</span><span class="n">w_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">w_max</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span>
+<span class="gp">... </span>                                              <span class="n">A_plus</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">A_minus</span><span class="o">=</span><span class="mf">0.012</span><span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">prj2</span> <span class="o">=</span> <span class="n">Projection</span><span class="p">(</span><span class="n">pre</span><span class="p">,</span> <span class="n">post</span><span class="p">,</span> <span class="n">FixedProbabilityConnector</span><span class="p">(</span><span class="n">p_connect</span><span class="o">=</span><span class="mf">0.1</span><span class="p">),</span>
+<span class="gp">... </span>                  <span class="n">synapse_dynamics</span><span class="o">=</span><span class="n">SynapseDynamics</span><span class="p">(</span><span class="n">slow</span><span class="o">=</span><span class="n">stdp_model</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Just as with synaptic weights and delays for static synapses, the parameters of
+dynamic synapses can be obtained and set with the <code class="docutils literal"><span class="pre">getSynapseDynamics()</span></code>,
+<code class="docutils literal"><span class="pre">setSynapseDynamics()</span></code> and <code class="docutils literal"><span class="pre">randomizeSynapseDynamics()</span></code> methods of the
+<code class="docutils literal"><span class="pre">Projection</span></code> class:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">prj</span><span class="o">.</span><span class="n">setSynapseDynamics</span><span class="p">(</span><span class="s">&#39;tau_rec&#39;</span><span class="p">,</span> <span class="mf">50.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">prj</span><span class="o">.</span><span class="n">getSynapseDynamics</span><span class="p">(</span><span class="s">&#39;tau_rec&#39;</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
+<span class="go">[50.0, 50.0, 50.0, 50.0, 50.0]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyNN.random</span> <span class="k">import</span> <span class="n">RandomDistribution</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">distr</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="s">&#39;normal&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">prj2</span><span class="o">.</span><span class="n">randomizeSynapseDynamics</span><span class="p">(</span><span class="s">&#39;w_max&#39;</span><span class="p">,</span> <span class="n">distr</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">prj2</span><span class="o">.</span><span class="n">getSynapseDynamics</span><span class="p">(</span><span class="s">&#39;w_max&#39;</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
+<span class="go">[-0.056605932509016577, 0.063197908706714212, 0.034940801886916589, 0.010755581262934901, 0.011700727992415299]</span>
+</pre></div>
+</div>
+<p>There are a number of examples of networks using synaptic plasticity in the <code class="docutils literal"><span class="pre">examples</span></code> directory of the source distribution.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="standardsources.html"
+                        title="previous chapter">Standardised current sources</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="nonstandardmodels.html"
+                        title="next chapter">Using non-standard/native cell and synapse models</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/dynamicsynapses.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="nonstandardmodels.html" title="Using non-standard/native cell and synapse models"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="standardsources.html" title="Standardised current sources"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.7 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2017, the PyNN community.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>

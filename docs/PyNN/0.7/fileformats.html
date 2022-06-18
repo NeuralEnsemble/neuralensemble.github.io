@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>File formats &#8212; PyNN 0.7 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.7',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="The procedural API" href="lowlevelapi.html" />
+    <link rel="prev" title="Running parallel simulations" href="parallel.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="lowlevelapi.html" title="The procedural API"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="parallel.html" title="Running parallel simulations"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.7 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="file-formats">
+<h1>File formats<a class="headerlink" href="#file-formats" title="Permalink to this headline">¶</a></h1>
+<p>PyNN supports writing datafiles in both text and binary formats. PyNN comes with
+several built-in formats, but it is very easy to define your own.</p>
+<p>The default format is text-based. If we assume that you have run a simulation,
+and have recorded spikes, membrane potential and/or synaptic conductances for the
+neurons in a <code class="docutils literal"><span class="pre">Population</span></code> <code class="docutils literal"><span class="pre">p</span></code>, then you can write the recorded data to a file
+in text format simply by specifying the filename:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">printSpikes</span><span class="p">(</span><span class="s">&quot;my_spike_data.dat&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">print_v</span><span class="p">(</span><span class="s">&quot;my_Vm_data.dat&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(the file extension can be anything you like).</p>
+<p>If you would like to write the data in a binary format, you must first create a
+PyNN <code class="docutils literal"><span class="pre">File</span></code> object`:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyNN.recording.files</span> <span class="k">import</span> <span class="n">NumpyBinaryFile</span><span class="p">,</span> <span class="n">HDF5ArrayFile</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spike_file</span> <span class="o">=</span> <span class="n">NumpyBinaryFile</span><span class="p">(</span><span class="s">&quot;my_spike_data.npz&quot;</span><span class="p">,</span> <span class="s">&quot;w&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">printSpikes</span><span class="p">(</span><span class="n">spike_file</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spike_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vm_file</span> <span class="o">=</span> <span class="n">HDF5ArrayFile</span><span class="p">(</span><span class="s">&quot;my_Vm_data.h5&quot;</span><span class="p">,</span> <span class="s">&quot;w&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">print_v</span><span class="p">(</span><span class="n">vm_file</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vm_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Note that we do not currently take advantage of the ability of HDF5 or NumPy
+binary files to contain multiple data sets. In addition to <code class="docutils literal"><span class="pre">NumpyBinaryFile</span></code> and
+<code class="docutils literal"><span class="pre">HDF5ArrayFile</span></code> (which requires PyTables to be installed), the <code class="docutils literal"><span class="pre">recording.files</span></code>
+module also contains <code class="docutils literal"><span class="pre">PickleFile</span></code> and <code class="docutils literal"><span class="pre">StandardTextFile</span></code>.</p>
+<p>The file contents can then be accessed using NumPy, PyTables or the standard
+<code class="docutils literal"><span class="pre">pickle/cPickle</span></code> module, or by creating a PyNN <code class="docutils literal"><span class="pre">File</span></code> object in read mode:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">spike_file</span> <span class="o">=</span> <span class="n">NumpyBinaryFile</span><span class="p">(</span><span class="s">&quot;my_spike_data.npz&quot;</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metadata</span> <span class="o">=</span> <span class="n">spike_file</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spikes</span> <span class="o">=</span> <span class="n">spike_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="section" id="defining-your-own-file-formats">
+<h2>Defining your own file formats<a class="headerlink" href="#defining-your-own-file-formats" title="Permalink to this headline">¶</a></h2>
+<p>If you wish to define your own file format, it is straightforward to create
+new PyNN-compatible <code class="docutils literal"><span class="pre">File</span></code> class by subclassing <code class="docutils literal"><span class="pre">recording.files.BaseFile</span></code>:
+the only requirement is that the class should implement a method
+<code class="docutils literal"><span class="pre">write(data,</span> <span class="pre">metadata)</span></code>, where <code class="docutils literal"><span class="pre">data</span></code> will be a NumPy array and <code class="docutils literal"><span class="pre">metadata</span></code>
+will be a dictionary.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">File formats</a><ul>
+<li><a class="reference internal" href="#defining-your-own-file-formats">Defining your own file formats</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="parallel.html"
+                        title="previous chapter">Running parallel simulations</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="lowlevelapi.html"
+                        title="next chapter">The procedural API</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/fileformats.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="lowlevelapi.html" title="The procedural API"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="parallel.html" title="Running parallel simulations"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.7 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2017, the PyNN community.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>
