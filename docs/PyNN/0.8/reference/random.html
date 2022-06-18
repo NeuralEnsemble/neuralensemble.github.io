@@ -1,0 +1,359 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Random numbers &#8212; PyNN 0.8.3 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.8.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Parameter handling" href="parameters.html" />
+    <link rel="prev" title="Simulation control" href="simulationcontrol.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="parameters.html" title="Parameter handling"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="simulationcontrol.html" title="Simulation control"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.8.3 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API reference</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="random-numbers">
+<h1>Random numbers<a class="headerlink" href="#random-numbers" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-pyNN.random"></span><dl class="class">
+<dt id="pyNN.random.RandomDistribution">
+<em class="property">class </em><code class="descname">RandomDistribution</code><span class="sig-paren">(</span><em>distribution</em>, <em>parameters_pos=None</em>, <em>rng=None</em>, <em>**parameters_named</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/random.html#RandomDistribution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.random.RandomDistribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class which defines a next(n) method which returns an array of <cite>n</cite> random
+numbers from a given distribution.</p>
+<dl class="docutils">
+<dt>Arguments:</dt>
+<dd><dl class="first last docutils">
+<dt><cite>distribution</cite>:</dt>
+<dd>the name of a random number distribution.</dd>
+<dt><cite>parameters_pos</cite>:</dt>
+<dd>parameters of the distribution, provided as a tuple. For the correct
+ordering, see <cite>random.available_distributions</cite>.</dd>
+<dt><cite>rng</cite>:</dt>
+<dd>if present, should be a <a class="reference internal" href="#pyNN.random.NumpyRNG" title="pyNN.random.NumpyRNG"><code class="xref py py-class docutils literal"><span class="pre">NumpyRNG</span></code></a>, <a class="reference internal" href="#pyNN.random.GSLRNG" title="pyNN.random.GSLRNG"><code class="xref py py-class docutils literal"><span class="pre">GSLRNG</span></code></a> or
+<a class="reference internal" href="#pyNN.random.NativeRNG" title="pyNN.random.NativeRNG"><code class="xref py py-class docutils literal"><span class="pre">NativeRNG</span></code></a> object.</dd>
+<dt><cite>parameters_named</cite>:</dt>
+<dd>parameters of the distribution, provided as keyword arguments.</dd>
+</dl>
+</dd>
+</dl>
+<p>Parameters may be provided either through <cite>parameters_pos</cite> or through
+<cite>parameters_named</cite>, but not both. All parameters must be provided, there
+are no default values. Parameter names are, in general, as used in Wikipedia.</p>
+<p>Examples:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rd</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;uniform&#39;</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">70</span><span class="p">,</span> <span class="o">-</span><span class="mi">50</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rd</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;normal&#39;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rng</span> <span class="o">=</span> <span class="n">NumpyRNG</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">8658764</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rd</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;gamma&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Available distributions:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="20%" />
+<col width="53%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Name</td>
+<td>Parameters</td>
+<td>Comments</td>
+</tr>
+<tr class="row-even"><td>binomial</td>
+<td>n, p</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>gamma</td>
+<td>k, theta</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>exponential</td>
+<td>beta</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>lognormal</td>
+<td>mu, sigma</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>normal</td>
+<td>mu, sigma</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>normal_clipped</td>
+<td>mu, sigma, low, high</td>
+<td>Values outside (low, high) are redrawn</td>
+</tr>
+<tr class="row-even"><td>normal_clipped_to_boundary</td>
+<td>mu, sigma, low, high</td>
+<td>Values below/above low/high are set to low/high</td>
+</tr>
+<tr class="row-odd"><td>poisson</td>
+<td><a href="#id1"><span class="problematic" id="id2">lambda_</span></a></td>
+<td>Trailing underscore since lambda is a Python keyword</td>
+</tr>
+<tr class="row-even"><td>uniform</td>
+<td>low, high</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>uniform_int</td>
+<td>low, high</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>vonmises</td>
+<td>mu, kappa</td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pyNN.random.RandomDistribution.next">
+<code class="descname">next</code><span class="sig-paren">(</span><em>n=None</em>, <em>mask_local=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/random.html#RandomDistribution.next"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.random.RandomDistribution.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <cite>n</cite> random numbers from the distribution.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyNN.random.NumpyRNG">
+<em class="property">class </em><code class="descname">NumpyRNG</code><span class="sig-paren">(</span><em>seed=None</em>, <em>parallel_safe=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/random.html#NumpyRNG"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.random.NumpyRNG" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pyNN.random.WrappedRNG</span></code></p>
+<p>Wrapper for the <code class="xref py py-class docutils literal"><span class="pre">numpy.random.RandomState</span></code> class (Mersenne Twister PRNG).</p>
+<dl class="attribute">
+<dt id="pyNN.random.NumpyRNG.translations">
+<code class="descname">translations</code><em class="property"> = {'vonmises': ('vonmises', {'mu': 'mu', 'kappa': 'kappa'}), 'poisson': ('poisson', {'lambda_': 'lam'}), 'normal': ('normal', {'mu': 'loc', 'sigma': 'scale'}), 'lognormal': ('lognormal', {'mu': 'mean', 'sigma': 'sigma'}), 'exponential': ('exponential', {'beta': 'scale'}), 'normal_clipped': ('normal_clipped', {'mu': 'mu', 'low': 'low', 'high': 'high', 'sigma': 'sigma'}), 'gamma': ('gamma', {'k': 'shape', 'theta': 'scale'}), 'uniform_int': ('randint', {'low': 'low', 'high': 'high'}), 'uniform': ('uniform', {'low': 'low', 'high': 'high'}), 'binomial': ('binomial', {'n': 'n', 'p': 'p'}), 'normal_clipped_to_boundary': ('normal_clipped_to_boundary', {'mu': 'mu', 'low': 'low', 'high': 'high', 'sigma': 'sigma'})}</em><a class="headerlink" href="#pyNN.random.NumpyRNG.translations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyNN.random.NumpyRNG.normal_clipped">
+<code class="descname">normal_clipped</code><span class="sig-paren">(</span><em>mu=0.0</em>, <em>sigma=1.0</em>, <em>low=-inf</em>, <em>high=inf</em>, <em>size=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/random.html#NumpyRNG.normal_clipped"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.random.NumpyRNG.normal_clipped" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyNN.random.NumpyRNG.normal_clipped_to_boundary">
+<code class="descname">normal_clipped_to_boundary</code><span class="sig-paren">(</span><em>mu=0.0</em>, <em>sigma=1.0</em>, <em>low=-inf</em>, <em>high=inf</em>, <em>size=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/random.html#NumpyRNG.normal_clipped_to_boundary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.random.NumpyRNG.normal_clipped_to_boundary" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyNN.random.NumpyRNG.describe">
+<code class="descname">describe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.random.NumpyRNG.describe" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyNN.random.NumpyRNG.next">
+<code class="descname">next</code><span class="sig-paren">(</span><em>n=None</em>, <em>distribution=None</em>, <em>parameters=None</em>, <em>mask_local=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.random.NumpyRNG.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <cite>n</cite> random numbers from the specified distribution.</p>
+<dl class="docutils">
+<dt>If:</dt>
+<dd><ul class="first last simple">
+<li><cite>n</cite> is None, return a float,</li>
+<li><cite>n</cite> &gt;= 1, return a Numpy array,</li>
+<li><cite>n</cite> &lt; 0, raise an Exception,</li>
+<li><cite>n</cite> is 0, return an empty array.</li>
+</ul>
+</dd>
+</dl>
+<p>If called with distribution=None, returns uniformly distributed floats in the range [0, 1)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyNN.random.GSLRNG">
+<em class="property">class </em><code class="descname">GSLRNG</code><span class="sig-paren">(</span><em>seed=None</em>, <em>type='mt19937'</em>, <em>parallel_safe=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/random.html#GSLRNG"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.random.GSLRNG" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pyNN.random.WrappedRNG</span></code></p>
+<p>Wrapper for the GSL random number generators.</p>
+<dl class="attribute">
+<dt id="pyNN.random.GSLRNG.translations">
+<code class="descname">translations</code><em class="property"> = {'poisson': ('poisson', {'lambda_': 'mu'}), 'normal': ('normal', {'mu': 'mu', 'sigma': 'sigma'}), 'lognormal': ('lognormal', {'mu': 'zeta', 'sigma': 'sigma'}), 'exponential': ('exponential', {'beta': 'mu'}), 'normal_clipped': ('normal_clipped', {'mu': 'mu', 'low': 'low', 'high': 'high', 'sigma': 'sigma'}), 'gamma': ('gamma', {'k': 'k', 'theta': 'theta'}), 'uniform': ('flat', {'low': 'a', 'high': 'b'}), 'binomial': ('binomial', {'n': 'n', 'p': 'p'}), 'uniform_int': ('uniform_int', {'low': 'low', 'high': 'high'})}</em><a class="headerlink" href="#pyNN.random.GSLRNG.translations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyNN.random.GSLRNG.uniform_int">
+<code class="descname">uniform_int</code><span class="sig-paren">(</span><em>low</em>, <em>high</em>, <em>size=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/random.html#GSLRNG.uniform_int"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.random.GSLRNG.uniform_int" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyNN.random.GSLRNG.gamma">
+<code class="descname">gamma</code><span class="sig-paren">(</span><em>k</em>, <em>theta</em>, <em>size=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/random.html#GSLRNG.gamma"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.random.GSLRNG.gamma" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyNN.random.GSLRNG.normal">
+<code class="descname">normal</code><span class="sig-paren">(</span><em>mu=0.0</em>, <em>sigma=1.0</em>, <em>size=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/random.html#GSLRNG.normal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.random.GSLRNG.normal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyNN.random.GSLRNG.normal_clipped">
+<code class="descname">normal_clipped</code><span class="sig-paren">(</span><em>mu=0.0</em>, <em>sigma=1.0</em>, <em>low=-inf</em>, <em>high=inf</em>, <em>size=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/random.html#GSLRNG.normal_clipped"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.random.GSLRNG.normal_clipped" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyNN.random.GSLRNG.describe">
+<code class="descname">describe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.random.GSLRNG.describe" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyNN.random.GSLRNG.next">
+<code class="descname">next</code><span class="sig-paren">(</span><em>n=None</em>, <em>distribution=None</em>, <em>parameters=None</em>, <em>mask_local=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.random.GSLRNG.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <cite>n</cite> random numbers from the specified distribution.</p>
+<dl class="docutils">
+<dt>If:</dt>
+<dd><ul class="first last simple">
+<li><cite>n</cite> is None, return a float,</li>
+<li><cite>n</cite> &gt;= 1, return a Numpy array,</li>
+<li><cite>n</cite> &lt; 0, raise an Exception,</li>
+<li><cite>n</cite> is 0, return an empty array.</li>
+</ul>
+</dd>
+</dl>
+<p>If called with distribution=None, returns uniformly distributed floats in the range [0, 1)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyNN.random.NativeRNG">
+<em class="property">class </em><code class="descname">NativeRNG</code><span class="sig-paren">(</span><em>seed=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/random.html#NativeRNG"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.random.NativeRNG" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pyNN.random.AbstractRNG</span></code></p>
+<p>Signals that the simulator&#8217;s own native RNG should be used.
+Each simulator module should implement a class of the same name which
+inherits from this and which sets the seed appropriately.</p>
+<dl class="method">
+<dt id="pyNN.random.NativeRNG.next">
+<code class="descname">next</code><span class="sig-paren">(</span><em>n=None</em>, <em>distribution=None</em>, <em>parameters=None</em>, <em>mask_local=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.random.NativeRNG.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <cite>n</cite> random numbers from the specified distribution.</p>
+<dl class="docutils">
+<dt>If:</dt>
+<dd><ul class="first last simple">
+<li><cite>n</cite> is None, return a float,</li>
+<li><cite>n</cite> &gt;= 1, return a Numpy array,</li>
+<li><cite>n</cite> &lt; 0, raise an Exception,</li>
+<li><cite>n</cite> is 0, return an empty array.</li>
+</ul>
+</dd>
+</dl>
+<p>If called with distribution=None, returns uniformly distributed floats in the range [0, 1)</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="adapting-a-different-random-number-generator-to-work-with-pynn">
+<h2>Adapting a different random number generator to work with PyNN<a class="headerlink" href="#adapting-a-different-random-number-generator-to-work-with-pynn" title="Permalink to this headline">¶</a></h2>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">write this</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Random numbers</a><ul>
+<li><a class="reference internal" href="#adapting-a-different-random-number-generator-to-work-with-pynn">Adapting a different random number generator to work with PyNN</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="simulationcontrol.html"
+                        title="previous chapter">Simulation control</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="parameters.html"
+                        title="next chapter">Parameter handling</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/reference/random.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="parameters.html" title="Parameter handling"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="simulationcontrol.html" title="Simulation control"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.8.3 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api_reference.html" >API reference</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2017, the PyNN community.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>

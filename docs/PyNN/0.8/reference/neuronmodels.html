@@ -1,0 +1,745 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Neuron models &#8212; PyNN 0.8.3 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.8.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Synapse models" href="plasticitymodels.html" />
+    <link rel="prev" title="Projections" href="projections.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="plasticitymodels.html" title="Synapse models"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="projections.html" title="Projections"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.8.3 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API reference</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="neuron-models">
+<h1>Neuron models<a class="headerlink" href="#neuron-models" title="Permalink to this headline">¶</a></h1>
+<p>PyNN provides a library of neuron models that have been standardized so as to
+give the same results (within certain limits of numerical accuracy) on different
+backends. Each model is represented by a &#8220;cell type&#8221; class.</p>
+<p>It is also possible to use simulator-specific neuron models, which we call
+&#8220;native&#8221; cell types. Of course, such models will only work with one specific
+backend simulator.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">the development version has some support for specifying cell types
+using the <a class="reference external" href="http://nineml.incf.org">NineML</a> and <a class="reference external" href="http://www.neuroml.org">NeuroML</a> formats, but this is not yet available
+in the current release.</p>
+</div>
+<div class="section" id="standard-cell-types">
+<h2>Standard cell types<a class="headerlink" href="#standard-cell-types" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Plain integrate-and-fire models:<ul>
+<li><a class="reference internal" href="#pyNN.standardmodels.cells.IF_curr_exp" title="pyNN.standardmodels.cells.IF_curr_exp"><code class="xref py py-class docutils literal"><span class="pre">IF_curr_exp</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.cells.IF_curr_alpha" title="pyNN.standardmodels.cells.IF_curr_alpha"><code class="xref py py-class docutils literal"><span class="pre">IF_curr_alpha</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.cells.IF_cond_exp" title="pyNN.standardmodels.cells.IF_cond_exp"><code class="xref py py-class docutils literal"><span class="pre">IF_cond_exp</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.cells.IF_cond_alpha" title="pyNN.standardmodels.cells.IF_cond_alpha"><code class="xref py py-class docutils literal"><span class="pre">IF_cond_alpha</span></code></a></li>
+</ul>
+</li>
+<li>Integrate-and-fire with adaptation:<ul>
+<li><a class="reference internal" href="#pyNN.standardmodels.cells.IF_cond_exp_gsfa_grr" title="pyNN.standardmodels.cells.IF_cond_exp_gsfa_grr"><code class="xref py py-class docutils literal"><span class="pre">IF_cond_exp_gsfa_grr</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.cells.EIF_cond_alpha_isfa_ista" title="pyNN.standardmodels.cells.EIF_cond_alpha_isfa_ista"><code class="xref py py-class docutils literal"><span class="pre">EIF_cond_alpha_isfa_ista</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.cells.EIF_cond_exp_isfa_ista" title="pyNN.standardmodels.cells.EIF_cond_exp_isfa_ista"><code class="xref py py-class docutils literal"><span class="pre">EIF_cond_exp_isfa_ista</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.cells.Izhikevich" title="pyNN.standardmodels.cells.Izhikevich"><code class="xref py py-class docutils literal"><span class="pre">Izhikevich</span></code></a></li>
+</ul>
+</li>
+<li>Hodgkin-Huxley model<ul>
+<li><code class="xref py py-class docutils literal"><span class="pre">HH_cond_exp</span></code></li>
+</ul>
+</li>
+<li>Spike sources (input neurons)<ul>
+<li><a class="reference internal" href="#pyNN.standardmodels.cells.SpikeSourcePoisson" title="pyNN.standardmodels.cells.SpikeSourcePoisson"><code class="xref py py-class docutils literal"><span class="pre">SpikeSourcePoisson</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.cells.SpikeSourceArray" title="pyNN.standardmodels.cells.SpikeSourceArray"><code class="xref py py-class docutils literal"><span class="pre">SpikeSourceArray</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.cells.SpikeSourceInhGamma" title="pyNN.standardmodels.cells.SpikeSourceInhGamma"><code class="xref py py-class docutils literal"><span class="pre">SpikeSourceInhGamma</span></code></a></li>
+</ul>
+</li>
+</ul>
+<div class="section" id="base-class">
+<h3>Base class<a class="headerlink" href="#base-class" title="Permalink to this headline">¶</a></h3>
+<p>All standard cell types inherit from the following base class, and have the
+same methods, as listed below.</p>
+<dl class="class">
+<dt id="pyNN.standardmodels.StandardCellType">
+<em class="property">class </em><code class="descname">StandardCellType</code><span class="sig-paren">(</span><em>**parameters</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels.html#StandardCellType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.standardmodels.StandardCellType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pyNN.standardmodels.StandardModelType</span></code>, <code class="xref py py-class docutils literal"><span class="pre">pyNN.models.BaseCellType</span></code></p>
+<p>Base class for standardized cell model classes.</p>
+<dl class="method">
+<dt id="pyNN.standardmodels.cells.StandardCellType.get_schema">
+<code class="descname">get_schema</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.standardmodels.cells.StandardCellType.get_schema" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the model schema: i.e. a mapping of parameter names to allowed
+parameter types.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyNN.standardmodels.cells.StandardCellType.get_parameter_names">
+<code class="descname">get_parameter_names</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.standardmodels.cells.StandardCellType.get_parameter_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the names of the parameters of this model.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyNN.standardmodels.cells.StandardCellType.get_native_names">
+<code class="descname">get_native_names</code><span class="sig-paren">(</span><em>*names</em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.standardmodels.cells.StandardCellType.get_native_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of native parameter names for a given model.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyNN.standardmodels.cells.StandardCellType.has_parameter">
+<code class="descname">has_parameter</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.standardmodels.cells.StandardCellType.has_parameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does this model have a parameter with the given name?</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyNN.standardmodels.cells.StandardCellType.translate">
+<code class="descname">translate</code><span class="sig-paren">(</span><em>parameters</em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.standardmodels.cells.StandardCellType.translate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translate standardized model parameters to simulator-specific parameters.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyNN.standardmodels.cells.StandardCellType.reverse_translate">
+<code class="descname">reverse_translate</code><span class="sig-paren">(</span><em>native_parameters</em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.standardmodels.cells.StandardCellType.reverse_translate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translate simulator-specific model parameters to standardized parameters.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyNN.standardmodels.cells.StandardCellType.simple_parameters">
+<code class="descname">simple_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.standardmodels.cells.StandardCellType.simple_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of parameters for which there is a one-to-one
+correspondance between standard and native parameter values.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyNN.standardmodels.cells.StandardCellType.scaled_parameters">
+<code class="descname">scaled_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.standardmodels.cells.StandardCellType.scaled_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of parameters for which there is a unit change between
+standard and native parameter values.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyNN.standardmodels.cells.StandardCellType.computed_parameters">
+<code class="descname">computed_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.standardmodels.cells.StandardCellType.computed_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of parameters whose values must be computed from
+more than one other parameter.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyNN.standardmodels.cells.StandardCellType.describe">
+<code class="descname">describe</code><span class="sig-paren">(</span><em>template='modeltype_default.txt'</em>, <em>engine='default'</em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.standardmodels.cells.StandardCellType.describe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a human-readable description of the cell or synapse type.</p>
+<p>The output may be customized by specifying a different template
+togther with an associated template engine (see <code class="docutils literal"><span class="pre">pyNN.descriptions</span></code>).</p>
+<p>If template is None, then a dictionary containing the template context
+will be returned.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="simple-integrate-and-fire-neurons">
+<h3>Simple integrate-and-fire neurons<a class="headerlink" href="#simple-integrate-and-fire-neurons" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pyNN.standardmodels.cells.IF_cond_exp">
+<em class="property">class </em><code class="descname">IF_cond_exp</code><span class="sig-paren">(</span><em>**parameters</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/cells.html#IF_cond_exp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.standardmodels.cells.IF_cond_exp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.StandardCellType" title="pyNN.standardmodels.StandardCellType"><code class="xref py py-class docutils literal"><span class="pre">pyNN.standardmodels.StandardCellType</span></code></a></p>
+<p>Leaky integrate and fire model with fixed threshold and
+exponentially-decaying post-synaptic conductance.</p>
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_cond_exp.injectable">
+<code class="descname">injectable</code><em class="property"> = True</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_cond_exp.injectable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_cond_exp.conductance_based">
+<code class="descname">conductance_based</code><em class="property"> = True</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_cond_exp.conductance_based" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_cond_exp.default_parameters">
+<code class="descname">default_parameters</code><em class="property"> = {'i_offset': 0.0, 'v_reset': -65.0, 'tau_syn_E': 5.0, 'tau_m': 20.0, 'v_rest': -65.0, 'e_rev_E': 0.0, 'cm': 1.0, 'tau_refrac': 0.1, 'e_rev_I': -70.0, 'v_thresh': -50.0, 'tau_syn_I': 5.0}</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_cond_exp.default_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_cond_exp.recordable">
+<code class="descname">recordable</code><em class="property"> = ['spikes', 'v', 'gsyn_exc', 'gsyn_inh']</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_cond_exp.recordable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_cond_exp.default_initial_values">
+<code class="descname">default_initial_values</code><em class="property"> = {'gsyn_exc': 0.0, 'v': -65.0, 'gsyn_inh': 0.0}</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_cond_exp.default_initial_values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_cond_exp.units">
+<code class="descname">units</code><em class="property"> = {'gsyn_exc': 'uS', 'v': 'mV', 'gsyn_inh': 'uS'}</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_cond_exp.units" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyNN.standardmodels.cells.IF_cond_alpha">
+<em class="property">class </em><code class="descname">IF_cond_alpha</code><span class="sig-paren">(</span><em>**parameters</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/cells.html#IF_cond_alpha"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.standardmodels.cells.IF_cond_alpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.StandardCellType" title="pyNN.standardmodels.StandardCellType"><code class="xref py py-class docutils literal"><span class="pre">pyNN.standardmodels.StandardCellType</span></code></a></p>
+<p>Leaky integrate and fire model with fixed threshold and alpha-function-
+shaped post-synaptic conductance.</p>
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_cond_alpha.injectable">
+<code class="descname">injectable</code><em class="property"> = True</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_cond_alpha.injectable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_cond_alpha.conductance_based">
+<code class="descname">conductance_based</code><em class="property"> = True</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_cond_alpha.conductance_based" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_cond_alpha.default_parameters">
+<code class="descname">default_parameters</code><em class="property"> = {'i_offset': 0.0, 'v_reset': -65.0, 'tau_syn_E': 0.3, 'tau_m': 20.0, 'v_rest': -65.0, 'e_rev_E': 0.0, 'cm': 1.0, 'tau_refrac': 0.1, 'e_rev_I': -70.0, 'v_thresh': -50.0, 'tau_syn_I': 0.5}</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_cond_alpha.default_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_cond_alpha.recordable">
+<code class="descname">recordable</code><em class="property"> = ['spikes', 'v', 'gsyn_exc', 'gsyn_inh']</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_cond_alpha.recordable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_cond_alpha.default_initial_values">
+<code class="descname">default_initial_values</code><em class="property"> = {'gsyn_exc': 0.0, 'v': -65.0, 'gsyn_inh': 0.0}</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_cond_alpha.default_initial_values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_cond_alpha.units">
+<code class="descname">units</code><em class="property"> = {'gsyn_exc': 'uS', 'v': 'mV', 'gsyn_inh': 'uS'}</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_cond_alpha.units" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyNN.standardmodels.cells.IF_curr_exp">
+<em class="property">class </em><code class="descname">IF_curr_exp</code><span class="sig-paren">(</span><em>**parameters</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/cells.html#IF_curr_exp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.standardmodels.cells.IF_curr_exp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.StandardCellType" title="pyNN.standardmodels.StandardCellType"><code class="xref py py-class docutils literal"><span class="pre">pyNN.standardmodels.StandardCellType</span></code></a></p>
+<p>Leaky integrate and fire model with fixed threshold and
+decaying-exponential post-synaptic current. (Separate synaptic currents for
+excitatory and inhibitory synapses.</p>
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_curr_exp.injectable">
+<code class="descname">injectable</code><em class="property"> = True</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_curr_exp.injectable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_curr_exp.conductance_based">
+<code class="descname">conductance_based</code><em class="property"> = False</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_curr_exp.conductance_based" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_curr_exp.default_parameters">
+<code class="descname">default_parameters</code><em class="property"> = {'i_offset': 0.0, 'tau_syn_E': 5.0, 'tau_m': 20.0, 'v_rest': -65.0, 'cm': 1.0, 'tau_refrac': 0.1, 'v_reset': -65.0, 'v_thresh': -50.0, 'tau_syn_I': 5.0}</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_curr_exp.default_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_curr_exp.recordable">
+<code class="descname">recordable</code><em class="property"> = ['spikes', 'v']</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_curr_exp.recordable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">conductance_based</code><em class="property"> = False</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_curr_exp.default_initial_values">
+<code class="descname">default_initial_values</code><em class="property"> = {'isyn_inh': 0.0, 'v': -65.0, 'isyn_exc': 0.0}</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_curr_exp.default_initial_values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_curr_exp.units">
+<code class="descname">units</code><em class="property"> = {'isyn_inh': 'nA', 'v': 'mV', 'isyn_exc': 'nA'}</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_curr_exp.units" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyNN.standardmodels.cells.IF_curr_alpha">
+<em class="property">class </em><code class="descname">IF_curr_alpha</code><span class="sig-paren">(</span><em>**parameters</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/cells.html#IF_curr_alpha"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.standardmodels.cells.IF_curr_alpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.StandardCellType" title="pyNN.standardmodels.StandardCellType"><code class="xref py py-class docutils literal"><span class="pre">pyNN.standardmodels.StandardCellType</span></code></a></p>
+<p>Leaky integrate and fire model with fixed threshold and alpha-function-
+shaped post-synaptic current.</p>
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_curr_alpha.injectable">
+<code class="descname">injectable</code><em class="property"> = True</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_curr_alpha.injectable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_curr_alpha.conductance_based">
+<code class="descname">conductance_based</code><em class="property"> = False</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_curr_alpha.conductance_based" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_curr_alpha.default_parameters">
+<code class="descname">default_parameters</code><em class="property"> = {'i_offset': 0.0, 'tau_syn_E': 0.5, 'tau_m': 20.0, 'v_rest': -65.0, 'cm': 1.0, 'tau_refrac': 0.1, 'v_reset': -65.0, 'v_thresh': -50.0, 'tau_syn_I': 0.5}</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_curr_alpha.default_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_curr_alpha.recordable">
+<code class="descname">recordable</code><em class="property"> = ['spikes', 'v']</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_curr_alpha.recordable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">conductance_based</code><em class="property"> = False</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_curr_alpha.default_initial_values">
+<code class="descname">default_initial_values</code><em class="property"> = {'isyn_inh': 0.0, 'v': -65.0, 'isyn_exc': 0.0}</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_curr_alpha.default_initial_values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_curr_alpha.units">
+<code class="descname">units</code><em class="property"> = {'isyn_inh': 'nA', 'v': 'mV', 'isyn_exc': 'nA'}</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_curr_alpha.units" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="integrate-and-fire-neurons-with-adaptation">
+<h3>Integrate-and-fire neurons with adaptation<a class="headerlink" href="#integrate-and-fire-neurons-with-adaptation" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pyNN.standardmodels.cells.Izhikevich">
+<em class="property">class </em><code class="descname">Izhikevich</code><span class="sig-paren">(</span><em>**parameters</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/cells.html#Izhikevich"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.standardmodels.cells.Izhikevich" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.StandardCellType" title="pyNN.standardmodels.StandardCellType"><code class="xref py py-class docutils literal"><span class="pre">pyNN.standardmodels.StandardCellType</span></code></a></p>
+<p>Izhikevich spiking model with a quadratic non-linearity according to:</p>
+<ol class="upperalpha" start="5">
+<li><p class="first">Izhikevich (2003), IEEE transactions on neural networks, 14(6)</p>
+<blockquote>
+<div><p>dv/dt = 0.04*v^2 + 5*v + 140 - u + I
+du/dt = a*(b*v - u)</p>
+</div></blockquote>
+</li>
+</ol>
+<p>Synapses are modeled as Dirac delta currents (voltage step), as in the original model</p>
+<p>NOTE: name should probably be changed to match standard nomenclature,
+e.g. QIF_cond_delta_etc_etc, although keeping &#8220;Izhikevich&#8221; as an alias would be good</p>
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.Izhikevich.injectable">
+<code class="descname">injectable</code><em class="property"> = True</em><a class="headerlink" href="#pyNN.standardmodels.cells.Izhikevich.injectable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.Izhikevich.conductance_based">
+<code class="descname">conductance_based</code><em class="property"> = False</em><a class="headerlink" href="#pyNN.standardmodels.cells.Izhikevich.conductance_based" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.Izhikevich.default_parameters">
+<code class="descname">default_parameters</code><em class="property"> = {'d': 2.0, 'a': 0.02, 'i_offset': 0.0, 'c': -65.0, 'b': 0.2}</em><a class="headerlink" href="#pyNN.standardmodels.cells.Izhikevich.default_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.Izhikevich.recordable">
+<code class="descname">recordable</code><em class="property"> = ['spikes', 'v', 'u']</em><a class="headerlink" href="#pyNN.standardmodels.cells.Izhikevich.recordable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">conductance_based</code><em class="property"> = False</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.Izhikevich.voltage_based_synapses">
+<code class="descname">voltage_based_synapses</code><em class="property"> = True</em><a class="headerlink" href="#pyNN.standardmodels.cells.Izhikevich.voltage_based_synapses" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.Izhikevich.default_initial_values">
+<code class="descname">default_initial_values</code><em class="property"> = {'v': -70.0, 'u': -14.0}</em><a class="headerlink" href="#pyNN.standardmodels.cells.Izhikevich.default_initial_values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.Izhikevich.units">
+<code class="descname">units</code><em class="property"> = {'v': 'mV', 'u': 'mV/ms'}</em><a class="headerlink" href="#pyNN.standardmodels.cells.Izhikevich.units" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyNN.standardmodels.cells.EIF_cond_exp_isfa_ista">
+<em class="property">class </em><code class="descname">EIF_cond_exp_isfa_ista</code><span class="sig-paren">(</span><em>**parameters</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/cells.html#EIF_cond_exp_isfa_ista"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.standardmodels.cells.EIF_cond_exp_isfa_ista" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.StandardCellType" title="pyNN.standardmodels.StandardCellType"><code class="xref py py-class docutils literal"><span class="pre">pyNN.standardmodels.StandardCellType</span></code></a></p>
+<p>Exponential integrate and fire neuron with spike triggered and
+sub-threshold adaptation currents (isfa, ista reps.) according to:</p>
+<p>Brette R and Gerstner W (2005) Adaptive Exponential Integrate-and-Fire Model
+as an Effective Description of Neuronal Activity. J Neurophysiol 94:3637-3642</p>
+<p>See also: IF_cond_exp_gsfa_grr, EIF_cond_alpha_isfa_ista</p>
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.EIF_cond_exp_isfa_ista.injectable">
+<code class="descname">injectable</code><em class="property"> = True</em><a class="headerlink" href="#pyNN.standardmodels.cells.EIF_cond_exp_isfa_ista.injectable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.EIF_cond_exp_isfa_ista.conductance_based">
+<code class="descname">conductance_based</code><em class="property"> = True</em><a class="headerlink" href="#pyNN.standardmodels.cells.EIF_cond_exp_isfa_ista.conductance_based" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.EIF_cond_exp_isfa_ista.default_parameters">
+<code class="descname">default_parameters</code><em class="property"> = {'a': 4.0, 'delta_T': 2.0, 'v_thresh': -50.4, 'tau_m': 9.3667, 'b': 0.0805, 'e_rev_E': 0.0, 'tau_w': 144.0, 'cm': 0.281, 'v_rest': -70.6, 'v_spike': -40.0, 'tau_refrac': 0.1, 'v_reset': -70.6, 'i_offset': 0.0, 'e_rev_I': -80.0, 'tau_syn_I': 5.0, 'tau_syn_E': 5.0}</em><a class="headerlink" href="#pyNN.standardmodels.cells.EIF_cond_exp_isfa_ista.default_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.EIF_cond_exp_isfa_ista.recordable">
+<code class="descname">recordable</code><em class="property"> = ['spikes', 'v', 'w', 'gsyn_exc', 'gsyn_inh']</em><a class="headerlink" href="#pyNN.standardmodels.cells.EIF_cond_exp_isfa_ista.recordable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.EIF_cond_exp_isfa_ista.default_initial_values">
+<code class="descname">default_initial_values</code><em class="property"> = {'gsyn_exc': 0.0, 'v': -70.6, 'gsyn_inh': 0.0, 'w': 0.0}</em><a class="headerlink" href="#pyNN.standardmodels.cells.EIF_cond_exp_isfa_ista.default_initial_values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.EIF_cond_exp_isfa_ista.units">
+<code class="descname">units</code><em class="property"> = {'gsyn_exc': 'uS', 'v': 'mV', 'gsyn_inh': 'uS', 'w': 'nA'}</em><a class="headerlink" href="#pyNN.standardmodels.cells.EIF_cond_exp_isfa_ista.units" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyNN.standardmodels.cells.EIF_cond_alpha_isfa_ista">
+<em class="property">class </em><code class="descname">EIF_cond_alpha_isfa_ista</code><span class="sig-paren">(</span><em>**parameters</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/cells.html#EIF_cond_alpha_isfa_ista"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.standardmodels.cells.EIF_cond_alpha_isfa_ista" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.StandardCellType" title="pyNN.standardmodels.StandardCellType"><code class="xref py py-class docutils literal"><span class="pre">pyNN.standardmodels.StandardCellType</span></code></a></p>
+<p>Exponential integrate and fire neuron with spike triggered and
+sub-threshold adaptation currents (isfa, ista reps.) according to:</p>
+<p>Brette R and Gerstner W (2005) Adaptive Exponential Integrate-and-Fire Model
+as an Effective Description of Neuronal Activity. J Neurophysiol 94:3637-3642</p>
+<p>See also: IF_cond_exp_gsfa_grr, EIF_cond_exp_isfa_ista</p>
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.EIF_cond_alpha_isfa_ista.injectable">
+<code class="descname">injectable</code><em class="property"> = True</em><a class="headerlink" href="#pyNN.standardmodels.cells.EIF_cond_alpha_isfa_ista.injectable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.EIF_cond_alpha_isfa_ista.conductance_based">
+<code class="descname">conductance_based</code><em class="property"> = True</em><a class="headerlink" href="#pyNN.standardmodels.cells.EIF_cond_alpha_isfa_ista.conductance_based" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.EIF_cond_alpha_isfa_ista.default_parameters">
+<code class="descname">default_parameters</code><em class="property"> = {'a': 4.0, 'delta_T': 2.0, 'v_thresh': -50.4, 'tau_m': 9.3667, 'b': 0.0805, 'e_rev_E': 0.0, 'tau_w': 144.0, 'cm': 0.281, 'v_rest': -70.6, 'v_spike': -40.0, 'tau_refrac': 0.1, 'v_reset': -70.6, 'i_offset': 0.0, 'e_rev_I': -80.0, 'tau_syn_I': 5.0, 'tau_syn_E': 5.0}</em><a class="headerlink" href="#pyNN.standardmodels.cells.EIF_cond_alpha_isfa_ista.default_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.EIF_cond_alpha_isfa_ista.recordable">
+<code class="descname">recordable</code><em class="property"> = ['spikes', 'v', 'w', 'gsyn_exc', 'gsyn_inh']</em><a class="headerlink" href="#pyNN.standardmodels.cells.EIF_cond_alpha_isfa_ista.recordable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.EIF_cond_alpha_isfa_ista.default_initial_values">
+<code class="descname">default_initial_values</code><em class="property"> = {'gsyn_exc': 0.0, 'v': -70.6, 'gsyn_inh': 0.0, 'w': 0.0}</em><a class="headerlink" href="#pyNN.standardmodels.cells.EIF_cond_alpha_isfa_ista.default_initial_values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.EIF_cond_alpha_isfa_ista.units">
+<code class="descname">units</code><em class="property"> = {'gsyn_exc': 'uS', 'v': 'mV', 'gsyn_inh': 'uS', 'w': 'nA'}</em><a class="headerlink" href="#pyNN.standardmodels.cells.EIF_cond_alpha_isfa_ista.units" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyNN.standardmodels.cells.IF_cond_exp_gsfa_grr">
+<em class="property">class </em><code class="descname">IF_cond_exp_gsfa_grr</code><span class="sig-paren">(</span><em>**parameters</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/cells.html#IF_cond_exp_gsfa_grr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.standardmodels.cells.IF_cond_exp_gsfa_grr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.StandardCellType" title="pyNN.standardmodels.StandardCellType"><code class="xref py py-class docutils literal"><span class="pre">pyNN.standardmodels.StandardCellType</span></code></a></p>
+<p>Linear leaky integrate and fire model with fixed threshold,
+decaying-exponential post-synaptic conductance, conductance based
+spike-frequency adaptation, and a conductance-based relative refractory
+mechanism.</p>
+<p>See: Muller et al (2007) Spike-frequency adapting neural ensembles: Beyond
+mean-adaptation and renewal theories. Neural Computation 19: 2958-3010.</p>
+<p>See also: EIF_cond_alpha_isfa_ista</p>
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_cond_exp_gsfa_grr.injectable">
+<code class="descname">injectable</code><em class="property"> = True</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_cond_exp_gsfa_grr.injectable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_cond_exp_gsfa_grr.conductance_based">
+<code class="descname">conductance_based</code><em class="property"> = True</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_cond_exp_gsfa_grr.conductance_based" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_cond_exp_gsfa_grr.default_parameters">
+<code class="descname">default_parameters</code><em class="property"> = {'tau_rr': 2.0, 'tau_sfa': 100.0, 'tau_syn_E': 5.0, 'tau_m': 20.0, 'e_rev_E': 0.0, 'cm': 1.0, 'tau_refrac': 0.1, 'e_rev_sfa': -75.0, 'q_rr': 3000.0, 'e_rev_rr': -75.0, 'v_rest': -65.0, 'v_reset': -65.0, 'i_offset': 0.0, 'q_sfa': 15.0, 'e_rev_I': -70.0, 'v_thresh': -50.0, 'tau_syn_I': 5.0}</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_cond_exp_gsfa_grr.default_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_cond_exp_gsfa_grr.recordable">
+<code class="descname">recordable</code><em class="property"> = ['spikes', 'v', 'g_r', 'g_s', 'gsyn_exc', 'gsyn_inh']</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_cond_exp_gsfa_grr.recordable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_cond_exp_gsfa_grr.default_initial_values">
+<code class="descname">default_initial_values</code><em class="property"> = {'g_r': 0.0, 'gsyn_exc': 0.0, 'v': -65.0, 'g_s': 0.0, 'gsyn_inh': 0.0}</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_cond_exp_gsfa_grr.default_initial_values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.IF_cond_exp_gsfa_grr.units">
+<code class="descname">units</code><em class="property"> = {'g_r': 'nS', 'gsyn_exc': 'uS', 'v': 'mV', 'g_s': 'nS', 'gsyn_inh': 'uS'}</em><a class="headerlink" href="#pyNN.standardmodels.cells.IF_cond_exp_gsfa_grr.units" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="spike-sources">
+<h3>Spike sources<a class="headerlink" href="#spike-sources" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pyNN.standardmodels.cells.SpikeSourcePoisson">
+<em class="property">class </em><code class="descname">SpikeSourcePoisson</code><span class="sig-paren">(</span><em>**parameters</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/cells.html#SpikeSourcePoisson"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.standardmodels.cells.SpikeSourcePoisson" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.StandardCellType" title="pyNN.standardmodels.StandardCellType"><code class="xref py py-class docutils literal"><span class="pre">pyNN.standardmodels.StandardCellType</span></code></a></p>
+<p>Spike source, generating spikes according to a Poisson process.</p>
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.SpikeSourcePoisson.injectable">
+<code class="descname">injectable</code><em class="property"> = False</em><a class="headerlink" href="#pyNN.standardmodels.cells.SpikeSourcePoisson.injectable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.SpikeSourcePoisson.conductance_based">
+<code class="descname">conductance_based</code><em class="property"> = True</em><a class="headerlink" href="#pyNN.standardmodels.cells.SpikeSourcePoisson.conductance_based" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.SpikeSourcePoisson.default_parameters">
+<code class="descname">default_parameters</code><em class="property"> = {'start': 0.0, 'duration': 10000000000.0, 'rate': 1.0}</em><a class="headerlink" href="#pyNN.standardmodels.cells.SpikeSourcePoisson.default_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.SpikeSourcePoisson.recordable">
+<code class="descname">recordable</code><em class="property"> = ['spikes']</em><a class="headerlink" href="#pyNN.standardmodels.cells.SpikeSourcePoisson.recordable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">injectable</code><em class="property"> = False</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.SpikeSourcePoisson.receptor_types">
+<code class="descname">receptor_types</code><em class="property"> = ()</em><a class="headerlink" href="#pyNN.standardmodels.cells.SpikeSourcePoisson.receptor_types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyNN.standardmodels.cells.SpikeSourceArray">
+<em class="property">class </em><code class="descname">SpikeSourceArray</code><span class="sig-paren">(</span><em>**parameters</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/cells.html#SpikeSourceArray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.standardmodels.cells.SpikeSourceArray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.StandardCellType" title="pyNN.standardmodels.StandardCellType"><code class="xref py py-class docutils literal"><span class="pre">pyNN.standardmodels.StandardCellType</span></code></a></p>
+<p>Spike source generating spikes at the times given in the spike_times array.</p>
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.SpikeSourceArray.injectable">
+<code class="descname">injectable</code><em class="property"> = False</em><a class="headerlink" href="#pyNN.standardmodels.cells.SpikeSourceArray.injectable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.SpikeSourceArray.conductance_based">
+<code class="descname">conductance_based</code><em class="property"> = True</em><a class="headerlink" href="#pyNN.standardmodels.cells.SpikeSourceArray.conductance_based" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.SpikeSourceArray.default_parameters">
+<code class="descname">default_parameters</code><em class="property"> = {'spike_times': Sequence([])}</em><a class="headerlink" href="#pyNN.standardmodels.cells.SpikeSourceArray.default_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.SpikeSourceArray.recordable">
+<code class="descname">recordable</code><em class="property"> = ['spikes']</em><a class="headerlink" href="#pyNN.standardmodels.cells.SpikeSourceArray.recordable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">injectable</code><em class="property"> = False</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.SpikeSourceArray.receptor_types">
+<code class="descname">receptor_types</code><em class="property"> = ()</em><a class="headerlink" href="#pyNN.standardmodels.cells.SpikeSourceArray.receptor_types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyNN.standardmodels.cells.SpikeSourceInhGamma">
+<em class="property">class </em><code class="descname">SpikeSourceInhGamma</code><span class="sig-paren">(</span><em>**parameters</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/cells.html#SpikeSourceInhGamma"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.standardmodels.cells.SpikeSourceInhGamma" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.StandardCellType" title="pyNN.standardmodels.StandardCellType"><code class="xref py py-class docutils literal"><span class="pre">pyNN.standardmodels.StandardCellType</span></code></a></p>
+<p>Spike source, generating realizations of an inhomogeneous gamma process,
+employing the thinning method.</p>
+<p>See: Muller et al (2007) Spike-frequency adapting neural ensembles: Beyond
+mean-adaptation and renewal theories. Neural Computation 19: 2958-3010.</p>
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.SpikeSourceInhGamma.injectable">
+<code class="descname">injectable</code><em class="property"> = False</em><a class="headerlink" href="#pyNN.standardmodels.cells.SpikeSourceInhGamma.injectable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.SpikeSourceInhGamma.conductance_based">
+<code class="descname">conductance_based</code><em class="property"> = True</em><a class="headerlink" href="#pyNN.standardmodels.cells.SpikeSourceInhGamma.conductance_based" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.SpikeSourceInhGamma.default_parameters">
+<code class="descname">default_parameters</code><em class="property"> = {'start': 0.0, 'a': Sequence([ 1.]), 'duration': 10000000000.0, 'tbins': Sequence([ 0.]), 'b': Sequence([ 1.])}</em><a class="headerlink" href="#pyNN.standardmodels.cells.SpikeSourceInhGamma.default_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.SpikeSourceInhGamma.recordable">
+<code class="descname">recordable</code><em class="property"> = ['spikes']</em><a class="headerlink" href="#pyNN.standardmodels.cells.SpikeSourceInhGamma.recordable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">injectable</code><em class="property"> = False</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyNN.standardmodels.cells.SpikeSourceInhGamma.receptor_types">
+<code class="descname">receptor_types</code><em class="property"> = ()</em><a class="headerlink" href="#pyNN.standardmodels.cells.SpikeSourceInhGamma.receptor_types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="native-cell-types">
+<h2>Native cell types<a class="headerlink" href="#native-cell-types" title="Permalink to this headline">¶</a></h2>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">WRITE THIS PART</p>
+</div>
+</div>
+<div class="section" id="utility-functions">
+<h2>Utility functions<a class="headerlink" href="#utility-functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pyNN.neuron.list_standard_models">
+<code class="descname">list_standard_models</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/neuron.html#list_standard_models"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyNN.neuron.list_standard_models" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of all the StandardCellType classes available for this simulator.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Neuron models</a><ul>
+<li><a class="reference internal" href="#standard-cell-types">Standard cell types</a><ul>
+<li><a class="reference internal" href="#base-class">Base class</a></li>
+<li><a class="reference internal" href="#simple-integrate-and-fire-neurons">Simple integrate-and-fire neurons</a></li>
+<li><a class="reference internal" href="#integrate-and-fire-neurons-with-adaptation">Integrate-and-fire neurons with adaptation</a></li>
+<li><a class="reference internal" href="#spike-sources">Spike sources</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#native-cell-types">Native cell types</a></li>
+<li><a class="reference internal" href="#utility-functions">Utility functions</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="projections.html"
+                        title="previous chapter">Projections</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="plasticitymodels.html"
+                        title="next chapter">Synapse models</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/reference/neuronmodels.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="plasticitymodels.html" title="Synapse models"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="projections.html" title="Projections"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.8.3 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api_reference.html" >API reference</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2017, the PyNN community.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>

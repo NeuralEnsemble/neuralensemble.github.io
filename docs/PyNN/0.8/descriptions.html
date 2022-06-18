@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Network descriptions &#8212; PyNN 0.8.3 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.8.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.8.3 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="network-descriptions">
+<h1>Network descriptions<a class="headerlink" href="#network-descriptions" title="Permalink to this headline">¶</a></h1>
+<p>intro to mention finding bugs, literate programming</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Population</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">sim</span><span class="o">.</span><span class="n">IF_cond_exp</span><span class="p">,</span> <span class="n">cell_parameters</span><span class="p">,</span>
+<span class="gp">... </span>                    <span class="n">structure</span><span class="o">=</span><span class="n">space</span><span class="o">.</span><span class="n">Grid2D</span><span class="p">(</span><span class="n">dx</span><span class="o">=</span><span class="mf">50.0</span><span class="p">,</span> <span class="n">dy</span><span class="o">=</span><span class="mf">50.0</span><span class="p">),</span>
+<span class="gp">... </span>                    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;excitatory neurons&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="go">{&#39;cell_parameters&#39;: {&#39;cm&#39;: 1.0,</span>
+<span class="go">                     &#39;e_rev_E&#39;: 0.0,</span>
+<span class="go">                     &#39;e_rev_I&#39;: -70.0,</span>
+<span class="go">                     &#39;i_offset&#39;: 0.0,</span>
+<span class="go">                     &#39;tau_m&#39;: 20.0,</span>
+<span class="go">                     &#39;tau_refrac&#39;: 0.10000000000000001,</span>
+<span class="go">                     &#39;tau_syn_E&#39;: 5.0,</span>
+<span class="go">                     &#39;tau_syn_I&#39;: 5.0,</span>
+<span class="go">                     &#39;v_reset&#39;: -65.0,</span>
+<span class="go">                     &#39;v_rest&#39;: -65.0,</span>
+<span class="go">                     &#39;v_thresh&#39;: -50.0},</span>
+<span class="go"> &#39;celltype&#39;: {&#39;name&#39;: &#39;IF_cond_exp&#39;,</span>
+<span class="go">              &#39;parameters&#39;: {&#39;C_m&#39;: 1000.0,</span>
+<span class="go">                             &#39;E_L&#39;: -65.0,</span>
+<span class="go">                             &#39;E_ex&#39;: 0.0,</span>
+<span class="go">                             &#39;E_in&#39;: -70.0,</span>
+<span class="go">                             &#39;I_e&#39;: 0.0,</span>
+<span class="go">                             &#39;V_reset&#39;: -65.0,</span>
+<span class="go">                             &#39;V_th&#39;: -50.0,</span>
+<span class="go">                             &#39;g_L&#39;: 50.0,</span>
+<span class="go">                             &#39;t_ref&#39;: 0.10000000000000001,</span>
+<span class="go">                             &#39;tau_syn_ex&#39;: 5.0,</span>
+<span class="go">                             &#39;tau_syn_in&#39;: 5.0}},</span>
+<span class="go"> &#39;first_id&#39;: 1,</span>
+<span class="go"> &#39;label&#39;: &#39;excitatory neurons&#39;,</span>
+<span class="go"> &#39;last_id&#39;: 100,</span>
+<span class="go"> &#39;local_first_id&#39;: 1,</span>
+<span class="go"> &#39;size&#39;: 100,</span>
+<span class="go"> &#39;size_local&#39;: 100,</span>
+<span class="go"> &#39;structure&#39;: {&#39;name&#39;: &#39;Grid2D&#39;,</span>
+<span class="go">               &#39;parameters&#39;: {&#39;aspect_ratio&#39;: 1.0,</span>
+<span class="go">                              &#39;dx&#39;: 50.0,</span>
+<span class="go">                              &#39;dy&#39;: 50.0,</span>
+<span class="go">                              &#39;fill_order&#39;: &#39;sequential&#39;,</span>
+<span class="go">                              &#39;x0&#39;: 0.0,</span>
+<span class="go">                              &#39;y0&#39;: 0.0}}}</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">p1</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+<span class="go">Population &quot;excitatory neurons&quot;</span>
+<span class="go">Structure   : Grid2D</span>
+<span class="go">  fill_order: sequential</span>
+<span class="go">  dx: 50.0</span>
+<span class="go">  dy: 50.0</span>
+<span class="go">  aspect_ratio: 1.0</span>
+<span class="go">  y0: 0.0</span>
+<span class="go">  x0: 0.0</span>
+<span class="go">Local cells : 100</span>
+<span class="go">Cell type   : IF_cond_exp</span>
+<span class="go">ID range    : 1-100</span>
+<span class="go">First cell on this node:</span>
+<span class="go">  ID: 1</span>
+<span class="go">  tau_refrac: 0.1</span>
+<span class="go">  tau_m: 20.0</span>
+<span class="go">  e_rev_E: 0.0</span>
+<span class="go">  i_offset: 0.0</span>
+<span class="go">  cm: 1.0</span>
+<span class="go">  e_rev_I: -70.0</span>
+<span class="go">  v_thresh: -50.0</span>
+<span class="go">  tau_syn_E: 5.0</span>
+<span class="go">  v_rest: -65.0</span>
+<span class="go">  tau_syn_I: 5.0</span>
+<span class="go">  v_reset: -65.0</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">p1</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">engine</span><span class="o">=</span><span class="s1">&#39;string&#39;</span><span class="p">))</span>
+<span class="go">Population &quot;excitatory neurons&quot;</span>
+<span class="go">Structure   : {&#39;name&#39;: &#39;Grid2D&#39;, &#39;parameters&#39;: {&#39;fill_order&#39;: &#39;sequential&#39;, &#39;dx&#39;: 50.0, &#39;dy&#39;: 50.0, &#39;aspect_ratio&#39;: 1.0, &#39;y0&#39;: 0.0, &#39;x0&#39;: 0.0}}</span>
+<span class="go">Local cells : 100</span>
+<span class="go">Cell type   : {&#39;name&#39;: &#39;IF_cond_exp&#39;, &#39;parameters&#39;: {&#39;E_in&#39;: -70.0, &#39;E_ex&#39;: 0.0, &#39;V_th&#39;: -50.0, &#39;I_e&#39;: 0.0, &#39;C_m&#39;: 1000.0, &#39;tau_syn_ex&#39;: 5.0, &#39;g_L&#39;: 50.0, &#39;V_reset&#39;: -65.0, &#39;tau_syn_in&#39;: 5.0, &#39;E_L&#39;: -65.0, &#39;t_ref&#39;: 0.10000000000000001}}.name</span>
+<span class="go">ID range    : 1-100</span>
+<span class="go">First cell on this node:</span>
+<span class="go">  ID: 1</span>
+<span class="go">  {&#39;tau_refrac&#39;: 0.10000000000000001, &#39;tau_m&#39;: 20.0, &#39;e_rev_E&#39;: 0.0, &#39;i_offset&#39;: 0.0, &#39;cm&#39;: 1.0, &#39;e_rev_I&#39;: -70.0, &#39;v_thresh&#39;: -50.0, &#39;tau_syn_E&#39;: 5.0, &#39;v_rest&#39;: -65.0, &#39;tau_syn_I&#39;: 5.0, &#39;v_reset&#39;: -65.0}</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">p1</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="s1">&#39;Population &quot;{{label}}&quot; consists of {{size}} {{celltype.name}} neurons, arranged in a {{structure.name}} structure with grid spacing ({{structure.parameters.dx}},{{structure.parameters.dy}})&#39;</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;jinja2&#39;</span><span class="p">)</span> <span class="p">)</span>
+<span class="go">Population &quot;excitatory neurons&quot; consists of 100 IF_cond_exp neurons, arranged in a Grid2D structure with grid spacing (50.0,50.0)&#39;, engine=&#39;jinja2&#39;))</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">p1</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="s1">&#39;Population &quot;$label&quot; consists of $size $celltype.name neurons, arranged in a $structure.name structure with grid spacing ($structure.parameters.dx,$structure.parameters.dy)&#39;</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;cheetah&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/descriptions.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.8.3 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2017, the PyNN community.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>

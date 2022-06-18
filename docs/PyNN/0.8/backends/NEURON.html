@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>NEURON &#8212; PyNN 0.8.3 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.8.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="NEST" href="NEST.html" />
+    <link rel="prev" title="Backends" href="../backends.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="NEST.html" title="NEST"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../backends.html" title="Backends"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.8.3 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../backends.html" accesskey="U">Backends</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="neuron">
+<h1>NEURON<a class="headerlink" href="#neuron" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="configuration-options">
+<h2>Configuration options<a class="headerlink" href="#configuration-options" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="adaptive-time-step-integration">
+<h3>Adaptive time step integration<a class="headerlink" href="#adaptive-time-step-integration" title="Permalink to this headline">¶</a></h3>
+<p>The default integration method used by the <code class="xref py py-mod docutils literal"><span class="pre">pyNN.neuron</span></code> backend uses a
+fixed time step, specified by the <em>timestep</em> argument to the <code class="xref py py-func docutils literal"><span class="pre">setup()</span></code>
+function.</p>
+<p>NEURON also supports use of variable time step methods, which can improve
+simulation speed:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">setup</span><span class="p">(</span><span class="n">use_cvode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If using <em>cvode</em>, there are two more optional parameters:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">setup</span><span class="p">(</span><span class="n">cvode</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+      <span class="n">rtol</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="c1"># specify relative error tolerance</span>
+      <span class="n">atol</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># specify absolute error tolerance</span>
+</pre></div>
+</div>
+<p>If not specified, the default values are <em>rtol = 0</em> and <em>atol = 0.001</em>. For full
+details, see the <a class="reference external" href="http://www.neuron.yale.edu/neuron/static/docs/help/neuron/neuron/classes/cvode.html">CVode documentation</a></p>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">native_rng_baseseed is added to MPI.rank to form seed for SpikeSourcePoisson, etc., but I think it would be better to add a <cite>seed</cite> parameter to SpikeSourcePoisson</p>
+</div>
+<div class="admonition-todo admonition" id="index-1">
+<p class="first admonition-title">Todo</p>
+<p class="last">Population.get_data() does not yet handle cvode properly.</p>
+</div>
+</div>
+</div>
+<div class="section" id="using-native-cell-models">
+<h2>Using native cell models<a class="headerlink" href="#using-native-cell-models" title="Permalink to this headline">¶</a></h2>
+<p>A native NEURON cell model is described using a Python class (which may wrap a
+Hoc template). For this class to work with PyNN, there are a small number of
+requirements:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">the <code class="xref py py-meth docutils literal"><span class="pre">__init__()</span></code> method should take just <code class="docutils literal"><span class="pre">**parameters</span></code> as its argument.</p>
+</li>
+<li><p class="first">instances should have attributes:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt><code class="xref py py-attr docutils literal"><span class="pre">source</span></code>: a reference to the membrane potential which will be</dt>
+<dd><p class="first last">monitored for spike emission, e.g. <code class="docutils literal"><span class="pre">self.soma(0.5)._ref_v</span></code></p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><code class="xref py py-attr docutils literal"><span class="pre">source_section</span></code>: the Hoc <code class="xref py py-class docutils literal"><span class="pre">Section</span></code> in which <code class="xref py py-attr docutils literal"><span class="pre">source</span></code> is located.</p>
+</li>
+<li><dl class="first docutils">
+<dt><code class="xref py py-attr docutils literal"><span class="pre">parameter_names</span></code>: a tuple of the names of attributes/properties of</dt>
+<dd><p class="first last">the class that correspond to parameters of the model.</p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><code class="xref py py-attr docutils literal"><span class="pre">traces</span></code>: an empty dict, used for recording.</p>
+</li>
+<li><p class="first"><code class="xref py py-attr docutils literal"><span class="pre">recording_time</span></code>: should be <code class="docutils literal"><span class="pre">False</span></code> initially.</p>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">there must be a <code class="xref py py-meth docutils literal"><span class="pre">memb_init()</span></code> method, taking no arguments.</p>
+</li>
+</ul>
+</div></blockquote>
+<p>Here is an example, which uses the <a class="reference external" href="https://pypi.python.org/pypi/nrnutils/">nrnutils</a> package for conciseness:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nrnutils</span> <span class="k">import</span> <span class="n">Mechanism</span><span class="p">,</span> <span class="n">Section</span>
+
+<span class="k">class</span> <span class="nc">SimpleNeuron</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">parameters</span><span class="p">):</span>
+        <span class="n">hh</span> <span class="o">=</span> <span class="n">Mechanism</span><span class="p">(</span><span class="s1">&#39;hh&#39;</span><span class="p">,</span> <span class="n">gl</span><span class="o">=</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;g_leak&#39;</span><span class="p">],</span> <span class="n">el</span><span class="o">=-</span><span class="mi">65</span><span class="p">,</span>
+                       <span class="n">gnabar</span><span class="o">=</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;gnabar&#39;</span><span class="p">],</span> <span class="n">gkbar</span><span class="o">=</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;gkbar&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">soma</span> <span class="o">=</span> <span class="n">Section</span><span class="p">(</span><span class="n">L</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">diam</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">mechanisms</span><span class="o">=</span><span class="p">[</span><span class="n">hh</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">soma</span><span class="o">.</span><span class="n">add_synapse</span><span class="p">(</span><span class="s1">&#39;ampa&#39;</span><span class="p">,</span> <span class="s1">&#39;Exp2Syn&#39;</span><span class="p">,</span> <span class="n">e</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">tau1</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">tau2</span><span class="o">=</span><span class="mf">5.0</span><span class="p">)</span>
+
+        <span class="c1"># needed for PyNN</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_section</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">soma</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">soma</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">_ref_v</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameter_names</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;g_leak&#39;</span><span class="p">,</span> <span class="s1">&#39;gnabar&#39;</span><span class="p">,</span> <span class="s1">&#39;gkbar&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">traces</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">recording_time</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">_set_gnabar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">soma</span><span class="p">:</span>
+            <span class="n">seg</span><span class="o">.</span><span class="n">hh</span><span class="o">.</span><span class="n">gnabar</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="k">def</span> <span class="nf">_get_gnabar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">soma</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">hh</span><span class="o">.</span><span class="n">gnabar</span>
+    <span class="n">gnabar</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">fget</span><span class="o">=</span><span class="n">_get_gnabar</span><span class="p">,</span> <span class="n">fset</span><span class="o">=</span><span class="n">_set_gnabar</span><span class="p">)</span>
+
+    <span class="c1"># ... gkbar and g_leak properties defined similarly</span>
+
+    <span class="k">def</span> <span class="nf">memb_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">soma</span><span class="p">:</span>
+            <span class="n">seg</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_init</span>
+</pre></div>
+</div>
+<p>For each cell model, you must also define a cell type:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyNN.neuron</span> <span class="k">import</span> <span class="n">NativeCellType</span>
+
+<span class="k">class</span> <span class="nc">SimpleNeuronType</span><span class="p">(</span><span class="n">NativeCellType</span><span class="p">):</span>
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;g_leak&#39;</span><span class="p">:</span> <span class="mf">0.0002</span><span class="p">,</span> <span class="s1">&#39;gkbar&#39;</span><span class="p">:</span> <span class="mf">0.036</span><span class="p">,</span> <span class="s1">&#39;gnabar&#39;</span><span class="p">:</span> <span class="mf">0.12</span><span class="p">}</span>
+    <span class="n">default_initial_values</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">65.0</span><span class="p">}</span>
+    <span class="n">recordable</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;soma(0.5).v&#39;</span><span class="p">,</span> <span class="s1">&#39;soma(0.5).ina&#39;</span><span class="p">]</span>
+    <span class="n">units</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;soma(0.5).v&#39;</span> <span class="p">:</span> <span class="s1">&#39;mV&#39;</span><span class="p">,</span> <span class="s1">&#39;soma(0.5).ina&#39;</span><span class="p">:</span> <span class="s1">&#39;nA&#39;</span><span class="p">}</span>
+    <span class="n">receptor_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;soma.ampa&#39;</span><span class="p">]</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">SimpleNeuron</span>
+</pre></div>
+</div>
+<p>The requirement to explicitly list all variables you might wish to record in the
+<code class="docutils literal"><span class="pre">recordable</span></code> attribute is a temporary inconvenience, which will be removed in
+a future version.</p>
+<p>It is now straightforward to use this cell type in PyNN:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyNN.neuron</span> <span class="k">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">Population</span><span class="p">,</span> <span class="n">Projection</span><span class="p">,</span> <span class="n">AllToAllConnector</span><span class="p">,</span> <span class="n">StaticSynapse</span>
+<span class="n">setup</span><span class="p">()</span>
+<span class="n">p1</span> <span class="o">=</span> <span class="n">Population</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">SimpleNeuronType</span><span class="p">(</span><span class="n">g_leak</span><span class="o">=</span><span class="mf">0.0003</span><span class="p">))</span>
+<span class="n">p1</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s1">&#39;soma(0.5).ina&#39;</span><span class="p">)</span>
+<span class="n">syn</span> <span class="o">=</span> <span class="n">StaticSynapse</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">prj</span> <span class="o">=</span> <span class="n">Projection</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">AllToAllConnector</span><span class="p">(),</span> <span class="n">syn</span><span class="p">,</span> <span class="n">receptor_type</span><span class="o">=</span><span class="s1">&#39;soma.ampa&#39;</span><span class="p">)</span>
+<span class="n">run</span><span class="p">(</span><span class="mf">100.0</span><span class="p">)</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">p1</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>If your model relies on other NMODL mechanisms, call the
+<code class="xref py py-func docutils literal"><span class="pre">load_mechanisms()</span></code> function with the path to the directory
+containing the <code class="file docutils literal"><span class="pre">.mod</span></code> files.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">NEURON</a><ul>
+<li><a class="reference internal" href="#configuration-options">Configuration options</a><ul>
+<li><a class="reference internal" href="#adaptive-time-step-integration">Adaptive time step integration</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-native-cell-models">Using native cell models</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../backends.html"
+                        title="previous chapter">Backends</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="NEST.html"
+                        title="next chapter">NEST</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/backends/NEURON.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="NEST.html" title="NEST"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../backends.html" title="Backends"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.8.3 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../backends.html" >Backends</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2017, the PyNN community.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>

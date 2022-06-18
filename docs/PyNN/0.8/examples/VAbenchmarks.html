@@ -1,0 +1,401 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Balanced network of excitatory and inhibitory neurons &#8212; PyNN 0.8.3 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.8.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Contributors and licence" href="../contributors.html" />
+    <link rel="prev" title="A demonstration of the use of callbacks to vary the rate of a SpikeSourcePoisson" href="varying_poisson.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../contributors.html" title="Contributors and licence"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="varying_poisson.html" title="A demonstration of the use of callbacks to vary the rate of a SpikeSourcePoisson"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.8.3 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../examples.html" accesskey="U">Examples</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="balanced-network-of-excitatory-and-inhibitory-neurons">
+<h1>Balanced network of excitatory and inhibitory neurons<a class="headerlink" href="#balanced-network-of-excitatory-and-inhibitory-neurons" title="Permalink to this headline">¶</a></h1>
+<img alt="../_images/VAbenchmarks_CUBA_20151005-081325.png" src="../_images/VAbenchmarks_CUBA_20151005-081325.png" />
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># coding: utf-8</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Balanced network of excitatory and inhibitory neurons.</span>
+
+<span class="sd">An implementation of benchmarks 1 and 2 from</span>
+
+<span class="sd">    Brette et al. (2007) Journal of Computational Neuroscience 23: 349-398</span>
+
+<span class="sd">The network is based on the CUBA and COBA models of Vogels &amp; Abbott</span>
+<span class="sd">(J. Neurosci, 2005).  The model consists of a network of excitatory and</span>
+<span class="sd">inhibitory neurons, connected via current-based &quot;exponential&quot;</span>
+<span class="sd">synapses (instantaneous rise, exponential decay).</span>
+
+
+<span class="sd">Usage: python VAbenchmarks.py [-h] [--plot-figure] [--use-views] [--use-assembly]</span>
+<span class="sd">                              [--use-csa] [--debug DEBUG]</span>
+<span class="sd">                              simulator benchmark</span>
+
+<span class="sd">positional arguments:</span>
+<span class="sd">  simulator       neuron, nest, brian or another backend simulator</span>
+<span class="sd">  benchmark       either CUBA or COBA</span>
+
+<span class="sd">optional arguments:</span>
+<span class="sd">  -h, --help      show this help message and exit</span>
+<span class="sd">  --plot-figure   plot the simulation results to a file</span>
+<span class="sd">  --use-views     use population views in creating the network</span>
+<span class="sd">  --use-assembly  use assemblies in creating the network</span>
+<span class="sd">  --use-csa       use the Connection Set Algebra to define the connectivity</span>
+<span class="sd">  --debug DEBUG   print debugging information</span>
+
+
+<span class="sd">Andrew Davison, UNIC, CNRS</span>
+<span class="sd">August 2006</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pyNN.utility</span> <span class="k">import</span> <span class="n">get_simulator</span><span class="p">,</span> <span class="n">Timer</span><span class="p">,</span> <span class="n">ProgressBar</span><span class="p">,</span> <span class="n">init_logging</span><span class="p">,</span> <span class="n">normalized_filename</span>
+<span class="kn">from</span> <span class="nn">pyNN.random</span> <span class="k">import</span> <span class="n">NumpyRNG</span><span class="p">,</span> <span class="n">RandomDistribution</span>
+
+
+<span class="c1"># === Configure the simulator ================================================</span>
+
+<span class="n">sim</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="n">get_simulator</span><span class="p">(</span>
+                    <span class="p">(</span><span class="s2">&quot;benchmark&quot;</span><span class="p">,</span> <span class="s2">&quot;either CUBA or COBA&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s2">&quot;--plot-figure&quot;</span><span class="p">,</span> <span class="s2">&quot;plot the simulation results to a file&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;store_true&quot;</span><span class="p">}),</span>
+                    <span class="p">(</span><span class="s2">&quot;--use-views&quot;</span><span class="p">,</span> <span class="s2">&quot;use population views in creating the network&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;store_true&quot;</span><span class="p">}),</span>
+                    <span class="p">(</span><span class="s2">&quot;--use-assembly&quot;</span><span class="p">,</span> <span class="s2">&quot;use assemblies in creating the network&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;store_true&quot;</span><span class="p">}),</span>
+                    <span class="p">(</span><span class="s2">&quot;--use-csa&quot;</span><span class="p">,</span> <span class="s2">&quot;use the Connection Set Algebra to define the connectivity&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;store_true&quot;</span><span class="p">}),</span>
+                    <span class="p">(</span><span class="s2">&quot;--debug&quot;</span><span class="p">,</span> <span class="s2">&quot;print debugging information&quot;</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">use_csa</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">csa</span>
+
+<span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+    <span class="n">init_logging</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">timer</span> <span class="o">=</span> <span class="n">Timer</span><span class="p">()</span>
+
+<span class="c1"># === Define parameters ========================================================</span>
+
+<span class="n">threads</span>  <span class="o">=</span> <span class="mi">1</span>
+<span class="n">rngseed</span>  <span class="o">=</span> <span class="mi">98765</span>
+<span class="n">parallel_safe</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="n">n</span>        <span class="o">=</span> <span class="mi">4000</span>  <span class="c1"># number of cells</span>
+<span class="n">r_ei</span>     <span class="o">=</span> <span class="mf">4.0</span>   <span class="c1"># number of excitatory cells:number of inhibitory cells</span>
+<span class="n">pconn</span>    <span class="o">=</span> <span class="mf">0.02</span>  <span class="c1"># connection probability</span>
+<span class="n">stim_dur</span> <span class="o">=</span> <span class="mf">50.</span>   <span class="c1"># (ms) duration of random stimulation</span>
+<span class="n">rate</span>     <span class="o">=</span> <span class="mf">100.</span>  <span class="c1"># (Hz) frequency of the random stimulation</span>
+
+<span class="n">dt</span>       <span class="o">=</span> <span class="mf">0.1</span>   <span class="c1"># (ms) simulation timestep</span>
+<span class="n">tstop</span>    <span class="o">=</span> <span class="mi">1000</span>  <span class="c1"># (ms) simulaton duration</span>
+<span class="n">delay</span>    <span class="o">=</span> <span class="mf">0.2</span>
+
+<span class="c1"># Cell parameters</span>
+<span class="n">area</span>     <span class="o">=</span> <span class="mf">20000.</span> <span class="c1"># (µm²)</span>
+<span class="n">tau_m</span>    <span class="o">=</span> <span class="mf">20.</span>    <span class="c1"># (ms)</span>
+<span class="n">cm</span>       <span class="o">=</span> <span class="mf">1.</span>     <span class="c1"># (µF/cm²)</span>
+<span class="n">g_leak</span>   <span class="o">=</span> <span class="mi">5</span><span class="n">e</span><span class="o">-</span><span class="mi">5</span>   <span class="c1"># (S/cm²)</span>
+<span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">benchmark</span> <span class="o">==</span> <span class="s2">&quot;COBA&quot;</span><span class="p">:</span>
+    <span class="n">E_leak</span>   <span class="o">=</span> <span class="o">-</span><span class="mf">60.</span>  <span class="c1"># (mV)</span>
+<span class="k">elif</span> <span class="n">options</span><span class="o">.</span><span class="n">benchmark</span> <span class="o">==</span> <span class="s2">&quot;CUBA&quot;</span><span class="p">:</span>
+    <span class="n">E_leak</span>   <span class="o">=</span> <span class="o">-</span><span class="mf">49.</span>  <span class="c1"># (mV)</span>
+<span class="n">v_thresh</span> <span class="o">=</span> <span class="o">-</span><span class="mf">50.</span>   <span class="c1"># (mV)</span>
+<span class="n">v_reset</span>  <span class="o">=</span> <span class="o">-</span><span class="mf">60.</span>   <span class="c1"># (mV)</span>
+<span class="n">t_refrac</span> <span class="o">=</span> <span class="mf">5.</span>     <span class="c1"># (ms) (clamped at v_reset)</span>
+<span class="n">v_mean</span>   <span class="o">=</span> <span class="o">-</span><span class="mf">60.</span>   <span class="c1"># (mV) &#39;mean&#39; membrane potential, for calculating CUBA weights</span>
+<span class="n">tau_exc</span>  <span class="o">=</span> <span class="mf">5.</span>     <span class="c1"># (ms)</span>
+<span class="n">tau_inh</span>  <span class="o">=</span> <span class="mf">10.</span>    <span class="c1"># (ms)</span>
+
+<span class="c1"># Synapse parameters</span>
+<span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">benchmark</span> <span class="o">==</span> <span class="s2">&quot;COBA&quot;</span><span class="p">:</span>
+    <span class="n">Gexc</span> <span class="o">=</span> <span class="mf">4.</span>     <span class="c1"># (nS)</span>
+    <span class="n">Ginh</span> <span class="o">=</span> <span class="mf">51.</span>    <span class="c1"># (nS)</span>
+<span class="k">elif</span> <span class="n">options</span><span class="o">.</span><span class="n">benchmark</span> <span class="o">==</span> <span class="s2">&quot;CUBA&quot;</span><span class="p">:</span>
+    <span class="n">Gexc</span> <span class="o">=</span> <span class="mf">0.27</span>   <span class="c1"># (nS) #Those weights should be similar to the COBA weights</span>
+    <span class="n">Ginh</span> <span class="o">=</span> <span class="mf">4.5</span>    <span class="c1"># (nS) # but the delpolarising drift should be taken into account</span>
+<span class="n">Erev_exc</span> <span class="o">=</span> <span class="mf">0.</span>     <span class="c1"># (mV)</span>
+<span class="n">Erev_inh</span> <span class="o">=</span> <span class="o">-</span><span class="mf">80.</span>   <span class="c1"># (mV)</span>
+
+<span class="c1">### what is the synaptic delay???</span>
+
+<span class="c1"># === Calculate derived parameters =============================================</span>
+
+<span class="n">area</span>  <span class="o">=</span> <span class="n">area</span><span class="o">*</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">8</span>                     <span class="c1"># convert to cm²</span>
+<span class="n">cm</span>    <span class="o">=</span> <span class="n">cm</span><span class="o">*</span><span class="n">area</span><span class="o">*</span><span class="mi">1000</span>                  <span class="c1"># convert to nF</span>
+<span class="n">Rm</span>    <span class="o">=</span> <span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">6</span><span class="o">/</span><span class="p">(</span><span class="n">g_leak</span><span class="o">*</span><span class="n">area</span><span class="p">)</span>            <span class="c1"># membrane resistance in MΩ</span>
+<span class="k">assert</span> <span class="n">tau_m</span> <span class="o">==</span> <span class="n">cm</span><span class="o">*</span><span class="n">Rm</span>                 <span class="c1"># just to check</span>
+<span class="n">n_exc</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">((</span><span class="n">n</span><span class="o">*</span><span class="n">r_ei</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">r_ei</span><span class="p">))))</span> <span class="c1"># number of excitatory cells</span>
+<span class="n">n_inh</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="n">n_exc</span>                     <span class="c1"># number of inhibitory cells</span>
+<span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">benchmark</span> <span class="o">==</span> <span class="s2">&quot;COBA&quot;</span><span class="p">:</span>
+    <span class="n">celltype</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">IF_cond_exp</span>
+    <span class="n">w_exc</span>    <span class="o">=</span> <span class="n">Gexc</span><span class="o">*</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">3</span>              <span class="c1"># We convert conductances to uS</span>
+    <span class="n">w_inh</span>    <span class="o">=</span> <span class="n">Ginh</span><span class="o">*</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">3</span>
+<span class="k">elif</span> <span class="n">options</span><span class="o">.</span><span class="n">benchmark</span> <span class="o">==</span> <span class="s2">&quot;CUBA&quot;</span><span class="p">:</span>
+    <span class="n">celltype</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">IF_curr_exp</span>
+    <span class="n">w_exc</span> <span class="o">=</span> <span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">3</span><span class="o">*</span><span class="n">Gexc</span><span class="o">*</span><span class="p">(</span><span class="n">Erev_exc</span> <span class="o">-</span> <span class="n">v_mean</span><span class="p">)</span>  <span class="c1"># (nA) weight of excitatory synapses</span>
+    <span class="n">w_inh</span> <span class="o">=</span> <span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">3</span><span class="o">*</span><span class="n">Ginh</span><span class="o">*</span><span class="p">(</span><span class="n">Erev_inh</span> <span class="o">-</span> <span class="n">v_mean</span><span class="p">)</span>  <span class="c1"># (nA)</span>
+    <span class="k">assert</span> <span class="n">w_exc</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span> <span class="k">assert</span> <span class="n">w_inh</span> <span class="o">&lt;</span> <span class="mi">0</span>
+
+<span class="c1"># === Build the network ========================================================</span>
+
+<span class="n">extra</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;threads&#39;</span> <span class="p">:</span> <span class="n">threads</span><span class="p">,</span>
+         <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s2">&quot;va_</span><span class="si">%s</span><span class="s2">.xml&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">benchmark</span><span class="p">,</span>
+         <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;VA&#39;</span><span class="p">}</span>
+<span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">simulator</span> <span class="o">==</span> <span class="s2">&quot;neuroml&quot;</span><span class="p">:</span>
+    <span class="n">extra</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;VAbenchmarks.xml&quot;</span>
+
+<span class="n">node_id</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">min_delay</span><span class="o">=</span><span class="n">delay</span><span class="p">,</span> <span class="n">max_delay</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">)</span>
+<span class="n">np</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">num_processes</span><span class="p">()</span>
+
+<span class="n">host_name</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Host #</span><span class="si">%d</span><span class="s2"> is on </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">node_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">host_name</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> Initialising the simulator with </span><span class="si">%d</span><span class="s2"> thread(s)...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">node_id</span><span class="p">,</span> <span class="n">extra</span><span class="p">[</span><span class="s1">&#39;threads&#39;</span><span class="p">]))</span>
+
+<span class="n">cell_params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;tau_m&#39;</span>      <span class="p">:</span> <span class="n">tau_m</span><span class="p">,</span>    <span class="s1">&#39;tau_syn_E&#39;</span>  <span class="p">:</span> <span class="n">tau_exc</span><span class="p">,</span>  <span class="s1">&#39;tau_syn_I&#39;</span>  <span class="p">:</span> <span class="n">tau_inh</span><span class="p">,</span>
+    <span class="s1">&#39;v_rest&#39;</span>     <span class="p">:</span> <span class="n">E_leak</span><span class="p">,</span>   <span class="s1">&#39;v_reset&#39;</span>    <span class="p">:</span> <span class="n">v_reset</span><span class="p">,</span>  <span class="s1">&#39;v_thresh&#39;</span>   <span class="p">:</span> <span class="n">v_thresh</span><span class="p">,</span>
+    <span class="s1">&#39;cm&#39;</span>         <span class="p">:</span> <span class="n">cm</span><span class="p">,</span>       <span class="s1">&#39;tau_refrac&#39;</span> <span class="p">:</span> <span class="n">t_refrac</span><span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">benchmark</span> <span class="o">==</span> <span class="s2">&quot;COBA&quot;</span><span class="p">):</span>
+    <span class="n">cell_params</span><span class="p">[</span><span class="s1">&#39;e_rev_E&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Erev_exc</span>
+    <span class="n">cell_params</span><span class="p">[</span><span class="s1">&#39;e_rev_I&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Erev_inh</span>
+
+<span class="n">timer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> Creating cell populations...&quot;</span> <span class="o">%</span> <span class="n">node_id</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">use_views</span><span class="p">:</span>
+    <span class="c1"># create a single population of neurons, and then use population views to define</span>
+    <span class="c1"># excitatory and inhibitory sub-populations</span>
+    <span class="n">all_cells</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Population</span><span class="p">(</span><span class="n">n_exc</span> <span class="o">+</span> <span class="n">n_inh</span><span class="p">,</span> <span class="n">celltype</span><span class="p">(</span><span class="o">**</span><span class="n">cell_params</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;All Cells&quot;</span><span class="p">)</span>
+    <span class="n">exc_cells</span> <span class="o">=</span> <span class="n">all_cells</span><span class="p">[:</span><span class="n">n_exc</span><span class="p">]</span>
+    <span class="n">exc_cells</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Excitatory cells&quot;</span>
+    <span class="n">inh_cells</span> <span class="o">=</span> <span class="n">all_cells</span><span class="p">[</span><span class="n">n_exc</span><span class="p">:]</span>
+    <span class="n">inh_cells</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Inhibitory cells&quot;</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c1"># create separate populations for excitatory and inhibitory neurons</span>
+    <span class="n">exc_cells</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Population</span><span class="p">(</span><span class="n">n_exc</span><span class="p">,</span> <span class="n">celltype</span><span class="p">(</span><span class="o">**</span><span class="n">cell_params</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Excitatory_Cells&quot;</span><span class="p">)</span>
+    <span class="n">inh_cells</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Population</span><span class="p">(</span><span class="n">n_inh</span><span class="p">,</span> <span class="n">celltype</span><span class="p">(</span><span class="o">**</span><span class="n">cell_params</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Inhibitory_Cells&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">use_assembly</span><span class="p">:</span>
+        <span class="c1"># group the populations into an assembly</span>
+        <span class="n">all_cells</span> <span class="o">=</span> <span class="n">exc_cells</span> <span class="o">+</span> <span class="n">inh_cells</span>
+
+<span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">benchmark</span> <span class="o">==</span> <span class="s2">&quot;COBA&quot;</span><span class="p">:</span>
+    <span class="n">ext_stim</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Population</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">sim</span><span class="o">.</span><span class="n">SpikeSourcePoisson</span><span class="p">(</span><span class="n">rate</span><span class="o">=</span><span class="n">rate</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="n">stim_dur</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;expoisson&quot;</span><span class="p">)</span>
+    <span class="n">rconn</span> <span class="o">=</span> <span class="mf">0.01</span>
+    <span class="n">ext_conn</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">FixedProbabilityConnector</span><span class="p">(</span><span class="n">rconn</span><span class="p">)</span>
+    <span class="n">ext_syn</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">StaticSynapse</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> Initialising membrane potential to random values...&quot;</span> <span class="o">%</span> <span class="n">node_id</span><span class="p">)</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">NumpyRNG</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">rngseed</span><span class="p">,</span> <span class="n">parallel_safe</span><span class="o">=</span><span class="n">parallel_safe</span><span class="p">)</span>
+<span class="n">uniformDistr</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;uniform&#39;</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="n">v_reset</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="n">v_thresh</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">use_views</span><span class="p">:</span>
+    <span class="n">all_cells</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">v</span><span class="o">=</span><span class="n">uniformDistr</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">exc_cells</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">v</span><span class="o">=</span><span class="n">uniformDistr</span><span class="p">)</span>
+    <span class="n">inh_cells</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">v</span><span class="o">=</span><span class="n">uniformDistr</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> Connecting populations...&quot;</span> <span class="o">%</span> <span class="n">node_id</span><span class="p">)</span>
+<span class="n">progress_bar</span> <span class="o">=</span> <span class="n">ProgressBar</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">use_csa</span><span class="p">:</span>
+    <span class="n">connector</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">CSAConnector</span><span class="p">(</span><span class="n">csa</span><span class="o">.</span><span class="n">cset</span><span class="p">(</span><span class="n">csa</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">pconn</span><span class="p">)))</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">connector</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">FixedProbabilityConnector</span><span class="p">(</span><span class="n">pconn</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">progress_bar</span><span class="p">)</span>
+<span class="n">exc_syn</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">StaticSynapse</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="n">w_exc</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="n">delay</span><span class="p">)</span>
+<span class="n">inh_syn</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">StaticSynapse</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="n">w_inh</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="n">delay</span><span class="p">)</span>
+
+<span class="n">connections</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">use_views</span> <span class="ow">or</span> <span class="n">options</span><span class="o">.</span><span class="n">use_assembly</span><span class="p">:</span>
+    <span class="n">connections</span><span class="p">[</span><span class="s1">&#39;exc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Projection</span><span class="p">(</span><span class="n">exc_cells</span><span class="p">,</span> <span class="n">all_cells</span><span class="p">,</span> <span class="n">connector</span><span class="p">,</span> <span class="n">exc_syn</span><span class="p">,</span> <span class="n">receptor_type</span><span class="o">=</span><span class="s1">&#39;excitatory&#39;</span><span class="p">)</span>
+    <span class="n">connections</span><span class="p">[</span><span class="s1">&#39;inh&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Projection</span><span class="p">(</span><span class="n">inh_cells</span><span class="p">,</span> <span class="n">all_cells</span><span class="p">,</span> <span class="n">connector</span><span class="p">,</span> <span class="n">inh_syn</span><span class="p">,</span> <span class="n">receptor_type</span><span class="o">=</span><span class="s1">&#39;inhibitory&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">benchmark</span> <span class="o">==</span> <span class="s2">&quot;COBA&quot;</span><span class="p">):</span>
+        <span class="n">connections</span><span class="p">[</span><span class="s1">&#39;ext&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Projection</span><span class="p">(</span><span class="n">ext_stim</span><span class="p">,</span> <span class="n">all_cells</span><span class="p">,</span> <span class="n">ext_conn</span><span class="p">,</span> <span class="n">ext_syn</span><span class="p">,</span> <span class="n">receptor_type</span><span class="o">=</span><span class="s1">&#39;excitatory&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">connections</span><span class="p">[</span><span class="s1">&#39;e2e&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Projection</span><span class="p">(</span><span class="n">exc_cells</span><span class="p">,</span> <span class="n">exc_cells</span><span class="p">,</span> <span class="n">connector</span><span class="p">,</span> <span class="n">exc_syn</span><span class="p">,</span> <span class="n">receptor_type</span><span class="o">=</span><span class="s1">&#39;excitatory&#39;</span><span class="p">)</span>
+    <span class="n">connections</span><span class="p">[</span><span class="s1">&#39;e2i&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Projection</span><span class="p">(</span><span class="n">exc_cells</span><span class="p">,</span> <span class="n">inh_cells</span><span class="p">,</span> <span class="n">connector</span><span class="p">,</span> <span class="n">exc_syn</span><span class="p">,</span> <span class="n">receptor_type</span><span class="o">=</span><span class="s1">&#39;excitatory&#39;</span><span class="p">)</span>
+    <span class="n">connections</span><span class="p">[</span><span class="s1">&#39;i2e&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Projection</span><span class="p">(</span><span class="n">inh_cells</span><span class="p">,</span> <span class="n">exc_cells</span><span class="p">,</span> <span class="n">connector</span><span class="p">,</span> <span class="n">inh_syn</span><span class="p">,</span> <span class="n">receptor_type</span><span class="o">=</span><span class="s1">&#39;inhibitory&#39;</span><span class="p">)</span>
+    <span class="n">connections</span><span class="p">[</span><span class="s1">&#39;i2i&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Projection</span><span class="p">(</span><span class="n">inh_cells</span><span class="p">,</span> <span class="n">inh_cells</span><span class="p">,</span> <span class="n">connector</span><span class="p">,</span> <span class="n">inh_syn</span><span class="p">,</span> <span class="n">receptor_type</span><span class="o">=</span><span class="s1">&#39;inhibitory&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">benchmark</span> <span class="o">==</span> <span class="s2">&quot;COBA&quot;</span><span class="p">):</span>
+        <span class="n">connections</span><span class="p">[</span><span class="s1">&#39;ext2e&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Projection</span><span class="p">(</span><span class="n">ext_stim</span><span class="p">,</span> <span class="n">exc_cells</span><span class="p">,</span> <span class="n">ext_conn</span><span class="p">,</span> <span class="n">ext_syn</span><span class="p">,</span> <span class="n">receptor_type</span><span class="o">=</span><span class="s1">&#39;excitatory&#39;</span><span class="p">)</span>
+        <span class="n">connections</span><span class="p">[</span><span class="s1">&#39;ext2i&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Projection</span><span class="p">(</span><span class="n">ext_stim</span><span class="p">,</span> <span class="n">inh_cells</span><span class="p">,</span> <span class="n">ext_conn</span><span class="p">,</span> <span class="n">ext_syn</span><span class="p">,</span> <span class="n">receptor_type</span><span class="o">=</span><span class="s1">&#39;excitatory&#39;</span><span class="p">)</span>
+
+<span class="c1"># === Setup recording ==========================================================</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> Setting up recording...&quot;</span> <span class="o">%</span> <span class="n">node_id</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">use_views</span> <span class="ow">or</span> <span class="n">options</span><span class="o">.</span><span class="n">use_assembly</span><span class="p">:</span>
+    <span class="n">all_cells</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s1">&#39;spikes&#39;</span><span class="p">)</span>
+    <span class="n">exc_cells</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">exc_cells</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s1">&#39;spikes&#39;</span><span class="p">)</span>
+    <span class="n">inh_cells</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s1">&#39;spikes&#39;</span><span class="p">)</span>
+    <span class="n">exc_cells</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">)</span>
+
+<span class="n">buildCPUTime</span> <span class="o">=</span> <span class="n">timer</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+
+<span class="c1"># === Save connections to file =================================================</span>
+
+<span class="c1">#for prj in connections.keys():</span>
+    <span class="c1">#connections[prj].saveConnections(&#39;Results/VAbenchmark_%s_%s_%s_np%d.conn&#39; % (benchmark, prj, options.simulator, np))</span>
+<span class="n">saveCPUTime</span> <span class="o">=</span> <span class="n">timer</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+
+<span class="c1"># === Run simulation ===========================================================</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> Running simulation...&quot;</span> <span class="o">%</span> <span class="n">node_id</span><span class="p">)</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">tstop</span><span class="p">)</span>
+
+<span class="n">simCPUTime</span> <span class="o">=</span> <span class="n">timer</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+
+<span class="n">E_count</span> <span class="o">=</span> <span class="n">exc_cells</span><span class="o">.</span><span class="n">mean_spike_count</span><span class="p">()</span>
+<span class="n">I_count</span> <span class="o">=</span> <span class="n">inh_cells</span><span class="o">.</span><span class="n">mean_spike_count</span><span class="p">()</span>
+
+<span class="c1"># === Print results to file ====================================================</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> Writing data to file...&quot;</span> <span class="o">%</span> <span class="n">node_id</span><span class="p">)</span>
+
+<span class="n">filename</span> <span class="o">=</span> <span class="n">normalized_filename</span><span class="p">(</span><span class="s2">&quot;Results&quot;</span><span class="p">,</span> <span class="s2">&quot;VAbenchmarks_</span><span class="si">%s</span><span class="s2">_exc&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">benchmark</span><span class="p">,</span> <span class="s2">&quot;pkl&quot;</span><span class="p">,</span>
+                               <span class="n">options</span><span class="o">.</span><span class="n">simulator</span><span class="p">,</span> <span class="n">np</span><span class="p">)</span>
+<span class="n">exc_cells</span><span class="o">.</span><span class="n">write_data</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span>
+                     <span class="n">annotations</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;script_name&#39;</span><span class="p">:</span> <span class="n">__file__</span><span class="p">})</span>
+<span class="n">inh_cells</span><span class="o">.</span><span class="n">write_data</span><span class="p">(</span><span class="n">filename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;exc&quot;</span><span class="p">,</span> <span class="s2">&quot;inh&quot;</span><span class="p">),</span>
+                     <span class="n">annotations</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;script_name&#39;</span><span class="p">:</span> <span class="n">__file__</span><span class="p">})</span>
+
+<span class="n">writeCPUTime</span> <span class="o">=</span> <span class="n">timer</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">use_views</span> <span class="ow">or</span> <span class="n">options</span><span class="o">.</span><span class="n">use_assembly</span><span class="p">:</span>
+    <span class="n">connections</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> e→e,i  </span><span class="si">%d</span><span class="s2"> i→e,i&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">connections</span><span class="p">[</span><span class="s1">&#39;exc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">(),</span>
+                                          <span class="n">connections</span><span class="p">[</span><span class="s1">&#39;inh&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">connections</span> <span class="o">=</span> <span class="s2">u&quot;</span><span class="si">%d</span><span class="s2"> e→e  </span><span class="si">%d</span><span class="s2"> e→i  </span><span class="si">%d</span><span class="s2"> i→e  </span><span class="si">%d</span><span class="s2"> i→i&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">connections</span><span class="p">[</span><span class="s1">&#39;e2e&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">(),</span>
+                                                       <span class="n">connections</span><span class="p">[</span><span class="s1">&#39;e2i&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">(),</span>
+                                                       <span class="n">connections</span><span class="p">[</span><span class="s1">&#39;i2e&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">(),</span>
+                                                       <span class="n">connections</span><span class="p">[</span><span class="s1">&#39;i2i&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+
+<span class="k">if</span> <span class="n">node_id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Vogels-Abbott Network Simulation ---&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Nodes                  : </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">np</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Simulation type        : </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">benchmark</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of Neurons      : </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">n</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of Synapses     : </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">connections</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Excitatory conductance : </span><span class="si">%g</span><span class="s2"> nS&quot;</span> <span class="o">%</span> <span class="n">Gexc</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Inhibitory conductance : </span><span class="si">%g</span><span class="s2"> nS&quot;</span> <span class="o">%</span> <span class="n">Ginh</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Excitatory rate        : </span><span class="si">%g</span><span class="s2"> Hz&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">E_count</span> <span class="o">*</span> <span class="mf">1000.0</span> <span class="o">/</span> <span class="n">tstop</span><span class="p">,))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Inhibitory rate        : </span><span class="si">%g</span><span class="s2"> Hz&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">I_count</span> <span class="o">*</span> <span class="mf">1000.0</span> <span class="o">/</span> <span class="n">tstop</span><span class="p">,))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Build time             : </span><span class="si">%g</span><span class="s2"> s&quot;</span> <span class="o">%</span> <span class="n">buildCPUTime</span><span class="p">)</span>
+    <span class="c1">#print(&quot;Save connections time  : %g s&quot; % saveCPUTime)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Simulation time        : </span><span class="si">%g</span><span class="s2"> s&quot;</span> <span class="o">%</span> <span class="n">simCPUTime</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Writing time           : </span><span class="si">%g</span><span class="s2"> s&quot;</span> <span class="o">%</span> <span class="n">writeCPUTime</span><span class="p">)</span>
+
+
+<span class="c1"># === Finished with simulator ==================================================</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="varying_poisson.html"
+                        title="previous chapter">A demonstration of the use of callbacks to vary the rate of a SpikeSourcePoisson</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../contributors.html"
+                        title="next chapter">Contributors and licence</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/examples/VAbenchmarks.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../contributors.html" title="Contributors and licence"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="varying_poisson.html" title="A demonstration of the use of callbacks to vary the rate of a SpikeSourcePoisson"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.8.3 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../examples.html" >Examples</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2017, the PyNN community.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>

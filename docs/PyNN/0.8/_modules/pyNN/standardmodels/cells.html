@@ -1,0 +1,630 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pyNN.standardmodels.cells &#8212; PyNN 0.8.3 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.8.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.8.3 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../standardmodels.html" accesskey="U">pyNN.standardmodels</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pyNN.standardmodels.cells</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Definition of default parameters (and hence, standard parameter names) for</span>
+<span class="sd">standard cell models.</span>
+
+<span class="sd">Plain integrate-and-fire models:</span>
+<span class="sd">    IF_curr_exp</span>
+<span class="sd">    IF_curr_alpha</span>
+<span class="sd">    IF_cond_exp</span>
+<span class="sd">    IF_cond_alpha</span>
+
+<span class="sd">Integrate-and-fire with adaptation:</span>
+<span class="sd">    IF_cond_exp_gsfa_grr</span>
+<span class="sd">    EIF_cond_alpha_isfa_ista</span>
+<span class="sd">    EIF_cond_exp_isfa_ista</span>
+
+<span class="sd">Integrate-and-fire model for use with the FACETS hardware</span>
+<span class="sd">    IF_facets_hardware1</span>
+
+<span class="sd">Hodgkin-Huxley model</span>
+<span class="sd">    HH_cond_exp</span>
+
+<span class="sd">Spike sources (input neurons)</span>
+<span class="sd">    SpikeSourcePoisson</span>
+<span class="sd">    SpikeSourceArray</span>
+<span class="sd">    SpikeSourceInhGamma</span>
+
+<span class="sd">:copyright: Copyright 2006-2016 by the PyNN team, see AUTHORS.</span>
+<span class="sd">:license: CeCILL, see LICENSE for details.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">pyNN.standardmodels</span> <span class="k">import</span> <span class="n">StandardCellType</span>
+<span class="kn">from</span> <span class="nn">pyNN.parameters</span> <span class="k">import</span> <span class="n">Sequence</span>
+
+
+<div class="viewcode-block" id="IF_curr_alpha"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.IF_curr_alpha">[docs]</a><span class="k">class</span> <span class="nc">IF_curr_alpha</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Leaky integrate and fire model with fixed threshold and alpha-function-</span>
+<span class="sd">    shaped post-synaptic current.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v_rest&#39;</span><span class="p">:</span>   <span class="o">-</span><span class="mf">65.0</span><span class="p">,</span>  <span class="c1"># Resting membrane potential in mV.</span>
+        <span class="s1">&#39;cm&#39;</span><span class="p">:</span>         <span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># Capacity of the membrane in nF</span>
+        <span class="s1">&#39;tau_m&#39;</span><span class="p">:</span>     <span class="mf">20.0</span><span class="p">,</span>  <span class="c1"># Membrane time constant in ms.</span>
+        <span class="s1">&#39;tau_refrac&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>  <span class="c1"># Duration of refractory period in ms.</span>
+        <span class="s1">&#39;tau_syn_E&#39;</span><span class="p">:</span>  <span class="mf">0.5</span><span class="p">,</span>  <span class="c1"># Rise time of the excitatory synaptic alpha function in ms.</span>
+        <span class="s1">&#39;tau_syn_I&#39;</span><span class="p">:</span>  <span class="mf">0.5</span><span class="p">,</span>  <span class="c1"># Rise time of the inhibitory synaptic alpha function in ms.</span>
+        <span class="s1">&#39;i_offset&#39;</span><span class="p">:</span>   <span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># Offset current in nA</span>
+        <span class="s1">&#39;v_reset&#39;</span><span class="p">:</span>  <span class="o">-</span><span class="mf">65.0</span><span class="p">,</span>  <span class="c1"># Reset potential after a spike in mV.</span>
+        <span class="s1">&#39;v_thresh&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">50.0</span><span class="p">,</span>  <span class="c1"># Spike threshold in mV.</span>
+    <span class="p">}</span>
+    <span class="n">recordable</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;spikes&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">]</span>
+    <span class="n">conductance_based</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">default_initial_values</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">65.0</span><span class="p">,</span>  <span class="c1"># &#39;v_rest&#39;,</span>
+        <span class="s1">&#39;isyn_exc&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s1">&#39;isyn_inh&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">units</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="s1">&#39;mV&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;isyn_exc&#39;</span><span class="p">:</span> <span class="s1">&#39;nA&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;isyn_inh&#39;</span><span class="p">:</span> <span class="s1">&#39;nA&#39;</span><span class="p">,</span>
+    <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="IF_curr_exp"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.IF_curr_exp">[docs]</a><span class="k">class</span> <span class="nc">IF_curr_exp</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Leaky integrate and fire model with fixed threshold and</span>
+<span class="sd">    decaying-exponential post-synaptic current. (Separate synaptic currents for</span>
+<span class="sd">    excitatory and inhibitory synapses.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v_rest&#39;</span><span class="p">:</span>   <span class="o">-</span><span class="mf">65.0</span><span class="p">,</span>  <span class="c1"># Resting membrane potential in mV.</span>
+        <span class="s1">&#39;cm&#39;</span><span class="p">:</span>         <span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># Capacity of the membrane in nF</span>
+        <span class="s1">&#39;tau_m&#39;</span><span class="p">:</span>     <span class="mf">20.0</span><span class="p">,</span>  <span class="c1"># Membrane time constant in ms.</span>
+        <span class="s1">&#39;tau_refrac&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>  <span class="c1"># Duration of refractory period in ms.</span>
+        <span class="s1">&#39;tau_syn_E&#39;</span><span class="p">:</span>  <span class="mf">5.0</span><span class="p">,</span>  <span class="c1"># Decay time of excitatory synaptic current in ms.</span>
+        <span class="s1">&#39;tau_syn_I&#39;</span><span class="p">:</span>  <span class="mf">5.0</span><span class="p">,</span>  <span class="c1"># Decay time of inhibitory synaptic current in ms.</span>
+        <span class="s1">&#39;i_offset&#39;</span><span class="p">:</span>   <span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># Offset current in nA</span>
+        <span class="s1">&#39;v_reset&#39;</span><span class="p">:</span>  <span class="o">-</span><span class="mf">65.0</span><span class="p">,</span>  <span class="c1"># Reset potential after a spike in mV.</span>
+        <span class="s1">&#39;v_thresh&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">50.0</span><span class="p">,</span>  <span class="c1"># Spike threshold in mV.</span>
+    <span class="p">}</span>
+    <span class="n">recordable</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;spikes&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">]</span>
+    <span class="n">conductance_based</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">default_initial_values</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">65.0</span><span class="p">,</span>  <span class="c1"># &#39;v_rest&#39;,</span>
+        <span class="s1">&#39;isyn_exc&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s1">&#39;isyn_inh&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">units</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="s1">&#39;mV&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;isyn_exc&#39;</span><span class="p">:</span> <span class="s1">&#39;nA&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;isyn_inh&#39;</span><span class="p">:</span> <span class="s1">&#39;nA&#39;</span><span class="p">,</span>
+    <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="IF_cond_alpha"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.IF_cond_alpha">[docs]</a><span class="k">class</span> <span class="nc">IF_cond_alpha</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Leaky integrate and fire model with fixed threshold and alpha-function-</span>
+<span class="sd">    shaped post-synaptic conductance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v_rest&#39;</span><span class="p">:</span>   <span class="o">-</span><span class="mf">65.0</span><span class="p">,</span>  <span class="c1"># Resting membrane potential in mV.</span>
+        <span class="s1">&#39;cm&#39;</span><span class="p">:</span>         <span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># Capacity of the membrane in nF</span>
+        <span class="s1">&#39;tau_m&#39;</span><span class="p">:</span>     <span class="mf">20.0</span><span class="p">,</span>  <span class="c1"># Membrane time constant in ms.</span>
+        <span class="s1">&#39;tau_refrac&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>  <span class="c1"># Duration of refractory period in ms.</span>
+        <span class="s1">&#39;tau_syn_E&#39;</span><span class="p">:</span>  <span class="mf">0.3</span><span class="p">,</span>  <span class="c1"># Rise time of the excitatory synaptic alpha function in ms.</span>
+        <span class="s1">&#39;tau_syn_I&#39;</span><span class="p">:</span>  <span class="mf">0.5</span><span class="p">,</span>  <span class="c1"># Rise time of the inhibitory synaptic alpha function in ms.</span>
+        <span class="s1">&#39;e_rev_E&#39;</span><span class="p">:</span>    <span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># Reversal potential for excitatory input in mV</span>
+        <span class="s1">&#39;e_rev_I&#39;</span><span class="p">:</span>  <span class="o">-</span><span class="mf">70.0</span><span class="p">,</span>  <span class="c1"># Reversal potential for inhibitory input in mV</span>
+        <span class="s1">&#39;v_thresh&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">50.0</span><span class="p">,</span>  <span class="c1"># Spike threshold in mV.</span>
+        <span class="s1">&#39;v_reset&#39;</span><span class="p">:</span>  <span class="o">-</span><span class="mf">65.0</span><span class="p">,</span>  <span class="c1"># Reset potential after a spike in mV.</span>
+        <span class="s1">&#39;i_offset&#39;</span><span class="p">:</span>   <span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># Offset current in nA</span>
+    <span class="p">}</span>
+    <span class="n">recordable</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;spikes&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">,</span> <span class="s1">&#39;gsyn_inh&#39;</span><span class="p">]</span>
+    <span class="n">default_initial_values</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">65.0</span><span class="p">,</span>  <span class="c1"># &#39;v_rest&#39;,</span>
+        <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s1">&#39;gsyn_inh&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">units</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="s1">&#39;mV&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">:</span> <span class="s1">&#39;uS&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;gsyn_inh&#39;</span><span class="p">:</span> <span class="s1">&#39;uS&#39;</span><span class="p">,</span>
+    <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="IF_cond_exp"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.IF_cond_exp">[docs]</a><span class="k">class</span> <span class="nc">IF_cond_exp</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Leaky integrate and fire model with fixed threshold and</span>
+<span class="sd">    exponentially-decaying post-synaptic conductance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v_rest&#39;</span><span class="p">:</span>   <span class="o">-</span><span class="mf">65.0</span><span class="p">,</span>  <span class="c1"># Resting membrane potential in mV.</span>
+        <span class="s1">&#39;cm&#39;</span><span class="p">:</span>         <span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># Capacity of the membrane in nF</span>
+        <span class="s1">&#39;tau_m&#39;</span><span class="p">:</span>     <span class="mf">20.0</span><span class="p">,</span>  <span class="c1"># Membrane time constant in ms.</span>
+        <span class="s1">&#39;tau_refrac&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>  <span class="c1"># Duration of refractory period in ms.</span>
+        <span class="s1">&#39;tau_syn_E&#39;</span><span class="p">:</span>  <span class="mf">5.0</span><span class="p">,</span>  <span class="c1"># Decay time of the excitatory synaptic conductance in ms.</span>
+        <span class="s1">&#39;tau_syn_I&#39;</span><span class="p">:</span>  <span class="mf">5.0</span><span class="p">,</span>  <span class="c1"># Decay time of the inhibitory synaptic conductance in ms.</span>
+        <span class="s1">&#39;e_rev_E&#39;</span><span class="p">:</span>    <span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># Reversal potential for excitatory input in mV</span>
+        <span class="s1">&#39;e_rev_I&#39;</span><span class="p">:</span>  <span class="o">-</span><span class="mf">70.0</span><span class="p">,</span>  <span class="c1"># Reversal potential for inhibitory input in mV</span>
+        <span class="s1">&#39;v_thresh&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">50.0</span><span class="p">,</span>  <span class="c1"># Spike threshold in mV.</span>
+        <span class="s1">&#39;v_reset&#39;</span><span class="p">:</span>  <span class="o">-</span><span class="mf">65.0</span><span class="p">,</span>  <span class="c1"># Reset potential after a spike in mV.</span>
+        <span class="s1">&#39;i_offset&#39;</span><span class="p">:</span>   <span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># Offset current in nA</span>
+    <span class="p">}</span>
+    <span class="n">recordable</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;spikes&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">,</span> <span class="s1">&#39;gsyn_inh&#39;</span><span class="p">]</span>
+    <span class="n">default_initial_values</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">65.0</span><span class="p">,</span>  <span class="c1"># &#39;v_rest&#39;,</span>
+        <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s1">&#39;gsyn_inh&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">units</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="s1">&#39;mV&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">:</span> <span class="s1">&#39;uS&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;gsyn_inh&#39;</span><span class="p">:</span> <span class="s1">&#39;uS&#39;</span><span class="p">,</span>
+    <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="IF_cond_exp_gsfa_grr"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.IF_cond_exp_gsfa_grr">[docs]</a><span class="k">class</span> <span class="nc">IF_cond_exp_gsfa_grr</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Linear leaky integrate and fire model with fixed threshold,</span>
+<span class="sd">    decaying-exponential post-synaptic conductance, conductance based</span>
+<span class="sd">    spike-frequency adaptation, and a conductance-based relative refractory</span>
+<span class="sd">    mechanism.</span>
+
+<span class="sd">    See: Muller et al (2007) Spike-frequency adapting neural ensembles: Beyond</span>
+<span class="sd">    mean-adaptation and renewal theories. Neural Computation 19: 2958-3010.</span>
+
+<span class="sd">    See also: EIF_cond_alpha_isfa_ista</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v_rest&#39;</span><span class="p">:</span>    <span class="o">-</span><span class="mf">65.0</span><span class="p">,</span>  <span class="c1"># Resting membrane potential in mV.</span>
+        <span class="s1">&#39;cm&#39;</span><span class="p">:</span>          <span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># Capacity of the membrane in nF</span>
+        <span class="s1">&#39;tau_m&#39;</span><span class="p">:</span>      <span class="mf">20.0</span><span class="p">,</span>  <span class="c1"># Membrane time constant in ms.</span>
+        <span class="s1">&#39;tau_refrac&#39;</span><span class="p">:</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="c1"># Duration of refractory period in ms.</span>
+        <span class="s1">&#39;tau_syn_E&#39;</span><span class="p">:</span>   <span class="mf">5.0</span><span class="p">,</span>  <span class="c1"># Decay time of the excitatory synaptic conductance in ms.</span>
+        <span class="s1">&#39;tau_syn_I&#39;</span><span class="p">:</span>   <span class="mf">5.0</span><span class="p">,</span>  <span class="c1"># Decay time of the inhibitory synaptic conductance in ms.</span>
+        <span class="s1">&#39;e_rev_E&#39;</span><span class="p">:</span>     <span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># Reversal potential for excitatory input in mV</span>
+        <span class="s1">&#39;e_rev_I&#39;</span><span class="p">:</span>   <span class="o">-</span><span class="mf">70.0</span><span class="p">,</span>  <span class="c1"># Reversal potential for inhibitory input in mV</span>
+        <span class="s1">&#39;v_thresh&#39;</span><span class="p">:</span>  <span class="o">-</span><span class="mf">50.0</span><span class="p">,</span>  <span class="c1"># Spike threshold in mV.</span>
+        <span class="s1">&#39;v_reset&#39;</span><span class="p">:</span>   <span class="o">-</span><span class="mf">65.0</span><span class="p">,</span>  <span class="c1"># Reset potential after a spike in mV.</span>
+        <span class="s1">&#39;i_offset&#39;</span><span class="p">:</span>    <span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># Offset current in nA</span>
+        <span class="s1">&#39;tau_sfa&#39;</span><span class="p">:</span>   <span class="mf">100.0</span><span class="p">,</span>  <span class="c1"># Time constant of spike-frequency adaptation in ms</span>
+        <span class="s1">&#39;e_rev_sfa&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">75.0</span><span class="p">,</span>  <span class="c1"># spike-frequency adaptation conductance reversal potential in mV</span>
+        <span class="s1">&#39;q_sfa&#39;</span><span class="p">:</span>      <span class="mf">15.0</span><span class="p">,</span>  <span class="c1"># Quantal spike-frequency adaptation conductance increase in nS</span>
+        <span class="s1">&#39;tau_rr&#39;</span><span class="p">:</span>      <span class="mf">2.0</span><span class="p">,</span>  <span class="c1"># Time constant of the relative refractory mechanism in ms</span>
+        <span class="s1">&#39;e_rev_rr&#39;</span><span class="p">:</span>  <span class="o">-</span><span class="mf">75.0</span><span class="p">,</span>  <span class="c1"># relative refractory mechanism conductance reversal potential in mV</span>
+        <span class="s1">&#39;q_rr&#39;</span><span class="p">:</span>     <span class="mf">3000.0</span>   <span class="c1"># Quantal relative refractory conductance increase in nS</span>
+    <span class="p">}</span>
+    <span class="n">recordable</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;spikes&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;g_r&#39;</span><span class="p">,</span> <span class="s1">&#39;g_s&#39;</span><span class="p">,</span> <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">,</span> <span class="s1">&#39;gsyn_inh&#39;</span><span class="p">]</span>
+    <span class="n">default_initial_values</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">65.0</span><span class="p">,</span>  <span class="c1"># &#39;v_rest&#39;,</span>
+        <span class="s1">&#39;g_r&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s1">&#39;g_s&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s1">&#39;gsyn_inh&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">units</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="s1">&#39;mV&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;g_r&#39;</span><span class="p">:</span> <span class="s1">&#39;nS&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;g_s&#39;</span><span class="p">:</span> <span class="s1">&#39;nS&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">:</span> <span class="s1">&#39;uS&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;gsyn_inh&#39;</span><span class="p">:</span> <span class="s1">&#39;uS&#39;</span><span class="p">,</span>
+    <span class="p">}</span></div>
+
+
+<span class="k">class</span> <span class="nc">IF_facets_hardware1</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Leaky integrate and fire model with conductance-based synapses and fixed</span>
+<span class="sd">    threshold as it is resembled by the FACETS Hardware Stage 1.</span>
+
+<span class="sd">    The following parameters can be assumed for a corresponding software</span>
+<span class="sd">    simulation: cm = 0.2 nF, tau_refrac = 1.0 ms, e_rev_E = 0.0 mV.</span>
+<span class="sd">    For further details regarding the hardware model see the FACETS-internal Wiki:</span>
+<span class="sd">    https://facets.kip.uni-heidelberg.de/private/wiki/index.php/WP7_NNM</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;g_leak&#39;</span><span class="p">:</span>    <span class="mf">40.0</span><span class="p">,</span>  <span class="c1"># nS</span>
+        <span class="s1">&#39;tau_syn_E&#39;</span><span class="p">:</span> <span class="mf">30.0</span><span class="p">,</span>  <span class="c1"># ms</span>
+        <span class="s1">&#39;tau_syn_I&#39;</span><span class="p">:</span> <span class="mf">30.0</span><span class="p">,</span>  <span class="c1"># ms</span>
+        <span class="s1">&#39;v_reset&#39;</span><span class="p">:</span>  <span class="o">-</span><span class="mf">80.0</span><span class="p">,</span>  <span class="c1"># mV</span>
+        <span class="s1">&#39;e_rev_I&#39;</span><span class="p">:</span>  <span class="o">-</span><span class="mf">80.0</span><span class="p">,</span>  <span class="c1"># mV,</span>
+        <span class="s1">&#39;v_rest&#39;</span><span class="p">:</span>   <span class="o">-</span><span class="mf">65.0</span><span class="p">,</span>  <span class="c1"># mV</span>
+        <span class="s1">&#39;v_thresh&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">55.0</span>   <span class="c1"># mV</span>
+    <span class="p">}</span>
+    <span class="n">recordable</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;spikes&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">,</span> <span class="s1">&#39;gsyn_inh&#39;</span><span class="p">]</span>
+    <span class="n">default_initial_values</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">65.0</span><span class="p">,</span>  <span class="c1"># &#39;v_rest&#39;,</span>
+        <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s1">&#39;gsyn_inh&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">units</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="s1">&#39;mV&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">:</span> <span class="s1">&#39;uS&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;gsyn_inh&#39;</span><span class="p">:</span> <span class="s1">&#39;uS&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+
+<span class="k">class</span> <span class="nc">HH_cond_exp</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Single-compartment Hodgkin-Huxley model.</span>
+<span class="sd">    Reference:</span>
+<span class="sd">    Traub &amp; Miles, Neuronal Networks of the Hippocampus, Cambridge, 1991.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;gbar_Na&#39;</span><span class="p">:</span>     <span class="mf">20.0</span><span class="p">,</span>   <span class="c1"># uS</span>
+        <span class="s1">&#39;gbar_K&#39;</span><span class="p">:</span>       <span class="mf">6.0</span><span class="p">,</span>   <span class="c1"># uS</span>
+        <span class="s1">&#39;g_leak&#39;</span><span class="p">:</span>       <span class="mf">0.01</span><span class="p">,</span>  <span class="c1"># uS</span>
+        <span class="s1">&#39;cm&#39;</span><span class="p">:</span>           <span class="mf">0.2</span><span class="p">,</span>   <span class="c1"># nF</span>
+        <span class="s1">&#39;v_offset&#39;</span><span class="p">:</span>   <span class="o">-</span><span class="mf">63.0</span><span class="p">,</span>   <span class="c1"># mV</span>
+        <span class="s1">&#39;e_rev_Na&#39;</span><span class="p">:</span>    <span class="mf">50.0</span><span class="p">,</span>
+        <span class="s1">&#39;e_rev_K&#39;</span><span class="p">:</span>    <span class="o">-</span><span class="mf">90.0</span><span class="p">,</span>
+        <span class="s1">&#39;e_rev_leak&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">65.0</span><span class="p">,</span>
+        <span class="s1">&#39;e_rev_E&#39;</span><span class="p">:</span>      <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s1">&#39;e_rev_I&#39;</span><span class="p">:</span>    <span class="o">-</span><span class="mf">80.0</span><span class="p">,</span>
+        <span class="s1">&#39;tau_syn_E&#39;</span><span class="p">:</span>    <span class="mf">0.2</span><span class="p">,</span>   <span class="c1"># ms</span>
+        <span class="s1">&#39;tau_syn_I&#39;</span><span class="p">:</span>    <span class="mf">2.0</span><span class="p">,</span>
+        <span class="s1">&#39;i_offset&#39;</span><span class="p">:</span>     <span class="mf">0.0</span><span class="p">,</span>   <span class="c1"># nA</span>
+    <span class="p">}</span>
+    <span class="n">recordable</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;spikes&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">,</span> <span class="s1">&#39;gsyn_inh&#39;</span><span class="p">]</span>
+    <span class="n">receptor_types</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;excitatory&#39;</span><span class="p">,</span> <span class="s1">&#39;inhibitory&#39;</span><span class="p">,</span> <span class="s1">&#39;source_section.gap&#39;</span><span class="p">)</span>
+    <span class="n">default_initial_values</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">65.0</span><span class="p">,</span>  <span class="c1"># &#39;v_rest&#39;,</span>
+        <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s1">&#39;gsyn_inh&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">units</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="s1">&#39;mV&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">:</span> <span class="s1">&#39;uS&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;gsyn_inh&#39;</span><span class="p">:</span> <span class="s1">&#39;uS&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+
+<div class="viewcode-block" id="EIF_cond_alpha_isfa_ista"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.EIF_cond_alpha_isfa_ista">[docs]</a><span class="k">class</span> <span class="nc">EIF_cond_alpha_isfa_ista</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Exponential integrate and fire neuron with spike triggered and</span>
+<span class="sd">    sub-threshold adaptation currents (isfa, ista reps.) according to:</span>
+
+<span class="sd">    Brette R and Gerstner W (2005) Adaptive Exponential Integrate-and-Fire Model</span>
+<span class="sd">    as an Effective Description of Neuronal Activity. J Neurophysiol 94:3637-3642</span>
+
+<span class="sd">    See also: IF_cond_exp_gsfa_grr, EIF_cond_exp_isfa_ista</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;cm&#39;</span><span class="p">:</span>         <span class="mf">0.281</span><span class="p">,</span>   <span class="c1"># Capacitance of the membrane in nF</span>
+        <span class="s1">&#39;tau_refrac&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>     <span class="c1"># Duration of refractory period in ms.</span>
+        <span class="s1">&#39;v_spike&#39;</span><span class="p">:</span>  <span class="o">-</span><span class="mf">40.0</span><span class="p">,</span>     <span class="c1"># Spike detection threshold in mV.</span>
+        <span class="s1">&#39;v_reset&#39;</span><span class="p">:</span>  <span class="o">-</span><span class="mf">70.6</span><span class="p">,</span>     <span class="c1"># Reset value for V_m after a spike. In mV.</span>
+        <span class="s1">&#39;v_rest&#39;</span><span class="p">:</span>   <span class="o">-</span><span class="mf">70.6</span><span class="p">,</span>     <span class="c1"># Resting membrane potential (Leak reversal potential) in mV.</span>
+        <span class="s1">&#39;tau_m&#39;</span><span class="p">:</span>      <span class="mf">9.3667</span><span class="p">,</span>  <span class="c1"># Membrane time constant in ms</span>
+        <span class="s1">&#39;i_offset&#39;</span><span class="p">:</span>   <span class="mf">0.0</span><span class="p">,</span>     <span class="c1"># Offset current in nA</span>
+        <span class="s1">&#39;a&#39;</span><span class="p">:</span>          <span class="mf">4.0</span><span class="p">,</span>     <span class="c1"># Subthreshold adaptation conductance in nS.</span>
+        <span class="s1">&#39;b&#39;</span><span class="p">:</span>          <span class="mf">0.0805</span><span class="p">,</span>  <span class="c1"># Spike-triggered adaptation in nA</span>
+        <span class="s1">&#39;delta_T&#39;</span><span class="p">:</span>    <span class="mf">2.0</span><span class="p">,</span>     <span class="c1"># Slope factor in mV</span>
+        <span class="s1">&#39;tau_w&#39;</span><span class="p">:</span>    <span class="mf">144.0</span><span class="p">,</span>     <span class="c1"># Adaptation time constant in ms</span>
+        <span class="s1">&#39;v_thresh&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">50.4</span><span class="p">,</span>     <span class="c1"># Spike initiation threshold in mV</span>
+        <span class="s1">&#39;e_rev_E&#39;</span><span class="p">:</span>    <span class="mf">0.0</span><span class="p">,</span>     <span class="c1"># Excitatory reversal potential in mV.</span>
+        <span class="s1">&#39;tau_syn_E&#39;</span><span class="p">:</span>  <span class="mf">5.0</span><span class="p">,</span>     <span class="c1"># Rise time of excitatory synaptic conductance in ms (alpha function).</span>
+        <span class="s1">&#39;e_rev_I&#39;</span><span class="p">:</span>  <span class="o">-</span><span class="mf">80.0</span><span class="p">,</span>     <span class="c1"># Inhibitory reversal potential in mV.</span>
+        <span class="s1">&#39;tau_syn_I&#39;</span><span class="p">:</span>  <span class="mf">5.0</span><span class="p">,</span>     <span class="c1"># Rise time of the inhibitory synaptic conductance in ms (alpha function).</span>
+    <span class="p">}</span>
+    <span class="n">recordable</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;spikes&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">,</span> <span class="s1">&#39;gsyn_inh&#39;</span><span class="p">]</span>
+    <span class="n">default_initial_values</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">70.6</span><span class="p">,</span>  <span class="c1"># &#39;v_rest&#39;,</span>
+        <span class="s1">&#39;w&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s1">&#39;gsyn_inh&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">units</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="s1">&#39;mV&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;w&#39;</span><span class="p">:</span> <span class="s1">&#39;nA&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">:</span> <span class="s1">&#39;uS&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;gsyn_inh&#39;</span><span class="p">:</span> <span class="s1">&#39;uS&#39;</span><span class="p">,</span>
+    <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="EIF_cond_exp_isfa_ista"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.EIF_cond_exp_isfa_ista">[docs]</a><span class="k">class</span> <span class="nc">EIF_cond_exp_isfa_ista</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Exponential integrate and fire neuron with spike triggered and</span>
+<span class="sd">    sub-threshold adaptation currents (isfa, ista reps.) according to:</span>
+
+<span class="sd">    Brette R and Gerstner W (2005) Adaptive Exponential Integrate-and-Fire Model</span>
+<span class="sd">    as an Effective Description of Neuronal Activity. J Neurophysiol 94:3637-3642</span>
+
+<span class="sd">    See also: IF_cond_exp_gsfa_grr, EIF_cond_alpha_isfa_ista</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;cm&#39;</span><span class="p">:</span>         <span class="mf">0.281</span><span class="p">,</span>   <span class="c1"># Capacitance of the membrane in nF</span>
+        <span class="s1">&#39;tau_refrac&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>     <span class="c1"># Duration of refractory period in ms.</span>
+        <span class="s1">&#39;v_spike&#39;</span><span class="p">:</span>  <span class="o">-</span><span class="mf">40.0</span><span class="p">,</span>     <span class="c1"># Spike detection threshold in mV.</span>
+        <span class="s1">&#39;v_reset&#39;</span><span class="p">:</span>  <span class="o">-</span><span class="mf">70.6</span><span class="p">,</span>     <span class="c1"># Reset value for V_m after a spike. In mV.</span>
+        <span class="s1">&#39;v_rest&#39;</span><span class="p">:</span>   <span class="o">-</span><span class="mf">70.6</span><span class="p">,</span>     <span class="c1"># Resting membrane potential (Leak reversal potential) in mV.</span>
+        <span class="s1">&#39;tau_m&#39;</span><span class="p">:</span>      <span class="mf">9.3667</span><span class="p">,</span>  <span class="c1"># Membrane time constant in ms</span>
+        <span class="s1">&#39;i_offset&#39;</span><span class="p">:</span>   <span class="mf">0.0</span><span class="p">,</span>     <span class="c1"># Offset current in nA</span>
+        <span class="s1">&#39;a&#39;</span><span class="p">:</span>          <span class="mf">4.0</span><span class="p">,</span>     <span class="c1"># Subthreshold adaptation conductance in nS.</span>
+        <span class="s1">&#39;b&#39;</span><span class="p">:</span>          <span class="mf">0.0805</span><span class="p">,</span>  <span class="c1"># Spike-triggered adaptation in nA</span>
+        <span class="s1">&#39;delta_T&#39;</span><span class="p">:</span>    <span class="mf">2.0</span><span class="p">,</span>     <span class="c1"># Slope factor in mV</span>
+        <span class="s1">&#39;tau_w&#39;</span><span class="p">:</span>    <span class="mf">144.0</span><span class="p">,</span>     <span class="c1"># Adaptation time constant in ms</span>
+        <span class="s1">&#39;v_thresh&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">50.4</span><span class="p">,</span>     <span class="c1"># Spike initiation threshold in mV</span>
+        <span class="s1">&#39;e_rev_E&#39;</span><span class="p">:</span>    <span class="mf">0.0</span><span class="p">,</span>     <span class="c1"># Excitatory reversal potential in mV.</span>
+        <span class="s1">&#39;tau_syn_E&#39;</span><span class="p">:</span>  <span class="mf">5.0</span><span class="p">,</span>     <span class="c1"># Decay time constant of excitatory synaptic conductance in ms.</span>
+        <span class="s1">&#39;e_rev_I&#39;</span><span class="p">:</span>  <span class="o">-</span><span class="mf">80.0</span><span class="p">,</span>     <span class="c1"># Inhibitory reversal potential in mV.</span>
+        <span class="s1">&#39;tau_syn_I&#39;</span><span class="p">:</span>  <span class="mf">5.0</span><span class="p">,</span>     <span class="c1"># Decay time constant of the inhibitory synaptic conductance in ms.</span>
+    <span class="p">}</span>
+    <span class="n">recordable</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;spikes&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">,</span> <span class="s1">&#39;gsyn_inh&#39;</span><span class="p">]</span>
+    <span class="n">default_initial_values</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">70.6</span><span class="p">,</span>  <span class="c1"># &#39;v_rest&#39;,</span>
+        <span class="s1">&#39;w&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s1">&#39;gsyn_inh&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">units</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="s1">&#39;mV&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;w&#39;</span><span class="p">:</span> <span class="s1">&#39;nA&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">:</span> <span class="s1">&#39;uS&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;gsyn_inh&#39;</span><span class="p">:</span> <span class="s1">&#39;uS&#39;</span><span class="p">,</span>
+    <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="Izhikevich"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.Izhikevich">[docs]</a><span class="k">class</span> <span class="nc">Izhikevich</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Izhikevich spiking model with a quadratic non-linearity according to:</span>
+
+<span class="sd">    E. Izhikevich (2003), IEEE transactions on neural networks, 14(6)</span>
+
+<span class="sd">        dv/dt = 0.04*v^2 + 5*v + 140 - u + I</span>
+<span class="sd">        du/dt = a*(b*v - u)</span>
+
+<span class="sd">    Synapses are modeled as Dirac delta currents (voltage step), as in the original model</span>
+<span class="sd">    </span>
+<span class="sd">    NOTE: name should probably be changed to match standard nomenclature,</span>
+<span class="sd">    e.g. QIF_cond_delta_etc_etc, although keeping &quot;Izhikevich&quot; as an alias would be good</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;a&#39;</span><span class="p">:</span>       <span class="mf">0.02</span><span class="p">,</span>  <span class="c1"># (/ms)</span>
+        <span class="s1">&#39;b&#39;</span><span class="p">:</span>        <span class="mf">0.2</span><span class="p">,</span>  <span class="c1"># (/ms)</span>
+        <span class="s1">&#39;c&#39;</span><span class="p">:</span>      <span class="o">-</span><span class="mf">65.0</span><span class="p">,</span>  <span class="c1"># (mV) aka &#39;v_reset&#39;</span>
+        <span class="s1">&#39;d&#39;</span><span class="p">:</span>        <span class="mf">2.0</span><span class="p">,</span>  <span class="c1"># (mV/ms) Reset value for u after a spike.</span>
+        <span class="s1">&#39;i_offset&#39;</span><span class="p">:</span> <span class="mf">0.0</span>   <span class="c1"># (nA)</span>
+    <span class="p">}</span>
+    <span class="n">recordable</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;spikes&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;u&#39;</span><span class="p">]</span>
+    <span class="n">conductance_based</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">voltage_based_synapses</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">default_initial_values</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">70.0</span><span class="p">,</span>  <span class="c1"># mV</span>
+        <span class="s1">&#39;u&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">14.0</span>   <span class="c1"># mV/ms</span>
+    <span class="p">}</span>
+    <span class="n">units</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="s1">&#39;mV&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;u&#39;</span><span class="p">:</span> <span class="s1">&#39;mV/ms&#39;</span><span class="p">,</span>
+    <span class="p">}</span></div>
+
+
+<span class="k">class</span> <span class="nc">GIF_cond_exp</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The GIF model is a leaky integrate-and-fire model including a spike-triggered current eta(t),</span>
+<span class="sd">    a moving threshold gamma(t) and stochastic spike emission.</span>
+
+<span class="sd">    References:</span>
+<span class="sd">      [1] Mensi, S., Naud, R., Pozzorini, C., Avermann, M., Petersen, C. C., &amp;</span>
+<span class="sd">      Gerstner, W. (2012). Parameter extraction and classification of three cortical</span>
+<span class="sd">      neuron types reveals two distinct adaptation mechanisms.</span>
+<span class="sd">      Journal of Neurophysiology, 107(6), 1756-1775.</span>
+<span class="sd">      [2] Pozzorini, C., Mensi, S., Hagens, O., Naud, R., Koch, C., &amp; Gerstner, W.</span>
+<span class="sd">      (2015). Automated High-Throughput Characterization of Single Neurons by Means of</span>
+<span class="sd">      Simplified Spiking Models. PLoS Comput Biol, 11(6), e1004275.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v_rest&#39;</span><span class="p">:</span>     <span class="o">-</span><span class="mf">65.0</span><span class="p">,</span>  <span class="c1"># Resting membrane potential in mV.</span>
+        <span class="s1">&#39;cm&#39;</span><span class="p">:</span>           <span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># Capacity of the membrane in nF</span>
+        <span class="s1">&#39;tau_m&#39;</span><span class="p">:</span>       <span class="mf">20.0</span><span class="p">,</span>  <span class="c1"># Membrane time constant in ms.</span>
+        <span class="s1">&#39;tau_refrac&#39;</span><span class="p">:</span>   <span class="mf">4.0</span><span class="p">,</span>  <span class="c1"># Duration of refractory period in ms.</span>
+        <span class="s1">&#39;tau_syn_E&#39;</span><span class="p">:</span>    <span class="mf">5.0</span><span class="p">,</span>  <span class="c1"># Decay time of the excitatory synaptic conductance in ms.</span>
+        <span class="s1">&#39;tau_syn_I&#39;</span><span class="p">:</span>    <span class="mf">5.0</span><span class="p">,</span>  <span class="c1"># Decay time of the inhibitory synaptic conductance in ms.</span>
+        <span class="s1">&#39;e_rev_E&#39;</span><span class="p">:</span>      <span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># Reversal potential for excitatory input in mV</span>
+        <span class="s1">&#39;e_rev_I&#39;</span><span class="p">:</span>    <span class="o">-</span><span class="mf">70.0</span><span class="p">,</span>  <span class="c1"># Reversal potential for inhibitory input in mV</span>
+        <span class="s1">&#39;v_reset&#39;</span><span class="p">:</span>    <span class="o">-</span><span class="mf">65.0</span><span class="p">,</span>  <span class="c1"># Reset potential after a spike in mV.</span>
+        <span class="s1">&#39;i_offset&#39;</span><span class="p">:</span>     <span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># Offset current in nA</span>
+        <span class="s1">&#39;delta_v&#39;</span><span class="p">:</span>      <span class="mf">0.5</span><span class="p">,</span>  <span class="c1"># Threshold sharpness in mV.</span>
+        <span class="s1">&#39;v_t_star&#39;</span><span class="p">:</span>   <span class="o">-</span><span class="mf">48.0</span><span class="p">,</span>  <span class="c1"># Threshold baseline in mV.</span>
+        <span class="s1">&#39;lambda0&#39;</span><span class="p">:</span>      <span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># Firing intensity at threshold in Hz.</span>
+        <span class="s1">&#39;tau_eta1&#39;</span><span class="p">:</span>     <span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># }</span>
+        <span class="s1">&#39;tau_eta2&#39;</span><span class="p">:</span>    <span class="mf">10.0</span><span class="p">,</span>  <span class="c1"># } Time constants for spike-triggered current in ms.</span>
+        <span class="s1">&#39;tau_eta3&#39;</span><span class="p">:</span>   <span class="mf">100.0</span><span class="p">,</span>  <span class="c1"># }</span>
+        <span class="s1">&#39;tau_gamma1&#39;</span><span class="p">:</span>   <span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># }</span>
+        <span class="s1">&#39;tau_gamma2&#39;</span><span class="p">:</span>  <span class="mf">10.0</span><span class="p">,</span>  <span class="c1"># } Time constants for spike-frequency adaptation in ms.</span>
+        <span class="s1">&#39;tau_gamma3&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>  <span class="c1"># }</span>
+        <span class="s1">&#39;a_eta1&#39;</span><span class="p">:</span>       <span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># }</span>
+        <span class="s1">&#39;a_eta2&#39;</span><span class="p">:</span>       <span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># } Post-spike increments for spike-triggered current in nA</span>
+        <span class="s1">&#39;a_eta3&#39;</span><span class="p">:</span>       <span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># }</span>
+        <span class="s1">&#39;a_gamma1&#39;</span><span class="p">:</span>     <span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># }</span>
+        <span class="s1">&#39;a_gamma2&#39;</span><span class="p">:</span>     <span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># } Post-spike increments for moving threshold in mV</span>
+        <span class="s1">&#39;a_gamma3&#39;</span><span class="p">:</span>     <span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># }</span>
+    <span class="p">}</span>
+
+    <span class="n">recordable</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;spikes&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">,</span> <span class="s1">&#39;gsyn_inh&#39;</span><span class="p">,</span> <span class="s1">&#39;i_eta&#39;</span><span class="p">,</span> <span class="s1">&#39;v_t&#39;</span><span class="p">]</span>
+    <span class="n">default_initial_values</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">65.0</span><span class="p">,</span>
+        <span class="s1">&#39;v_t&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">48.0</span><span class="p">,</span>
+        <span class="s1">&#39;i_eta&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s1">&#39;gsyn_inh&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">units</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="s1">&#39;mV&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">:</span> <span class="s1">&#39;uS&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;gsyn_inh&#39;</span><span class="p">:</span> <span class="s1">&#39;uS&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;i_eta&#39;</span><span class="p">:</span> <span class="s1">&#39;nA&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;v_t&#39;</span><span class="p">:</span> <span class="s1">&#39;mV&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+
+<div class="viewcode-block" id="SpikeSourcePoisson"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.SpikeSourcePoisson">[docs]</a><span class="k">class</span> <span class="nc">SpikeSourcePoisson</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Spike source, generating spikes according to a Poisson process.&quot;&quot;&quot;</span>
+
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;rate&#39;</span><span class="p">:</span>     <span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># Mean spike frequency (Hz)</span>
+        <span class="s1">&#39;start&#39;</span><span class="p">:</span>    <span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># Start time (ms)</span>
+        <span class="s1">&#39;duration&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="n">e10</span>  <span class="c1"># Duration of spike sequence (ms)</span>
+    <span class="p">}</span>
+    <span class="n">recordable</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;spikes&#39;</span><span class="p">]</span>
+    <span class="n">injectable</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">receptor_types</span> <span class="o">=</span> <span class="p">()</span></div>
+
+
+<span class="k">class</span> <span class="nc">SpikeSourcePoissonRefractory</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Spike source, generating spikes according to a Poisson process with dead time&quot;&quot;&quot;</span>
+
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;rate&#39;</span><span class="p">:</span>       <span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># Mean spike frequency (Hz)</span>
+        <span class="s1">&#39;tau_refrac&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># Minimum time between spikes (ms)</span>
+        <span class="s1">&#39;start&#39;</span><span class="p">:</span>      <span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># Start time (ms)</span>
+        <span class="s1">&#39;duration&#39;</span><span class="p">:</span>   <span class="mi">1</span><span class="n">e10</span>  <span class="c1"># Duration of spike sequence (ms)</span>
+    <span class="p">}</span>
+    <span class="n">recordable</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;spikes&#39;</span><span class="p">]</span>
+    <span class="n">injectable</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">receptor_types</span> <span class="o">=</span> <span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">SpikeSourceGamma</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Spike source, generating spikes according to a gamma process.</span>
+
+<span class="sd">    The mean inter-spike interval is given by alpha/beta</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;alpha&#39;</span><span class="p">:</span>       <span class="mi">2</span><span class="p">,</span>  <span class="c1"># shape (order) parameter of the gamma distribution</span>
+        <span class="s1">&#39;beta&#39;</span><span class="p">:</span>      <span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># rate parameter of the gamma distribution (Hz)</span>
+        <span class="s1">&#39;start&#39;</span><span class="p">:</span>     <span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># Start time (ms)</span>
+        <span class="s1">&#39;duration&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="n">e10</span><span class="p">,</span>  <span class="c1"># Duration of spike sequence (ms)</span>
+    <span class="p">}</span>
+    <span class="n">recordable</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;spikes&#39;</span><span class="p">]</span>
+    <span class="n">injectable</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">receptor_types</span> <span class="o">=</span> <span class="p">()</span>
+
+
+<div class="viewcode-block" id="SpikeSourceInhGamma"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.SpikeSourceInhGamma">[docs]</a><span class="k">class</span> <span class="nc">SpikeSourceInhGamma</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Spike source, generating realizations of an inhomogeneous gamma process,</span>
+<span class="sd">    employing the thinning method.</span>
+
+<span class="sd">    See: Muller et al (2007) Spike-frequency adapting neural ensembles: Beyond</span>
+<span class="sd">    mean-adaptation and renewal theories. Neural Computation 19: 2958-3010.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;a&#39;</span><span class="p">:</span>        <span class="n">Sequence</span><span class="p">([</span><span class="mf">1.0</span><span class="p">]),</span>  <span class="c1"># time histogram of parameter a of a gamma distribution (dimensionless)</span>
+        <span class="s1">&#39;b&#39;</span><span class="p">:</span>        <span class="n">Sequence</span><span class="p">([</span><span class="mf">1.0</span><span class="p">]),</span>  <span class="c1"># time histogram of parameter b of a gamma distribution (seconds)</span>
+        <span class="s1">&#39;tbins&#39;</span><span class="p">:</span>    <span class="n">Sequence</span><span class="p">([</span><span class="mf">0.0</span><span class="p">]),</span>  <span class="c1"># time bins of the time histogram of a,b in units of ms</span>
+        <span class="s1">&#39;start&#39;</span><span class="p">:</span>    <span class="mf">0.0</span><span class="p">,</span>              <span class="c1"># Start time (ms)</span>
+        <span class="s1">&#39;duration&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="n">e10</span>              <span class="c1"># Duration of spike sequence (ms)</span>
+    <span class="p">}</span>
+    <span class="n">recordable</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;spikes&#39;</span><span class="p">]</span>
+    <span class="n">injectable</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">receptor_types</span> <span class="o">=</span> <span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="SpikeSourceArray"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.SpikeSourceArray">[docs]</a><span class="k">class</span> <span class="nc">SpikeSourceArray</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Spike source generating spikes at the times given in the spike_times array.&quot;&quot;&quot;</span>
+
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;spike_times&#39;</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">([])}</span> <span class="c1"># list or numpy array containing spike times in milliseconds.</span>
+    <span class="n">recordable</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;spikes&#39;</span><span class="p">]</span>
+    <span class="n">injectable</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">receptor_types</span> <span class="o">=</span> <span class="p">()</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.8.3 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../standardmodels.html" >pyNN.standardmodels</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2017, the PyNN community.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>
