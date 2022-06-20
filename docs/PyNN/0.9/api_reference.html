@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API reference &#8212; PyNN 0.9.6 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Populations, Views and Assemblies" href="reference/populations.html" />
+    <link rel="prev" title="Governance" href="developers/governance.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="reference/populations.html" title="Populations, Views and Assemblies"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="developers/governance.html" title="Governance"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.9.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">API reference</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="api-reference">
+<h1>API reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="reference/populations.html">Populations, Views and Assemblies</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/populations.html#populations">Populations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/populations.html#views-sub-populations">Views (sub-populations)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/populations.html#assemblies">Assemblies</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference/connectors.html">Connectors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/connectors.html#base-class">Base class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/connectors.html#built-in-connectors">Built-in connectors</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference/projections.html">Projections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/neuronmodels.html">Neuron models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/neuronmodels.html#standard-cell-types">Standard cell types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/neuronmodels.html#base-class">Base class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/neuronmodels.html#simple-integrate-and-fire-neurons">Simple integrate-and-fire neurons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/neuronmodels.html#integrate-and-fire-neurons-with-adaptation">Integrate-and-fire neurons with adaptation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/neuronmodels.html#spike-sources">Spike sources</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/neuronmodels.html#native-cell-types">Native cell types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/neuronmodels.html#utility-functions">Utility functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference/plasticitymodels.html">Synapse models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/plasticitymodels.html#standard-synapse-types">Standard synapse types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/plasticitymodels.html#base-class">Base class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/plasticitymodels.html#static-fixed-synapses">Static/fixed synapses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/plasticitymodels.html#short-term-plasticity-mechanisms">Short-term plasticity mechanisms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/plasticitymodels.html#long-term-plasticity-mechanisms">Long-term plasticity mechanisms</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/plasticitymodels.html#native-plasticity-models">Native plasticity models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/plasticitymodels.html#nineml-plasticity-models">NineML plasticity models</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference/electrodes.html">Current sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/simulationcontrol.html">Simulation control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/random.html">Random numbers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/random.html#adapting-a-different-random-number-generator-to-work-with-pynn">Adapting a different random number generator to work with PyNN</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference/parameters.html">Parameter handling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/parameters.html#the-lazyarray-class">The <code class="xref py py-class docutils literal notranslate"><span class="pre">LazyArray</span></code> class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/parameters.html#reference">Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/parameters.html#the-parameterspace-class">The <code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSpace</span></code> class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/parameters.html#id1">Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/parameters.html#the-sequence-class">The <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code> class</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference/space.html">Spatial structure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/space.html#structure-classes">Structure classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/space.html#shape-classes">Shape classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/space.html#the-space-class">The Space class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/space.html#implementing-your-own-shape">Implementing your own Shape</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/space.html#implementing-your-own-structure">Implementing your own Structure</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference/utility.html">Utility classes and functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/utility.html#basic-plotting">Basic plotting</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="developers/governance.html"
+                        title="previous chapter">Governance</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="reference/populations.html"
+                        title="next chapter">Populations, Views and Assemblies</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/api_reference.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="reference/populations.html" title="Populations, Views and Assemblies"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="developers/governance.html" title="Governance"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.9.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">API reference</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2020, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.0.
+    </div>
+  </body>
+</html>

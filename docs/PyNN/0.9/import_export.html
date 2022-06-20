@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Importing from and exporting to other formats &#8212; PyNN 0.9.6 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples" href="examples.html" />
+    <link rel="prev" title="Units" href="units.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="examples.html" title="Examples"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="units.html" title="Units"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.9.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Importing from and exporting to other formats</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="importing-from-and-exporting-to-other-formats">
+<h1>Importing from and exporting to other formats<a class="headerlink" href="#importing-from-and-exporting-to-other-formats" title="Permalink to this headline">¶</a></h1>
+<p>Other formats for representing spiking network models are also available.</p>
+<p>PyNN currently supports <a class="reference external" href="http://neuroml.org">NeuroML</a>, <a class="reference external" href="http://nineml.net">NineML</a> and <a class="reference external" href="https://github.com/AllenInstitute/sonata">SONATA</a>.</p>
+<div class="section" id="neuroml">
+<h2>NeuroML<a class="headerlink" href="#neuroml" title="Permalink to this headline">¶</a></h2>
+<p>See section on <a class="reference internal" href="backends/NeuroML.html"><span class="doc">NeuroML</span></a>.</p>
+</div>
+<div class="section" id="nineml">
+<h2>NineML<a class="headerlink" href="#nineml" title="Permalink to this headline">¶</a></h2>
+<p>See section on <a class="reference internal" href="nineml.html"><span class="doc">PyNN and NineML</span></a>.</p>
+</div>
+<div class="section" id="sonata">
+<span id="sec-sonata"></span><h2>SONATA<a class="headerlink" href="#sonata" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://github.com/AllenInstitute/sonata">SONATA</a> is a data format for representing/storing data-driven spiking neuronal network models,
+experimental protocols (injecting spikes, currents) and simulation outputs.</p>
+<p>In the network representation, all connections are represented explicity, as in PyNN’s
+<code class="xref py py-class docutils literal notranslate"><span class="pre">FromFileConnector</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">FromListConnector</span></code>.</p>
+<p>A PyNN model/simulation script can be exported in SONATA format using:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyNN.network</span> <span class="kn">import</span> <span class="n">Network</span>
+<span class="kn">from</span> <span class="nn">pyNN.serialization</span> <span class="kn">import</span> <span class="n">export_to_sonata</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+<span class="o">...</span>
+<span class="c1"># create populations, projections, etc.</span>
+<span class="o">...</span>
+
+<span class="c1"># add populations and projections to a Network</span>
+<span class="n">net</span> <span class="o">=</span> <span class="n">Network</span><span class="p">(</span><span class="n">pop1</span><span class="p">,</span> <span class="n">pop2</span><span class="p">,</span> <span class="o">....</span><span class="p">,</span> <span class="n">prj1</span><span class="p">,</span> <span class="n">prj2</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+
+<span class="n">export_to_sonata</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="s2">&quot;sonata_output_dir&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>A SONATA model/simulation can be read and executed through PyNN provided the cell types
+used in the model are compatible with PyNN, i.e. they must be point neurons.
+(SONATA also supports biophysically/morphologically detailed neuron models).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyNN.serialization</span> <span class="kn">import</span> <span class="n">import_from_sonata</span><span class="p">,</span> <span class="n">load_sonata_simulation_plan</span>
+<span class="kn">import</span> <span class="nn">pyNN.neuron</span> <span class="kn">as</span> <span class="nn">sim</span>
+
+<span class="n">simulation_plan</span> <span class="o">=</span> <span class="n">load_sonata_simulation_plan</span><span class="p">(</span><span class="s2">&quot;simulation_config.json&quot;</span><span class="p">)</span>
+<span class="n">simulation_plan</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">sim</span><span class="p">)</span>
+<span class="n">net</span> <span class="o">=</span> <span class="n">import_from_sonata</span><span class="p">(</span><span class="s2">&quot;circuit_config.json&quot;</span><span class="p">,</span> <span class="n">sim</span><span class="p">)</span>
+<span class="n">simulation_plan</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">net</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Simulation results from such a simulation are stored in the SONATA outputs format.
+Support for this format will soon be added to <a class="reference external" href="http://neuralensemble.org/neo">Neo</a>, but for the time being you
+can read the results as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyNN.serialization.sonata</span> <span class="kn">import</span> <span class="n">SonataIO</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">SonataIO</span><span class="p">(</span><span class="s2">&quot;sonata_output_dir&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Importing from and exporting to other formats</a><ul>
+<li><a class="reference internal" href="#neuroml">NeuroML</a></li>
+<li><a class="reference internal" href="#nineml">NineML</a></li>
+<li><a class="reference internal" href="#sonata">SONATA</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="units.html"
+                        title="previous chapter">Units</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="examples.html"
+                        title="next chapter">Examples</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/import_export.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="examples.html" title="Examples"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="units.html" title="Units"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.9.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Importing from and exporting to other formats</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2020, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.0.
+    </div>
+  </body>
+</html>

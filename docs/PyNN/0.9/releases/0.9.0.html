@@ -1,0 +1,122 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PyNN 0.9.0 release notes &#8212; PyNN 0.9.6 documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="PyNN 0.8.3 release notes" href="0.8.3.html" />
+    <link rel="prev" title="PyNN 0.9.1 release notes" href="0.9.1.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="0.8.3.html" title="PyNN 0.8.3 release notes"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="0.9.1.html" title="PyNN 0.9.1 release notes"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.9.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../release_notes.html" accesskey="U">Release notes</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">PyNN 0.9.0 release notes</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pynn-0-9-0-release-notes">
+<h1>PyNN 0.9.0 release notes<a class="headerlink" href="#pynn-0-9-0-release-notes" title="Permalink to this headline">¶</a></h1>
+<p>April 12th 2017</p>
+<p>Welcome to PyNN 0.9.0!</p>
+<p>This version of PyNN adopts the new, simplified <a class="reference external" href="http://neuralensemble.org/neo">Neo</a> object model, first released as Neo 0.5.0,
+for the data structures returned by <code class="xref py py-class docutils literal notranslate"><span class="pre">Population.get_data()</span></code>.
+For more information on the new Neo API, see the <a class="reference external" href="http://neo.readthedocs.io/en/0.5.0/releases/0.5.0.html">release notes</a>.</p>
+<p>The main difference for a PyNN user is that the <code class="xref py py-class docutils literal notranslate"><span class="pre">AnalogSignalArray</span></code> class has been renamed
+to <code class="xref py py-class docutils literal notranslate"><span class="pre">AnalogSignal</span></code>, and similarly the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Segment.analogsignalarrays</span></code> attribute is now
+called <code class="xref py py-attr docutils literal notranslate"><span class="pre">Segment.analogsignals</span></code>.</p>
+<p>In addition, a <a class="reference external" href="https://github.com/NeuralEnsemble/PyNN/issues?q=is%3Aissue+milestone%3A0.9.0+is%3Aclosed">number of bugs</a> with current injection for the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pyNN.brian</span></code> module have been fixed.</p>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="0.9.1.html"
+                        title="previous chapter">PyNN 0.9.1 release notes</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="0.8.3.html"
+                        title="next chapter">PyNN 0.8.3 release notes</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/releases/0.9.0.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="0.8.3.html" title="PyNN 0.8.3 release notes"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="0.9.1.html" title="PyNN 0.9.1 release notes"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.9.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../release_notes.html" >Release notes</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">PyNN 0.9.0 release notes</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2020, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.0.
+    </div>
+  </body>
+</html>

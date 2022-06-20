@@ -1,0 +1,525 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyNN.standardmodels.synapses &#8212; PyNN 0.9.6 documentation</title>
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.9.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../standardmodels.html" accesskey="U">pyNN.standardmodels</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyNN.standardmodels.synapses</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pyNN.standardmodels.synapses</h1><div class="highlight"><pre>
+<span></span><span class="c1"># encoding: utf-8</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Definition of default parameters (and hence, standard parameter names) for</span>
+<span class="sd">standard dynamic synapse models.</span>
+
+<span class="sd">Classes for specifying short-term plasticity (facilitation/depression):</span>
+<span class="sd">    TsodyksMarkramSynapse</span>
+
+<span class="sd">Classes for defining STDP rules:</span>
+<span class="sd">    AdditiveWeightDependence</span>
+<span class="sd">    MultiplicativeWeightDependence</span>
+<span class="sd">    AdditivePotentiationMultiplicativeDepression</span>
+<span class="sd">    GutigWeightDependence</span>
+<span class="sd">    SpikePairRule</span>
+
+<span class="sd">:copyright: Copyright 2006-2020 by the PyNN team, see AUTHORS.</span>
+<span class="sd">:license: CeCILL, see LICENSE for details.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">long</span>
+<span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+    <span class="n">long</span> <span class="o">=</span> <span class="nb">int</span>
+<span class="kn">from</span> <span class="nn">pyNN</span> <span class="k">import</span> <span class="n">descriptions</span>
+<span class="kn">from</span> <span class="nn">pyNN.standardmodels</span> <span class="k">import</span> <span class="n">StandardSynapseType</span><span class="p">,</span> <span class="n">STDPWeightDependence</span><span class="p">,</span> <span class="n">STDPTimingDependence</span>
+<span class="kn">from</span> <span class="nn">pyNN.parameters</span> <span class="k">import</span> <span class="n">ParameterSpace</span>
+
+
+<div class="viewcode-block" id="StaticSynapse"><a class="viewcode-back" href="../../../reference/plasticitymodels.html#pyNN.standardmodels.synapses.StaticSynapse">[docs]</a><span class="k">class</span> <span class="nc">StaticSynapse</span><span class="p">(</span><span class="n">StandardSynapseType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Synaptic connection with fixed weight and delay.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;weight&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s1">&#39;delay&#39;</span><span class="p">:</span> <span class="kc">None</span>
+    <span class="p">}</span></div>
+
+
+<span class="k">class</span> <span class="nc">ElectricalSynapse</span><span class="p">(</span><span class="n">StandardSynapseType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A bidirectional electrical synapse (gap junction) with fixed conductance</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;weight&#39;</span><span class="p">:</span> <span class="mf">0.0</span>  <span class="c1"># the (bidirectional) conductance of the gap junction (uS)</span>
+    <span class="p">}</span>
+
+
+<div class="viewcode-block" id="TsodyksMarkramSynapse"><a class="viewcode-back" href="../../../reference/plasticitymodels.html#pyNN.standardmodels.synapses.TsodyksMarkramSynapse">[docs]</a><span class="k">class</span> <span class="nc">TsodyksMarkramSynapse</span><span class="p">(</span><span class="n">StandardSynapseType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Synapse exhibiting facilitation and depression, implemented using the model</span>
+<span class="sd">    of Tsodyks, Markram et al.:</span>
+
+<span class="sd">    `Tsodyks, Uziel and Markram (2000)`_ Synchrony Generation in Recurrent Networks</span>
+<span class="sd">    with Frequency-Dependent Synapses. Journal of Neuroscience 20:RC50</span>
+
+<span class="sd">    Note that the time constant of the post-synaptic current is set in the</span>
+<span class="sd">    neuron model, not here.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        `U`:</span>
+<span class="sd">            use parameter.</span>
+<span class="sd">        `tau_rec`:</span>
+<span class="sd">            depression time constant (ms).</span>
+<span class="sd">        `tau_facil`:</span>
+<span class="sd">            facilitation time constant (ms).</span>
+
+<span class="sd">    .. _`Tsodyks, Uziel and Markram (2000)`: http://www.jneurosci.org/content/20/1/RC50.long</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;weight&#39;</span><span class="p">:</span>     <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s1">&#39;delay&#39;</span><span class="p">:</span>     <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;U&#39;</span><span class="p">:</span>          <span class="mf">0.5</span><span class="p">,</span>  <span class="c1"># use parameter</span>
+        <span class="s1">&#39;tau_rec&#39;</span><span class="p">:</span>  <span class="mf">100.0</span><span class="p">,</span>  <span class="c1"># depression time constant (ms)</span>
+        <span class="s1">&#39;tau_facil&#39;</span><span class="p">:</span>  <span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># facilitation time constant (ms)</span>
+    <span class="p">}</span>
+    <span class="n">default_initial_values</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;u&#39;</span><span class="p">:</span> <span class="mf">0.0</span>
+    <span class="p">}</span></div>
+
+
+<span class="k">class</span> <span class="nc">SimpleStochasticSynapse</span><span class="p">(</span><span class="n">StandardSynapseType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Each spike is transmitted with a fixed probability `p`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;weight&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s1">&#39;delay&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;p&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="p">}</span>
+
+
+<span class="k">class</span> <span class="nc">StochasticTsodyksMarkramSynapse</span><span class="p">(</span><span class="n">StandardSynapseType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Synapse exhibiting facilitation and depression, implemented using the model</span>
+<span class="sd">    of Tsodyks, Markram et al.:</span>
+
+<span class="sd">    `Tsodyks, Uziel and Markram (2000)`_ Synchrony Generation in Recurrent Networks</span>
+<span class="sd">    with Frequency-Dependent Synapses. Journal of Neuroscience 20:RC50</span>
+
+<span class="sd">    in its stochastic version (cf Fuhrmann et al. 2002)</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        `U`:</span>
+<span class="sd">            use parameter.</span>
+<span class="sd">        `tau_rec`:</span>
+<span class="sd">            depression time constant (ms).</span>
+<span class="sd">        `tau_facil`:</span>
+<span class="sd">            facilitation time constant (ms).</span>
+
+<span class="sd">    .. _`Tsodyks, Uziel and Markram (2000)`: http://www.jneurosci.org/content/20/1/RC50.long</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;weight&#39;</span><span class="p">:</span>     <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s1">&#39;delay&#39;</span><span class="p">:</span>     <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;U&#39;</span><span class="p">:</span>          <span class="mf">0.5</span><span class="p">,</span>  <span class="c1"># use parameter</span>
+        <span class="s1">&#39;tau_rec&#39;</span><span class="p">:</span>  <span class="mf">100.0</span><span class="p">,</span>  <span class="c1"># depression time constant (ms)</span>
+        <span class="s1">&#39;tau_facil&#39;</span><span class="p">:</span>  <span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># facilitation time constant (ms)</span>
+    <span class="p">}</span>
+
+
+<span class="k">class</span> <span class="nc">MultiQuantalSynapse</span><span class="p">(</span><span class="n">StandardSynapseType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    docstring needed</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;weight&#39;</span><span class="p">:</span>     <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s1">&#39;delay&#39;</span><span class="p">:</span>     <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;U&#39;</span><span class="p">:</span>          <span class="mf">0.5</span><span class="p">,</span>  <span class="c1"># maximal fraction of available resources</span>
+        <span class="s1">&#39;n&#39;</span><span class="p">:</span>            <span class="mi">1</span><span class="p">,</span>  <span class="c1"># total number of release sites</span>
+        <span class="s1">&#39;tau_rec&#39;</span><span class="p">:</span>  <span class="mf">800.0</span><span class="p">,</span>  <span class="c1"># depression time constant (ms)</span>
+        <span class="s1">&#39;tau_facil&#39;</span><span class="p">:</span>  <span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># facilitation time constant (ms)</span>
+    <span class="p">}</span>
+
+
+<div class="viewcode-block" id="STDPMechanism"><a class="viewcode-back" href="../../../reference/plasticitymodels.html#pyNN.standardmodels.synapses.STDPMechanism">[docs]</a><span class="k">class</span> <span class="nc">STDPMechanism</span><span class="p">(</span><span class="n">StandardSynapseType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A specification for an STDP mechanism, combining a weight-dependence, a</span>
+<span class="sd">    timing-dependence, and, optionally, a voltage-dependence of the synaptic</span>
+<span class="sd">    change.</span>
+
+<span class="sd">    For point neurons, the synaptic delay `d` can be interpreted either as</span>
+<span class="sd">    occurring purely in the pre-synaptic axon + synaptic cleft, in which</span>
+<span class="sd">    case the synaptic plasticity mechanism &#39;sees&#39; the post-synaptic spike</span>
+<span class="sd">    immediately and the pre-synaptic spike after a delay `d`</span>
+<span class="sd">    (`dendritic_delay_fraction = 0`) or as occurring purely in the post-</span>
+<span class="sd">    synaptic dendrite, in which case the pre-synaptic spike is seen</span>
+<span class="sd">    immediately, and the post-synaptic spike after a delay `d`</span>
+<span class="sd">    (`dendritic_delay_fraction = 1`), or as having both pre- and post-</span>
+<span class="sd">    synaptic components (`dendritic_delay_fraction` between 0 and 1).</span>
+
+<span class="sd">    In a future version of the API, we will allow the different</span>
+<span class="sd">    components of the synaptic delay to be specified separately in</span>
+<span class="sd">    milliseconds.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timing_dependence</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">weight_dependence</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">voltage_dependence</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dendritic_delay_fraction</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+                 <span class="n">weight</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new specification for an STDP mechanism, by combining a</span>
+<span class="sd">        weight-dependence, a timing-dependence, and, optionally, a voltage-</span>
+<span class="sd">        dependence.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">timing_dependence</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">timing_dependence</span><span class="p">,</span> <span class="n">STDPTimingDependence</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">weight_dependence</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">weight_dependence</span><span class="p">,</span> <span class="n">STDPWeightDependence</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dendritic_delay_fraction</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">long</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">dendritic_delay_fraction</span> <span class="o">&lt;=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timing_dependence</span> <span class="o">=</span> <span class="n">timing_dependence</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight_dependence</span> <span class="o">=</span> <span class="n">weight_dependence</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">voltage_dependence</span> <span class="o">=</span> <span class="n">voltage_dependence</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dendritic_delay_fraction</span> <span class="o">=</span> <span class="n">dendritic_delay_fraction</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">weight</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delay</span> <span class="o">=</span> <span class="n">delay</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_minimum_delay</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_translations</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_build_translations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">translations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">base_translations</span>  <span class="c1"># weight and delay</span>
+        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timing_dependence</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight_dependence</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">voltage_dependence</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">component</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">translations</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">component</span><span class="o">.</span><span class="n">translations</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">possible_models</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">possible_models</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A list of available synaptic plasticity models for the current</span>
+<span class="sd">        configuration (weight dependence, timing dependence, ...) in the</span>
+<span class="sd">        current simulator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">td</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timing_dependence</span>
+        <span class="n">wd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight_dependence</span>
+        <span class="n">pm</span> <span class="o">=</span> <span class="n">td</span><span class="o">.</span><span class="n">possible_models</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">wd</span><span class="o">.</span><span class="n">possible_models</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pm</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">NoModelAvailableError</span><span class="p">(</span><span class="s2">&quot;No available plasticity models&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># we pass the set of models back to the simulator-specific module for it to deal with</span>
+            <span class="k">return</span> <span class="n">pm</span>
+
+<div class="viewcode-block" id="STDPMechanism.get_parameter_names"><a class="viewcode-back" href="../../../reference/plasticitymodels.html#pyNN.standardmodels.synapses.STDPMechanism.get_parameter_names">[docs]</a>    <span class="k">def</span> <span class="nf">get_parameter_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">voltage_dependence</span> <span class="ow">is</span> <span class="kc">None</span>  <span class="c1"># once we have some models with v-dep, need to update the following</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">,</span> <span class="s1">&#39;delay&#39;</span><span class="p">,</span> <span class="s1">&#39;dendritic_delay_fraction&#39;</span><span class="p">]</span> <span class="o">+</span> \
+                 <span class="bp">self</span><span class="o">.</span><span class="n">timing_dependence</span><span class="o">.</span><span class="n">get_parameter_names</span><span class="p">()</span> <span class="o">+</span> \
+                   <span class="bp">self</span><span class="o">.</span><span class="n">weight_dependence</span><span class="o">.</span><span class="n">get_parameter_names</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="STDPMechanism.has_parameter"><a class="viewcode-back" href="../../../reference/plasticitymodels.html#pyNN.standardmodels.synapses.STDPMechanism.has_parameter">[docs]</a>    <span class="k">def</span> <span class="nf">has_parameter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Does this model have a parameter with the given name?&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_parameter_names</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="STDPMechanism.get_schema"><a class="viewcode-back" href="../../../reference/plasticitymodels.html#pyNN.standardmodels.synapses.STDPMechanism.get_schema">[docs]</a>    <span class="k">def</span> <span class="nf">get_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the model schema: i.e. a mapping of parameter names to allowed</span>
+<span class="sd">        parameter types.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">base_schema</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;weight&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="s1">&#39;delay&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="s1">&#39;dendritic_delay_fraction&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">}</span>
+        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timing_dependence</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight_dependence</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">voltage_dependence</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">component</span><span class="p">:</span>
+                <span class="n">base_schema</span><span class="o">.</span><span class="n">update</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+                                   <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">component</span><span class="o">.</span><span class="n">default_parameters</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">base_schema</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">parameter_space</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">timing_parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timing_dependence</span><span class="o">.</span><span class="n">parameter_space</span>
+        <span class="n">weight_parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight_dependence</span><span class="o">.</span><span class="n">parameter_space</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="n">ParameterSpace</span><span class="p">({</span><span class="s1">&#39;weight&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span>
+                                     <span class="s1">&#39;delay&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">delay</span><span class="p">,</span>
+                                     <span class="s1">&#39;dendritic_delay_fraction&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dendritic_delay_fraction</span><span class="p">},</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">get_schema</span><span class="p">())</span>
+        <span class="n">parameters</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">timing_parameters</span><span class="p">)</span>
+        <span class="n">parameters</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">weight_parameters</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">parameters</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">native_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A dictionary containing the combination of parameters from the different</span>
+<span class="sd">        components of the STDP model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">timing_parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timing_dependence</span><span class="o">.</span><span class="n">native_parameters</span>
+        <span class="n">weight_parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight_dependence</span><span class="o">.</span><span class="n">native_parameters</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span>
+                        <span class="n">ParameterSpace</span><span class="p">({</span><span class="s1">&#39;weight&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span>
+                                        <span class="s1">&#39;delay&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">delay</span><span class="p">,</span>
+                                        <span class="s1">&#39;dendritic_delay_fraction&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dendritic_delay_fraction</span><span class="p">},</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">get_schema</span><span class="p">()))</span>
+        <span class="n">parameters</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">timing_parameters</span><span class="p">)</span>
+        <span class="n">parameters</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">weight_parameters</span><span class="p">)</span>
+        <span class="n">parameters</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">timing_dependence</span><span class="o">.</span><span class="n">extra_parameters</span><span class="p">)</span>
+        <span class="n">parameters</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">weight_dependence</span><span class="o">.</span><span class="n">extra_parameters</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">parameters</span>
+
+<div class="viewcode-block" id="STDPMechanism.describe"><a class="viewcode-back" href="../../../reference/plasticitymodels.html#pyNN.standardmodels.synapses.STDPMechanism.describe">[docs]</a>    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="s1">&#39;stdpmechanism_default.txt&#39;</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a human-readable description of the STDP mechanism.</span>
+
+<span class="sd">        The output may be customized by specifying a different template</span>
+<span class="sd">        togther with an associated template engine (see ``pyNN.descriptions``).</span>
+
+<span class="sd">        If template is None, then a dictionary containing the template context</span>
+<span class="sd">        will be returned.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;weight_dependence&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight_dependence</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+                   <span class="s1">&#39;timing_dependence&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">timing_dependence</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+                   <span class="s1">&#39;voltage_dependence&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">voltage_dependence</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">voltage_dependence</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
+                   <span class="s1">&#39;dendritic_delay_fraction&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dendritic_delay_fraction</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">descriptions</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="AdditiveWeightDependence"><a class="viewcode-back" href="../../../reference/plasticitymodels.html#pyNN.standardmodels.synapses.AdditiveWeightDependence">[docs]</a><span class="k">class</span> <span class="nc">AdditiveWeightDependence</span><span class="p">(</span><span class="n">STDPWeightDependence</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The amplitude of the weight change is independent of the current weight.</span>
+<span class="sd">    If the new weight would be less than `w_min` it is set to `w_min`. If it</span>
+<span class="sd">    would be greater than `w_max` it is set to `w_max`.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        `w_min`:</span>
+<span class="sd">            minimum synaptic weight, in the same units as the weight, i.e.</span>
+<span class="sd">            µS or nA.</span>
+<span class="sd">        `w_max`:</span>
+<span class="sd">            maximum synaptic weight.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;w_min&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s1">&#39;w_max&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w_min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">w_max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+        <span class="n">parameters</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;self&#39;</span><span class="p">)</span>
+        <span class="n">STDPWeightDependence</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">parameters</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MultiplicativeWeightDependence"><a class="viewcode-back" href="../../../reference/plasticitymodels.html#pyNN.standardmodels.synapses.MultiplicativeWeightDependence">[docs]</a><span class="k">class</span> <span class="nc">MultiplicativeWeightDependence</span><span class="p">(</span><span class="n">STDPWeightDependence</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The amplitude of the weight change depends on the current weight.</span>
+<span class="sd">    For depression, Δw ∝ w - w_min</span>
+<span class="sd">    For potentiation, Δw ∝ w_max - w</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        `w_min`:</span>
+<span class="sd">            minimum synaptic weight, in the same units as the weight, i.e.</span>
+<span class="sd">            µS or nA.</span>
+<span class="sd">        `w_max`:</span>
+<span class="sd">            maximum synaptic weight.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;w_min&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s1">&#39;w_max&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w_min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">w_max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+        <span class="n">parameters</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;self&#39;</span><span class="p">)</span>
+        <span class="n">STDPWeightDependence</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">parameters</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AdditivePotentiationMultiplicativeDepression"><a class="viewcode-back" href="../../../reference/plasticitymodels.html#pyNN.standardmodels.synapses.AdditivePotentiationMultiplicativeDepression">[docs]</a><span class="k">class</span> <span class="nc">AdditivePotentiationMultiplicativeDepression</span><span class="p">(</span><span class="n">STDPWeightDependence</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The amplitude of the weight change depends on the current weight for</span>
+<span class="sd">    depression (Δw ∝ w) and is fixed for potentiation.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        `w_min`:</span>
+<span class="sd">            minimum synaptic weight, in the same units as the weight, i.e.</span>
+<span class="sd">            µS or nA.</span>
+<span class="sd">        `w_max`:</span>
+<span class="sd">            maximum synaptic weight.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;w_min&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s1">&#39;w_max&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w_min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>  <span class="n">w_max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+        <span class="n">parameters</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;self&#39;</span><span class="p">)</span>
+        <span class="n">STDPWeightDependence</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">parameters</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GutigWeightDependence"><a class="viewcode-back" href="../../../reference/plasticitymodels.html#pyNN.standardmodels.synapses.GutigWeightDependence">[docs]</a><span class="k">class</span> <span class="nc">GutigWeightDependence</span><span class="p">(</span><span class="n">STDPWeightDependence</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The amplitude of the weight change depends on (w_max-w)^mu_plus for</span>
+<span class="sd">    potentiation and (w-w_min)^mu_minus for depression.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        `w_min`:</span>
+<span class="sd">            minimum synaptic weight, in the same units as the weight, i.e.</span>
+<span class="sd">            µS or nA.</span>
+<span class="sd">        `w_max`:</span>
+<span class="sd">            maximum synaptic weight.</span>
+<span class="sd">        `mu_plus`:</span>
+<span class="sd">            see above</span>
+<span class="sd">        `mu_minus`:</span>
+<span class="sd">            see above</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;w_min&#39;</span><span class="p">:</span>    <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s1">&#39;w_max&#39;</span><span class="p">:</span>    <span class="mf">1.0</span><span class="p">,</span>
+        <span class="s1">&#39;mu_plus&#39;</span><span class="p">:</span>  <span class="mf">0.5</span><span class="p">,</span>
+        <span class="s1">&#39;mu_minus&#39;</span><span class="p">:</span> <span class="mf">0.5</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w_min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">w_max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">mu_plus</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">mu_minus</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new specification for the weight-dependence of an STDP rule.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+        <span class="n">parameters</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;self&#39;</span><span class="p">)</span>
+        <span class="n">STDPWeightDependence</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">parameters</span><span class="p">)</span></div>
+
+
+<span class="c1"># Not yet implemented for any module</span>
+<span class="c1">#class PfisterSpikeTripletRule(STDPTimingDependence):</span>
+<span class="c1">#    raise NotImplementedError</span>
+
+
+<div class="viewcode-block" id="SpikePairRule"><a class="viewcode-back" href="../../../reference/plasticitymodels.html#pyNN.standardmodels.synapses.SpikePairRule">[docs]</a><span class="k">class</span> <span class="nc">SpikePairRule</span><span class="p">(</span><span class="n">STDPTimingDependence</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The amplitude of the weight change depends only on the relative timing of</span>
+<span class="sd">    spike pairs, not triplets, etc. All possible spike pairs are taken into</span>
+<span class="sd">    account (cf Song and Abbott).</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        `tau_plus`:</span>
+<span class="sd">            time constant of the positive part of the STDP curve, in milliseconds.</span>
+<span class="sd">        `tau_minus`</span>
+<span class="sd">            time constant of the negative part of the STDP curve, in milliseconds.</span>
+<span class="sd">        `A_plus`:</span>
+<span class="sd">            amplitude of the positive part of the STDP curve.</span>
+<span class="sd">        `A_minus`:</span>
+<span class="sd">            amplitude of the negative part of the STDP curve.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;tau_plus&#39;</span><span class="p">:</span>  <span class="mf">20.0</span><span class="p">,</span>
+        <span class="s1">&#39;tau_minus&#39;</span><span class="p">:</span> <span class="mf">20.0</span><span class="p">,</span>
+        <span class="s1">&#39;A_plus&#39;</span><span class="p">:</span>    <span class="mf">0.01</span><span class="p">,</span>
+        <span class="s1">&#39;A_minus&#39;</span><span class="p">:</span>   <span class="mf">0.01</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tau_plus</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">tau_minus</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">A_plus</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">A_minus</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new specification for the timing-dependence of an STDP rule.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+        <span class="n">parameters</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;self&#39;</span><span class="p">)</span>
+        <span class="n">STDPTimingDependence</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">parameters</span><span class="p">)</span></div>
+
+
+<span class="k">class</span> <span class="nc">Vogels2011Rule</span><span class="p">(</span><span class="n">STDPTimingDependence</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Timing-dependence rule from</span>
+
+<span class="sd">      Vogels TP, Sprekeler H, Zenke F, Clopath C, Gerstner W (2011)</span>
+<span class="sd">      Inhibitory plasticity balances excitation and inhibition in sensory</span>
+<span class="sd">      pathways and memory networks. Science 334:1569-73</span>
+<span class="sd">      http://dx.doi.org/10.1126/science.1211095</span>
+
+<span class="sd">    Potentiation depends on the coincidence of pre- and post-synaptic spikes</span>
+<span class="sd">    but not on their order. Pre-synaptic spikes in the absence of post-</span>
+<span class="sd">    synaptic ones produce depression.</span>
+
+<span class="sd">    Also see http://senselab.med.yale.edu/modeldb/ShowModel.asp?model=143751</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;tau&#39;</span><span class="p">:</span> <span class="mf">20.0</span><span class="p">,</span>
+        <span class="s1">&#39;eta&#39;</span><span class="p">:</span> <span class="mf">1e-10</span><span class="p">,</span>
+        <span class="s1">&#39;rho&#39;</span><span class="p">:</span> <span class="mf">3.0</span>
+    <span class="p">}</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.9.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../standardmodels.html" >pyNN.standardmodels</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyNN.standardmodels.synapses</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2020, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.0.
+    </div>
+  </body>
+</html>

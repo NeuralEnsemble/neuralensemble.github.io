@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Installation &#8212; PyNN 0.9.6 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Quickstart" href="quickstart.html" />
+    <link rel="prev" title="Introduction" href="introduction.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="quickstart.html" title="Quickstart"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="introduction.html" title="Introduction"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.9.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Installation</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>The following instructions are for Linux and Mac OS X. It should be possible to
+install and run PyNN on Windows, but this has not been tested.</p>
+<p>Installing PyNN requires:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Python (version 2.7, 3.6+)</p></li>
+<li><p>a recent version of the <a class="reference external" href="http://www.numpy.org/">NumPy</a> package</p></li>
+<li><p>the <a class="reference external" href="https://pypi.python.org/pypi/lazyarray">lazyarray</a> package</p></li>
+<li><p>the <a class="reference external" href="http://neuralensemble.org/neo">Neo</a> package (&gt;= 0.8.0)</p></li>
+<li><p>at least one of the supported simulators: e.g. NEURON, NEST, or Brian.</p></li>
+</ul>
+</div></blockquote>
+<p>Optional dependencies are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference external" href="http://mpi4py.scipy.org/">mpi4py</a> (if you wish to run distributed simulations using MPI)</p></li>
+<li><p>either <a class="reference external" href="http://jinja.pocoo.org/">Jinja2</a> or <a class="reference external" href="http://www.cheetahtemplate.org/">Cheetah</a> (templating engines)</p></li>
+<li><p>the <a class="reference external" href="https://software.incf.org/software/csa/">CSA</a> library</p></li>
+<li><p>h5py (to use the SONATA format)</p></li>
+</ul>
+</div></blockquote>
+<div class="section" id="installing-pynn">
+<h2>Installing PyNN<a class="headerlink" href="#installing-pynn" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>if using NEURON or NEST, it is easiest if you install NEURON/NEST <em>before</em> you install PyNN (see below).</p>
+</div>
+<p>The easiest way to get PyNN is to use <a class="reference external" href="http://www.pip-installer.org/">pip</a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install pyNN
+</pre></div>
+</div>
+<p>If you would prefer to install manually, <a class="reference internal" href="download.html"><span class="doc">download the latest
+source distribution</span></a>, then run the setup script, e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ tar xzf PyNN-0.9.6.tar.gz
+$ cd PyNN-0.9.6
+$ python setup.py install
+</pre></div>
+</div>
+<p>This will install it to your Python <code class="file docutils literal notranslate"><span class="pre">site-packages</span></code> directory, and may
+require root privileges. We strongly recommend, however, that you use a
+<a class="reference external" href="https://virtualenv.readthedocs.org/">virtualenv</a> or a <a class="reference external" href="http://conda.pydata.org">Conda</a> environment. We assume you have already installed the
+simulator(s) you wish to use it with. If this is not the case, see below for
+installation instructions.</p>
+<p>Test it using something like the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pyNN.nest</span> <span class="k">as</span> <span class="nn">sim</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sim</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(This assumes you have NEST installed).</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you get a warning “Unable to install NEST extensions. Certain models may not be available” then ensure the
+program <strong class="command">nest-config</strong> is on your system PATH.
+If you still get this message even after adding the directory containing <strong class="command">nest-config</strong> to the PATH,
+try <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">uninstall</span> <span class="pre">PyNN</span></code>, then re-install with <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">--no-binary</span> <span class="pre">:all:</span> <span class="pre">PyNN</span></code></p>
+</div>
+<p>With NEURON as the simulator, make sure you install NEURON <em>before</em> you install PyNN.
+The PyNN installation will then compile PyNN-specific membrane mechanisms, which are loaded when importing the <code class="xref py py-mod docutils literal notranslate"><span class="pre">neuron</span></code> module:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pyNN.neuron</span> <span class="k">as</span> <span class="nn">sim</span>
+<span class="go">NEURON -- Release 7.4 (1370:16a7055d4a86) 2015-11-09</span>
+<span class="go">Duke, Yale, and the BlueBrain Project -- Copyright 1984-2015</span>
+<span class="go">See http://www.neuron.yale.edu/neuron/credits</span>
+
+<span class="go">loading membrane mechanisms from /home/docker/dev/PyNN/pyNN/neuron/nmodl/x86_64/.libs/libnrnmech.so</span>
+<span class="go">Additional mechanisms from files</span>
+<span class="go"> adexp.mod alphaisyn.mod alphasyn.mod expisyn.mod gap.mod gsfa_grr.mod hh_traub.mod</span>
+<span class="go"> izhikevich.mod netstim2.mod refrac.mod reset.mod stdwa_guetig.mod stdwa_softlimits.mod</span>
+<span class="go"> stdwa_songabbott.mod stdwa_symm.mod stdwa_vogels2011.mod tmgsyn.mod tmisyn.mod</span>
+<span class="go"> tsodyksmarkram.mod vecstim.mod</span>
+</pre></div>
+</div>
+<p>If you installed PyNN before installing NEURON, or if you update your PyNN installation,
+you will need to manually run <strong class="command">nrnivmodl</strong> in the <code class="file docutils literal notranslate"><span class="pre">pyNN/neuron/nmodl</span></code> directory.</p>
+</div>
+<div class="section" id="installing-neuron">
+<h2>Installing NEURON<a class="headerlink" href="#installing-neuron" title="Permalink to this headline">¶</a></h2>
+<p>Download the sources for NEURON 7.4 or later, in <code class="docutils literal notranslate"><span class="pre">.tar.gz</span></code> format, from <a class="reference external" href="http://www.neuron.yale.edu/neuron/download/getstd">http://www.neuron.yale.edu/neuron/download/getstd</a>.
+Also download Interviews from the same location.</p>
+<p>Compile Interviews and NEURON according to the instructions given at <a class="reference external" href="http://www.neuron.yale.edu/neuron/static/download/compilestd_unix.html">http://www.neuron.yale.edu/neuron/static/download/compilestd_unix.html</a>,
+except that when you run <strong class="command">configure</strong>, add the options <code class="xref std std-option docutils literal notranslate"><span class="pre">--with-nrnpython</span></code> and, optionally, <code class="xref std std-option docutils literal notranslate"><span class="pre">--with-paranrn</span></code>, i.e.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./configure --prefix=`pwd` --with-nrnpython --with-paranrn
+$ make
+$ make install
+</pre></div>
+</div>
+<p>Make sure that you add the Interviews and NEURON <code class="file docutils literal notranslate"><span class="pre">bin</span></code> directories to your path.
+Test that the Python support has been enabled by running:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ nrniv -python
+NEURON -- Release 7.4 (1370:16a7055d4a86) 2015-11-09
+Duke, Yale, and the BlueBrain Project -- Copyright 1984-2015
+See http://www.neuron.yale.edu/neuron/credits
+
+&gt;&gt;&gt; import hoc
+&gt;&gt;&gt; import nrn
+</pre></div>
+</div>
+<p>Now you can compile and install NEURON as a Python package:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cd src/nrnpython
+$ python setup.py install
+</pre></div>
+</div>
+<p>Now test everything worked:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python
+&gt;&gt;&gt; import neuron
+NEURON -- Release 7.4 (1370:16a7055d4a86) 2015-11-09
+Duke, Yale, and the BlueBrain Project -- Copyright 1984-2015
+See http://www.neuron.yale.edu/neuron/credits
+</pre></div>
+</div>
+<p>If you run into problems, check out the <a class="reference external" href="http://www.neuron.yale.edu/phpBB/index.php">NEURON Forum</a>.</p>
+</div>
+<div class="section" id="installing-nest-and-pynest">
+<h2>Installing NEST and PyNEST<a class="headerlink" href="#installing-nest-and-pynest" title="Permalink to this headline">¶</a></h2>
+<p>NEST 2.18.0 can be downloaded from <a class="reference external" href="http://www.nest-simulator.org/download/">http://www.nest-simulator.org/download/</a>.
+Earlier versions of NEST may not work with this version of PyNN.
+The full installation instructions are available in the file INSTALL, which you can find in the NEST source package,
+or at <a class="reference external" href="http://www.nest-simulator.org/installation/">http://www.nest-simulator.org/installation/</a>.</p>
+<p>Now try it out:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cd ~
+$ python
+&gt;&gt;&gt; import nest
+             -- N E S T --
+  Copyright (C) 2004 The NEST Initiative
+
+Version: v2.20.0
+
+...
+&gt;&gt;&gt; nest.Models()
+(u&#39;ac_generator&#39;, u&#39;aeif_cond_alpha&#39;, u&#39;aeif_cond_alpha_RK5&#39;, u&#39;aeif_cond_alpha_multisynapse&#39;,
+...
+</pre></div>
+</div>
+<p>Check that <code class="docutils literal notranslate"><span class="pre">'aeif_cond_alpha'</span></code> is in the list of models. If it is not, you may need to install a newer version of the <a class="reference external" href="http://www.gnu.org/software/gsl/">GNU Scientific Library</a> and then recompile NEST.</p>
+</div>
+<div class="section" id="installing-brian">
+<h2>Installing Brian<a class="headerlink" href="#installing-brian" title="Permalink to this headline">¶</a></h2>
+<p>Instructions for downloading and installing <a class="reference external" href="http://briansimulator.org/">Brian</a> are available from <a class="reference external" href="http://briansimulator.org/download/">http://briansimulator.org/download/</a>.
+Note that this version of PyNN works with Brian 1.4, but not with Brian 2.</p>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Installation</a><ul>
+<li><a class="reference internal" href="#installing-pynn">Installing PyNN</a></li>
+<li><a class="reference internal" href="#installing-neuron">Installing NEURON</a></li>
+<li><a class="reference internal" href="#installing-nest-and-pynest">Installing NEST and PyNEST</a></li>
+<li><a class="reference internal" href="#installing-brian">Installing Brian</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="introduction.html"
+                        title="previous chapter">Introduction</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="quickstart.html"
+                        title="next chapter">Quickstart</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/installation.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="quickstart.html" title="Quickstart"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="introduction.html" title="Introduction"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.9.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Installation</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2020, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.0.
+    </div>
+  </body>
+</html>
