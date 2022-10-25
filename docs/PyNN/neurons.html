@@ -1,18 +1,20 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Building networks: neurons &#8212; PyNN 0.10.0 documentation</title>
+    <title>Building networks: neurons &#8212; PyNN 0.10.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/nature.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -34,7 +36,7 @@
         <li class="right" >
           <a href="building_networks.html" title="Building networks"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="building_networks.html" accesskey="U">Building networks</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Building networks: neurons</a></li> 
       </ul>
@@ -46,9 +48,9 @@
           <div class="body" role="main">
             
   <section id="building-networks-neurons">
-<h1>Building networks: neurons<a class="headerlink" href="#building-networks-neurons" title="Permalink to this headline">¶</a></h1>
+<h1>Building networks: neurons<a class="headerlink" href="#building-networks-neurons" title="Permalink to this heading">¶</a></h1>
 <section id="cell-types">
-<span id="section-cell-types"></span><h2>Cell types<a class="headerlink" href="#cell-types" title="Permalink to this headline">¶</a></h2>
+<span id="section-cell-types"></span><h2>Cell types<a class="headerlink" href="#cell-types" title="Permalink to this heading">¶</a></h2>
 <p>In PyNN, the system of equations that defines a neuronal model is encapsulated
 in a <code class="xref py py-class docutils literal notranslate"><span class="pre">CellType</span></code> class. PyNN provides a library of “standard” cell types
 (see <a class="reference internal" href="standardmodels.html"><span class="doc">Standard models</span></a>) which work the same across all backend simulators -
@@ -63,7 +65,7 @@ mathematical cell type, but with different parameterizations. For example, in
 the thalamocortical model of <a class="reference external" href="http://cns.iaf.cnrs-gif.fr/abstracts/TCX2008.html">Destexhe (2009)</a>, thalamocortical relay neurons and
 cortical neurons are both modelled with the adaptive exponential I&amp;F neuron
 model (AdExp):</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">refractory_period</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;uniform&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">],</span> <span class="n">rng</span><span class="o">=</span><span class="n">NumpyRNG</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">4242</span><span class="p">))</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">refractory_period</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;uniform&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">],</span> <span class="n">rng</span><span class="o">=</span><span class="n">NumpyRNG</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">4242</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ctx_parameters</span> <span class="o">=</span> <span class="p">{</span>
 <span class="gp">... </span>    <span class="s1">&#39;cm&#39;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span> <span class="s1">&#39;tau_m&#39;</span><span class="p">:</span> <span class="mf">20.0</span><span class="p">,</span> <span class="s1">&#39;v_rest&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="s1">&#39;v_thresh&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="s1">&#39;tau_refrac&#39;</span><span class="p">:</span> <span class="n">refractory_period</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="s1">&#39;v_reset&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="s1">&#39;v_spike&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">50.0</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s1">&#39;tau_w&#39;</span><span class="p">:</span> <span class="mi">600</span><span class="p">,</span> <span class="s1">&#39;delta_T&#39;</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">,</span>
@@ -78,13 +80,13 @@ model (AdExp):</p>
 <p>(see <a class="reference internal" href="parameters.html"><span class="doc">Model parameters and initial values</span></a> for more on specifying parameter values). To see the list
 of parameter names for a given cell type, use the <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_parameter_names()</span></code>
 method:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">IF_cond_exp</span><span class="o">.</span><span class="n">get_parameter_names</span><span class="p">()</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">IF_cond_exp</span><span class="o">.</span><span class="n">get_parameter_names</span><span class="p">()</span>
 <span class="go">[&#39;tau_refrac&#39;, &#39;cm&#39;, &#39;tau_syn_E&#39;, &#39;v_rest&#39;, &#39;tau_syn_I&#39;, &#39;tau_m&#39;, &#39;e_rev_E&#39;, &#39;i_offset&#39;, &#39;e_rev_I&#39;, &#39;v_thresh&#39;, &#39;v_reset&#39;]</span>
 </pre></div>
 </div>
 <p>while the default values for the parameters are in the <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_parameters</span></code>
 attribute:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">IF_cond_exp</span><span class="o">.</span><span class="n">default_parameters</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">IF_cond_exp</span><span class="o">.</span><span class="n">default_parameters</span><span class="p">)</span>
 <span class="go">{&#39;tau_refrac&#39;: 0.1, &#39;cm&#39;: 1.0, &#39;tau_syn_E&#39;: 5.0, &#39;v_rest&#39;: -65.0, &#39;tau_syn_I&#39;: 5.0, &#39;tau_m&#39;: 20.0, &#39;e_rev_E&#39;: 0.0, &#39;i_offset&#39;: 0.0, &#39;e_rev_I&#39;: -70.0, &#39;v_thresh&#39;: -50.0, &#39;v_reset&#39;: -65.0}</span>
 </pre></div>
 </div>
@@ -93,12 +95,12 @@ regarded as templates, from which we will construct the actual neurons in our
 network.</p>
 </section>
 <section id="populations">
-<h2>Populations<a class="headerlink" href="#populations" title="Permalink to this headline">¶</a></h2>
+<h2>Populations<a class="headerlink" href="#populations" title="Permalink to this heading">¶</a></h2>
 <p>Since PyNN is designed for modelling networks containing many neurons,
 the default level of abstraction in PyNN is not the single neuron but a
 population of neurons of a given type, represented by the <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>
 class:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tc_cells</span> <span class="o">=</span> <span class="n">Population</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">thalamocortical_type</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tc_cells</span> <span class="o">=</span> <span class="n">Population</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">thalamocortical_type</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ctx_cells</span> <span class="o">=</span> <span class="n">Population</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="n">cortical_type</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -112,7 +114,7 @@ specified:</p>
 <li><p>a label.</p></li>
 </ul>
 </div></blockquote>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyNN.space</span> <span class="kn">import</span> <span class="n">Grid2D</span><span class="p">,</span> <span class="n">RandomStructure</span><span class="p">,</span> <span class="n">Sphere</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyNN.space</span> <span class="kn">import</span> <span class="n">Grid2D</span><span class="p">,</span> <span class="n">RandomStructure</span><span class="p">,</span> <span class="n">Sphere</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tc_cells</span> <span class="o">=</span> <span class="n">Population</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">thalamocortical_type</span><span class="p">,</span>
 <span class="gp">... </span>                      <span class="n">structure</span><span class="o">=</span><span class="n">RandomStructure</span><span class="p">(</span><span class="n">boundary</span><span class="o">=</span><span class="n">Sphere</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mf">200.0</span><span class="p">)),</span>
 <span class="gp">... </span>                      <span class="n">initial_values</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">70.0</span><span class="p">},</span>
@@ -137,12 +139,12 @@ languages, the <code class="xref py py-func docutils literal notranslate"><span 
 <p>(Note the different argument order).</p>
 </section>
 <section id="views">
-<h2>Views<a class="headerlink" href="#views" title="Permalink to this headline">¶</a></h2>
+<h2>Views<a class="headerlink" href="#views" title="Permalink to this heading">¶</a></h2>
 <p>It is common to work with only a subset of the neurons in a <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>
 - to modify their parameters, make connections or record from them. Any subset
 of neurons in a population may be addressed using the usual Python indexing
 and slicing notation, for example:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">id</span> <span class="o">=</span> <span class="n">ctx_cells</span><span class="p">[</span><span class="mi">47</span><span class="p">]</span>           <span class="c1"># the 48th neuron in a Population</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">id</span> <span class="o">=</span> <span class="n">ctx_cells</span><span class="p">[</span><span class="mi">47</span><span class="p">]</span>           <span class="c1"># the 48th neuron in a Population</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">view</span> <span class="o">=</span> <span class="n">ctx_cells</span><span class="p">[:</span><span class="mi">80</span><span class="p">]</span>        <span class="c1"># the first eighty neurons</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">view</span> <span class="o">=</span> <span class="n">ctx_cells</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>        <span class="c1"># every second neuron</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">view</span> <span class="o">=</span> <span class="n">ctx_cells</span><span class="p">[</span><span class="mi">45</span><span class="p">,</span> <span class="mi">91</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>  <span class="c1"># a specific set of neurons</span>
@@ -150,7 +152,7 @@ and slicing notation, for example:</p>
 </div>
 <p>It is also possible to address a random sample of neurons within a population
 using the <code class="xref py py-meth docutils literal notranslate"><span class="pre">sample()</span></code> method:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">view</span> <span class="o">=</span> <span class="n">ctx_cells</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">NumpyRNG</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">6538</span><span class="p">))</span>  <span class="c1"># select 50 neurons at random</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">view</span> <span class="o">=</span> <span class="n">ctx_cells</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">NumpyRNG</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">6538</span><span class="p">))</span>  <span class="c1"># select 50 neurons at random</span>
 </pre></div>
 </div>
 <p>In the first of these examples, the object that is returned is an <code class="xref py py-class docutils literal notranslate"><span class="pre">ID</span></code>
@@ -166,7 +168,7 @@ objects; notably, they can be used in a <code class="xref py py-class docutils l
 <p>The <code class="xref py py-attr docutils literal notranslate"><span class="pre">parent</span></code> attribute of a <code class="xref py py-class docutils literal notranslate"><span class="pre">PopulationView</span></code> has a reference to the
 <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code> that is being viewed, and the <code class="xref py py-attr docutils literal notranslate"><span class="pre">mask</span></code> attribute
 contains the indices of the neurons that are in the view.</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">view</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">label</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">view</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">label</span>
 <span class="go">&#39;Cortical neurons&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">view</span><span class="o">.</span><span class="n">mask</span>
 <span class="go">array([150, 181,  53, 149, 496, 499, 240, 444,  13, 100,  28,  19, 101,</span>
@@ -177,7 +179,7 @@ contains the indices of the neurons that are in the view.</p>
 </div>
 </section>
 <section id="assemblies">
-<h2>Assemblies<a class="headerlink" href="#assemblies" title="Permalink to this headline">¶</a></h2>
+<h2>Assemblies<a class="headerlink" href="#assemblies" title="Permalink to this heading">¶</a></h2>
 <p>As discussed above, a <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code> is a homogeneous collection of
 neurons, in the sense that all neurons have the same cell type. An
 <code class="xref py py-class docutils literal notranslate"><span class="pre">Assembly</span></code> is an aggregate of <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code> and
@@ -185,12 +187,12 @@ neurons, in the sense that all neurons have the same cell type. An
 collection of neurons, of multiple cell types.</p>
 <p>An <code class="xref py py-class docutils literal notranslate"><span class="pre">Assembly</span></code> can be created by adding together <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code> and
 <code class="xref py py-class docutils literal notranslate"><span class="pre">PopulationView</span></code> objects:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">all_cells</span> <span class="o">=</span> <span class="n">tc_cells</span> <span class="o">+</span> <span class="n">ctx_cells</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">all_cells</span> <span class="o">=</span> <span class="n">tc_cells</span> <span class="o">+</span> <span class="n">ctx_cells</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cells_for_plotting</span> <span class="o">=</span> <span class="n">tc_cells</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span> <span class="o">+</span> <span class="n">ctx_cells</span><span class="p">[:</span><span class="mi">50</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>or by using the <code class="xref py py-class docutils literal notranslate"><span class="pre">Assembly</span></code> constructor:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">all_cells</span> <span class="o">=</span> <span class="n">Assembly</span><span class="p">(</span><span class="n">tc_cells</span><span class="p">,</span> <span class="n">ctx_cells</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">all_cells</span> <span class="o">=</span> <span class="n">Assembly</span><span class="p">(</span><span class="n">tc_cells</span><span class="p">,</span> <span class="n">ctx_cells</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>An assembly behaves in most ways like a <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>, e.g. for setting
@@ -202,7 +204,7 @@ specified (with the <code class="xref py py-attr docutils literal notranslate"><
 all component neuron types possess that receptor type).</p>
 <p>Individual populations within an <code class="xref py py-class docutils literal notranslate"><span class="pre">Assembly</span></code> may be accessed via their
 labels, e.g.:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">all_cells</span><span class="o">.</span><span class="n">get_population</span><span class="p">(</span><span class="s2">&quot;Thalamocortical neurons&quot;</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">all_cells</span><span class="o">.</span><span class="n">get_population</span><span class="p">(</span><span class="s2">&quot;Thalamocortical neurons&quot;</span><span class="p">)</span>
 <span class="go">Population(100, EIF_cond_exp_isfa_ista(&lt;parameters&gt;), structure=RandomStructure(origin=(0.0, 0.0, 0.0), boundary=Sphere(radius=200.0), rng=NumpyRNG(seed=None)), label=&#39;Thalamocortical neurons&#39;)</span>
 </pre></div>
 </div>
@@ -210,7 +212,7 @@ labels, e.g.:</p>
 Similarly, the <code class="xref py py-attr docutils literal notranslate"><span class="pre">size</span></code> attribute of an <code class="xref py py-class docutils literal notranslate"><span class="pre">Assembly</span></code> gives the total
 number of neurons it contains. To iterate over or count populations, use the
 <code class="xref py py-attr docutils literal notranslate"><span class="pre">populations</span></code> attribute:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">all_cells</span><span class="o">.</span><span class="n">populations</span><span class="p">:</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">all_cells</span><span class="o">.</span><span class="n">populations</span><span class="p">:</span>
 <span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%-23s</span><span class="s2"> </span><span class="si">%4d</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">celltype</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
 <span class="go">Thalamocortical neurons  100 EIF_cond_exp_isfa_ista</span>
 <span class="go">Cortical neurons         500 EIF_cond_exp_isfa_ista</span>
@@ -218,13 +220,13 @@ number of neurons it contains. To iterate over or count populations, use the
 </div>
 </section>
 <section id="inspecting-and-modifying-parameter-values-and-initial-conditions">
-<h2>Inspecting and modifying parameter values and initial conditions<a class="headerlink" href="#inspecting-and-modifying-parameter-values-and-initial-conditions" title="Permalink to this headline">¶</a></h2>
+<h2>Inspecting and modifying parameter values and initial conditions<a class="headerlink" href="#inspecting-and-modifying-parameter-values-and-initial-conditions" title="Permalink to this heading">¶</a></h2>
 <p>Although both parameter values and initial conditions may be specified when
 creating a <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code> (and this is generally the most efficient place
 to do it), it is also possible to modify them later.</p>
 <p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">get()</span></code> method of <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PopulationView</span></code> and
 <code class="xref py py-class docutils literal notranslate"><span class="pre">Assembly</span></code> returns the current value(s) of one or more parameters:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ctx_cells</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tau_m&#39;</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ctx_cells</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tau_m&#39;</span><span class="p">)</span>
 <span class="go">20.0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">all_cells</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;v_reset&#39;</span><span class="p">)</span>
 <span class="go">-60.0</span>
@@ -233,14 +235,14 @@ to do it), it is also possible to modify them later.</p>
 <p>If the parameter is homogeneous across the group, a single number will be
 returned, otherwise <code class="xref py py-meth docutils literal notranslate"><span class="pre">get()</span></code> will return a NumPy array containing the
 parameter values for all neurons:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ctx_cells</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tau_refrac&#39;</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ctx_cells</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tau_refrac&#39;</span><span class="p">)</span>
 <span class="go">array([ 2.64655001,  2.15914942,  2.53500179, ...</span>
 </pre></div>
 </div>
 <p>It is also possible to ask for multiple parameters at once, in which case a
 list of values in the same order as the list of parameter names will be
 returned.</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ctx_cells</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="s1">&#39;tau_m&#39;</span><span class="p">,</span> <span class="s1">&#39;cm&#39;</span><span class="p">])</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ctx_cells</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="s1">&#39;tau_m&#39;</span><span class="p">,</span> <span class="s1">&#39;cm&#39;</span><span class="p">])</span>
 <span class="go">[20.0, 0.25]</span>
 </pre></div>
 </div>
@@ -249,34 +251,34 @@ return values for only those neurons that exist on the current MPI node. To get
 the values for all neurons, use <code class="docutils literal notranslate"><span class="pre">get(parameter_name,</span> <span class="pre">gather=True)</span></code>.</p>
 <p>To modify parameter values, use the <code class="xref py py-class docutils literal notranslate"><span class="pre">set()</span></code> method. To set the same
 value for all neurons, pass a single number as the parameter value:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ctx_cells</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ctx_cells</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>To set different values for different neurons there are several options - see
 <a class="reference internal" href="parameters.html"><span class="doc">Model parameters and initial values</span></a> for more details.</p>
 <p>To modify the initial values of model variables, use the <code class="xref py py-meth docutils literal notranslate"><span class="pre">initialize()</span></code>
 method:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ctx_cells</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">v</span><span class="o">=</span><span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;normal&#39;</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mf">65.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)),</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ctx_cells</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">v</span><span class="o">=</span><span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;normal&#39;</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mf">65.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)),</span>
 <span class="gp">... </span>                     <span class="n">w</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The default initial values may be inspected as follows:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ctx_cells</span><span class="o">.</span><span class="n">celltype</span><span class="o">.</span><span class="n">default_initial_values</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ctx_cells</span><span class="o">.</span><span class="n">celltype</span><span class="o">.</span><span class="n">default_initial_values</span>
 <span class="go">{&#39;gsyn_exc&#39;: 0.0, &#39;gsyn_inh&#39;: 0.0, &#39;w&#39;: 0.0, &#39;v&#39;: -70.6}</span>
 </pre></div>
 </div>
 </section>
 <section id="injecting-current-into-neurons">
-<h2>Injecting current into neurons<a class="headerlink" href="#injecting-current-into-neurons" title="Permalink to this headline">¶</a></h2>
+<h2>Injecting current into neurons<a class="headerlink" href="#injecting-current-into-neurons" title="Permalink to this heading">¶</a></h2>
 <p>Static or time-varying currents may be injected into neurons using either the
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">inject_into()</span></code> method of the <code class="xref py py-class docutils literal notranslate"><span class="pre">CurrentSource</span></code>:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">DCSource</span><span class="p">(</span><span class="n">amplitude</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mf">80.0</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">DCSource</span><span class="p">(</span><span class="n">amplitude</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mf">80.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span><span class="o">.</span><span class="n">inject_into</span><span class="p">(</span><span class="n">tc_cells</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>or the <code class="xref py py-meth docutils literal notranslate"><span class="pre">inject()</span></code> method of the <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>,
 <code class="xref py py-class docutils literal notranslate"><span class="pre">PopulationView</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">Assembly</span></code>:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">times</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">amplitudes</span> <span class="o">=</span> <span class="mf">0.1</span><span class="o">*</span><span class="n">numpy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">times</span><span class="o">*</span><span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">100.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sine_wave</span> <span class="o">=</span> <span class="n">StepCurrentSource</span><span class="p">(</span><span class="n">times</span><span class="o">=</span><span class="n">times</span><span class="p">,</span> <span class="n">amplitudes</span><span class="o">=</span><span class="n">amplitudes</span><span class="p">)</span>
@@ -286,19 +288,19 @@ method:</p>
 <p>See <a class="reference internal" href="injecting_current.html"><span class="doc">Injecting current</span></a> for more about injecting currents.</p>
 </section>
 <section id="recording-variables-and-retrieving-recorded-data">
-<h2>Recording variables and retrieving recorded data<a class="headerlink" href="#recording-variables-and-retrieving-recorded-data" title="Permalink to this headline">¶</a></h2>
+<h2>Recording variables and retrieving recorded data<a class="headerlink" href="#recording-variables-and-retrieving-recorded-data" title="Permalink to this heading">¶</a></h2>
 <p>Just as each cell type has a well-defined set of parameters (whose values are
 constant over time), so it has a well-defined set of state variables, such as
 the membrane potential, whose values change over the course of a simulation. The
 <code class="xref py py-attr docutils literal notranslate"><span class="pre">recordable</span></code> attribute of a <code class="xref py py-class docutils literal notranslate"><span class="pre">CellType</span></code> class contains a list of
 these variables, as well as the ‘spikes’ variable, which is used to record
 the times of action potentials:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ctx_cells</span><span class="o">.</span><span class="n">celltype</span><span class="o">.</span><span class="n">recordable</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ctx_cells</span><span class="o">.</span><span class="n">celltype</span><span class="o">.</span><span class="n">recordable</span>
 <span class="go">[&#39;spikes&#39;, &#39;v&#39;, &#39;w&#39;, &#39;gsyn_exc&#39;, &#39;gsyn_inh&#39;]</span>
 </pre></div>
 </div>
 <p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">record()</span></code> method specifies which variables should be recorded:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">all_cells</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s1">&#39;spikes&#39;</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">all_cells</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s1">&#39;spikes&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ctx_cells</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">record</span><span class="p">((</span><span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">))</span> <span class="c1">#, sampling_interval=0.2)</span>
 </pre></div>
 </div>
@@ -311,12 +313,12 @@ integration methods).</p>
 </div>
 <p>At the end of a simulation, the recorded data can be retrieved using the
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_data()</span></code> method:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">run</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">run</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data_block</span> <span class="o">=</span> <span class="n">all_cells</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>or written to file using <code class="xref py py-meth docutils literal notranslate"><span class="pre">write_data()</span></code>:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">neo.io</span> <span class="kn">import</span> <span class="n">NeoHdf5IO</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">neo.io</span> <span class="kn">import</span> <span class="n">NeoHdf5IO</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">h5file</span> <span class="o">=</span> <span class="n">NeoHdf5IO</span><span class="p">(</span><span class="s2">&quot;my_data.h5&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ctx_cells</span><span class="o">.</span><span class="n">write_data</span><span class="p">(</span><span class="n">h5file</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">h5file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -340,11 +342,11 @@ etc.) if possible, otherwise the default file format (determined by the value of
 <p>For more details, see <a class="reference internal" href="data_handling.html"><span class="doc">Data handling</span></a>.</p>
 </section>
 <section id="working-with-individual-neurons">
-<h2>Working with individual neurons<a class="headerlink" href="#working-with-individual-neurons" title="Permalink to this headline">¶</a></h2>
+<h2>Working with individual neurons<a class="headerlink" href="#working-with-individual-neurons" title="Permalink to this heading">¶</a></h2>
 <p>Although it is usually more convenient and more efficient to work with
 populations of neurons, it is occasionally convienient to work with individual
 neurons, represented as an <code class="xref py py-class docutils literal notranslate"><span class="pre">ID</span></code> object:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tc_cells</span><span class="p">[</span><span class="mi">47</span><span class="p">]</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tc_cells</span><span class="p">[</span><span class="mi">47</span><span class="p">]</span>
 <span class="go">709</span>
 </pre></div>
 </div>
@@ -355,25 +357,25 @@ integers, however, nor that they have the same value across different
 simulators.</p>
 <p>The <code class="xref py py-attr docutils literal notranslate"><span class="pre">parent</span></code> attribute contains a reference to the parent
 <code class="xref py py-class docutils literal notranslate"><span class="pre">population</span></code>:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_cell</span> <span class="o">=</span> <span class="n">tc_cells</span><span class="p">[</span><span class="mi">47</span><span class="p">]</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_cell</span> <span class="o">=</span> <span class="n">tc_cells</span><span class="p">[</span><span class="mi">47</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a_cell</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">label</span>
 <span class="go">&#39;Thalamocortical neurons&#39;</span>
 </pre></div>
 </div>
 <p>To recover the index of a neuron within its parent given the <code class="xref py py-class docutils literal notranslate"><span class="pre">ID</span></code>, use
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">Population.id_to_index()</span></code>, e.g.:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tc_cells</span><span class="o">.</span><span class="n">id_to_index</span><span class="p">(</span><span class="n">a_cell</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tc_cells</span><span class="o">.</span><span class="n">id_to_index</span><span class="p">(</span><span class="n">a_cell</span><span class="p">)</span>
 <span class="go">47</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">ID</span></code> object allows direct access to the parameters of individual neurons, e.g.:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_cell</span><span class="o">.</span><span class="n">tau_m</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_cell</span><span class="o">.</span><span class="n">tau_m</span>
 <span class="go">20.0</span>
 </pre></div>
 </div>
 <p>To change several parameters at once for a single neuron, use the
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">set_parameters()</span></code> method:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_cell</span><span class="o">.</span><span class="n">set_parameters</span><span class="p">(</span><span class="n">tau_m</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">cm</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_cell</span><span class="o">.</span><span class="n">set_parameters</span><span class="p">(</span><span class="n">tau_m</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">cm</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a_cell</span><span class="o">.</span><span class="n">tau_m</span>
 <span class="go">10.0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a_cell</span><span class="o">.</span><span class="n">cm</span>
@@ -393,8 +395,9 @@ simulators.</p>
             <p class="logo"><a href="index.html">
               <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
             </a></p>
-  <h3><a href="index.html">Table of Contents</a></h3>
-  <ul>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">Building networks: neurons</a><ul>
 <li><a class="reference internal" href="#cell-types">Cell types</a></li>
 <li><a class="reference internal" href="#populations">Populations</a></li>
@@ -408,12 +411,17 @@ simulators.</p>
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="building_networks.html"
-                        title="previous chapter">Building networks</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="connections.html"
-                        title="next chapter">Building networks: connections</a></p>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="building_networks.html"
+                          title="previous chapter">Building networks</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="connections.html"
+                          title="next chapter">Building networks: connections</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -430,7 +438,7 @@ simulators.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -450,14 +458,14 @@ simulators.</p>
         <li class="right" >
           <a href="building_networks.html" title="Building networks"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="building_networks.html" >Building networks</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Building networks: neurons</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2021, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+        &#169; Copyright 2006-2022, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
     </div>
   </body>
 </html>

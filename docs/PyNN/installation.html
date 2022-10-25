@@ -1,18 +1,20 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Installation &#8212; PyNN 0.10.0 documentation</title>
+    <title>Installation &#8212; PyNN 0.10.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/nature.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -34,7 +36,7 @@
         <li class="right" >
           <a href="introduction.html" title="Introduction"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Installation</a></li> 
       </ul>
     </div>  
@@ -45,16 +47,16 @@
           <div class="body" role="main">
             
   <section id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">¶</a></h1>
 <p>The following instructions are for Linux and Mac OS X. It should be possible to
 install and run PyNN on Windows, but this has not been tested.</p>
 <p>Installing PyNN requires:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>Python (version 2.7, 3.6+)</p></li>
+<li><p>Python (version 3.7+)</p></li>
 <li><p>a recent version of the <a class="reference external" href="http://www.numpy.org/">NumPy</a> package</p></li>
 <li><p>the <a class="reference external" href="https://pypi.python.org/pypi/lazyarray">lazyarray</a> package</p></li>
-<li><p>the <a class="reference external" href="http://neuralensemble.org/neo">Neo</a> package (&gt;= 0.8.0)</p></li>
+<li><p>the <a class="reference external" href="http://neuralensemble.org/neo">Neo</a> package (&gt;= 0.11.0)</p></li>
 <li><p>at least one of the supported simulators: e.g. NEURON, NEST, or Brian 2.</p></li>
 </ul>
 </div></blockquote>
@@ -68,7 +70,7 @@ install and run PyNN on Windows, but this has not been tested.</p>
 </ul>
 </div></blockquote>
 <section id="installing-pynn">
-<h2>Installing PyNN<a class="headerlink" href="#installing-pynn" title="Permalink to this headline">¶</a></h2>
+<h2>Installing PyNN<a class="headerlink" href="#installing-pynn" title="Permalink to this heading">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>if using NEURON or NEST, it is easiest if you install NEURON/NEST <em>before</em> you install PyNN (see below).</p>
@@ -79,8 +81,8 @@ install and run PyNN on Windows, but this has not been tested.</p>
 </div>
 <p>If you would prefer to install manually, <a class="reference internal" href="download.html"><span class="doc">download the latest
 source distribution</span></a>, then run the setup script, e.g.:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ tar xzf PyNN-0.10.0.tar.gz
-$ cd PyNN-0.10.0
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ tar xzf PyNN-0.10.1.tar.gz
+$ cd PyNN-0.10.1
 $ python setup.py install
 </pre></div>
 </div>
@@ -122,7 +124,7 @@ The PyNN installation will then compile PyNN-specific membrane mechanisms, which
 you will need to manually run <strong class="command">nrnivmodl</strong> in the <code class="file docutils literal notranslate"><span class="pre">pyNN/neuron/nmodl</span></code> directory.</p>
 </section>
 <section id="installing-neuron">
-<h2>Installing NEURON<a class="headerlink" href="#installing-neuron" title="Permalink to this headline">¶</a></h2>
+<h2>Installing NEURON<a class="headerlink" href="#installing-neuron" title="Permalink to this heading">¶</a></h2>
 <p>Download the sources for NEURON 7.4 or later, in <code class="docutils literal notranslate"><span class="pre">.tar.gz</span></code> format, from <a class="reference external" href="http://www.neuron.yale.edu/neuron/download/getstd">http://www.neuron.yale.edu/neuron/download/getstd</a>.
 Also download Interviews from the same location.</p>
 <p>Compile Interviews and NEURON according to the instructions given at <a class="reference external" href="http://www.neuron.yale.edu/neuron/static/download/compilestd_unix.html">http://www.neuron.yale.edu/neuron/static/download/compilestd_unix.html</a>,
@@ -159,7 +161,7 @@ See http://www.neuron.yale.edu/neuron/credits
 <p>If you run into problems, check out the <a class="reference external" href="http://www.neuron.yale.edu/phpBB/index.php">NEURON Forum</a>.</p>
 </section>
 <section id="installing-nest-and-pynest">
-<h2>Installing NEST and PyNEST<a class="headerlink" href="#installing-nest-and-pynest" title="Permalink to this headline">¶</a></h2>
+<h2>Installing NEST and PyNEST<a class="headerlink" href="#installing-nest-and-pynest" title="Permalink to this heading">¶</a></h2>
 <p>NEST 2.18.0 can be downloaded from <a class="reference external" href="http://www.nest-simulator.org/download/">http://www.nest-simulator.org/download/</a>.
 Earlier versions of NEST may not work with this version of PyNN.
 The full installation instructions are available in the file INSTALL, which you can find in the NEST source package,
@@ -182,7 +184,7 @@ Version: v2.20.0
 <p>Check that <code class="docutils literal notranslate"><span class="pre">'aeif_cond_alpha'</span></code> is in the list of models. If it is not, you may need to install a newer version of the <a class="reference external" href="http://www.gnu.org/software/gsl/">GNU Scientific Library</a> and then recompile NEST.</p>
 </section>
 <section id="installing-brian2">
-<h2>Installing Brian2<a class="headerlink" href="#installing-brian2" title="Permalink to this headline">¶</a></h2>
+<h2>Installing Brian2<a class="headerlink" href="#installing-brian2" title="Permalink to this heading">¶</a></h2>
 <p>Instructions for downloading and installing <a class="reference external" href="http://briansimulator.org/">Brian 2</a> are available from <a class="reference external" href="https://briansimulator.org/install/">https://briansimulator.org/install/</a>.
 Note that this version of PyNN works with Brian 2. If you need to use Brian 1, try PyNN 0.9.6.</p>
 </section>
@@ -198,8 +200,9 @@ Note that this version of PyNN works with Brian 2. If you need to use Brian 1, t
             <p class="logo"><a href="index.html">
               <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
             </a></p>
-  <h3><a href="index.html">Table of Contents</a></h3>
-  <ul>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">Installation</a><ul>
 <li><a class="reference internal" href="#installing-pynn">Installing PyNN</a></li>
 <li><a class="reference internal" href="#installing-neuron">Installing NEURON</a></li>
@@ -209,12 +212,17 @@ Note that this version of PyNN works with Brian 2. If you need to use Brian 1, t
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="introduction.html"
-                        title="previous chapter">Introduction</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="quickstart.html"
-                        title="next chapter">Quickstart</a></p>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="introduction.html"
+                          title="previous chapter">Introduction</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="quickstart.html"
+                          title="next chapter">Quickstart</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -231,7 +239,7 @@ Note that this version of PyNN works with Brian 2. If you need to use Brian 1, t
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -251,13 +259,13 @@ Note that this version of PyNN works with Brian 2. If you need to use Brian 1, t
         <li class="right" >
           <a href="introduction.html" title="Introduction"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Installation</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2021, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+        &#169; Copyright 2006-2022, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
     </div>
   </body>
 </html>

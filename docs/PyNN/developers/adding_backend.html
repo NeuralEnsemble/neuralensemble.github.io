@@ -1,18 +1,20 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Adding a new backend &#8212; PyNN 0.10.0 documentation</title>
+    <title>Adding a new backend &#8212; PyNN 0.10.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" /> 
@@ -26,7 +28,7 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Adding a new backend</a></li> 
       </ul>
     </div>  
@@ -37,9 +39,9 @@
           <div class="body" role="main">
             
   <section id="adding-a-new-backend">
-<h1>Adding a new backend<a class="headerlink" href="#adding-a-new-backend" title="Permalink to this headline">¶</a></h1>
+<h1>Adding a new backend<a class="headerlink" href="#adding-a-new-backend" title="Permalink to this heading">¶</a></h1>
 <section id="structure-of-the-codebase">
-<h2>Structure of the codebase<a class="headerlink" href="#structure-of-the-codebase" title="Permalink to this headline">¶</a></h2>
+<h2>Structure of the codebase<a class="headerlink" href="#structure-of-the-codebase" title="Permalink to this heading">¶</a></h2>
 <p>PyNN is both an API for simulator-independent model descriptions and an
 implementation of that API for a number of simulators.</p>
 <p>If you wish to add PyNN support for your own simulator, you are welcome to add
@@ -52,9 +54,9 @@ basing an interface on the “common” implementation you can save yourself a l
 of work, since once you implement a small number of low-level functions and
 classes, you get the rest of the API for free.</p>
 <section id="the-common-implementation">
-<h3>The common implementation<a class="headerlink" href="#the-common-implementation" title="Permalink to this headline">¶</a></h3>
+<h3>The common implementation<a class="headerlink" href="#the-common-implementation" title="Permalink to this heading">¶</a></h3>
 <section id="recording">
-<h4>Recording<a class="headerlink" href="#recording" title="Permalink to this headline">¶</a></h4>
+<h4>Recording<a class="headerlink" href="#recording" title="Permalink to this heading">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">recording</span></code> modules provides a base class <code class="docutils literal notranslate"><span class="pre">Recorder</span></code> that exposes
 methods <code class="docutils literal notranslate"><span class="pre">record()</span></code>, <code class="docutils literal notranslate"><span class="pre">get()</span></code>, <code class="docutils literal notranslate"><span class="pre">write()</span></code> and <code class="docutils literal notranslate"><span class="pre">count()</span></code>. Each simulator
 using the common implementation then subclasses this base class, and must
@@ -70,17 +72,17 @@ be turned off by setting the <code class="docutils literal notranslate"><span cl
 </section>
 </section>
 <section id="the-nest-interface">
-<h3>The NEST interface<a class="headerlink" href="#the-nest-interface" title="Permalink to this headline">¶</a></h3>
+<h3>The NEST interface<a class="headerlink" href="#the-nest-interface" title="Permalink to this heading">¶</a></h3>
 </section>
 <section id="the-neuron-interface">
-<h3>The NEURON interface<a class="headerlink" href="#the-neuron-interface" title="Permalink to this headline">¶</a></h3>
+<h3>The NEURON interface<a class="headerlink" href="#the-neuron-interface" title="Permalink to this heading">¶</a></h3>
 </section>
 <section id="the-brian-interface">
-<h3>The Brian interface<a class="headerlink" href="#the-brian-interface" title="Permalink to this headline">¶</a></h3>
+<h3>The Brian interface<a class="headerlink" href="#the-brian-interface" title="Permalink to this heading">¶</a></h3>
 </section>
 </section>
 <section id="adding-a-new-simulator-interface">
-<h2>Adding a new simulator interface<a class="headerlink" href="#adding-a-new-simulator-interface" title="Permalink to this headline">¶</a></h2>
+<h2>Adding a new simulator interface<a class="headerlink" href="#adding-a-new-simulator-interface" title="Permalink to this heading">¶</a></h2>
 <p>The quickest way to add an interface for a new simulator is to implement the
 “internal API”, described below. Each simulator interface is implemented as
 a sub-package within the <code class="docutils literal notranslate"><span class="pre">pyNN</span></code> package. The suggested layout for this
@@ -171,17 +173,17 @@ _local_count</p>
 </dl>
 </section>
 <section id="a-walk-through-the-lifecycle-of-a-simulation">
-<h2>A walk through the lifecycle of a simulation<a class="headerlink" href="#a-walk-through-the-lifecycle-of-a-simulation" title="Permalink to this headline">¶</a></h2>
+<h2>A walk through the lifecycle of a simulation<a class="headerlink" href="#a-walk-through-the-lifecycle-of-a-simulation" title="Permalink to this heading">¶</a></h2>
 <section id="import-phase">
-<h3>Import phase<a class="headerlink" href="#import-phase" title="Permalink to this headline">¶</a></h3>
+<h3>Import phase<a class="headerlink" href="#import-phase" title="Permalink to this heading">¶</a></h3>
 <p>[What happens on import]</p>
 </section>
 <section id="setup-phase">
-<h3>Setup phase<a class="headerlink" href="#setup-phase" title="Permalink to this headline">¶</a></h3>
+<h3>Setup phase<a class="headerlink" href="#setup-phase" title="Permalink to this heading">¶</a></h3>
 <p>[What happens when calling setup()]</p>
 </section>
 <section id="creating-neurons">
-<h3>Creating neurons<a class="headerlink" href="#creating-neurons" title="Permalink to this headline">¶</a></h3>
+<h3>Creating neurons<a class="headerlink" href="#creating-neurons" title="Permalink to this heading">¶</a></h3>
 <p>On creating a Population…</p>
 <ul class="simple">
 <li><p>create default structure, if none specified</p></li>
@@ -209,25 +211,25 @@ updates the initial_values attribute - we do not modify initial_values directly:
 probably it should be read-only.</p>
 </section>
 <section id="creating-connectors">
-<h3>Creating connectors<a class="headerlink" href="#creating-connectors" title="Permalink to this headline">¶</a></h3>
+<h3>Creating connectors<a class="headerlink" href="#creating-connectors" title="Permalink to this heading">¶</a></h3>
 </section>
 <section id="composing-synaptic-plasticity-models">
-<h3>Composing synaptic plasticity models<a class="headerlink" href="#composing-synaptic-plasticity-models" title="Permalink to this headline">¶</a></h3>
+<h3>Composing synaptic plasticity models<a class="headerlink" href="#composing-synaptic-plasticity-models" title="Permalink to this heading">¶</a></h3>
 </section>
 <section id="connecting-neurons">
-<h3>Connecting neurons<a class="headerlink" href="#connecting-neurons" title="Permalink to this headline">¶</a></h3>
+<h3>Connecting neurons<a class="headerlink" href="#connecting-neurons" title="Permalink to this heading">¶</a></h3>
 </section>
 <section id="instrumenting-the-network">
-<h3>Instrumenting the network<a class="headerlink" href="#instrumenting-the-network" title="Permalink to this headline">¶</a></h3>
+<h3>Instrumenting the network<a class="headerlink" href="#instrumenting-the-network" title="Permalink to this heading">¶</a></h3>
 </section>
 <section id="running-a-simulation">
-<h3>Running a simulation<a class="headerlink" href="#running-a-simulation" title="Permalink to this headline">¶</a></h3>
+<h3>Running a simulation<a class="headerlink" href="#running-a-simulation" title="Permalink to this heading">¶</a></h3>
 </section>
 <section id="retrieving-saving-recorded-data">
-<h3>Retrieving/saving recorded data<a class="headerlink" href="#retrieving-saving-recorded-data" title="Permalink to this headline">¶</a></h3>
+<h3>Retrieving/saving recorded data<a class="headerlink" href="#retrieving-saving-recorded-data" title="Permalink to this heading">¶</a></h3>
 </section>
 <section id="finishing-up-or-resetting-for-a-new-run">
-<h3>Finishing up, or resetting for a new run<a class="headerlink" href="#finishing-up-or-resetting-for-a-new-run" title="Permalink to this headline">¶</a></h3>
+<h3>Finishing up, or resetting for a new run<a class="headerlink" href="#finishing-up-or-resetting-for-a-new-run" title="Permalink to this heading">¶</a></h3>
 </section>
 </section>
 </section>
@@ -242,8 +244,9 @@ probably it should be read-only.</p>
             <p class="logo"><a href="../index.html">
               <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
             </a></p>
-  <h3><a href="../index.html">Table of Contents</a></h3>
-  <ul>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">Adding a new backend</a><ul>
 <li><a class="reference internal" href="#structure-of-the-codebase">Structure of the codebase</a><ul>
 <li><a class="reference internal" href="#the-common-implementation">The common implementation</a><ul>
@@ -273,6 +276,7 @@ probably it should be read-only.</p>
 </li>
 </ul>
 
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -289,7 +293,7 @@ probably it should be read-only.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -303,13 +307,13 @@ probably it should be read-only.</p>
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Adding a new backend</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2021, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+        &#169; Copyright 2006-2022, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
     </div>
   </body>
 </html>

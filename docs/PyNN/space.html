@@ -1,18 +1,20 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Representing spatial structure and calculating distances &#8212; PyNN 0.10.0 documentation</title>
+    <title>Representing spatial structure and calculating distances &#8212; PyNN 0.10.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/nature.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -34,7 +36,7 @@
         <li class="right" >
           <a href="connections.html" title="Building networks: connections"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="building_networks.html" accesskey="U">Building networks</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Representing spatial structure and calculating distances</a></li> 
       </ul>
@@ -46,7 +48,7 @@
           <div class="body" role="main">
             
   <section id="representing-spatial-structure-and-calculating-distances">
-<h1>Representing spatial structure and calculating distances<a class="headerlink" href="#representing-spatial-structure-and-calculating-distances" title="Permalink to this headline">¶</a></h1>
+<h1>Representing spatial structure and calculating distances<a class="headerlink" href="#representing-spatial-structure-and-calculating-distances" title="Permalink to this heading">¶</a></h1>
 <p>The <code class="xref py py-mod docutils literal notranslate"><span class="pre">space</span></code> module contains classes for specifying the locations of neurons
 in space and for calculating the distances between them.</p>
 <p>Neuron positions can be defined either manually, using the <code class="xref py py-attr docutils literal notranslate"><span class="pre">positions</span></code>
@@ -56,7 +58,7 @@ which is passed to the <code class="xref py py-class docutils literal notranslat
 define your own <code class="xref py py-class docutils literal notranslate"><span class="pre">Structure</span></code> sub-class if you need something that is not
 already provided.</p>
 <p>The simplest structure is a grid, whether 1D, 2D or 3D, e.g.:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="go"> &gt;&gt;&gt; from pyNN.space import *</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="go"> &gt;&gt;&gt; from pyNN.space import *</span>
 <span class="go"> &gt;&gt;&gt; line = Line(dx=100.0, x0=0.0, y=200.0, z=500.0)</span>
 <span class="go"> &gt;&gt;&gt; line.generate_positions(7)</span>
 <span class="go"> array([[   0.,  100.,  200.,  300.,  400.,  500.,  600.],</span>
@@ -78,7 +80,7 @@ generate positions for 3 neurons, we get a 3x1 grid, 12 neurons a 6x2 grid,
 27 neurons 9x3, etc.</p>
 <p>BY default, grid positions are filled sequentially, iterating first over the <em>z</em>
 dimension, then <em>y</em>, then <em>x</em>, but we can also fill the grid randomly:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rgrid</span> <span class="o">=</span> <span class="n">Grid2D</span><span class="p">(</span><span class="n">aspect_ratio</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">dy</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">fill_order</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">NumpyRNG</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">13886</span><span class="p">))</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rgrid</span> <span class="o">=</span> <span class="n">Grid2D</span><span class="p">(</span><span class="n">aspect_ratio</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">dy</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">fill_order</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">NumpyRNG</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">13886</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">rgrid</span><span class="o">.</span><span class="n">generate_positions</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
 <span class="go">array([[ 10.,  10.,  10.,   0.,   0.,   0.,  20.,  20.,  20.],</span>
 <span class="go">       [  0.,  10.,  20.,  10.,  20.,   0.,   0.,  10.,  20.],</span>
@@ -87,7 +89,7 @@ dimension, then <em>y</em>, then <em>x</em>, but we can also fill the grid rando
 </div>
 <p>The <code class="xref py py-mod docutils literal notranslate"><span class="pre">space</span></code> module also provides the <code class="xref py py-class docutils literal notranslate"><span class="pre">RandomStructure</span></code> class, which
 distributes neurons randomly and uniformly within a given volume:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="go"> &gt;&gt;&gt; glomerulus = RandomStructure(boundary=Sphere(radius=200.0), rng=NumpyRNG(seed=34534))</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="go"> &gt;&gt;&gt; glomerulus = RandomStructure(boundary=Sphere(radius=200.0), rng=NumpyRNG(seed=34534))</span>
 <span class="go"> &gt;&gt;&gt; glomerulus.generate_positions(5)</span>
 <span class="go"> array([[ -19.78455022,   33.21412264,  -79.4314059 ,  143.39033263,  -63.18242977],</span>
 <span class="go">        [  56.17281502,  -23.15159309,  131.89071845,  -73.73583484,  -8.86422999],</span>
@@ -137,12 +139,16 @@ future release.</p>
             <p class="logo"><a href="index.html">
               <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
             </a></p>
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="connections.html"
-                        title="previous chapter">Building networks: connections</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="injecting_current.html"
-                        title="next chapter">Injecting current</a></p>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="connections.html"
+                          title="previous chapter">Building networks: connections</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="injecting_current.html"
+                          title="next chapter">Injecting current</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -159,7 +165,7 @@ future release.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -179,14 +185,14 @@ future release.</p>
         <li class="right" >
           <a href="connections.html" title="Building networks: connections"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="building_networks.html" >Building networks</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Representing spatial structure and calculating distances</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2021, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+        &#169; Copyright 2006-2022, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
     </div>
   </body>
 </html>

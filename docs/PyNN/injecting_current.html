@@ -1,18 +1,20 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Injecting current &#8212; PyNN 0.10.0 documentation</title>
+    <title>Injecting current &#8212; PyNN 0.10.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/nature.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -34,7 +36,7 @@
         <li class="right" >
           <a href="space.html" title="Representing spatial structure and calculating distances"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Injecting current</a></li> 
       </ul>
     </div>  
@@ -45,7 +47,7 @@
           <div class="body" role="main">
             
   <section id="injecting-current">
-<h1>Injecting current<a class="headerlink" href="#injecting-current" title="Permalink to this headline">¶</a></h1>
+<h1>Injecting current<a class="headerlink" href="#injecting-current" title="Permalink to this heading">¶</a></h1>
 <p>Current waveforms are represented in PyNN by <code class="xref py py-class docutils literal notranslate"><span class="pre">CurrentSource</span></code> classes.
 There are four built-in source types, and it is straightforward to
 implement your own.</p>
@@ -53,24 +55,24 @@ implement your own.</p>
 <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PopulationView</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">Assembly</span></code>: either the
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">inject_into()</span></code> method of the <code class="xref py py-class docutils literal notranslate"><span class="pre">CurrentSource</span></code> or the
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">inject()</span></code> method of the <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Assembly</span></code>, etc.</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">DCSource</span><span class="p">(</span><span class="n">amplitude</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mf">80.0</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">DCSource</span><span class="p">(</span><span class="n">amplitude</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mf">80.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span><span class="o">.</span><span class="n">inject_into</span><span class="p">(</span><span class="n">population</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">7</span><span class="p">])</span>
 </pre></div>
 </div>
 <img alt="_images/dc_source.png" src="_images/dc_source.png" />
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sine</span> <span class="o">=</span> <span class="n">ACSource</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mf">50.0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mf">450.0</span><span class="p">,</span> <span class="n">amplitude</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sine</span> <span class="o">=</span> <span class="n">ACSource</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mf">50.0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mf">450.0</span><span class="p">,</span> <span class="n">amplitude</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
 <span class="gp">... </span>                <span class="n">frequency</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="mf">180.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">population</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="n">sine</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="_images/ac_source.png" src="_images/ac_source.png" />
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">steps</span> <span class="o">=</span> <span class="n">StepCurrentSource</span><span class="p">(</span><span class="n">times</span><span class="o">=</span><span class="p">[</span><span class="mf">50.0</span><span class="p">,</span> <span class="mf">110.0</span><span class="p">,</span> <span class="mf">150.0</span><span class="p">,</span> <span class="mf">210.0</span><span class="p">],</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">steps</span> <span class="o">=</span> <span class="n">StepCurrentSource</span><span class="p">(</span><span class="n">times</span><span class="o">=</span><span class="p">[</span><span class="mf">50.0</span><span class="p">,</span> <span class="mf">110.0</span><span class="p">,</span> <span class="mf">150.0</span><span class="p">,</span> <span class="mf">210.0</span><span class="p">],</span>
 <span class="gp">... </span>                          <span class="n">amplitudes</span><span class="o">=</span><span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">steps</span><span class="o">.</span><span class="n">inject_into</span><span class="p">(</span><span class="n">population</span><span class="p">[(</span><span class="mi">6</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">27</span><span class="p">)])</span>
 </pre></div>
 </div>
 <img alt="_images/step_source.png" src="_images/step_source.png" />
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">noise</span> <span class="o">=</span> <span class="n">NoisyCurrentSource</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">stdev</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mf">50.0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mf">450.0</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">noise</span> <span class="o">=</span> <span class="n">NoisyCurrentSource</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">stdev</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mf">50.0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mf">450.0</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">population</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="n">noise</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -93,12 +95,16 @@ implement your own.</p>
             <p class="logo"><a href="index.html">
               <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
             </a></p>
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="space.html"
-                        title="previous chapter">Representing spatial structure and calculating distances</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="recording.html"
-                        title="next chapter">Recording spikes and state variables</a></p>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="space.html"
+                          title="previous chapter">Representing spatial structure and calculating distances</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="recording.html"
+                          title="next chapter">Recording spikes and state variables</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -115,7 +121,7 @@ implement your own.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -135,13 +141,13 @@ implement your own.</p>
         <li class="right" >
           <a href="space.html" title="Representing spatial structure and calculating distances"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Injecting current</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2021, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+        &#169; Copyright 2006-2022, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
     </div>
   </body>
 </html>

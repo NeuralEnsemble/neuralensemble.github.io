@@ -1,18 +1,20 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Random numbers &#8212; PyNN 0.10.0 documentation</title>
+    <title>Random numbers &#8212; PyNN 0.10.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/nature.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -34,7 +36,7 @@
         <li class="right" >
           <a href="parameters.html" title="Model parameters and initial values"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Random numbers</a></li> 
       </ul>
     </div>  
@@ -45,7 +47,7 @@
           <div class="body" role="main">
             
   <section id="random-numbers">
-<h1>Random numbers<a class="headerlink" href="#random-numbers" title="Permalink to this headline">¶</a></h1>
+<h1>Random numbers<a class="headerlink" href="#random-numbers" title="Permalink to this heading">¶</a></h1>
 <p>There are four considerations for random number generation and consumption in
 PyNN:</p>
 <blockquote>
@@ -75,7 +77,7 @@ higher-quality generator may be desired.</p>
 flexibility in specifying random number generation for those who need it, while
 hiding the details entirely for those who do not.</p>
 <section id="rng-classes">
-<h2><code class="xref py py-class docutils literal notranslate"><span class="pre">RNG</span></code> classes<a class="headerlink" href="#rng-classes" title="Permalink to this headline">¶</a></h2>
+<h2><code class="xref py py-class docutils literal notranslate"><span class="pre">RNG</span></code> classes<a class="headerlink" href="#rng-classes" title="Permalink to this heading">¶</a></h2>
 <p>All functions and methods in the PyNN API that can make use of random numbers
 have an optional <em>rng</em> argument, which should be an instance of a subclass of
 <code class="xref py py-class docutils literal notranslate"><span class="pre">pyNN.random.AbstractRNG</span></code>.
@@ -118,11 +120,11 @@ each time.</p>
 a <a class="reference internal" href="reference/random.html#pyNN.random.NativeRNG" title="pyNN.random.NativeRNG"><code class="xref py py-class docutils literal notranslate"><span class="pre">NativeRNG</span></code></a>, depending on the simulator.</p>
 </div>
 <section id="the-next-method">
-<h3>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">next()</span></code> method<a class="headerlink" href="#the-next-method" title="Permalink to this headline">¶</a></h3>
+<h3>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">next()</span></code> method<a class="headerlink" href="#the-next-method" title="Permalink to this heading">¶</a></h3>
 <p>Apart from the constructor, <code class="xref py py-class docutils literal notranslate"><span class="pre">RNG</span></code> classes have only one important method:
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">next()</span></code>, which returns a NumPy array containing random numbers from the
 requested distribution:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rng</span> <span class="o">=</span> <span class="n">NumpyRNG</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">824756</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rng</span> <span class="o">=</span> <span class="n">NumpyRNG</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">824756</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">rng</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;normal&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;mu&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;sigma&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">})</span>
 <span class="go">array([ 0.65866423,  0.87500017,  0.90755753,  0.93793779,  0.94839735])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">rng</span> <span class="o">=</span> <span class="n">GSLRNG</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">824756</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;ranlxd2&#39;</span><span class="p">)</span>  <span class="c1"># RANLUX algorithm of Luescher</span>
@@ -134,11 +136,6 @@ requested distribution:</p>
 not standardized: e.g. <code class="xref py py-class docutils literal notranslate"><span class="pre">GSLRNG</span></code> needed ‘gaussian’ rather than ‘normal’.
 As of PyNN 0.8, the following standardized names are used:</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 28%" />
-<col style="width: 22%" />
-<col style="width: 51%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Name</p></td>
 <td><p>Parameters</p></td>
@@ -193,22 +190,22 @@ As of PyNN 0.8, the following standardized names are used:</p>
 </section>
 </section>
 <section id="the-randomdistribution-class">
-<h2>The <a class="reference internal" href="reference/random.html#pyNN.random.RandomDistribution" title="pyNN.random.RandomDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">RandomDistribution</span></code></a> class<a class="headerlink" href="#the-randomdistribution-class" title="Permalink to this headline">¶</a></h2>
+<h2>The <a class="reference internal" href="reference/random.html#pyNN.random.RandomDistribution" title="pyNN.random.RandomDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">RandomDistribution</span></code></a> class<a class="headerlink" href="#the-randomdistribution-class" title="Permalink to this heading">¶</a></h2>
 <p>The <a class="reference internal" href="reference/random.html#pyNN.random.RandomDistribution" title="pyNN.random.RandomDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">RandomDistribution</span></code></a> class encapsulates a choice of
 random number generator and a choice of distribution, so that its <code class="xref py py-meth docutils literal notranslate"><span class="pre">next()</span></code>
 method requires only the number of values required as argument:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">gamma</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;gamma&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">),</span> <span class="n">rng</span><span class="o">=</span><span class="n">NumpyRNG</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">72386</span><span class="p">))</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">gamma</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;gamma&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">),</span> <span class="n">rng</span><span class="o">=</span><span class="n">NumpyRNG</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">72386</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">gamma</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 <span class="go">array([ 0.4325809 ,  0.12952503,  1.58510406,  0.81182457,  0.07577787])</span>
 </pre></div>
 </div>
 <p>You can alternatively provide parameter names as keyword arguments, e.g.:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">gamma</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;gamma&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">NumpyRNG</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">72386</span><span class="p">))</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">gamma</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;gamma&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">NumpyRNG</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">72386</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>Note that <a class="reference internal" href="reference/random.html#pyNN.random.RandomDistribution.next" title="pyNN.random.RandomDistribution.next"><code class="xref py py-meth docutils literal notranslate"><span class="pre">next()</span></code></a> called without any
 arguments returns a single number, not an array:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">gamma</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">gamma</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
 <span class="go">0.52020946027308368</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">gamma</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="go">array([ 0.4863944])</span>
@@ -222,7 +219,7 @@ digits but the numbers in the array have full precision.</p>
 </div>
 </section>
 <section id="spikesourcepoisson">
-<h2>SpikeSourcePoisson<a class="headerlink" href="#spikesourcepoisson" title="Permalink to this headline">¶</a></h2>
+<h2>SpikeSourcePoisson<a class="headerlink" href="#spikesourcepoisson" title="Permalink to this heading">¶</a></h2>
 <p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">SpikeSourcePoisson</span></code> model is currently an exception to the situation outlined above.
 It ought to take an <cite>rng</cite> argument, but at present this is not supported, and the model uses the
 global random number generator seed, as set in the <code class="xref py py-func docutils literal notranslate"><span class="pre">setup()</span></code> function.</p>
@@ -239,8 +236,9 @@ global random number generator seed, as set in the <code class="xref py py-func 
             <p class="logo"><a href="index.html">
               <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
             </a></p>
-  <h3><a href="index.html">Table of Contents</a></h3>
-  <ul>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">Random numbers</a><ul>
 <li><a class="reference internal" href="#rng-classes"><code class="xref py py-class docutils literal notranslate"><span class="pre">RNG</span></code> classes</a><ul>
 <li><a class="reference internal" href="#the-next-method">The <code class="xref py py-meth docutils literal notranslate"><span class="pre">next()</span></code> method</a></li>
@@ -252,12 +250,17 @@ global random number generator seed, as set in the <code class="xref py py-func 
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="parameters.html"
-                        title="previous chapter">Model parameters and initial values</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="backends.html"
-                        title="next chapter">Backends</a></p>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="parameters.html"
+                          title="previous chapter">Model parameters and initial values</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="backends.html"
+                          title="next chapter">Backends</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -274,7 +277,7 @@ global random number generator seed, as set in the <code class="xref py py-func 
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -294,13 +297,13 @@ global random number generator seed, as set in the <code class="xref py py-func 
         <li class="right" >
           <a href="parameters.html" title="Model parameters and initial values"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Random numbers</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2021, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+        &#169; Copyright 2006-2022, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
     </div>
   </body>
 </html>

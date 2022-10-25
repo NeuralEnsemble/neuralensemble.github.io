@@ -1,18 +1,20 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>PyNN 0.8 alpha 1 release notes &#8212; PyNN 0.10.0 documentation</title>
+    <title>PyNN 0.8 alpha 1 release notes &#8212; PyNN 0.10.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -34,7 +36,7 @@
         <li class="right" >
           <a href="0.8-alpha-2.html" title="PyNN 0.8 alpha 2 release notes"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../release_notes.html" accesskey="U">Release notes</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">PyNN 0.8 alpha 1 release notes</a></li> 
       </ul>
@@ -46,7 +48,7 @@
           <div class="body" role="main">
             
   <section id="pynn-0-8-alpha-1-release-notes">
-<h1>PyNN 0.8 alpha 1 release notes<a class="headerlink" href="#pynn-0-8-alpha-1-release-notes" title="Permalink to this headline">¶</a></h1>
+<h1>PyNN 0.8 alpha 1 release notes<a class="headerlink" href="#pynn-0-8-alpha-1-release-notes" title="Permalink to this heading">¶</a></h1>
 <p>July 31st 2012</p>
 <p>Welcome to the first alpha release of PyNN 0.8! This is the first time there has
 been an alpha or beta release of PyNN. In the past it hasn’t seemed necessary,
@@ -81,7 +83,7 @@ Brian, PCSIM, NeuroML and MOOSE will be restored/added before the
 final 0.8.0 release.</p>
 </div>
 <section id="creating-populations">
-<h2>Creating populations<a class="headerlink" href="#creating-populations" title="Permalink to this headline">¶</a></h2>
+<h2>Creating populations<a class="headerlink" href="#creating-populations" title="Permalink to this heading">¶</a></h2>
 <p>In previous versions of PyNN, the <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code> constructor was called
 with the population size, a <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseCellType</span></code> sub-class such as
 <code class="xref py py-class docutils literal notranslate"><span class="pre">IF_cond_exp</span></code> and a dictionary of parameter values. For example:</p>
@@ -118,7 +120,7 @@ which already use keyword arguments.</p>
 the time being, but is deprecated and may be removed in future versions.</p>
 </section>
 <section id="specifying-heterogeneous-parameter-values">
-<h2>Specifying heterogeneous parameter values<a class="headerlink" href="#specifying-heterogeneous-parameter-values" title="Permalink to this headline">¶</a></h2>
+<h2>Specifying heterogeneous parameter values<a class="headerlink" href="#specifying-heterogeneous-parameter-values" title="Permalink to this heading">¶</a></h2>
 <p>In previous versions of PyNN, the <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code> constructor supported
 setting parameters to either homogeneous values (all cells in the population
 have the same value) or random values. After construction, it was possible to
@@ -171,7 +173,7 @@ be removed in the next version of PyNN. Their use can be replaced as follows:</p
 </pre></div>
 </div>
 <section id="setting-spike-times">
-<h3>Setting spike times<a class="headerlink" href="#setting-spike-times" title="Permalink to this headline">¶</a></h3>
+<h3>Setting spike times<a class="headerlink" href="#setting-spike-times" title="Permalink to this heading">¶</a></h3>
 <p>Where a single parameter value is already an array, e.g. spike times, this
 should be wrapped by a <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code> object. For example, to generate
 a different Poisson spike train for every neuron in a population of
@@ -185,7 +187,7 @@ a different Poisson spike train for every neuron in a population of
 </section>
 </section>
 <section id="recording">
-<h2>Recording<a class="headerlink" href="#recording" title="Permalink to this headline">¶</a></h2>
+<h2>Recording<a class="headerlink" href="#recording" title="Permalink to this heading">¶</a></h2>
 <p>Previous versions of PyNN had three methods for recording from populations of
 neurons: <code class="xref py py-meth docutils literal notranslate"><span class="pre">record()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">record_v()</span></code> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">record_gsyn()</span></code>, for
 recording spikes, membrane potentials, and synaptic conductances, respectively.
@@ -218,7 +220,7 @@ PyNN.</p>
 <p>See <a class="reference internal" href="../recording.html"><span class="doc">Recording spikes and state variables</span></a> for more details.</p>
 </section>
 <section id="retrieving-recorded-data">
-<h2>Retrieving recorded data<a class="headerlink" href="#retrieving-recorded-data" title="Permalink to this headline">¶</a></h2>
+<h2>Retrieving recorded data<a class="headerlink" href="#retrieving-recorded-data" title="Permalink to this heading">¶</a></h2>
 <p>Perhaps the biggest change in PyNN 0.8 is that handling of recorded data,
 whether retrieval as Python objects or saving to file, now uses the <a class="reference external" href="http://neuralensemble.org/neo">Neo</a>
 package, which provides a common Python object model for neurophysiology data
@@ -239,7 +241,7 @@ the same as before.</p>
 <p>See <a class="reference internal" href="../data_handling.html"><span class="doc">Data handling</span></a> for more details.</p>
 </section>
 <section id="creating-connections">
-<h2>Creating connections<a class="headerlink" href="#creating-connections" title="Permalink to this headline">¶</a></h2>
+<h2>Creating connections<a class="headerlink" href="#creating-connections" title="Permalink to this heading">¶</a></h2>
 <p>In previous versions of PyNN, synaptic weights and delays were specified on
 creation of the <code class="xref py py-class docutils literal notranslate"><span class="pre">Connector</span></code> object. If the synaptic weight had its own
 dynamics (whether short-term or spike-timing-dependent plasticity), the
@@ -287,7 +289,7 @@ NEURON backend is to use a <code class="xref py py-class docutils literal notran
 <a class="reference external" href="http://groups.google.com/group/neuralensemble">mailing list</a> for guidance.</p>
 </section>
 <section id="specifying-heterogeneous-synapse-parameters">
-<h2>Specifying heterogeneous synapse parameters<a class="headerlink" href="#specifying-heterogeneous-synapse-parameters" title="Permalink to this headline">¶</a></h2>
+<h2>Specifying heterogeneous synapse parameters<a class="headerlink" href="#specifying-heterogeneous-synapse-parameters" title="Permalink to this heading">¶</a></h2>
 <p>As for neuron parameters, synapse parameter values can now be any of the
 following:</p>
 <blockquote>
@@ -305,7 +307,7 @@ the parameter value for that cell.</p></li>
 </div></blockquote>
 </section>
 <section id="accessing-setting-and-saving-properties-of-synaptic-connections">
-<h2>Accessing, setting and saving properties of synaptic connections<a class="headerlink" href="#accessing-setting-and-saving-properties-of-synaptic-connections" title="Permalink to this headline">¶</a></h2>
+<h2>Accessing, setting and saving properties of synaptic connections<a class="headerlink" href="#accessing-setting-and-saving-properties-of-synaptic-connections" title="Permalink to this heading">¶</a></h2>
 <p>In older versions of PyNN, the <code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code> class had a bunch of methods
 for working with synaptic parameters: <code class="xref py py-meth docutils literal notranslate"><span class="pre">getWeights()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">setWeights()</span></code>,
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">randomizeWeights()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">printWeights()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">getDelays()</span></code>,
@@ -342,7 +344,7 @@ as follows:</p>
 </div>
 </section>
 <section id="python-compatibility">
-<h2>Python compatibility<a class="headerlink" href="#python-compatibility" title="Permalink to this headline">¶</a></h2>
+<h2>Python compatibility<a class="headerlink" href="#python-compatibility" title="Permalink to this heading">¶</a></h2>
 <p>With an eye towards future support for Python 3, we have decided to drop support
 for Python versions 2.5 and earlier in PyNN 0.8.</p>
 </section>
@@ -358,8 +360,9 @@ for Python versions 2.5 and earlier in PyNN 0.8.</p>
             <p class="logo"><a href="../index.html">
               <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
             </a></p>
-  <h3><a href="../index.html">Table of Contents</a></h3>
-  <ul>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">PyNN 0.8 alpha 1 release notes</a><ul>
 <li><a class="reference internal" href="#creating-populations">Creating populations</a></li>
 <li><a class="reference internal" href="#specifying-heterogeneous-parameter-values">Specifying heterogeneous parameter values</a><ul>
@@ -376,12 +379,17 @@ for Python versions 2.5 and earlier in PyNN 0.8.</p>
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="0.8-alpha-2.html"
-                        title="previous chapter">PyNN 0.8 alpha 2 release notes</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="0.7.html"
-                        title="next chapter">PyNN 0.7 release notes</a></p>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="0.8-alpha-2.html"
+                          title="previous chapter">PyNN 0.8 alpha 2 release notes</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="0.7.html"
+                          title="next chapter">PyNN 0.7 release notes</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -398,7 +406,7 @@ for Python versions 2.5 and earlier in PyNN 0.8.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -418,14 +426,14 @@ for Python versions 2.5 and earlier in PyNN 0.8.</p>
         <li class="right" >
           <a href="0.8-alpha-2.html" title="PyNN 0.8 alpha 2 release notes"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../release_notes.html" >Release notes</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">PyNN 0.8 alpha 1 release notes</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2021, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+        &#169; Copyright 2006-2022, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
     </div>
   </body>
 </html>

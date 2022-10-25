@@ -1,18 +1,20 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Data handling &#8212; PyNN 0.10.0 documentation</title>
+    <title>Data handling &#8212; PyNN 0.10.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/nature.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -34,7 +36,7 @@
         <li class="right" >
           <a href="recording.html" title="Recording spikes and state variables"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Data handling</a></li> 
       </ul>
     </div>  
@@ -45,7 +47,7 @@
           <div class="body" role="main">
             
   <section id="data-handling">
-<h1>Data handling<a class="headerlink" href="#data-handling" title="Permalink to this headline">¶</a></h1>
+<h1>Data handling<a class="headerlink" href="#data-handling" title="Permalink to this heading">¶</a></h1>
 <div class="admonition-todo admonition" id="id1">
 <p class="admonition-title">Todo</p>
 <p>add a note that data handling has changed considerably since 0.7,
@@ -56,7 +58,7 @@ and give link to detailed changelog.</p>
 file, using the <code class="xref py py-meth docutils literal notranslate"><span class="pre">write_data()</span></code> method, or retrieved as objects in memory,
 using <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_data()</span></code>.</p>
 <section id="retrieving-recorded-data">
-<h2>Retrieving recorded data<a class="headerlink" href="#retrieving-recorded-data" title="Permalink to this headline">¶</a></h2>
+<h2>Retrieving recorded data<a class="headerlink" href="#retrieving-recorded-data" title="Permalink to this heading">¶</a></h2>
 <p>Handling of recorded data in PyNN makes use of the <a class="reference external" href="http://neuralensemble.org/neo">Neo</a> package, which provides
 a common Python data model for neurophysiology data (whether real or simulated).</p>
 <p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_data()</span></code> method returns a Neo <code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code> object. This is the
@@ -182,12 +184,12 @@ just call <code class="docutils literal notranslate"><span class="pre">get_data(
 </div>
 </section>
 <section id="writing-data-to-file">
-<h2>Writing data to file<a class="headerlink" href="#writing-data-to-file" title="Permalink to this headline">¶</a></h2>
+<h2>Writing data to file<a class="headerlink" href="#writing-data-to-file" title="Permalink to this heading">¶</a></h2>
 <p>Neo provides support for writing to a <a class="reference external" href="http://neo.readthedocs.io/en/latest/io.html">variety of different file formats</a>,
 notably an assortment of text-based formats, NumPy binary format,
 Matlab <code class="file docutils literal notranslate"><span class="pre">.mat</span></code> files, and HDF5. To write to a given format, we create a Neo
 <code class="xref py py-class docutils literal notranslate"><span class="pre">IO</span></code> object and pass it to the <code class="xref py py-meth docutils literal notranslate"><span class="pre">write_data()</span></code> method:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">neo.io</span> <span class="kn">import</span> <span class="n">NixIO</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">neo.io</span> <span class="kn">import</span> <span class="n">NixIO</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">io</span> <span class="o">=</span> <span class="n">NixIO</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;my_data.h5&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">population</span><span class="o">.</span><span class="n">write_data</span><span class="p">(</span><span class="n">io</span><span class="p">)</span>
 </pre></div>
@@ -195,30 +197,30 @@ Matlab <code class="file docutils literal notranslate"><span class="pre">.mat</s
 <p>As a shortcut, for file formats with a well-defined file extension, it is
 possible to pass just the filename, and PyNN will create the appropriate
 <code class="xref py py-class docutils literal notranslate"><span class="pre">IO</span></code> object for you:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">population</span><span class="o">.</span><span class="n">write_data</span><span class="p">(</span><span class="s2">&quot;my_data.mat&quot;</span><span class="p">)</span>  <span class="c1"># writes to a Matlab file</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">population</span><span class="o">.</span><span class="n">write_data</span><span class="p">(</span><span class="s2">&quot;my_data.mat&quot;</span><span class="p">)</span>  <span class="c1"># writes to a Matlab file</span>
 </pre></div>
 </div>
 <p>By default, all the variables that were specified in the <code class="xref py py-meth docutils literal notranslate"><span class="pre">record()</span></code> call
 will be saved to file, but it is also possible to save only a subset of the
 recorded data:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">population</span><span class="o">.</span><span class="n">write_data</span><span class="p">(</span><span class="n">io</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">))</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">population</span><span class="o">.</span><span class="n">write_data</span><span class="p">(</span><span class="n">io</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;gsyn_exc&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>When running distributed simulations using MPI (see <a class="reference internal" href="parallel.html"><span class="doc">Running parallel simulations</span></a>), by default
 the data is gathered from all MPI nodes to the master node, and only saved to
 file on the master node. If you would prefer that each node saves its own
 local subset of the data to disk separately, use <em>gather=False</em>:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">population</span><span class="o">.</span><span class="n">write_data</span><span class="p">(</span><span class="n">io</span><span class="p">,</span> <span class="n">gather</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">population</span><span class="o">.</span><span class="n">write_data</span><span class="p">(</span><span class="n">io</span><span class="p">,</span> <span class="n">gather</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Saving data to a file does not delete the data from the <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>
 object. If you wish to do so (for example to release memory), use <em>clear=True</em>:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">population</span><span class="o">.</span><span class="n">write_data</span><span class="p">(</span><span class="n">io</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">population</span><span class="o">.</span><span class="n">write_data</span><span class="p">(</span><span class="n">io</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="simple-plotting">
-<h2>Simple plotting<a class="headerlink" href="#simple-plotting" title="Permalink to this headline">¶</a></h2>
+<h2>Simple plotting<a class="headerlink" href="#simple-plotting" title="Permalink to this heading">¶</a></h2>
 <p>Plotting Neo data with Matplotlib, as shown above, can be rather verbose, with
 a lot of repetitive boilerplate code. PyNN therefore provides a couple of
 classes, <a class="reference internal" href="reference/utility.html#pyNN.utility.plotting.Figure" title="pyNN.utility.plotting.Figure"><code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code></a> and <a class="reference internal" href="reference/utility.html#pyNN.utility.plotting.Panel" title="pyNN.utility.plotting.Panel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Panel</span></code></a>,
@@ -251,7 +253,7 @@ plotting package directly.</p>
 <a class="reference internal image-reference" href="_images/release_0.8b1_example.png"><img alt="Image generated using the Figure and Panel classes from pyNN.utility.plotting" src="_images/release_0.8b1_example.png" style="width: 600px;" /></a>
 </section>
 <section id="other-packages-for-working-with-neo-data">
-<h2>Other packages for working with Neo data<a class="headerlink" href="#other-packages-for-working-with-neo-data" title="Permalink to this headline">¶</a></h2>
+<h2>Other packages for working with Neo data<a class="headerlink" href="#other-packages-for-working-with-neo-data" title="Permalink to this heading">¶</a></h2>
 <p>A variety of software tools are available for working with Neo-format data,
 for example <a class="reference external" href="http://spyke-viewer.readthedocs.org/en/0.4.0/">SpykeViewer</a> and <a class="reference external" href="http://neuralensemble.org/OpenElectrophy/">OpenElectrophy</a>.</p>
 </section>
@@ -267,8 +269,9 @@ for example <a class="reference external" href="http://spyke-viewer.readthedocs.
             <p class="logo"><a href="index.html">
               <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
             </a></p>
-  <h3><a href="index.html">Table of Contents</a></h3>
-  <ul>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">Data handling</a><ul>
 <li><a class="reference internal" href="#retrieving-recorded-data">Retrieving recorded data</a></li>
 <li><a class="reference internal" href="#writing-data-to-file">Writing data to file</a></li>
@@ -278,12 +281,17 @@ for example <a class="reference external" href="http://spyke-viewer.readthedocs.
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="recording.html"
-                        title="previous chapter">Recording spikes and state variables</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="simulation_control.html"
-                        title="next chapter">Simulation control</a></p>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="recording.html"
+                          title="previous chapter">Recording spikes and state variables</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="simulation_control.html"
+                          title="next chapter">Simulation control</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -300,7 +308,7 @@ for example <a class="reference external" href="http://spyke-viewer.readthedocs.
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -320,13 +328,13 @@ for example <a class="reference external" href="http://spyke-viewer.readthedocs.
         <li class="right" >
           <a href="recording.html" title="Recording spikes and state variables"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Data handling</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2021, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+        &#169; Copyright 2006-2022, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
     </div>
   </body>
 </html>

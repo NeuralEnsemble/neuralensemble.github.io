@@ -1,18 +1,20 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Simulation control &#8212; PyNN 0.10.0 documentation</title>
+    <title>Simulation control &#8212; PyNN 0.10.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -34,7 +36,7 @@
         <li class="right" >
           <a href="electrodes.html" title="Current sources"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Simulation control</a></li> 
       </ul>
@@ -46,7 +48,7 @@
           <div class="body" role="main">
             
   <section id="simulation-control">
-<h1>Simulation control<a class="headerlink" href="#simulation-control" title="Permalink to this headline">¶</a></h1>
+<h1>Simulation control<a class="headerlink" href="#simulation-control" title="Permalink to this heading">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyNN.neuron.setup">
 <span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_delay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/neuron.html#setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.setup" title="Permalink to this definition">¶</a></dt>
@@ -204,12 +206,39 @@ Population, PopulationView or Assembly.</p>
             <p class="logo"><a href="../index.html">
               <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
             </a></p>
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="electrodes.html"
-                        title="previous chapter">Current sources</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="random.html"
-                        title="next chapter">Random numbers</a></p>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Simulation control</a><ul>
+<li><a class="reference internal" href="#pyNN.neuron.setup"><code class="docutils literal notranslate"><span class="pre">setup()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.run"><code class="docutils literal notranslate"><span class="pre">run()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.run_until"><code class="docutils literal notranslate"><span class="pre">run_until()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.reset"><code class="docutils literal notranslate"><span class="pre">reset()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.end"><code class="docutils literal notranslate"><span class="pre">end()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.get_time_step"><code class="docutils literal notranslate"><span class="pre">get_time_step()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.get_current_time"><code class="docutils literal notranslate"><span class="pre">get_current_time()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.get_min_delay"><code class="docutils literal notranslate"><span class="pre">get_min_delay()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.get_max_delay"><code class="docutils literal notranslate"><span class="pre">get_max_delay()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.num_processes"><code class="docutils literal notranslate"><span class="pre">num_processes()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.rank"><code class="docutils literal notranslate"><span class="pre">rank()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.set"><code class="docutils literal notranslate"><span class="pre">set()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.initialize"><code class="docutils literal notranslate"><span class="pre">initialize()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.record"><code class="docutils literal notranslate"><span class="pre">record()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="electrodes.html"
+                          title="previous chapter">Current sources</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="random.html"
+                          title="next chapter">Random numbers</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -226,7 +255,7 @@ Population, PopulationView or Assembly.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -246,14 +275,14 @@ Population, PopulationView or Assembly.</p>
         <li class="right" >
           <a href="electrodes.html" title="Current sources"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" >API reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Simulation control</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2021, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+        &#169; Copyright 2006-2022, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
     </div>
   </body>
 </html>

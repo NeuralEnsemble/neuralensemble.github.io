@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>PyNN 0.9.1 release notes &#8212; PyNN 0.10.1 documentation</title>
+    <title>PyNN 0.10.1 release notes &#8212; PyNN 0.10.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
@@ -18,8 +18,8 @@
     <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="PyNN 0.9.0 release notes" href="0.9.0.html" />
-    <link rel="prev" title="PyNN 0.9.2 release notes" href="0.9.2.html" /> 
+    <link rel="next" title="PyNN 0.10.0 release notes" href="0.10.0.html" />
+    <link rel="prev" title="Release notes" href="../release_notes.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -31,14 +31,14 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="0.9.0.html" title="PyNN 0.9.0 release notes"
+          <a href="0.10.0.html" title="PyNN 0.10.0 release notes"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="0.9.2.html" title="PyNN 0.9.2 release notes"
+          <a href="../release_notes.html" title="Release notes"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../release_notes.html" accesskey="U">Release notes</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">PyNN 0.9.1 release notes</a></li> 
+        <li class="nav-item nav-item-this"><a href="">PyNN 0.10.1 release notes</a></li> 
       </ul>
     </div>  
 
@@ -47,30 +47,39 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="pynn-0-9-1-release-notes">
-<h1>PyNN 0.9.1 release notes<a class="headerlink" href="#pynn-0-9-1-release-notes" title="Permalink to this heading">¶</a></h1>
-<p>May 4th 2017</p>
-<p>Welcome to PyNN 0.9.1!</p>
-<section id="stochastic-synapses">
-<h2>Stochastic synapses<a class="headerlink" href="#stochastic-synapses" title="Permalink to this heading">¶</a></h2>
-<p>This release adds three new standard synapse models, available for the NEST and NEURON simulators. They are:</p>
-<ul class="simple">
-<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">SimpleStochasticSynapse</span></code> - each spike is transmitted with a probability <cite>p</cite>.</p></li>
-<li><dl class="simple">
-<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">StochasticTsodyksMarkramSynapse</span></code> - synapse exhibiting facilitation and depression, implemented using the model</dt><dd><p>of Tsodyks, Markram et al., in its stochastic version.</p>
-</dd>
-</dl>
-</li>
-<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiQuantalSynapse</span></code> - synapse exhibiting facilitation and depression with multiple quantal release sites.</p></li>
-</ul>
-<p>There are some new example scripts which demonstrate use of the synapse models - see <a class="reference internal" href="../examples/stochastic_synapses.html"><span class="doc">Example of simple stochastic synapses</span></a>
-and <a class="reference internal" href="../examples/stochastic_deterministic_comparison.html"><span class="doc">Example of facilitating and depressing synapses in deterministic and stochastic versions</span></a>.</p>
-<p>Note that the new models require building a NEST extension;
-this is done automatically during installation (when running <strong class="command">pip install</strong> or <strong class="command">setup.py install</strong>).</p>
+  <section id="pynn-0-10-1-release-notes">
+<h1>PyNN 0.10.1 release notes<a class="headerlink" href="#pynn-0-10-1-release-notes" title="Permalink to this heading">¶</a></h1>
+<p>October 13th 2022</p>
+<p>Welcome to PyNN 0.10.1!</p>
+<section id="nest-3-3-neuron-8-1">
+<h2>NEST 3.3, NEURON 8.1<a class="headerlink" href="#nest-3-3-neuron-8-1" title="Permalink to this heading">¶</a></h2>
+<p>PyNN now supports the latest version of <a class="reference external" href="https://www.nest-simulator.org">NEST</a>, and <a class="reference external" href="https://neuron.yale.edu/neuron/">NEURON</a> v8.1.</p>
+</section>
+<section id="new-neuron-model">
+<h2>New neuron model<a class="headerlink" href="#new-neuron-model" title="Permalink to this heading">¶</a></h2>
+<p>We have added a new standard neuron model, <code class="xref py py-class docutils literal notranslate"><span class="pre">IF_curr_delta</span></code>, for which the synaptic response is
+a step change in the membrane voltage.</p>
+</section>
+<section id="recording-with-irregular-sampling-intervals">
+<h2>Recording with irregular sampling intervals<a class="headerlink" href="#recording-with-irregular-sampling-intervals" title="Permalink to this heading">¶</a></h2>
+<p>Where a simulator supports recording with varying sampling intervals (e.g. BrainScaleS, NEURON with CVode),
+PyNN can now handle such data, using the <code class="xref py py-class docutils literal notranslate"><span class="pre">IrregularlySampledSignal</span></code> class from Neo.</p>
+</section>
+<section id="more-efficient-handling-of-spike-trains">
+<h2>More efficient handling of spike trains<a class="headerlink" href="#more-efficient-handling-of-spike-trains" title="Permalink to this heading">¶</a></h2>
+<p>Some simulators record spike trains as a pair of arrays, one containing neuron identifiers,
+the other spike times.
+PyNN can now retain this representation for internal data handling or for export,
+using the <code class="xref py py-class docutils literal notranslate"><span class="pre">SpikeTrainList</span></code> class recently introduced in Neo,
+which avoids the overhead of always converting to a list of <code class="xref py py-class docutils literal notranslate"><span class="pre">SpikeTrains</span></code>, one per neuron.</p>
+</section>
+<section id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this heading">¶</a></h2>
+<p>PyNN now requires NumPy &gt; 1.18.5, Neo &gt; 0.11.0 or later.</p>
 </section>
 <section id="bug-fixes">
 <h2>Bug fixes<a class="headerlink" href="#bug-fixes" title="Permalink to this heading">¶</a></h2>
-<p>A <a class="reference external" href="https://github.com/NeuralEnsemble/PyNN/issues?q=is%3Aissue+milestone%3A0.9.1+is%3Aclosed">number of bugs</a> have been fixed.</p>
+<p>A <a class="reference external" href="https://github.com/NeuralEnsemble/PyNN/issues?q=milestone%3A0.10.1+is%3Aclosed">small number of bugs</a> have been fixed.</p>
 </section>
 </section>
 
@@ -87,8 +96,12 @@ this is done automatically during installation (when running <strong class="comm
   <div>
     <h3><a href="../index.html">Table of Contents</a></h3>
     <ul>
-<li><a class="reference internal" href="#">PyNN 0.9.1 release notes</a><ul>
-<li><a class="reference internal" href="#stochastic-synapses">Stochastic synapses</a></li>
+<li><a class="reference internal" href="#">PyNN 0.10.1 release notes</a><ul>
+<li><a class="reference internal" href="#nest-3-3-neuron-8-1">NEST 3.3, NEURON 8.1</a></li>
+<li><a class="reference internal" href="#new-neuron-model">New neuron model</a></li>
+<li><a class="reference internal" href="#recording-with-irregular-sampling-intervals">Recording with irregular sampling intervals</a></li>
+<li><a class="reference internal" href="#more-efficient-handling-of-spike-trains">More efficient handling of spike trains</a></li>
+<li><a class="reference internal" href="#dependencies">Dependencies</a></li>
 <li><a class="reference internal" href="#bug-fixes">Bug fixes</a></li>
 </ul>
 </li>
@@ -97,18 +110,18 @@ this is done automatically during installation (when running <strong class="comm
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="0.9.2.html"
-                          title="previous chapter">PyNN 0.9.2 release notes</a></p>
+    <p class="topless"><a href="../release_notes.html"
+                          title="previous chapter">Release notes</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="0.9.0.html"
-                          title="next chapter">PyNN 0.9.0 release notes</a></p>
+    <p class="topless"><a href="0.10.0.html"
+                          title="next chapter">PyNN 0.10.0 release notes</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/releases/0.9.1.txt"
+      <li><a href="../_sources/releases/0.10.1.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -136,14 +149,14 @@ this is done automatically during installation (when running <strong class="comm
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="0.9.0.html" title="PyNN 0.9.0 release notes"
+          <a href="0.10.0.html" title="PyNN 0.10.0 release notes"
              >next</a> |</li>
         <li class="right" >
-          <a href="0.9.2.html" title="PyNN 0.9.2 release notes"
+          <a href="../release_notes.html" title="Release notes"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../release_notes.html" >Release notes</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">PyNN 0.9.1 release notes</a></li> 
+        <li class="nav-item nav-item-this"><a href="">PyNN 0.10.1 release notes</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

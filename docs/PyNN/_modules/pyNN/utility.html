@@ -1,17 +1,19 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyNN.utility &#8212; PyNN 0.10.0 documentation</title>
+    <title>pyNN.utility &#8212; PyNN 0.10.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <link rel="shortcut icon" href="../../_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -25,7 +27,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyNN.utility</a></li> 
       </ul>
@@ -48,10 +50,10 @@
 <span class="sd">    init_logging()    - convenience function for setting up logging to file and</span>
 <span class="sd">                        to the screen.</span>
 
-<span class="sd">    Timer    - a convenience wrapper around the time.time() function from the</span>
+<span class="sd">    Timer    - a convenience wrapper around the time.perf_counter() function from the</span>
 <span class="sd">               standard library.</span>
 
-<span class="sd">:copyright: Copyright 2006-2021 by the PyNN team, see AUTHORS.</span>
+<span class="sd">:copyright: Copyright 2006-2022 by the PyNN team, see AUTHORS.</span>
 <span class="sd">:license: CeCILL, see LICENSE for details.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
@@ -279,7 +281,7 @@
 
 <div class="viewcode-block" id="Timer.start"><a class="viewcode-back" href="../../reference/utility.html#pyNN.utility.Timer.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Start/restart timing.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_last_check</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span></div>
 
 <div class="viewcode-block" id="Timer.elapsed_time"><a class="viewcode-back" href="../../reference/utility.html#pyNN.utility.Timer.elapsed_time">[docs]</a>    <span class="k">def</span> <span class="nf">elapsed_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -294,7 +296,7 @@
 <span class="sd">            &gt;&gt;&gt; timer.elapsed_time(format=&#39;long&#39;)</span>
 <span class="sd">            16 minutes, 27 seconds</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">current_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">current_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
         <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">current_time</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span>
         <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;long&#39;</span><span class="p">:</span>
             <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">Timer</span><span class="o">.</span><span class="n">time_in_words</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">)</span>
@@ -317,7 +319,7 @@
 <span class="sd">        If called with ``format=&#39;long&#39;``, return a text representation of the</span>
 <span class="sd">        time.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">current_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">current_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
         <span class="n">time_since_last_check</span> <span class="o">=</span> <span class="n">current_time</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_check</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_last_check</span> <span class="o">=</span> <span class="n">current_time</span>
         <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;long&#39;</span><span class="p">:</span>
@@ -469,7 +471,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -483,14 +485,14 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyNN.utility</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2021, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+        &#169; Copyright 2006-2022, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
     </div>
   </body>
 </html>

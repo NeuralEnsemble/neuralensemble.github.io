@@ -1,18 +1,20 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>PyNN 0.7 release notes &#8212; PyNN 0.10.0 documentation</title>
+    <title>PyNN 0.7 release notes &#8212; PyNN 0.10.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -34,7 +36,7 @@
         <li class="right" >
           <a href="0.8-alpha-1.html" title="PyNN 0.8 alpha 1 release notes"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../release_notes.html" accesskey="U">Release notes</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">PyNN 0.7 release notes</a></li> 
       </ul>
@@ -46,7 +48,7 @@
           <div class="body" role="main">
             
   <section id="pynn-0-7-release-notes">
-<h1>PyNN 0.7 release notes<a class="headerlink" href="#pynn-0-7-release-notes" title="Permalink to this headline">¶</a></h1>
+<h1>PyNN 0.7 release notes<a class="headerlink" href="#pynn-0-7-release-notes" title="Permalink to this heading">¶</a></h1>
 <p>4th February 2011</p>
 <p>This release sees a major extension of the API with the addition of the
 <code class="xref py py-class docutils literal notranslate"><span class="pre">PopulationView</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">Assembly</span></code> classes, which aim to make
@@ -90,7 +92,7 @@ for doing this are:</p>
 <code class="xref py py-func docutils literal notranslate"><span class="pre">initialize()</span></code> function or the <code class="xref py py-meth docutils literal notranslate"><span class="pre">Population.initialize()</span></code> method,
 rather than by having <cite>v_init</cite> and similar parameters for cell models.</p>
 <section id="other-api-changes">
-<h2>Other API changes<a class="headerlink" href="#other-api-changes" title="Permalink to this headline">¶</a></h2>
+<h2>Other API changes<a class="headerlink" href="#other-api-changes" title="Permalink to this heading">¶</a></h2>
 <ul>
 <li><p>simplification of the <code class="xref py py-meth docutils literal notranslate"><span class="pre">record_X()</span></code> methods.With the addition of the
 <code class="xref py py-class docutils literal notranslate"><span class="pre">PopulationView</span></code> class, the selection logic implemented by the
@@ -120,7 +122,7 @@ have to be written by hand.</p></li>
 </ul>
 </section>
 <section id="backend-changes">
-<h2>Backend changes<a class="headerlink" href="#backend-changes" title="Permalink to this headline">¶</a></h2>
+<h2>Backend changes<a class="headerlink" href="#backend-changes" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>the NEST backend has been updated to work with NEST version 2.0.0.</p></li>
 <li><p>the Brian backend has seen extensive work on performance and on bringing it
@@ -128,7 +130,7 @@ to feature parity with the other backends.</p></li>
 </ul>
 </section>
 <section id="details">
-<h2>Details<a class="headerlink" href="#details" title="Permalink to this headline">¶</a></h2>
+<h2>Details<a class="headerlink" href="#details" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Where <code class="xref py py-meth docutils literal notranslate"><span class="pre">Population.initial_values()</span></code> contains arrays, these arrays now
 consistently contain only enough values for local cells. Before, there was
@@ -230,21 +232,21 @@ and <code class="xref py py-class docutils literal notranslate"><span class="pre
 </ul>
 </section>
 <section id="release-0-7-1">
-<h2>Release 0.7.1<a class="headerlink" href="#release-0-7-1" title="Permalink to this headline">¶</a></h2>
+<h2>Release 0.7.1<a class="headerlink" href="#release-0-7-1" title="Permalink to this heading">¶</a></h2>
 <p>This bug-fix release added copyright statements to all files, together with some
 minor bug fixes.</p>
 </section>
 <section id="release-0-7-2">
-<h2>Release 0.7.2<a class="headerlink" href="#release-0-7-2" title="Permalink to this headline">¶</a></h2>
+<h2>Release 0.7.2<a class="headerlink" href="#release-0-7-2" title="Permalink to this heading">¶</a></h2>
 </section>
 <section id="release-0-7-3">
-<h2>Release 0.7.3<a class="headerlink" href="#release-0-7-3" title="Permalink to this headline">¶</a></h2>
+<h2>Release 0.7.3<a class="headerlink" href="#release-0-7-3" title="Permalink to this heading">¶</a></h2>
 </section>
 <section id="release-0-7-4">
-<h2>Release 0.7.4<a class="headerlink" href="#release-0-7-4" title="Permalink to this headline">¶</a></h2>
+<h2>Release 0.7.4<a class="headerlink" href="#release-0-7-4" title="Permalink to this heading">¶</a></h2>
 </section>
 <section id="release-0-7-5">
-<h2>Release 0.7.5<a class="headerlink" href="#release-0-7-5" title="Permalink to this headline">¶</a></h2>
+<h2>Release 0.7.5<a class="headerlink" href="#release-0-7-5" title="Permalink to this heading">¶</a></h2>
 </section>
 </section>
 
@@ -258,8 +260,9 @@ minor bug fixes.</p>
             <p class="logo"><a href="../index.html">
               <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
             </a></p>
-  <h3><a href="../index.html">Table of Contents</a></h3>
-  <ul>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">PyNN 0.7 release notes</a><ul>
 <li><a class="reference internal" href="#other-api-changes">Other API changes</a></li>
 <li><a class="reference internal" href="#backend-changes">Backend changes</a></li>
@@ -273,12 +276,17 @@ minor bug fixes.</p>
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="0.8-alpha-1.html"
-                        title="previous chapter">PyNN 0.8 alpha 1 release notes</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="0.6.html"
-                        title="next chapter">PyNN 0.6 release notes</a></p>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="0.8-alpha-1.html"
+                          title="previous chapter">PyNN 0.8 alpha 1 release notes</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="0.6.html"
+                          title="next chapter">PyNN 0.6 release notes</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -295,7 +303,7 @@ minor bug fixes.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -315,14 +323,14 @@ minor bug fixes.</p>
         <li class="right" >
           <a href="0.8-alpha-1.html" title="PyNN 0.8 alpha 1 release notes"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../release_notes.html" >Release notes</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">PyNN 0.7 release notes</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2021, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+        &#169; Copyright 2006-2022, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
     </div>
   </body>
 </html>
