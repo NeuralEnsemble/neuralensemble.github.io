@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Parameter handling &#8212; PyNN 0.10.1 documentation</title>
+    <title>Parameter handling &#8212; PyNN 0.11.0.dev documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="random.html" title="Random numbers"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.11.0.dev documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Parameter handling</a></li> 
       </ul>
@@ -184,7 +184,7 @@ lengths).</p>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyNN.parameters.LazyArray.__getitem__">
-<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">addr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.parameters.LazyArray.__getitem__" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">addr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int64</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float64</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pyNN.parameters.LazyArray.__getitem__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return one or more items from the array, as for NumPy arrays.</p>
 <p><cite>addr</cite> may be a single integer, a slice, a NumPy boolean array or a
 NumPy integer array.</p>
@@ -200,7 +200,7 @@ as a 1D array or as a single value (for a flat array).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyNN.parameters.LazyArray.apply">
-<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.parameters.LazyArray.apply" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ufunc</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyNN.parameters.LazyArray.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add the function <cite>f(x)</cite> to the list of the operations to be performed,
 where <cite>x</cite> will be a scalar or a numpy array.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">larray</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
@@ -214,13 +214,13 @@ where <cite>x</cite> will be a scalar or a numpy array.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyNN.parameters.LazyArray.check_bounds">
-<span class="sig-name descname"><span class="pre">check_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">addr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.parameters.LazyArray.check_bounds" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">check_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">addr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyNN.parameters.LazyArray.check_bounds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether the given address is within the array bounds.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyNN.parameters.LazyArray.evaluate">
-<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simplify</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.parameters.LazyArray.evaluate" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simplify</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float64</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pyNN.parameters.LazyArray.evaluate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the lazy array as a real NumPy array.</p>
 <p>If the array is homogeneous and <code class="docutils literal notranslate"><span class="pre">simplify</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, return a
 single numerical value.</p>
@@ -228,19 +228,19 @@ single numerical value.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyNN.parameters.LazyArray.is_homogeneous">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_homogeneous</span></span><a class="headerlink" href="#pyNN.parameters.LazyArray.is_homogeneous" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_homogeneous</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#pyNN.parameters.LazyArray.is_homogeneous" title="Permalink to this definition">¶</a></dt>
 <dd><p>True if all the elements of the array are the same.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyNN.parameters.LazyArray.ncols">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ncols</span></span><a class="headerlink" href="#pyNN.parameters.LazyArray.ncols" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ncols</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#pyNN.parameters.LazyArray.ncols" title="Permalink to this definition">¶</a></dt>
 <dd><p>Size of the second dimension (if it exists) of the array.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyNN.parameters.LazyArray.nrows">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nrows</span></span><a class="headerlink" href="#pyNN.parameters.LazyArray.nrows" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nrows</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#pyNN.parameters.LazyArray.nrows" title="Permalink to this definition">¶</a></dt>
 <dd><p>Size of the first dimension of the array.</p>
 </dd></dl>
 
@@ -252,7 +252,7 @@ single numerical value.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyNN.parameters.LazyArray.size">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">size</span></span><a class="headerlink" href="#pyNN.parameters.LazyArray.size" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#pyNN.parameters.LazyArray.size" title="Permalink to this definition">¶</a></dt>
 <dd><p>Total number of elements in the array.</p>
 </dd></dl>
 
@@ -451,6 +451,16 @@ parameter space. The values must first have been evaluated.</p>
 New array values are set to NaN.</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.parameters.ParameterSpace.add_child">
+<span class="sig-name descname"><span class="pre">add_child</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">child_space</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/parameters.html#ParameterSpace.add_child"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.parameters.ParameterSpace.add_child" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.parameters.ParameterSpace.flatten">
+<span class="sig-name descname"><span class="pre">flatten</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">with_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/parameters.html#ParameterSpace.flatten"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.parameters.ParameterSpace.flatten" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </section>
@@ -544,6 +554,8 @@ element <cite>i</cite> of <cite>val</cite>.</p>
 <li><a class="reference internal" href="#pyNN.parameters.ParameterSpace.parallel_safe"><code class="docutils literal notranslate"><span class="pre">ParameterSpace.parallel_safe</span></code></a></li>
 <li><a class="reference internal" href="#pyNN.parameters.ParameterSpace.has_native_rngs"><code class="docutils literal notranslate"><span class="pre">ParameterSpace.has_native_rngs</span></code></a></li>
 <li><a class="reference internal" href="#pyNN.parameters.ParameterSpace.expand"><code class="docutils literal notranslate"><span class="pre">ParameterSpace.expand()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.parameters.ParameterSpace.add_child"><code class="docutils literal notranslate"><span class="pre">ParameterSpace.add_child()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.parameters.ParameterSpace.flatten"><code class="docutils literal notranslate"><span class="pre">ParameterSpace.flatten()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -609,13 +621,13 @@ element <cite>i</cite> of <cite>val</cite>.</p>
         <li class="right" >
           <a href="random.html" title="Random numbers"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.11.0.dev documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" >API reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Parameter handling</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2022, the PyNN community.
+        &#169; Copyright 2006-2023, the PyNN community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
     </div>
   </body>

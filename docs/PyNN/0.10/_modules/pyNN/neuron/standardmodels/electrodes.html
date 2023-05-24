@@ -1,0 +1,335 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyNN.neuron.standardmodels.electrodes &#8212; PyNN 0.10.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/nature.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../neuron.html" accesskey="U">pyNN.neuron</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyNN.neuron.standardmodels.electrodes</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pyNN.neuron.standardmodels.electrodes</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Current source classes for the neuron module.</span>
+
+<span class="sd">Classes:</span>
+<span class="sd">    DCSource           -- a single pulse of current of constant amplitude.</span>
+<span class="sd">    StepCurrentSource  -- a step-wise time-varying current.</span>
+<span class="sd">    NoisyCurrentSource -- a Gaussian whitish noise current.</span>
+<span class="sd">    ACSource           -- a sine modulated current.</span>
+
+<span class="sd">:copyright: Copyright 2006-2022 by the PyNN team, see AUTHORS.</span>
+<span class="sd">:license: CeCILL, see LICENSE for details.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">neuron</span> <span class="kn">import</span> <span class="n">h</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">pyNN.standardmodels</span> <span class="kn">import</span> <span class="n">electrodes</span><span class="p">,</span> <span class="n">build_translations</span><span class="p">,</span> <span class="n">StandardCurrentSource</span>
+<span class="kn">from</span> <span class="nn">pyNN.parameters</span> <span class="kn">import</span> <span class="n">ParameterSpace</span><span class="p">,</span> <span class="n">Sequence</span>
+<span class="kn">from</span> <span class="nn">pyNN.neuron</span> <span class="kn">import</span> <span class="n">simulator</span>
+
+
+<span class="k">class</span> <span class="nc">NeuronCurrentSource</span><span class="p">(</span><span class="n">StandardCurrentSource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for a source of current to be injected into a neuron.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">parameters</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_devices</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cell_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_amplitudes</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_times</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_h_iclamps</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">parameter_space</span> <span class="o">=</span> <span class="n">ParameterSpace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">default_parameters</span><span class="p">,</span>
+                                         <span class="bp">self</span><span class="o">.</span><span class="n">get_schema</span><span class="p">(),</span>
+                                         <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
+        <span class="n">parameter_space</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">parameters</span><span class="p">)</span>
+        <span class="n">parameter_space</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">parameter_space</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_native_parameters</span><span class="p">(</span><span class="n">parameter_space</span><span class="p">)</span>
+        <span class="n">simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">current_sources</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_h_amplitudes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_amplitudes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">amplitudes</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_amplitudes</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">Vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">amplitudes</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_amplitudes</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">Vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">amplitudes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_amplitudes</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_h_times</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_times</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_times</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">Vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_times</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">Vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_times</span>
+
+    <span class="k">def</span> <span class="nf">_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_computed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_amplitudes</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_times</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_generate</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">iclamp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_h_iclamps</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_update_iclamp</span><span class="p">(</span><span class="n">iclamp</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>    <span class="c1"># send tstop = 0.0 on _reset()</span>
+
+    <span class="k">def</span> <span class="nf">_update_iclamp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iclamp</span><span class="p">,</span> <span class="n">tstop</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_playable</span><span class="p">:</span>
+            <span class="n">iclamp</span><span class="o">.</span><span class="n">delay</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span>
+            <span class="n">iclamp</span><span class="o">.</span><span class="n">dur</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span>
+            <span class="n">iclamp</span><span class="o">.</span><span class="n">amp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">amplitude</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_playable</span><span class="p">:</span>
+            <span class="n">iclamp</span><span class="o">.</span><span class="n">delay</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="n">iclamp</span><span class="o">.</span><span class="n">dur</span> <span class="o">=</span> <span class="mf">1e12</span>
+            <span class="n">iclamp</span><span class="o">.</span><span class="n">amp</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+            <span class="c1"># check exists only for StepCurrentSource (_is_playable = True, _is_computed = False)</span>
+            <span class="c1"># t_stop should be part of the time sequence to handle repeated runs</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_computed</span> <span class="ow">and</span> <span class="n">tstop</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_h_times</span><span class="o">.</span><span class="n">to_python</span><span class="p">():</span>
+                <span class="n">ind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_h_times</span><span class="o">.</span><span class="n">indwhere</span><span class="p">(</span><span class="s2">&quot;&gt;=&quot;</span><span class="p">,</span> <span class="n">tstop</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">ind</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>   <span class="c1"># tstop beyond last specified time instant</span>
+                    <span class="n">ind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_h_times</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">ind</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>    <span class="c1"># tstop before first specified time instant</span>
+                    <span class="n">amp_val</span> <span class="o">=</span> <span class="mf">0.0</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">amp_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_h_amplitudes</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_h_times</span><span class="o">.</span><span class="n">insrt</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">tstop</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_h_amplitudes</span><span class="o">.</span><span class="n">insrt</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">amp_val</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_h_amplitudes</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="n">iclamp</span><span class="o">.</span><span class="n">_ref_amp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_h_times</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_check_step_times</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">amplitudes</span><span class="p">,</span> <span class="n">resolution</span><span class="p">):</span>
+        <span class="c1"># ensure that all time stamps are non-negative</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">times</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Step current cannot accept negative timestamps.&quot;</span><span class="p">)</span>
+        <span class="c1"># ensure that times provided are of strictly increasing magnitudes</span>
+        <span class="n">dt_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">dt_times</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Step current timestamps should be monotonically increasing.&quot;</span><span class="p">)</span>
+        <span class="c1"># map timestamps to actual simulation time instants based on specified dt</span>
+        <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)):</span>
+            <span class="n">times</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_round_timestamp</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="n">ind</span><span class="p">],</span> <span class="n">resolution</span><span class="p">)</span>
+        <span class="c1"># remove duplicate timestamps, and corresponding amplitudes, after mapping</span>
+        <span class="n">step_times</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">step_amplitudes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">ts0</span><span class="p">,</span> <span class="n">amp0</span><span class="p">,</span> <span class="n">ts1</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">amplitudes</span><span class="p">,</span> <span class="n">times</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+            <span class="k">if</span> <span class="n">ts0</span> <span class="o">!=</span> <span class="n">ts1</span><span class="p">:</span>
+                <span class="n">step_times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ts0</span><span class="p">)</span>
+                <span class="n">step_amplitudes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">amp0</span><span class="p">)</span>
+        <span class="n">step_times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">step_amplitudes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">amplitudes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">step_times</span><span class="p">,</span> <span class="n">step_amplitudes</span>
+
+    <span class="k">def</span> <span class="nf">set_native_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
+        <span class="n">parameters</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">simplify</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;amplitudes&quot;</span><span class="p">:</span>  <span class="c1"># key used only by StepCurrentSource</span>
+                <span class="n">step_times</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;times&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+                <span class="n">step_amplitudes</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;amplitudes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+                <span class="n">step_times</span><span class="p">,</span> <span class="n">step_amplitudes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_step_times</span><span class="p">(</span>
+                    <span class="n">step_times</span><span class="p">,</span> <span class="n">step_amplitudes</span><span class="p">,</span> <span class="n">simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dt</span><span class="p">)</span>
+                <span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;times&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">step_times</span>
+                <span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;amplitudes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">step_amplitudes</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>  <span class="c1"># this shouldn&#39;t be necessary, but seems to prevent a segfault</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">value</span>
+            <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reset</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">get_native_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ParameterSpace</span><span class="p">(</span><span class="nb">dict</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">k</span><span class="p">))</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_native_names</span><span class="p">()))</span>
+
+    <span class="k">def</span> <span class="nf">inject_into</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cells</span><span class="p">):</span>
+        <span class="vm">__doc__</span> <span class="o">=</span> <span class="n">StandardCurrentSource</span><span class="o">.</span><span class="n">inject_into</span><span class="o">.</span><span class="vm">__doc__</span>
+        <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">cells</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">id</span><span class="o">.</span><span class="n">local</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">id</span><span class="o">.</span><span class="n">celltype</span><span class="o">.</span><span class="n">injectable</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Can&#39;t inject current into a spike source.&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_h_iclamps</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">cell_list</span> <span class="o">+=</span> <span class="p">[</span><span class="nb">id</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_h_iclamps</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">IClamp</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">sec</span><span class="o">=</span><span class="nb">id</span><span class="o">.</span><span class="n">_cell</span><span class="o">.</span><span class="n">source_section</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_devices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_h_iclamps</span><span class="p">[</span><span class="nb">id</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">record</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">itrace</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">Vector</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">itrace</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_devices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_ref_i</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">recorded_times</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">Vector</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">recorded_times</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">_ref_t</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># NEURON and pyNN have different concepts of current initiation times</span>
+        <span class="c1"># To keep this consistent across simulators, pyNN will have current</span>
+        <span class="c1"># initiating at the electrode at t_start and effect on cell at next dt.</span>
+        <span class="c1"># This requires removing the first element from the current Vector</span>
+        <span class="c1"># as NEURON computes the currents one time step later. The vector length</span>
+        <span class="c1"># is compensated by repeating the last recorded value of current.</span>
+        <span class="n">t_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">recorded_times</span><span class="p">)</span>
+        <span class="n">i_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">itrace</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">i_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i_arr</span><span class="p">,</span> <span class="n">i_arr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">t_arr</span><span class="p">,</span> <span class="n">i_arr</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="DCSource"><a class="viewcode-back" href="../../../../reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.DCSource">[docs]</a><span class="k">class</span> <span class="nc">DCSource</span><span class="p">(</span><span class="n">NeuronCurrentSource</span><span class="p">,</span> <span class="n">electrodes</span><span class="o">.</span><span class="n">DCSource</span><span class="p">):</span>
+
+    <span class="vm">__doc__</span> <span class="o">=</span> <span class="n">electrodes</span><span class="o">.</span><span class="n">DCSource</span><span class="o">.</span><span class="vm">__doc__</span>
+
+    <span class="n">translations</span> <span class="o">=</span> <span class="n">build_translations</span><span class="p">(</span>
+        <span class="p">(</span><span class="s1">&#39;amplitude&#39;</span><span class="p">,</span>  <span class="s1">&#39;amplitude&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;start&#39;</span><span class="p">,</span>      <span class="s1">&#39;start&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;stop&#39;</span><span class="p">,</span>       <span class="s1">&#39;stop&#39;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">_is_playable</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">_is_computed</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="StepCurrentSource"><a class="viewcode-back" href="../../../../reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.StepCurrentSource">[docs]</a><span class="k">class</span> <span class="nc">StepCurrentSource</span><span class="p">(</span><span class="n">NeuronCurrentSource</span><span class="p">,</span> <span class="n">electrodes</span><span class="o">.</span><span class="n">StepCurrentSource</span><span class="p">):</span>
+
+    <span class="vm">__doc__</span> <span class="o">=</span> <span class="n">electrodes</span><span class="o">.</span><span class="n">StepCurrentSource</span><span class="o">.</span><span class="vm">__doc__</span>
+
+    <span class="n">translations</span> <span class="o">=</span> <span class="n">build_translations</span><span class="p">(</span>
+        <span class="p">(</span><span class="s1">&#39;amplitudes&#39;</span><span class="p">,</span>  <span class="s1">&#39;amplitudes&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;times&#39;</span><span class="p">,</span>       <span class="s1">&#39;times&#39;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">_is_playable</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">_is_computed</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">_generate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="ACSource"><a class="viewcode-back" href="../../../../reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.ACSource">[docs]</a><span class="k">class</span> <span class="nc">ACSource</span><span class="p">(</span><span class="n">NeuronCurrentSource</span><span class="p">,</span> <span class="n">electrodes</span><span class="o">.</span><span class="n">ACSource</span><span class="p">):</span>
+
+    <span class="vm">__doc__</span> <span class="o">=</span> <span class="n">electrodes</span><span class="o">.</span><span class="n">ACSource</span><span class="o">.</span><span class="vm">__doc__</span>
+
+    <span class="n">translations</span> <span class="o">=</span> <span class="n">build_translations</span><span class="p">(</span>
+        <span class="p">(</span><span class="s1">&#39;amplitude&#39;</span><span class="p">,</span>  <span class="s1">&#39;amplitude&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;start&#39;</span><span class="p">,</span>      <span class="s1">&#39;start&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;stop&#39;</span><span class="p">,</span>       <span class="s1">&#39;stop&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;frequency&#39;</span><span class="p">,</span>  <span class="s1">&#39;frequency&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;offset&#39;</span><span class="p">,</span>     <span class="s1">&#39;offset&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;phase&#39;</span><span class="p">,</span>      <span class="s1">&#39;phase&#39;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">_is_playable</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">_is_computed</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">parameters</span><span class="p">):</span>
+        <span class="n">NeuronCurrentSource</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">parameters</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_generate</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_generate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Not efficient at all... Is there a way to have those vectors computed on the fly ?</span>
+        <span class="c1"># Otherwise should have a buffer mechanism</span>
+        <span class="n">temp_num_t</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(((</span><span class="bp">self</span><span class="o">.</span><span class="n">stop</span> <span class="o">+</span> <span class="n">simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dt</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">)</span> <span class="o">/</span> <span class="n">simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dt</span><span class="p">))</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="n">simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dt</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">temp_num_t</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">times</span> <span class="o">=</span> <span class="n">tmp</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">amplitudes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">amplitude</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">tmp</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequency</span> <span class="o">/</span> <span class="mf">1000.</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">phase</span> <span class="o">/</span> <span class="mi">360</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">amplitudes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span></div>
+
+
+<div class="viewcode-block" id="NoisyCurrentSource"><a class="viewcode-back" href="../../../../reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.NoisyCurrentSource">[docs]</a><span class="k">class</span> <span class="nc">NoisyCurrentSource</span><span class="p">(</span><span class="n">NeuronCurrentSource</span><span class="p">,</span> <span class="n">electrodes</span><span class="o">.</span><span class="n">NoisyCurrentSource</span><span class="p">):</span>
+
+    <span class="vm">__doc__</span> <span class="o">=</span> <span class="n">electrodes</span><span class="o">.</span><span class="n">NoisyCurrentSource</span><span class="o">.</span><span class="vm">__doc__</span>
+
+    <span class="n">translations</span> <span class="o">=</span> <span class="n">build_translations</span><span class="p">(</span>
+        <span class="p">(</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span>  <span class="s1">&#39;mean&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;start&#39;</span><span class="p">,</span> <span class="s1">&#39;start&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;stop&#39;</span><span class="p">,</span>  <span class="s1">&#39;stop&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;stdev&#39;</span><span class="p">,</span> <span class="s1">&#39;stdev&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;dt&#39;</span><span class="p">,</span>    <span class="s1">&#39;dt&#39;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">_is_playable</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">_is_computed</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">parameters</span><span class="p">):</span>
+        <span class="n">NeuronCurrentSource</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">parameters</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_generate</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_generate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Not efficient at all... Is there a way to have those vectors computed on the fly ?</span>
+        <span class="c1"># Otherwise should have a buffer mechanism</span>
+        <span class="n">temp_num_t</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">stop</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">,</span> <span class="n">simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dt</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">times</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">+</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">,</span> <span class="n">simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dt</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">temp_num_t</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">amplitudes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">stdev</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">amplitudes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../neuron.html" >pyNN.neuron</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyNN.neuron.standardmodels.electrodes</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2022, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    </div>
+  </body>
+</html>

@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Simulation control &#8212; PyNN 0.10.1 documentation</title>
+    <title>Simulation control &#8212; PyNN 0.11.0.dev documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="electrodes.html" title="Current sources"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.11.0.dev documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Simulation control</a></li> 
       </ul>
@@ -51,7 +51,7 @@
 <h1>Simulation control<a class="headerlink" href="#simulation-control" title="Permalink to this heading">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyNN.neuron.setup">
-<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_delay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/neuron.html#setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.setup" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_delay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/neuron/control.html#setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.setup" title="Permalink to this definition">¶</a></dt>
 <dd><p>Should be called at the very beginning of a script.</p>
 <p><cite>extra_params</cite> contains any keyword arguments that are required by a given
 simulator but not by others.</p>
@@ -104,7 +104,7 @@ nor the specification of which neurons to record from.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyNN.neuron.end">
-<span class="sig-name descname"><span class="pre">end</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compatible_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/neuron.html#end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.end" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">end</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compatible_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/neuron/control.html#end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.end" title="Permalink to this definition">¶</a></dt>
 <dd><p>Do any necessary cleaning up before exiting.</p>
 </dd></dl>
 
@@ -146,52 +146,20 @@ nor the specification of which neurons to record from.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyNN.neuron.set">
-<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cells</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/procedural_api.html#set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.set" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set one or more parameters for every cell in a population, view or assembly.</p>
-<dl class="simple">
-<dt>Values passed to set() may be:</dt><dd><ol class="arabic simple">
-<li><p>single values</p></li>
-<li><p>RandomDistribution objects</p></li>
-<li><p>mapping functions, where a mapping function accepts a single
-argument (the cell index) and returns a single value.</p></li>
-</ol>
-</dd>
-</dl>
-<p>Here, a “single value” may be either a single number or a list/array of
-numbers (e.g. for spike times). Values should be expressed in the standard
-PyNN units (i.e. millivolts, nanoamps, milliseconds, microsiemens,
-nanofarads, event per second).</p>
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.set" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">Population.set()</span></code> instead.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyNN.neuron.initialize">
-<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cells</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">initial_values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/procedural_api.html#initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.initialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set initial values of state variables, e.g. the membrane potential.</p>
-<dl class="simple">
-<dt>Values passed to initialize() may be:</dt><dd><ol class="arabic simple">
-<li><p>single numeric values (all neurons set to the same value)</p></li>
-<li><p>RandomDistribution objects</p></li>
-<li><p>lists/arrays of numbers of the same size as the population</p></li>
-<li><p>mapping functions, where a mapping function accepts a single
-argument (the cell index) and returns a single number.</p></li>
-</ol>
-</dd>
-</dl>
-<p>Values should be expressed in the standard PyNN units (i.e. millivolts,
-nanoamps, milliseconds, microsiemens, nanofarads, event per second).</p>
-<p>Examples:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">initialize</span><span class="p">(</span><span class="n">cells</span><span class="p">,</span> <span class="n">v</span><span class="o">=-</span><span class="mf">70.0</span><span class="p">)</span>
-<span class="n">initialize</span><span class="p">(</span><span class="n">cells</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">rand_distr</span><span class="p">,</span> <span class="n">gsyn_exc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
-<span class="n">initialize</span><span class="p">(</span><span class="n">cells</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="o">-</span><span class="mi">65</span> <span class="o">+</span> <span class="n">i</span><span class="o">/</span><span class="mf">10.0</span><span class="p">)</span>
-</pre></div>
-</div>
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">Population.initialize()</span></code> instead.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyNN.neuron.record">
-<span class="sig-name descname"><span class="pre">record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variables</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.record" title="Permalink to this definition">¶</a></dt>
-<dd><p>Record variables to a file. source can be an individual cell, a
-Population, PopulationView or Assembly.</p>
+<span class="sig-name descname"><span class="pre">record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.record" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">Population.record()</span></code> instead.</p>
 </dd></dl>
 
 </section>
@@ -275,13 +243,13 @@ Population, PopulationView or Assembly.</p>
         <li class="right" >
           <a href="electrodes.html" title="Current sources"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.11.0.dev documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" >API reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Simulation control</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2022, the PyNN community.
+        &#169; Copyright 2006-2023, the PyNN community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
     </div>
   </body>

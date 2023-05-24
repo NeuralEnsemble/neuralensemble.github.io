@@ -1,0 +1,622 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Parameter handling &#8212; PyNN 0.10.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Spatial structure" href="space.html" />
+    <link rel="prev" title="Random numbers" href="random.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="space.html" title="Spatial structure"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="random.html" title="Random numbers"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API reference</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Parameter handling</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="parameter-handling">
+<h1>Parameter handling<a class="headerlink" href="#parameter-handling" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-pyNN.parameters"></span><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>these classes are not part of the PyNN API. They should not be used in
+PyNN scripts, they are intended for implementing backends. You are not
+required to use them when implementing your own backend, however, as
+long as your backend conforms to the API.</p>
+</div>
+<p>The main abstractions in PyNN are the population of neurons, and the set of
+connections (a ‘projection’) between two populations. Setting the parameters of
+individual neuron and synapse models, therefore, mainly takes place at the level
+of populations and projections.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>it is also possible to set the parameters of neurons and synapses
+individually, but this is generally less efficient.</p>
+</div>
+<p>Any model parameter in PyNN can be expressed as:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>a single value - all neurons in a population or synapses in a projection get
+the same value</p></li>
+<li><p>a <code class="xref py py-class docutils literal notranslate"><span class="pre">RandomDistribution</span></code> object - each element gets a value drawn from
+the random distribution</p></li>
+<li><p>a list/array of values of the same size as the population/projection</p></li>
+<li><p>a mapping function, where a mapping function accepts a either a single
+argument <code class="docutils literal notranslate"><span class="pre">i</span></code> (for a population) or two arguments <code class="docutils literal notranslate"><span class="pre">(i,</span> <span class="pre">j)</span></code> (for a
+projection) and returns a single value.</p></li>
+</ul>
+</div></blockquote>
+<p>A “single value” is usually a single number, but for some parameters (e.g. for
+spike times) it may be a list/array of numbers.</p>
+<p>To handle all these possibilities in a uniform way, and at the same time allow
+for efficient parallelization, in the ‘common’ implementation of the PyNN API
+all parameter values are converted into <a class="reference internal" href="#pyNN.parameters.LazyArray" title="pyNN.parameters.LazyArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">LazyArray</span></code></a> objects, and the
+set of parameters for a model is contained in a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>-like object,
+<a class="reference internal" href="#pyNN.parameters.ParameterSpace" title="pyNN.parameters.ParameterSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSpace</span></code></a>.</p>
+<section id="the-lazyarray-class">
+<h2>The <a class="reference internal" href="#pyNN.parameters.LazyArray" title="pyNN.parameters.LazyArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">LazyArray</span></code></a> class<a class="headerlink" href="#the-lazyarray-class" title="Permalink to this heading">¶</a></h2>
+<p><a class="reference internal" href="#pyNN.parameters.LazyArray" title="pyNN.parameters.LazyArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">LazyArray</span></code></a> is a PyNN-specific sub-class of a more general class,
+<code class="xref py py-class docutils literal notranslate"><span class="pre">larray</span></code>, and most of its functionality comes from the parent class. Full
+documentation for <code class="xref py py-class docutils literal notranslate"><span class="pre">larray</span></code> is available in the <a class="reference external" href="https://lazyarray.readthedocs.org/">lazyarray</a> package, but we
+give here a quick overview.</p>
+<p><a class="reference internal" href="#pyNN.parameters.LazyArray" title="pyNN.parameters.LazyArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">LazyArray</span></code></a> has three important features in the context of PyNN:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>any operations on the array (potentially including array construction) are
+not performed immediately, but are delayed until evaluation is specifically
+requested.</p></li>
+<li><p>evaluation of only parts of the array is possible, which means that in a
+parallel simulation with MPI, all processes have the same <a class="reference internal" href="#pyNN.parameters.LazyArray" title="pyNN.parameters.LazyArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">LazyArray</span></code></a>
+for a parameter, but on a given process, only the part of the array which
+is needed for the neurons/synapses that exist on that process need be
+evaluated.</p></li>
+<li><p>single often all neurons in a population or synapses in a projection have
+the same value for a given parameter, a <a class="reference internal" href="#pyNN.parameters.LazyArray" title="pyNN.parameters.LazyArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">LazyArray</span></code></a> created from a
+single value evaluates to that value: the full array is never created
+unless this is requested.</p></li>
+</ol>
+</div></blockquote>
+<p>For example, suppose we have two parameters, <cite>tau_m</cite>, which is constant,
+and <cite>v_thresh</cite> which varies according to the position of the neuron in the
+population.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyNN.parameters</span> <span class="kn">import</span> <span class="n">LazyArray</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tau_m</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">LazyArray</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v_thresh</span> <span class="o">=</span> <span class="o">-</span><span class="mi">55</span> <span class="o">+</span> <span class="n">LazyArray</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="mf">0.1</span><span class="o">*</span><span class="n">i</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,))</span>
+</pre></div>
+</div>
+<p>If we evaluate <cite>tau_m</cite> we get a full, homogeneous array:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tau_m</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span>
+<span class="go">array([ 20.,  20.,  20.,  20.,  20.,  20.,  20.,  20.,  20.,  20.,  20.,</span>
+<span class="go">        20.,  20.,  20.,  20.,  20.,  20.,  20.,  20.,  20.])</span>
+</pre></div>
+</div>
+<p>but we could also have asked just for the single number, in which case the
+full array would never be created:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tau_m</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">simplify</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">20.0</span>
+</pre></div>
+</div>
+<p>Similarly, we can evaluate <cite>v_thresh</cite> to get a normal NumPy array:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v_thresh</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span>
+<span class="go">array([-55. , -54.9, -54.8, -54.7, -54.6, -54.5, -54.4, -54.3, -54.2,</span>
+<span class="go">       -54.1, -54. , -53.9, -53.8, -53.7, -53.6, -53.5, -53.4, -53.3,</span>
+<span class="go">       -53.2, -53.1])</span>
+</pre></div>
+</div>
+<p>but we can also take, for example, only every fifth value, in which case the
+operation “add -55” only gets performed for those elements.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v_thresh</span><span class="p">[::</span><span class="mi">5</span><span class="p">]</span>
+<span class="go">array([-55. , -54.5, -54. , -53.5])</span>
+</pre></div>
+</div>
+<p>In this example the operation is very fast, but with slower operations (e.g.
+distance calculations) and large arrays, the time savings can be considerable
+(see <a class="reference external" href="https://lazyarray.readthedocs.org/en/latest/performance.html">lazyarray performance</a>).</p>
+<p>In summary, by using <a class="reference internal" href="#pyNN.parameters.LazyArray" title="pyNN.parameters.LazyArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">LazyArray</span></code></a>, we can pass parameters around in an
+optimised way without having to worry about exactly what form the parameter
+value takes, hence avoiding a lot of logic at multiple points in the code.</p>
+<section id="reference">
+<h3>Reference<a class="headerlink" href="#reference" title="Permalink to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.parameters.LazyArray">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LazyArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/parameters.html#LazyArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.parameters.LazyArray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">larray</span></code></p>
+<dl class="simple">
+<dt>Optimises storage of arrays in various ways:</dt><dd><ul class="simple">
+<li><p>stores only a single value if all the values in the array are the same</p></li>
+<li><p>if the array is created from a <a class="reference internal" href="random.html#pyNN.random.RandomDistribution" title="pyNN.random.RandomDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">RandomDistribution</span></code></a>
+or a function <cite>f(i,j)</cite>, then elements are only evaluated when they are
+accessed. Any operations performed on the array are also queued up to
+be executed on access.</p></li>
+</ul>
+</dd>
+</dl>
+<p>The main intention of the latter is to save memory for very large arrays by
+accessing them one row or column at a time: the entire array need never be
+in memory.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt><cite>value</cite>:</dt><dd><p>may be an int, float, bool, NumPy array, iterator, generator
+or a function, <cite>f(i)</cite> or <cite>f(i,j)</cite>, depending on the dimensions of
+the array. <cite>f(i,j)</cite> should return a single number when <cite>i</cite> and <cite>j</cite>
+are integers, and a 1D array when either <cite>i</cite> or <cite>j</cite> or both is a
+NumPy array (in the latter case the two arrays must have equal
+lengths).</p>
+</dd>
+<dt><cite>shape</cite>:</dt><dd><p>a tuple giving the shape of the array, or <cite>None</cite></p>
+</dd>
+<dt><cite>dtype</cite>:</dt><dd><p>the NumPy <cite>dtype</cite>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.parameters.LazyArray.__getitem__">
+<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">addr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.parameters.LazyArray.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return one or more items from the array, as for NumPy arrays.</p>
+<p><cite>addr</cite> may be a single integer, a slice, a NumPy boolean array or a
+NumPy integer array.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.parameters.LazyArray.by_column">
+<span class="sig-name descname"><span class="pre">by_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/parameters.html#LazyArray.by_column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.parameters.LazyArray.by_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over the columns of the array. Columns will be yielded either
+as a 1D array or as a single value (for a flat array).</p>
+<p><cite>mask</cite>: either <cite>None</cite> or a boolean array indicating which columns should be included.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.parameters.LazyArray.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.parameters.LazyArray.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the function <cite>f(x)</cite> to the list of the operations to be performed,
+where <cite>x</cite> will be a scalar or a numpy array.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">larray</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span>
+<span class="go">array([[ 2.,  2.],</span>
+<span class="go">       [ 2.,  2.]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.parameters.LazyArray.check_bounds">
+<span class="sig-name descname"><span class="pre">check_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">addr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.parameters.LazyArray.check_bounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the given address is within the array bounds.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.parameters.LazyArray.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simplify</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.parameters.LazyArray.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the lazy array as a real NumPy array.</p>
+<p>If the array is homogeneous and <code class="docutils literal notranslate"><span class="pre">simplify</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, return a
+single numerical value.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.parameters.LazyArray.is_homogeneous">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_homogeneous</span></span><a class="headerlink" href="#pyNN.parameters.LazyArray.is_homogeneous" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if all the elements of the array are the same.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.parameters.LazyArray.ncols">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ncols</span></span><a class="headerlink" href="#pyNN.parameters.LazyArray.ncols" title="Permalink to this definition">¶</a></dt>
+<dd><p>Size of the second dimension (if it exists) of the array.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.parameters.LazyArray.nrows">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nrows</span></span><a class="headerlink" href="#pyNN.parameters.LazyArray.nrows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Size of the first dimension of the array.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.parameters.LazyArray.shape">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shape</span></span><a class="headerlink" href="#pyNN.parameters.LazyArray.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shape of the array</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.parameters.LazyArray.size">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">size</span></span><a class="headerlink" href="#pyNN.parameters.LazyArray.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Total number of elements in the array.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+<section id="the-parameterspace-class">
+<h2>The <a class="reference internal" href="#pyNN.parameters.ParameterSpace" title="pyNN.parameters.ParameterSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSpace</span></code></a> class<a class="headerlink" href="#the-parameterspace-class" title="Permalink to this heading">¶</a></h2>
+<p><a class="reference internal" href="#pyNN.parameters.ParameterSpace" title="pyNN.parameters.ParameterSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSpace</span></code></a> is a dict-like class that contains <a class="reference internal" href="#pyNN.parameters.LazyArray" title="pyNN.parameters.LazyArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">LazyArray</span></code></a>
+objects.</p>
+<p>In addition to the usual <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> methods, it has several methods
+that allow operations on all the lazy arrays within it at once. For example:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyNN.parameters</span> <span class="kn">import</span> <span class="n">ParameterSpace</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span> <span class="o">=</span> <span class="n">ParameterSpace</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">},</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">]</span>
+<span class="go">&lt;larray: base_value=&lt;function &lt;lambda&gt; at ...&gt; shape=(4,) dtype=None, operations=[]&gt; </span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">]</span>
+<span class="go">array([ 2,  5,  8, 11])</span>
+</pre></div>
+</div>
+<p>the <code class="xref py py-meth docutils literal notranslate"><span class="pre">evaluate()</span></code> method also accepts a mask, in order to evaluate only
+part of the lazy arrays:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span> <span class="o">=</span> <span class="n">ParameterSpace</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">13</span><span class="p">],</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">},</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">mask</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()</span>
+<span class="go">{&#39;a&#39;: array([ 3,  8, 13]), &#39;c&#39;: array([ 5, 11, 14]), &#39;b&#39;: array([7, 7, 7])}</span>
+</pre></div>
+</div>
+<p>An example with two-dimensional arrays:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ps2d</span> <span class="o">=</span> <span class="n">ParameterSpace</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">13</span><span class="p">],</span> <span class="p">[</span><span class="mi">21</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">89</span><span class="p">,</span> <span class="mi">144</span><span class="p">]],</span>
+<span class="gp">... </span>                       <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+<span class="gp">... </span>                       <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span> <span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">j</span><span class="p">},</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps2d</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">mask</span><span class="o">=</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">ps2d</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">])</span>
+<span class="go">[[  3   8  13]</span>
+<span class="go"> [ 34  89 144]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">ps2d</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">])</span>
+<span class="go">[[-2 -6 -8]</span>
+<span class="go"> [ 1 -3 -5]]</span>
+</pre></div>
+</div>
+<p>There are also several methods to allow iterating over the parameter space in
+different ways. A <a class="reference internal" href="#pyNN.parameters.ParameterSpace" title="pyNN.parameters.ParameterSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSpace</span></code></a> can be viewed as both a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>
+contaning arrays and as an array of dicts. Iterating over a parameter space
+gives the latter view:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">D</span> <span class="ow">in</span> <span class="n">ps</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="nb">print</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">{&#39;a&#39;: 3, &#39;c&#39;: 5, &#39;b&#39;: 7}</span>
+<span class="go">{&#39;a&#39;: 8, &#39;c&#39;: 11, &#39;b&#39;: 7}</span>
+<span class="go">{&#39;a&#39;: 13, &#39;c&#39;: 14, &#39;b&#39;: 7}</span>
+</pre></div>
+</div>
+<p>unlike for a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>, where iterating over it gives the keys.
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">items()</span></code> works as for a normal <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">ps</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<span class="gp">... </span>  <span class="nb">print</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+<span class="go">a = [ 3  8 13]</span>
+<span class="go">c = [ 5 11 14]</span>
+<span class="go">b = [7 7 7]</span>
+</pre></div>
+</div>
+<section id="id1">
+<h3>Reference<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.parameters.ParameterSpace">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ParameterSpace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/parameters.html#ParameterSpace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.parameters.ParameterSpace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Representation of one or more points in a parameter space.</p>
+<p>i.e. represents one or more parameter sets, where each parameter set has
+the same parameter names and types but the parameters may have different
+values.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt><cite>parameters</cite>:</dt><dd><p>a dict containing values of any type that may be used to construct a
+<a class="reference external" href="https://lazyarray.readthedocs.org/">lazy array</a>, i.e. <cite>int</cite>, <cite>float</cite>, NumPy array,
+<a class="reference internal" href="random.html#pyNN.random.RandomDistribution" title="pyNN.random.RandomDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">RandomDistribution</span></code></a>, function that accepts a
+single argument.</p>
+</dd>
+<dt><cite>schema</cite>:</dt><dd><p>a dict whose keys are the expected parameter names and whose values
+are the expected parameter types</p>
+</dd>
+<dt><cite>component</cite>:</dt><dd><p>optional - class for which the parameters are destined. Used in
+error messages.</p>
+</dd>
+<dt><cite>shape</cite>:</dt><dd><p>the shape of the lazy arrays that will be constructed.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.parameters.ParameterSpace.__getitem__">
+<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/parameters.html#ParameterSpace.__getitem__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.parameters.ParameterSpace.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.__getitem__(y) &lt;==&gt; x[y]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.parameters.ParameterSpace.__iter__">
+<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/parameters.html#ParameterSpace.__iter__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.parameters.ParameterSpace.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an array-element-wise iterator over the parameter space.</p>
+<p>Each item in the iterator is a dict, containing the same keys as the
+<a class="reference internal" href="#pyNN.parameters.ParameterSpace" title="pyNN.parameters.ParameterSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSpace</span></code></a>. For the <cite>i</cite>th dict returned by the iterator,
+each value is the <cite>i</cite>th element of the corresponding lazy array in the
+parameter space.</p>
+<p>Example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span> <span class="o">=</span> <span class="n">ParameterSpace</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">},</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">D</span> <span class="ow">in</span> <span class="n">ps</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">{&#39;a&#39;: 2, &#39;c&#39;: 2, &#39;b&#39;: 7}</span>
+<span class="go">{&#39;a&#39;: 3, &#39;c&#39;: 5, &#39;b&#39;: 7}</span>
+<span class="go">{&#39;a&#39;: 5, &#39;c&#39;: 8, &#39;b&#39;: 7}</span>
+<span class="go">{&#39;a&#39;: 8, &#39;c&#39;: 11, &#39;b&#39;: 7}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.parameters.ParameterSpace.shape">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shape</span></span><a class="headerlink" href="#pyNN.parameters.ParameterSpace.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Size of the lazy arrays contained within the parameter space</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.parameters.ParameterSpace.keys">
+<span class="sig-name descname"><span class="pre">keys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span> <span class="pre">of</span> <span class="pre">PS's</span> <span class="pre">keys.</span></span></span><a class="reference internal" href="../_modules/pyNN/parameters.html#ParameterSpace.keys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.parameters.ParameterSpace.keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.parameters.ParameterSpace.items">
+<span class="sig-name descname"><span class="pre">items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">an</span> <span class="pre">iterator</span> <span class="pre">over</span> <span class="pre">the</span> <span class="pre">(key,</span> <span class="pre">value)</span> <span class="pre">items</span> <span class="pre">of</span> <span class="pre">PS.</span></span></span><a class="reference internal" href="../_modules/pyNN/parameters.html#ParameterSpace.items"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.parameters.ParameterSpace.items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Note that the values will all be <a class="reference internal" href="#pyNN.parameters.LazyArray" title="pyNN.parameters.LazyArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">LazyArray</span></code></a> objects.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.parameters.ParameterSpace.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/parameters.html#ParameterSpace.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.parameters.ParameterSpace.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the contents of the parameter space according to the
+<cite>(key, value)</cite> pairs in <code class="docutils literal notranslate"><span class="pre">**parameters</span></code>. All values will be turned into
+lazy arrays.</p>
+<p>If the <a class="reference internal" href="#pyNN.parameters.ParameterSpace" title="pyNN.parameters.ParameterSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSpace</span></code></a> has a schema, the keys and the data types
+of the values will be checked against the schema.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.parameters.ParameterSpace.pop">
+<span class="sig-name descname"><span class="pre">pop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/parameters.html#ParameterSpace.pop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.parameters.ParameterSpace.pop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the given parameter from the parameter set and from its schema,
+and return its value.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.parameters.ParameterSpace.is_homogeneous">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_homogeneous</span></span><a class="headerlink" href="#pyNN.parameters.ParameterSpace.is_homogeneous" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if all of the lazy arrays within are homogeneous.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.parameters.ParameterSpace.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simplify</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/parameters.html#ParameterSpace.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.parameters.ParameterSpace.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate all lazy arrays contained in the parameter space, using the
+given mask.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.parameters.ParameterSpace.as_dict">
+<span class="sig-name descname"><span class="pre">as_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/parameters.html#ParameterSpace.as_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.parameters.ParameterSpace.as_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a plain dict containing the same keys and values as the
+parameter space. The values must first have been evaluated.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.parameters.ParameterSpace.columns">
+<span class="sig-name descname"><span class="pre">columns</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/parameters.html#ParameterSpace.columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.parameters.ParameterSpace.columns" title="Permalink to this definition">¶</a></dt>
+<dd><p>For a 2D space, return a column-wise iterator over the parameter space.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.parameters.ParameterSpace.parallel_safe">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parallel_safe</span></span><a class="headerlink" href="#pyNN.parameters.ParameterSpace.parallel_safe" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.parameters.ParameterSpace.has_native_rngs">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_native_rngs</span></span><a class="headerlink" href="#pyNN.parameters.ParameterSpace.has_native_rngs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if the parameter set contains any NativeRNGs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.parameters.ParameterSpace.expand">
+<span class="sig-name descname"><span class="pre">expand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/parameters.html#ParameterSpace.expand"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.parameters.ParameterSpace.expand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increase the size of the ParameterSpace.</p>
+<p>Existing array values are mapped to the indices given in mask.
+New array values are set to NaN.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+<section id="the-sequence-class">
+<h2>The <a class="reference internal" href="#pyNN.parameters.Sequence" title="pyNN.parameters.Sequence"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a> class<a class="headerlink" href="#the-sequence-class" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.parameters.Sequence">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Sequence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/parameters.html#Sequence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.parameters.Sequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a sequence of numerical values.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt><cite>value</cite>:</dt><dd><p>anything which can be converted to a NumPy array, or another
+<a class="reference internal" href="#pyNN.parameters.Sequence" title="pyNN.parameters.Sequence"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a> object.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.parameters.Sequence.__mul__">
+<span class="sig-name descname"><span class="pre">__mul__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.parameters.Sequence.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a new <code class="xref py py-class docutils literal notranslate"><span class="pre">ArrayParameter</span></code> in which all values in the original
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ArrayParameter</span></code> have been multiplied by <cite>val</cite>.</p>
+<p>If <cite>val</cite> is itself an array, return an array of <code class="xref py py-class docutils literal notranslate"><span class="pre">ArrayParameter</span></code>
+objects, where ArrayParameter <cite>i</cite> is the original ArrayParameter multiplied by
+element <cite>i</cite> of <cite>val</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.parameters.Sequence.__div__">
+<span class="sig-name descname"><span class="pre">__div__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.parameters.Sequence.__div__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a new <code class="xref py py-class docutils literal notranslate"><span class="pre">ArrayParameter</span></code> in which all values in the original
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ArrayParameter</span></code> have been divided by <cite>val</cite>.</p>
+<p>If <cite>val</cite> is itself an array, return an array of <code class="xref py py-class docutils literal notranslate"><span class="pre">ArrayParameter</span></code>
+objects, where ArrayParameter <cite>i</cite> is the original ArrayParameter divided by
+element <cite>i</cite> of <cite>val</cite>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Parameter handling</a><ul>
+<li><a class="reference internal" href="#the-lazyarray-class">The <code class="xref py py-class docutils literal notranslate"><span class="pre">LazyArray</span></code> class</a><ul>
+<li><a class="reference internal" href="#reference">Reference</a><ul>
+<li><a class="reference internal" href="#pyNN.parameters.LazyArray"><code class="docutils literal notranslate"><span class="pre">LazyArray</span></code></a><ul>
+<li><a class="reference internal" href="#pyNN.parameters.LazyArray.__getitem__"><code class="docutils literal notranslate"><span class="pre">LazyArray.__getitem__()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.parameters.LazyArray.by_column"><code class="docutils literal notranslate"><span class="pre">LazyArray.by_column()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.parameters.LazyArray.apply"><code class="docutils literal notranslate"><span class="pre">LazyArray.apply()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.parameters.LazyArray.check_bounds"><code class="docutils literal notranslate"><span class="pre">LazyArray.check_bounds()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.parameters.LazyArray.evaluate"><code class="docutils literal notranslate"><span class="pre">LazyArray.evaluate()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.parameters.LazyArray.is_homogeneous"><code class="docutils literal notranslate"><span class="pre">LazyArray.is_homogeneous</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.parameters.LazyArray.ncols"><code class="docutils literal notranslate"><span class="pre">LazyArray.ncols</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.parameters.LazyArray.nrows"><code class="docutils literal notranslate"><span class="pre">LazyArray.nrows</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.parameters.LazyArray.shape"><code class="docutils literal notranslate"><span class="pre">LazyArray.shape</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.parameters.LazyArray.size"><code class="docutils literal notranslate"><span class="pre">LazyArray.size</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-parameterspace-class">The <code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSpace</span></code> class</a><ul>
+<li><a class="reference internal" href="#id1">Reference</a><ul>
+<li><a class="reference internal" href="#pyNN.parameters.ParameterSpace"><code class="docutils literal notranslate"><span class="pre">ParameterSpace</span></code></a><ul>
+<li><a class="reference internal" href="#pyNN.parameters.ParameterSpace.__getitem__"><code class="docutils literal notranslate"><span class="pre">ParameterSpace.__getitem__()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.parameters.ParameterSpace.__iter__"><code class="docutils literal notranslate"><span class="pre">ParameterSpace.__iter__()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.parameters.ParameterSpace.shape"><code class="docutils literal notranslate"><span class="pre">ParameterSpace.shape</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.parameters.ParameterSpace.keys"><code class="docutils literal notranslate"><span class="pre">ParameterSpace.keys()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.parameters.ParameterSpace.items"><code class="docutils literal notranslate"><span class="pre">ParameterSpace.items()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.parameters.ParameterSpace.update"><code class="docutils literal notranslate"><span class="pre">ParameterSpace.update()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.parameters.ParameterSpace.pop"><code class="docutils literal notranslate"><span class="pre">ParameterSpace.pop()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.parameters.ParameterSpace.is_homogeneous"><code class="docutils literal notranslate"><span class="pre">ParameterSpace.is_homogeneous</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.parameters.ParameterSpace.evaluate"><code class="docutils literal notranslate"><span class="pre">ParameterSpace.evaluate()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.parameters.ParameterSpace.as_dict"><code class="docutils literal notranslate"><span class="pre">ParameterSpace.as_dict()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.parameters.ParameterSpace.columns"><code class="docutils literal notranslate"><span class="pre">ParameterSpace.columns()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.parameters.ParameterSpace.parallel_safe"><code class="docutils literal notranslate"><span class="pre">ParameterSpace.parallel_safe</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.parameters.ParameterSpace.has_native_rngs"><code class="docutils literal notranslate"><span class="pre">ParameterSpace.has_native_rngs</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.parameters.ParameterSpace.expand"><code class="docutils literal notranslate"><span class="pre">ParameterSpace.expand()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-sequence-class">The <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code> class</a><ul>
+<li><a class="reference internal" href="#pyNN.parameters.Sequence"><code class="docutils literal notranslate"><span class="pre">Sequence</span></code></a><ul>
+<li><a class="reference internal" href="#pyNN.parameters.Sequence.__mul__"><code class="docutils literal notranslate"><span class="pre">Sequence.__mul__()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.parameters.Sequence.__div__"><code class="docutils literal notranslate"><span class="pre">Sequence.__div__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="random.html"
+                          title="previous chapter">Random numbers</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="space.html"
+                          title="next chapter">Spatial structure</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/reference/parameters.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="space.html" title="Spatial structure"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="random.html" title="Random numbers"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api_reference.html" >API reference</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Parameter handling</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2022, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    </div>
+  </body>
+</html>

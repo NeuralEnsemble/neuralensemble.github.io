@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyNN.common.populations &#8212; PyNN 0.10.1 documentation</title>
+    <title>pyNN.common.populations &#8212; PyNN 0.11.0.dev documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/nature.css" />
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
@@ -27,7 +27,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.11.0.dev documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyNN.common.populations</a></li> 
       </ul>
@@ -45,20 +45,21 @@
 
 <span class="sd">These base classes should be sub-classed by the backend-specific classes.</span>
 
-<span class="sd">:copyright: Copyright 2006-2022 by the PyNN team, see AUTHORS.</span>
+<span class="sd">:copyright: Copyright 2006-2023 by the PyNN team, see AUTHORS.</span>
 <span class="sd">:license: CeCILL, see LICENSE for details.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">operator</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">chain</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
-<span class="kn">from</span> <span class="nn">pyNN</span> <span class="kn">import</span> <span class="n">random</span><span class="p">,</span> <span class="n">recording</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">standardmodels</span><span class="p">,</span> <span class="n">core</span><span class="p">,</span> <span class="n">space</span><span class="p">,</span> <span class="n">descriptions</span>
-<span class="kn">from</span> <span class="nn">pyNN.models</span> <span class="kn">import</span> <span class="n">BaseCellType</span>
-<span class="kn">from</span> <span class="nn">pyNN.parameters</span> <span class="kn">import</span> <span class="n">ParameterSpace</span><span class="p">,</span> <span class="n">LazyArray</span><span class="p">,</span> <span class="n">simplify</span> <span class="k">as</span> <span class="n">simplify_parameter_array</span>
-<span class="kn">from</span> <span class="nn">pyNN.recording</span> <span class="kn">import</span> <span class="n">files</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">random</span><span class="p">,</span> <span class="n">recording</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">standardmodels</span><span class="p">,</span> <span class="n">core</span><span class="p">,</span> <span class="n">space</span><span class="p">,</span> <span class="n">descriptions</span>
+<span class="kn">from</span> <span class="nn">..models</span> <span class="kn">import</span> <span class="n">BaseCellType</span>
+<span class="kn">from</span> <span class="nn">..parameters</span> <span class="kn">import</span> <span class="n">ParameterSpace</span><span class="p">,</span> <span class="n">LazyArray</span><span class="p">,</span> <span class="n">simplify</span> <span class="k">as</span> <span class="n">simplify_parameter_array</span>
+<span class="kn">from</span> <span class="nn">..recording</span> <span class="kn">import</span> <span class="n">files</span>
 
 
 <span class="n">deprecated</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">deprecated</span>
@@ -92,10 +93,10 @@
         <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;parent&quot;</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;parent is not set&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;set&quot;</span><span class="p">:</span>
-            <span class="n">errmsg</span> <span class="o">=</span> <span class="s2">&quot;For individual cells, set values using the parameter name directly, &quot;</span> \
+            <span class="n">err_msg</span> <span class="o">=</span> <span class="s2">&quot;For individual cells, set values using the parameter name directly, &quot;</span> \
                      <span class="s2">&quot;e.g. population[0].tau_m = 20.0, or use &#39;set&#39; on a population view, &quot;</span> \
                      <span class="s2">&quot;e.g. population[0:1].set(tau_m=20.0)&quot;</span>
-            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">err_msg</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_parameters</span><span class="p">()[</span><span class="n">name</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
@@ -128,7 +129,8 @@
         <span class="sd">&quot;&quot;&quot;Return a dict of all cell parameters.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">local</span><span class="p">:</span>
             <span class="n">parameter_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">celltype</span><span class="o">.</span><span class="n">get_parameter_names</span><span class="p">()</span>
-            <span class="k">return</span> <span class="nb">dict</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">parameter_names</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">as_view</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">parameter_names</span><span class="p">)))</span>
+            <span class="k">return</span> <span class="nb">dict</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">parameter_names</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">as_view</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">parameter_names</span><span class="p">)))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">NotLocalError</span><span class="p">(</span>
                 <span class="s2">&quot;Cannot obtain parameters for a cell that does not exist on this node.&quot;</span><span class="p">)</span>
@@ -206,8 +208,9 @@
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_view</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
+            <span class="n">index_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                <span class="s2">&quot;indices must be integers, slices, lists, arrays or tuples, not </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+                <span class="sa">f</span><span class="s2">&quot;indices must be integers, slices, lists, arrays or tuples, not </span><span class="si">{</span><span class="n">index_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the total number of cells in the population (all nodes).&quot;&quot;&quot;</span>
@@ -302,7 +305,7 @@
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">rng</span><span class="p">:</span>
             <span class="n">rng</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">NumpyRNG</span><span class="p">()</span>
-        <span class="n">indices</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">))[</span><span class="mi">0</span><span class="p">:</span><span class="n">n</span><span class="p">]</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">))[</span><span class="mi">0</span><span class="p">:</span><span class="n">n</span><span class="p">]</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;The </span><span class="si">%d</span><span class="s2"> cells selected have indices </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">indices</span><span class="p">))</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.sample(</span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_view</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
@@ -322,20 +325,16 @@
             <span class="n">return_list</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">return_list</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">celltype</span><span class="p">,</span> <span class="n">standardmodels</span><span class="o">.</span><span class="n">StandardCellType</span><span class="p">):</span>
-            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">celltype</span><span class="o">.</span><span class="n">computed_parameters</span><span class="p">()</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">parameter_names</span><span class="p">):</span>
-                <span class="n">native_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">celltype</span><span class="o">.</span><span class="n">get_native_names</span><span class="p">()</span>  <span class="c1"># need all parameters in order to calculate values</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">native_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">celltype</span><span class="o">.</span><span class="n">get_native_names</span><span class="p">(</span><span class="o">*</span><span class="n">parameter_names</span><span class="p">)</span>
-            <span class="n">native_parameter_space</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_parameters</span><span class="p">(</span><span class="o">*</span><span class="n">native_names</span><span class="p">)</span>
-            <span class="n">parameter_space</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">celltype</span><span class="o">.</span><span class="n">reverse_translate</span><span class="p">(</span><span class="n">native_parameter_space</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">parameter_space</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_parameters</span><span class="p">(</span><span class="o">*</span><span class="n">parameter_names</span><span class="p">)</span>
-        <span class="c1"># what if parameter space is homogeneous on some nodes but not on others?</span>
-        <span class="n">parameter_space</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">simplify</span><span class="o">=</span><span class="n">simplify</span><span class="p">)</span>
+        <span class="n">parameter_space</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_parameters</span><span class="p">(</span><span class="o">*</span><span class="n">parameter_names</span><span class="p">)</span>
+        <span class="n">parameter_space</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_size</span><span class="p">,)</span>
+
+        <span class="c1"># re: simplify - what if parameter space is homogeneous on some nodes but not on others?</span>
         <span class="c1"># this also causes problems if the population size matches the number of MPI nodes</span>
-        <span class="n">parameters</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">parameter_space</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
-        <span class="k">if</span> <span class="n">gather</span> <span class="o">==</span> <span class="kc">True</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">num_processes</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">parameter_space</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">simplify</span><span class="o">=</span><span class="n">simplify</span><span class="p">)</span>
+        <span class="n">parameter_space</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="n">parameter_space</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">gather</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">num_processes</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="c1"># seems inefficient to do it in a loop - should do as single operation</span>
             <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">parameter_names</span><span class="p">:</span>
                 <span class="n">values</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
@@ -354,8 +353,8 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">parameters</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">parameter_names</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">NonExistentParameterError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">. Valid parameters for </span><span class="si">%s</span><span class="s2"> are: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
-                <span class="n">err</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">celltype</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">celltype</span><span class="o">.</span><span class="n">get_parameter_names</span><span class="p">()))</span>
+            <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">NonExistentParameterError</span><span class="p">(</span>
+                <span class="n">err</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">celltype</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">celltype</span><span class="o">.</span><span class="n">get_parameter_names</span><span class="p">())</span>
         <span class="k">if</span> <span class="n">return_list</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">values</span>
         <span class="k">else</span><span class="p">:</span>
@@ -387,13 +386,13 @@
         <span class="c1"># TODO: add example using of function of (x,y,z) and Population.position_generator</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">celltype</span><span class="p">,</span> <span class="n">standardmodels</span><span class="o">.</span><span class="n">StandardCellType</span><span class="p">)</span>
-                    <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">celltype</span><span class="o">.</span><span class="n">computed_parameters</span><span class="p">()</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">)</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">celltype</span><span class="o">.</span><span class="n">computed_parameters_include</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
                     <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">celltype</span><span class="p">,</span> <span class="n">standardmodels</span><span class="o">.</span><span class="n">cells</span><span class="o">.</span><span class="n">SpikeSourceArray</span><span class="p">)):</span>
-                      <span class="c1"># the last condition above is a bit of hack to avoid calling expand() unecessarily</span>
+                <span class="c1"># the last condition above is a bit of hack to avoid calling expand() unecessarily</span>
                 <span class="c1"># need to get existing parameter space of models so we can perform calculations</span>
                 <span class="n">native_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">celltype</span><span class="o">.</span><span class="n">get_native_names</span><span class="p">()</span>
                 <span class="n">parameter_space</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">celltype</span><span class="o">.</span><span class="n">reverse_translate</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_get_parameters</span><span class="p">(</span><span class="o">*</span><span class="n">native_names</span><span class="p">))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_get_native_parameters</span><span class="p">(</span><span class="o">*</span><span class="n">native_names</span><span class="p">))</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_size</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
                     <span class="n">parameter_space</span><span class="o">.</span><span class="n">expand</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mask_local</span><span class="p">)</span>
                 <span class="n">parameter_space</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">parameters</span><span class="p">)</span>
@@ -605,7 +604,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">spike_counts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_spike_counts</span><span class="p">(</span><span class="n">gather</span><span class="p">)</span>
         <span class="n">total_spikes</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">spike_counts</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">mpi_rank</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">gather</span><span class="p">:</span>  <span class="c1"># should maybe use allgather, and get the numbers on all nodes</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">mpi_rank</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">gather</span><span class="p">:</span>
+            <span class="c1"># should maybe use allgather, and get the numbers on all nodes</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">spike_counts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">total_spikes</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">spike_counts</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
@@ -621,7 +621,8 @@
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Can&#39;t inject current into a spike source.&quot;</span><span class="p">)</span>
         <span class="n">current_source</span><span class="o">.</span><span class="n">inject_into</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-    <span class="c1"># name should be consistent with saving/writing data, i.e. save_data() and save_positions() or write_data() and write_positions()</span>
+    <span class="c1"># name should be consistent with saving/writing data,</span>
+    <span class="c1"># i.e. save_data() and save_positions() or write_data() and write_positions()</span>
     <span class="k">def</span> <span class="nf">save_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Save positions to file. The output format is ``index x y z``</span>
@@ -675,19 +676,22 @@
 <span class="sd">        Create a population of neurons all of the same type.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_simulator&quot;</span><span class="p">):</span>
-            <span class="n">errmsg</span> <span class="o">=</span> <span class="s2">&quot;`common.Population` should not be instantiated directly. &quot;</span> \
+            <span class="n">err_msg</span> <span class="o">=</span> <span class="s2">&quot;`common.Population` should not be instantiated directly. &quot;</span> \
                      <span class="s2">&quot;You should import Population from a PyNN backend module, &quot;</span> \
                      <span class="s2">&quot;e.g. pyNN.nest or pyNN.neuron&quot;</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">)):</span>  <span class="c1"># also allow a single integer, for a 1D population</span>
-            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
-                <span class="n">size</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">),</span> <span class="s2">&quot;`size` must be an integer or a tuple of ints. You have supplied a </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">err_msg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">)):</span>
+            <span class="c1"># also allow a single integer, for a 1D population</span>
+            <span class="n">err_msg</span> <span class="o">=</span> <span class="s2">&quot;`size` must be an integer or a tuple of ints.&quot;</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">err_msg</span><span class="si">}</span><span class="s2"> You have supplied a </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="c1"># check the things inside are ints</span>
             <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">size</span><span class="p">:</span>
-                <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
-                    <span class="n">e</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="s2">&quot;`size` must be an integer or a tuple of ints. Element &#39;</span><span class="si">%s</span><span class="s2">&#39; is not an int&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-
-            <span class="k">assert</span> <span class="n">structure</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;If you specify `size` as a tuple you may not specify structure.&quot;</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">err_msg</span><span class="si">}</span><span class="s2"> Element &#39;</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&#39; is not an int&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">structure</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;If you specify `size` as a tuple you may not specify structure.&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">structure</span> <span class="o">=</span> <span class="n">space</span><span class="o">.</span><span class="n">Line</span><span class="p">()</span>
             <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
@@ -698,8 +702,8 @@
                 <span class="n">structure</span> <span class="o">=</span> <span class="n">space</span><span class="o">.</span><span class="n">Grid3D</span><span class="p">(</span><span class="n">nx</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">ny</span><span class="p">),</span> <span class="n">nx</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">nz</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                    <span class="s2">&quot;A maximum of 3 dimensions is allowed. What do you think this is, string theory?&quot;</span><span class="p">)</span>
-            <span class="c1"># NEST doesn&#39;t like np.int, so to be safe we cast to Python int</span>
+                    <span class="s2">&quot;A maximum of 3 dimensions is allowed. &quot;</span>
+                    <span class="s2">&quot;What do you think this is, string theory?&quot;</span><span class="p">)</span>
             <span class="n">size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">reduce</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">mul</span><span class="p">,</span> <span class="n">size</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span> <span class="ow">or</span> <span class="s1">&#39;population</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">Population</span><span class="o">.</span><span class="n">_nPop</span>
@@ -708,13 +712,20 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_is_sorted</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cellclass</span><span class="p">,</span> <span class="n">BaseCellType</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">celltype</span> <span class="o">=</span> <span class="n">cellclass</span>
-            <span class="k">assert</span> <span class="n">cellparams</span> <span class="ow">is</span> <span class="kc">None</span>   <span class="c1"># cellparams being retained for backwards compatibility, but use is deprecated</span>
+            <span class="c1"># cellparams being retained for backwards compatibility, but use is deprecated</span>
+            <span class="k">assert</span> <span class="n">cellparams</span> <span class="ow">is</span> <span class="kc">None</span>
         <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">cellclass</span><span class="p">,</span> <span class="n">BaseCellType</span><span class="p">):</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;Passing celltype class and parameters separately is deprecated. &quot;</span>
+                <span class="s2">&quot;Please instantiate the celltype with the parameters before &quot;</span>
+                <span class="s2">&quot;passing to the Population&quot;</span><span class="p">,</span>
+                <span class="n">category</span><span class="o">=</span><span class="ne">DeprecationWarning</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">celltype</span> <span class="o">=</span> <span class="n">cellclass</span><span class="p">(</span><span class="o">**</span><span class="n">cellparams</span><span class="p">)</span>
-            <span class="c1"># emit deprecation warning</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                <span class="s2">&quot;cellclass must be an instance or subclass of BaseCellType, not a </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">cellclass</span><span class="p">))</span>
+                <span class="s2">&quot;cellclass must be an instance or subclass of BaseCellType&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;not a </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">cellclass</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">annotations</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">recorder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recorder_class</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="c1"># Build the arrays of cell ids</span>
@@ -731,7 +742,8 @@
         <span class="n">Population</span><span class="o">.</span><span class="n">_nPop</span> <span class="o">+=</span> <span class="mi">1</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;Population(</span><span class="si">%d</span><span class="s2">, </span><span class="si">%r</span><span class="s2">, structure=</span><span class="si">%r</span><span class="s2">, label=</span><span class="si">%r</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">celltype</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">structure</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;Population(</span><span class="si">%d</span><span class="s2">, </span><span class="si">%r</span><span class="s2">, structure=</span><span class="si">%r</span><span class="s2">, label=</span><span class="si">%r</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">celltype</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">structure</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">local_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -759,7 +771,7 @@
             <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">first_id</span> <span class="o">&gt;</span> <span class="nb">id</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="ow">or</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_id</span> <span class="o">&lt;</span> <span class="nb">id</span><span class="o">.</span><span class="n">max</span><span class="p">()):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;ids should be in the range [</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">], actually [</span><span class="si">%d</span><span class="s2">, </span><span class="si">%d</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">first_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_id</span><span class="p">,</span> <span class="nb">id</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="nb">id</span><span class="o">.</span><span class="n">max</span><span class="p">()))</span>
-            <span class="k">return</span> <span class="p">(</span><span class="nb">id</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_id</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>  <span class="c1"># this assumes ids are consecutive</span></div>
+            <span class="k">return</span> <span class="p">(</span><span class="nb">id</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_id</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>  <span class="c1"># this assumes ids are consecutive</span></div>
 
 <div class="viewcode-block" id="Population.id_to_local_index"><a class="viewcode-back" href="../../../reference/populations.html#pyNN.neuron.Population.id_to_local_index">[docs]</a>    <span class="k">def</span> <span class="nf">id_to_local_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -780,10 +792,12 @@
     <span class="k">def</span> <span class="nf">_set_structure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structure</span><span class="p">):</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">space</span><span class="o">.</span><span class="n">BaseStructure</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_structure</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">structure</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_structure</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_positions</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># setting a new structure invalidates previously calculated positions</span>
+            <span class="c1"># setting a new structure invalidates previously calculated positions</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_positions</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_structure</span> <span class="o">=</span> <span class="n">structure</span>
     <span class="n">structure</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">fget</span><span class="o">=</span><span class="n">_get_structure</span><span class="p">,</span> <span class="n">fset</span><span class="o">=</span><span class="n">_set_structure</span><span class="p">)</span>
-    <span class="c1"># arguably structure should be read-only, i.e. it is not possible to change it after Population creation</span>
+    <span class="c1"># arguably structure should be read-only,</span>
+    <span class="c1"># i.e. it is not possible to change it after Population creation</span>
 
     <span class="k">def</span> <span class="nf">_get_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -867,12 +881,13 @@
 <span class="sd">        PopulationView.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_simulator&quot;</span><span class="p">):</span>
-            <span class="n">errmsg</span> <span class="o">=</span> <span class="s2">&quot;`common.PopulationView` should not be instantiated directly. &quot;</span> \
+            <span class="n">err_msg</span> <span class="o">=</span> <span class="s2">&quot;`common.PopulationView` should not be instantiated directly. &quot;</span> \
                      <span class="s2">&quot;You should import PopulationView from a PyNN backend module, &quot;</span> \
                      <span class="s2">&quot;e.g. pyNN.nest or pyNN.neuron&quot;</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">err_msg</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">selector</span>  <span class="c1"># later we can have fancier selectors, for now we just have numpy masks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">selector</span>
+        <span class="c1"># later we can have fancier selectors, for now we just have numpy masks</span>
         <span class="c1"># maybe just redefine __getattr__ instead of the following...</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">celltype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">celltype</span>
         <span class="c1"># If the mask is a slice, IDs will be consecutives without duplication.</span>
@@ -886,10 +901,11 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">))[</span><span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="p">):</span>
-                    <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                        <span class="s2">&quot;PopulationView can contain only once each ID, duplicated IDs are removed&quot;</span><span class="p">)</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                        <span class="s2">&quot;PopulationView can contain each ID only once, duplicates are removed&quot;</span><span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>  <span class="c1"># needed by NEST. Maybe emit a warning or exception if mask is not already ordered?</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>  <span class="c1"># needed by NEST.</span>
+                <span class="c1"># Maybe emit a warning or exception if mask is not already ordered?</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">all_cells</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">all_cells</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="p">]</span>
         <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_cells</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_is_sorted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">idx</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_cells</span><span class="p">)))</span>
@@ -905,7 +921,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_record_filter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_cells</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;PopulationView(parent=</span><span class="si">%r</span><span class="s2">, selector=</span><span class="si">%r</span><span class="s2">, label=</span><span class="si">%r</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;PopulationView(parent=</span><span class="si">%r</span><span class="s2">, selector=</span><span class="si">%r</span><span class="s2">, label=</span><span class="si">%r</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">initial_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -947,7 +964,7 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_sorted</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_cells</span><span class="p">,</span> <span class="nb">id</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">id</span><span class="p">:</span>
                     <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_cells</span> <span class="o">==</span> <span class="n">item</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
                     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -998,9 +1015,9 @@
                 <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">==</span> <span class="n">indices</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
                 <span class="c1"># Lots of ways to do this. Some profiling is in order.</span>
-                <span class="c1"># - https://stackoverflow.com/questions/16992713/translate-every-element-in-numpy-array-according-to-key</span>
-                <span class="c1"># - https://stackoverflow.com/questions/3403973/fast-replacement-of-values-in-a-numpy-array</span>
-                <span class="c1"># - https://stackoverflow.com/questions/13572448/replace-values-of-a-numpy-index-array-with-values-of-a-list</span>
+                <span class="c1"># - https://stackoverflow.com/questions/16992713/translate-every-element-in-numpy-array-according-to-key  # noqa:E501</span>
+                <span class="c1"># - https://stackoverflow.com/questions/3403973/fast-replacement-of-values-in-a-numpy-array  # noqa:E501</span>
+                <span class="c1"># - https://stackoverflow.com/questions/13572448/replace-values-of-a-numpy-index-array-with-values-of-a-list  # noqa:E501</span>
                 <span class="n">parent_indices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask</span>  <span class="c1"># assert mask is sorted</span>
                 <span class="n">view_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
                 <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">digitize</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="n">parent_indices</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1021,9 +1038,15 @@
         <span class="c1"># We can&#39;t use the self.mask, as different masks can select the same cells</span>
         <span class="c1"># (e.g. slices vs arrays), therefore we have to use self.all_cells</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">PopulationView</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">parent</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_cells</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">all_cells</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">parent</span>
+                <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_cells</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">all_cells</span><span class="p">)</span>
+            <span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Population</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">!=</span> <span class="n">other</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_cells</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">all_cells</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">!=</span> <span class="n">other</span>
+                <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_cells</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">all_cells</span><span class="p">)</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
 
@@ -1063,10 +1086,10 @@
 <span class="sd">        Create an Assembly of Populations and/or PopulationViews.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_simulator&quot;</span><span class="p">):</span>
-            <span class="n">errmsg</span> <span class="o">=</span> <span class="s2">&quot;`common.Assembly` should not be instantiated directly. &quot;</span> \
+            <span class="n">err_msg</span> <span class="o">=</span> <span class="s2">&quot;`common.Assembly` should not be instantiated directly. &quot;</span> \
                      <span class="s2">&quot;You should import Assembly from a PyNN backend module, &quot;</span> \
                      <span class="s2">&quot;e.g. pyNN.nest or pyNN.neuron&quot;</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">err_msg</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="k">assert</span> <span class="nb">list</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">==</span> <span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">populations</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1084,25 +1107,26 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">BasePopulation</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;argument is a </span><span class="si">%s</span><span class="s2">, not a Population.&quot;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">element</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">PopulationView</span><span class="p">):</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">element</span><span class="o">.</span><span class="n">parent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">populations</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">parent</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">populations</span><span class="p">:</span>
                 <span class="n">double</span> <span class="o">=</span> <span class="kc">False</span>
                 <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">populations</span><span class="p">:</span>
                     <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">p</span><span class="o">.</span><span class="n">all_cells</span><span class="p">,</span> <span class="n">element</span><span class="o">.</span><span class="n">all_cells</span><span class="p">))</span>
                     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">data</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">all_cells</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">all_cells</span><span class="p">):</span>
-                        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                            <span class="s1">&#39;Adding a PopulationView to an Assembly containing elements already present is not posible&#39;</span><span class="p">)</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                            <span class="s1">&#39;Cannnot add a PopulationView to an Assembly &#39;</span>
+                            <span class="s1">&#39;containing elements already present&#39;</span><span class="p">)</span>
                         <span class="n">double</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Should we automatically remove duplicated IDs ?</span>
                         <span class="k">break</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">double</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">populations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="s1">&#39;Adding a PopulationView to an Assembly when parent Population is there is not possible&#39;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s1">&#39;Cannot add a PopulationView to an Assembly when parent Population is there&#39;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">BasePopulation</span><span class="p">):</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">element</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">populations</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">element</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">populations</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">populations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Adding a Population twice in an Assembly is not possible&#39;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Adding a Population twice in an Assembly is not possible&#39;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">local_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1200,7 +1224,7 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_sorted</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">all_cells</span><span class="p">,</span> <span class="nb">id</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">id</span><span class="p">:</span>
                     <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">all_cells</span> <span class="o">==</span> <span class="n">item</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
                     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -1302,7 +1326,7 @@
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">rng</span><span class="p">:</span>
             <span class="n">rng</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">NumpyRNG</span><span class="p">()</span>
-        <span class="n">indices</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">))[</span><span class="mi">0</span><span class="p">:</span><span class="n">n</span><span class="p">]</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">))[</span><span class="mi">0</span><span class="p">:</span><span class="n">n</span><span class="p">]</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;The </span><span class="si">%d</span><span class="s2"> cells recorded have indices </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">indices</span><span class="p">))</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.sample(</span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span></div>
@@ -1445,8 +1469,10 @@
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">block</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">blocks</span><span class="p">):</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">block</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">segment</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">segments</span><span class="p">):</span>
+                <span class="n">segment</span><span class="o">.</span><span class="n">block</span> <span class="o">=</span> <span class="n">blocks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;  </span><span class="si">%d</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">segment</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="n">segment</span><span class="o">.</span><span class="n">analogsignals</span><span class="p">:</span>
+                    <span class="n">arr</span><span class="o">.</span><span class="n">segment</span> <span class="o">=</span> <span class="n">blocks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;    </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">arr</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="n">merged_block</span> <span class="o">=</span> <span class="n">blocks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">blocks</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
@@ -1475,7 +1501,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">spike_counts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_spike_counts</span><span class="p">()</span>
         <span class="n">total_spikes</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">spike_counts</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">mpi_rank</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">gather</span><span class="p">:</span>  <span class="c1"># should maybe use allgather, and get the numbers on all nodes</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">mpi_rank</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">gather</span><span class="p">:</span>
+            <span class="c1"># should maybe use allgather, and get the numbers on all nodes</span>
             <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">total_spikes</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">spike_counts</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span></div>
@@ -1616,13 +1643,13 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.11.0.dev documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyNN.common.populations</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2022, the PyNN community.
+        &#169; Copyright 2006-2023, the PyNN community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
     </div>
   </body>

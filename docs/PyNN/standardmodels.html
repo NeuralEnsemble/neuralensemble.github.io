@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Standard models &#8212; PyNN 0.10.1 documentation</title>
+    <title>Standard models &#8212; PyNN 0.11.0.dev documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/nature.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -32,7 +32,7 @@
         <li class="right" >
           <a href="reference/utility.html" title="Utility classes and functions"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.11.0.dev documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Standard models</a></li> 
       </ul>
     </div>  
@@ -505,6 +505,23 @@ an Effective Description of Neuronal Activity. J Neurophysiol 94:3637-3642</p>
 </table>
 </section>
 </section>
+<section id="composed-models">
+<h2>Composed models<a class="headerlink" href="#composed-models" title="Permalink to this heading">¶</a></h2>
+<p>The models listed above all have two fixed post-synaptic mechanism types, “excitatory” and “inhibitory”.
+If you need more than two mechanisms, e.g. AMPA, NMDA and GABA_A, you can build such models by
+combining a “neuron-only” component with one or more “post-synaptic mechanism” components, for example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">celltype</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">PointNeuron</span><span class="p">(</span>
+             <span class="n">sim</span><span class="o">.</span><span class="n">AdExp</span><span class="p">(</span><span class="n">tau_m</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">v_rest</span><span class="o">=-</span><span class="mf">60.0</span><span class="p">),</span>
+             <span class="n">AMPA</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">ExpPSR</span><span class="p">(</span><span class="n">tau_syn</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">e_syn</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
+             <span class="n">NMDA</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">AlphaPSR</span><span class="p">(</span><span class="n">tau_syn</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">e_syn</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
+             <span class="n">GABAA</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">ExpPSR</span><span class="p">(</span><span class="n">tau_syn</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">e_syn</span><span class="o">=-</span><span class="mf">70.0</span><span class="p">),</span>
+             <span class="n">GABAB</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">AlphaPSR</span><span class="p">(</span><span class="n">tau_syn</span><span class="o">=</span><span class="mf">15.0</span><span class="p">,</span> <span class="n">e_syn</span><span class="o">=-</span><span class="mf">90.0</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Not all simulators can handle all combinations of components, and in general it is not possible to
+mix conductance-based and current-based synapses within a single cell type.
+PyNN will emit an error message if this is the case.</p>
+</section>
 <section id="spike-sources">
 <h2>Spike sources<a class="headerlink" href="#spike-sources" title="Permalink to this heading">¶</a></h2>
 <section id="spikesourcepoisson">
@@ -587,6 +604,7 @@ an Effective Description of Neuronal Activity. J Neurophysiol 94:3637-3642</p>
 <li><a class="reference internal" href="#eif-cond-alpha-isfa-ista">EIF_cond_alpha_isfa_ista</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#composed-models">Composed models</a></li>
 <li><a class="reference internal" href="#spike-sources">Spike sources</a><ul>
 <li><a class="reference internal" href="#spikesourcepoisson">SpikeSourcePoisson</a></li>
 <li><a class="reference internal" href="#spikesourcearray">SpikeSourceArray</a></li>
@@ -635,12 +653,12 @@ an Effective Description of Neuronal Activity. J Neurophysiol 94:3637-3642</p>
         <li class="right" >
           <a href="reference/utility.html" title="Utility classes and functions"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.11.0.dev documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Standard models</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2022, the PyNN community.
+        &#169; Copyright 2006-2023, the PyNN community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
     </div>
   </body>

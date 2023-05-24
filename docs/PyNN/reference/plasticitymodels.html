@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Synapse models &#8212; PyNN 0.10.1 documentation</title>
+    <title>Synapse models &#8212; PyNN 0.11.0.dev documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="neuronmodels.html" title="Neuron models"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.11.0.dev documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Synapse models</a></li> 
       </ul>
@@ -66,7 +66,7 @@ give the same behaviour on different simulators, and also supports the use of
 same methods, as listed below.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyNN.standardmodels.StandardSynapseType">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StandardSynapseType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels.html#StandardSynapseType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.StandardSynapseType" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StandardSynapseType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/base.html#StandardSynapseType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.StandardSynapseType" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">StandardModelType</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSynapseType</span></code></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyNN.standardmodels.StandardSynapseType.parameter_checks">
@@ -75,7 +75,7 @@ same methods, as listed below.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyNN.standardmodels.StandardSynapseType.get_schema">
-<span class="sig-name descname"><span class="pre">get_schema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels.html#StandardSynapseType.get_schema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.StandardSynapseType.get_schema" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_schema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/base.html#StandardSynapseType.get_schema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.StandardSynapseType.get_schema" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the model schema: i.e. a mapping of parameter names to allowed
 parameter types.</p>
 </dd></dl>
@@ -86,6 +86,11 @@ parameter types.</p>
 <dd><p>Return a list of parameters whose values must be computed from
 more than one other parameter.</p>
 </dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.standardmodels.StandardSynapseType.computed_parameters_include">
+<span class="sig-name descname"><span class="pre">computed_parameters_include</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameter_names</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.standardmodels.StandardSynapseType.computed_parameters_include" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyNN.standardmodels.StandardSynapseType.connection_type">
@@ -187,7 +192,7 @@ correspondance between standard and native parameter values.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyNN.standardmodels.synapses.StaticSynapse">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StaticSynapse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/synapses.html#StaticSynapse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.synapses.StaticSynapse" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType" title="pyNN.standardmodels.StandardSynapseType"><code class="xref py py-class docutils literal notranslate"><span class="pre">StandardSynapseType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType" title="pyNN.standardmodels.base.StandardSynapseType"><code class="xref py py-class docutils literal notranslate"><span class="pre">StandardSynapseType</span></code></a></p>
 <p>Synaptic connection with fixed weight and delay.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyNN.standardmodels.synapses.StaticSynapse.default_parameters">
@@ -202,7 +207,7 @@ correspondance between standard and native parameter values.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyNN.standardmodels.synapses.TsodyksMarkramSynapse">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TsodyksMarkramSynapse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/synapses.html#TsodyksMarkramSynapse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.synapses.TsodyksMarkramSynapse" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType" title="pyNN.standardmodels.StandardSynapseType"><code class="xref py py-class docutils literal notranslate"><span class="pre">StandardSynapseType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType" title="pyNN.standardmodels.base.StandardSynapseType"><code class="xref py py-class docutils literal notranslate"><span class="pre">StandardSynapseType</span></code></a></p>
 <p>Synapse exhibiting facilitation and depression, implemented using the model
 of Tsodyks, Markram et al.:</p>
 <p><a class="reference external" href="http://www.jneurosci.org/content/20/1/RC50.long">Tsodyks, Uziel and Markram (2000)</a> Synchrony Generation in Recurrent Networks
@@ -238,7 +243,7 @@ neuron model, not here.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyNN.standardmodels.synapses.STDPMechanism">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">STDPMechanism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timing_dependence</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_dependence</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voltage_dependence</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dendritic_delay_fraction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/synapses.html#STDPMechanism"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.synapses.STDPMechanism" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType" title="pyNN.standardmodels.StandardSynapseType"><code class="xref py py-class docutils literal notranslate"><span class="pre">StandardSynapseType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType" title="pyNN.standardmodels.base.StandardSynapseType"><code class="xref py py-class docutils literal notranslate"><span class="pre">StandardSynapseType</span></code></a></p>
 <p>A specification for an STDP mechanism, combining a weight-dependence, a
 timing-dependence, and, optionally, a voltage-dependence of the synaptic
 change.</p>
@@ -314,7 +319,7 @@ will be returned.</p>
 <h4>Weight-dependence components<a class="headerlink" href="#weight-dependence-components" title="Permalink to this heading">¶</a></h4>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyNN.standardmodels.STDPWeightDependence">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">STDPWeightDependence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels.html#STDPWeightDependence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.STDPWeightDependence" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">STDPWeightDependence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/base.html#STDPWeightDependence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.STDPWeightDependence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">StandardModelType</span></code></p>
 <p>Base class for models of STDP weight dependence.</p>
 <dl class="py method">
@@ -332,7 +337,7 @@ will be returned.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyNN.standardmodels.synapses.AdditiveWeightDependence">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AdditiveWeightDependence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/synapses.html#AdditiveWeightDependence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.synapses.AdditiveWeightDependence" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.STDPWeightDependence" title="pyNN.standardmodels.STDPWeightDependence"><code class="xref py py-class docutils literal notranslate"><span class="pre">STDPWeightDependence</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.STDPWeightDependence" title="pyNN.standardmodels.base.STDPWeightDependence"><code class="xref py py-class docutils literal notranslate"><span class="pre">STDPWeightDependence</span></code></a></p>
 <p>The amplitude of the weight change is independent of the current weight.
 If the new weight would be less than <cite>w_min</cite> it is set to <cite>w_min</cite>. If it
 would be greater than <cite>w_max</cite> it is set to <cite>w_max</cite>.</p>
@@ -356,7 +361,7 @@ would be greater than <cite>w_max</cite> it is set to <cite>w_max</cite>.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyNN.standardmodels.synapses.MultiplicativeWeightDependence">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultiplicativeWeightDependence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/synapses.html#MultiplicativeWeightDependence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.synapses.MultiplicativeWeightDependence" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.STDPWeightDependence" title="pyNN.standardmodels.STDPWeightDependence"><code class="xref py py-class docutils literal notranslate"><span class="pre">STDPWeightDependence</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.STDPWeightDependence" title="pyNN.standardmodels.base.STDPWeightDependence"><code class="xref py py-class docutils literal notranslate"><span class="pre">STDPWeightDependence</span></code></a></p>
 <p>The amplitude of the weight change depends on the current weight.
 For depression, Δw ∝ w - w_min
 For potentiation, Δw ∝ w_max - w</p>
@@ -380,7 +385,7 @@ For potentiation, Δw ∝ w_max - w</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyNN.standardmodels.synapses.AdditivePotentiationMultiplicativeDepression">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AdditivePotentiationMultiplicativeDepression</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/synapses.html#AdditivePotentiationMultiplicativeDepression"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.synapses.AdditivePotentiationMultiplicativeDepression" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.STDPWeightDependence" title="pyNN.standardmodels.STDPWeightDependence"><code class="xref py py-class docutils literal notranslate"><span class="pre">STDPWeightDependence</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.STDPWeightDependence" title="pyNN.standardmodels.base.STDPWeightDependence"><code class="xref py py-class docutils literal notranslate"><span class="pre">STDPWeightDependence</span></code></a></p>
 <p>The amplitude of the weight change depends on the current weight for
 depression (Δw ∝ w) and is fixed for potentiation.</p>
 <dl class="simple">
@@ -403,7 +408,7 @@ depression (Δw ∝ w) and is fixed for potentiation.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyNN.standardmodels.synapses.GutigWeightDependence">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GutigWeightDependence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_plus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_minus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/synapses.html#GutigWeightDependence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.synapses.GutigWeightDependence" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.STDPWeightDependence" title="pyNN.standardmodels.STDPWeightDependence"><code class="xref py py-class docutils literal notranslate"><span class="pre">STDPWeightDependence</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.STDPWeightDependence" title="pyNN.standardmodels.base.STDPWeightDependence"><code class="xref py py-class docutils literal notranslate"><span class="pre">STDPWeightDependence</span></code></a></p>
 <p>The amplitude of the weight change depends on (w_max-w)^mu_plus for
 potentiation and (w-w_min)^mu_minus for depression.</p>
 <dl class="simple">
@@ -432,7 +437,7 @@ potentiation and (w-w_min)^mu_minus for depression.</p>
 <h4>Timing-dependence components<a class="headerlink" href="#timing-dependence-components" title="Permalink to this heading">¶</a></h4>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyNN.standardmodels.STDPTimingDependence">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">STDPTimingDependence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels.html#STDPTimingDependence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.STDPTimingDependence" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">STDPTimingDependence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/base.html#STDPTimingDependence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.STDPTimingDependence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">StandardModelType</span></code></p>
 <p>Base class for models of STDP timing dependence (triplets, etc)</p>
 </dd></dl>
@@ -440,7 +445,7 @@ potentiation and (w-w_min)^mu_minus for depression.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyNN.standardmodels.synapses.SpikePairRule">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SpikePairRule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tau_plus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau_minus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A_plus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A_minus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/synapses.html#SpikePairRule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.synapses.SpikePairRule" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.STDPTimingDependence" title="pyNN.standardmodels.STDPTimingDependence"><code class="xref py py-class docutils literal notranslate"><span class="pre">STDPTimingDependence</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.STDPTimingDependence" title="pyNN.standardmodels.base.STDPTimingDependence"><code class="xref py py-class docutils literal notranslate"><span class="pre">STDPTimingDependence</span></code></a></p>
 <p>The amplitude of the weight change depends only on the relative timing of
 spike pairs, not triplets, etc. All possible spike pairs are taken into
 account (cf Song and Abbott).</p>
@@ -505,6 +510,7 @@ will be returned.</p>
 <li><a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType.parameter_checks"><code class="docutils literal notranslate"><span class="pre">StandardSynapseType.parameter_checks</span></code></a></li>
 <li><a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType.get_schema"><code class="docutils literal notranslate"><span class="pre">StandardSynapseType.get_schema()</span></code></a></li>
 <li><a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType.computed_parameters"><code class="docutils literal notranslate"><span class="pre">StandardSynapseType.computed_parameters()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType.computed_parameters_include"><code class="docutils literal notranslate"><span class="pre">StandardSynapseType.computed_parameters_include()</span></code></a></li>
 <li><a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType.connection_type"><code class="docutils literal notranslate"><span class="pre">StandardSynapseType.connection_type</span></code></a></li>
 <li><a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType.default_initial_values"><code class="docutils literal notranslate"><span class="pre">StandardSynapseType.default_initial_values</span></code></a></li>
 <li><a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType.default_parameters"><code class="docutils literal notranslate"><span class="pre">StandardSynapseType.default_parameters</span></code></a></li>
@@ -640,13 +646,13 @@ will be returned.</p>
         <li class="right" >
           <a href="neuronmodels.html" title="Neuron models"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.11.0.dev documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" >API reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Synapse models</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2022, the PyNN community.
+        &#169; Copyright 2006-2023, the PyNN community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
     </div>
   </body>

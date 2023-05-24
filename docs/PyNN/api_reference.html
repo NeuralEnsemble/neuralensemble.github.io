@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>API reference &#8212; PyNN 0.10.1 documentation</title>
+    <title>API reference &#8212; PyNN 0.11.0.dev documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/nature.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="developers/governance.html" title="Governance"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.11.0.dev documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">API reference</a></li> 
       </ul>
     </div>  
@@ -67,8 +67,28 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="reference/connectors.html">Connectors</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="reference/connectors.html#base-class">Base class</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/connectors.html#built-in-connectors">Built-in connectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/connectors.html#base-class">Base class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.Connector"><code class="docutils literal notranslate"><span class="pre">Connector</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/connectors.html#built-in-connectors">Built-in connectors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.AllToAllConnector"><code class="docutils literal notranslate"><span class="pre">AllToAllConnector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.OneToOneConnector"><code class="docutils literal notranslate"><span class="pre">OneToOneConnector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.FixedProbabilityConnector"><code class="docutils literal notranslate"><span class="pre">FixedProbabilityConnector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.FromListConnector"><code class="docutils literal notranslate"><span class="pre">FromListConnector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.FromFileConnector"><code class="docutils literal notranslate"><span class="pre">FromFileConnector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.ArrayConnector"><code class="docutils literal notranslate"><span class="pre">ArrayConnector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.FixedNumberPreConnector"><code class="docutils literal notranslate"><span class="pre">FixedNumberPreConnector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.FixedNumberPostConnector"><code class="docutils literal notranslate"><span class="pre">FixedNumberPostConnector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.FixedTotalNumberConnector"><code class="docutils literal notranslate"><span class="pre">FixedTotalNumberConnector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.DistanceDependentProbabilityConnector"><code class="docutils literal notranslate"><span class="pre">DistanceDependentProbabilityConnector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.IndexBasedProbabilityConnector"><code class="docutils literal notranslate"><span class="pre">IndexBasedProbabilityConnector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.DisplacementDependentProbabilityConnector"><code class="docutils literal notranslate"><span class="pre">DisplacementDependentProbabilityConnector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.SmallWorldConnector"><code class="docutils literal notranslate"><span class="pre">SmallWorldConnector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.CSAConnector"><code class="docutils literal notranslate"><span class="pre">CSAConnector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.CloneConnector"><code class="docutils literal notranslate"><span class="pre">CloneConnector</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="reference/projections.html">Projections</a><ul>
@@ -117,6 +137,7 @@
 <li class="toctree-l3"><a class="reference internal" href="reference/neuronmodels.html#simple-integrate-and-fire-neurons">Simple integrate-and-fire neurons</a></li>
 <li class="toctree-l3"><a class="reference internal" href="reference/neuronmodels.html#integrate-and-fire-neurons-with-adaptation">Integrate-and-fire neurons with adaptation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="reference/neuronmodels.html#spike-sources">Spike sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/neuronmodels.html#composed-models">Composed models</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="reference/neuronmodels.html#native-cell-types">Native cell types</a></li>
@@ -338,12 +359,12 @@
         <li class="right" >
           <a href="developers/governance.html" title="Governance"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.11.0.dev documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">API reference</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2022, the PyNN community.
+        &#169; Copyright 2006-2023, the PyNN community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
     </div>
   </body>

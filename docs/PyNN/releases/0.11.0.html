@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>PyNN 0.11.0 release notes &#8212; PyNN 0.11.0.dev documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="PyNN 0.10.1 release notes" href="0.10.1.html" />
+    <link rel="prev" title="Release notes" href="../release_notes.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="0.10.1.html" title="PyNN 0.10.1 release notes"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../release_notes.html" title="Release notes"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.11.0.dev documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../release_notes.html" accesskey="U">Release notes</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">PyNN 0.11.0 release notes</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="pynn-0-11-0-release-notes">
+<h1>PyNN 0.11.0 release notes<a class="headerlink" href="#pynn-0-11-0-release-notes" title="Permalink to this heading">¶</a></h1>
+<p>May 23rd 2022</p>
+<p>Welcome to PyNN 0.11.0!</p>
+<section id="added-composed-models-allowing-multiple-post-synaptic-receptor-types">
+<h2>Added “composed” models allowing multiple post-synaptic receptor types<a class="headerlink" href="#added-composed-models-allowing-multiple-post-synaptic-receptor-types" title="Permalink to this heading">¶</a></h2>
+<p>The existing PyNN “standard” models are defined by both their membrane properties
+(e.g., “leaky integrate-and-fire”, “exponential integrate-and-fire”) and by the
+number of type of their post-synaptic receptor currents (e.g., “alpha-shaped”,
+“single-exponential”, “excitatory”, “inhibitory”).</p>
+<p>A new, optional class, <code class="xref py py-class docutils literal notranslate"><span class="pre">PointNeuron</span></code>, now allows cell types to be composed
+from a menu of membrane mechanisms (currently <code class="xref py py-class docutils literal notranslate"><span class="pre">LIF</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">AdExp</span></code>)
+and of an arbitrary number of post-synaptic response mechanisms:</p>
+<ul class="simple">
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">CurrExpPostSynapticResponse</span></code></p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">CondExpPostSynapticResponse</span></code> (alias <code class="xref py py-class docutils literal notranslate"><span class="pre">ExpPSR</span></code>)</p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">CondAlphaPostSynapticResponse</span></code> (alias <code class="xref py py-class docutils literal notranslate"><span class="pre">AlphaPSR</span></code>)</p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">CondBetaPostSynapticResponse</span></code> (alias <code class="xref py py-class docutils literal notranslate"><span class="pre">BetaPSR</span></code>)</p></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">celltype</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">PointNeuron</span><span class="p">(</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">AdExp</span><span class="p">(</span><span class="n">tau_m</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">v_rest</span><span class="o">=-</span><span class="mf">60.0</span><span class="p">),</span>
+    <span class="n">AMPA</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">AlphaPSR</span><span class="p">(</span><span class="n">tau_syn</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">e_syn</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
+    <span class="n">NMDA</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">AlphaPSR</span><span class="p">(</span><span class="n">tau_syn</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">e_syn</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
+    <span class="n">GABAA</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">AlphaPSR</span><span class="p">(</span><span class="n">tau_syn</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">e_syn</span><span class="o">=-</span><span class="mf">70.0</span><span class="p">),</span>
+    <span class="n">GABAB</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">AlphaPSR</span><span class="p">(</span><span class="n">tau_syn</span><span class="o">=</span><span class="mf">15.0</span><span class="p">,</span> <span class="n">e_syn</span><span class="o">=-</span><span class="mf">90.0</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="nest-3-4-support">
+<h2>NEST 3.4 support<a class="headerlink" href="#nest-3-4-support" title="Permalink to this heading">¶</a></h2>
+<p>PyNN now supports the latest version of <a class="reference external" href="https://www.nest-simulator.org">NEST</a>. NEST 3.3 should also work.
+For older versions of NEST, you will need an older version of PyNN to match.</p>
+</section>
+<section id="changes-for-developers">
+<h2>Changes for developers<a class="headerlink" href="#changes-for-developers" title="Permalink to this heading">¶</a></h2>
+<p>Most of the changes in this version of PyNN are not visible to the end user,
+but are intended to improve the developer experience, for both existing and
+new developers, and to bring PyNN up to date with current best practices
+for open-source Python projects:</p>
+<ul class="simple">
+<li><p>Moved test suite from nose to pytest</p></li>
+<li><p>Changed packing solution from setup.py to pyproject.toml</p></li>
+<li><p>Fixed a lot of warnings produced by the <a class="reference external" href="https://flake8.pycqa.org/en/latest/">flake8</a> style checker</p></li>
+<li><p>Internal refactoring and spring-cleaning, intended to remove old code and make the code base easier to understand</p></li>
+</ul>
+</section>
+<section id="bug-fixes">
+<h2>Bug fixes<a class="headerlink" href="#bug-fixes" title="Permalink to this heading">¶</a></h2>
+<p>A <a class="reference external" href="https://github.com/NeuralEnsemble/PyNN/issues?q=milestone%3A0.11.0+is%3Aclosed">small number of bugs</a> have been fixed.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">PyNN 0.11.0 release notes</a><ul>
+<li><a class="reference internal" href="#added-composed-models-allowing-multiple-post-synaptic-receptor-types">Added “composed” models allowing multiple post-synaptic receptor types</a></li>
+<li><a class="reference internal" href="#nest-3-4-support">NEST 3.4 support</a></li>
+<li><a class="reference internal" href="#changes-for-developers">Changes for developers</a></li>
+<li><a class="reference internal" href="#bug-fixes">Bug fixes</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../release_notes.html"
+                          title="previous chapter">Release notes</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="0.10.1.html"
+                          title="next chapter">PyNN 0.10.1 release notes</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/releases/0.11.0.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="0.10.1.html" title="PyNN 0.10.1 release notes"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../release_notes.html" title="Release notes"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.11.0.dev documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../release_notes.html" >Release notes</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">PyNN 0.11.0 release notes</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2023, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    </div>
+  </body>
+</html>

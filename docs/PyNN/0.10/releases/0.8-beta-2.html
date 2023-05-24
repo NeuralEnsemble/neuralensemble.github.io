@@ -1,0 +1,196 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>PyNN 0.8 beta 2 release notes &#8212; PyNN 0.10.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="PyNN 0.8 beta 1 release notes" href="0.8-beta-1.html" />
+    <link rel="prev" title="PyNN 0.8.0 release candidate 1 release notes" href="0.8.0-rc-1.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="0.8-beta-1.html" title="PyNN 0.8 beta 1 release notes"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="0.8.0-rc-1.html" title="PyNN 0.8.0 release candidate 1 release notes"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../release_notes.html" accesskey="U">Release notes</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">PyNN 0.8 beta 2 release notes</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="pynn-0-8-beta-2-release-notes">
+<h1>PyNN 0.8 beta 2 release notes<a class="headerlink" href="#pynn-0-8-beta-2-release-notes" title="Permalink to this heading">¶</a></h1>
+<p>January 6th 2015</p>
+<p>Welcome to the second beta release of PyNN 0.8!</p>
+<p>For full information about what’s new in PyNN 0.8, see the <a class="reference internal" href="0.8-alpha-1.html"><span class="doc">PyNN 0.8 alpha 1 release notes</span></a> and <a class="reference internal" href="0.8-beta-1.html"><span class="doc">PyNN 0.8 beta 1 release notes</span></a>.</p>
+<section id="nest-2-4">
+<h2>NEST 2.4<a class="headerlink" href="#nest-2-4" title="Permalink to this heading">¶</a></h2>
+<p>The main new feature in this release is support for <a class="reference external" href="http://www.nest-initiative.org/">NEST</a> 2.4. Previous versions of NEST are no longer supported.</p>
+</section>
+<section id="python-3">
+<h2>Python 3<a class="headerlink" href="#python-3" title="Permalink to this heading">¶</a></h2>
+<p>With the rewrite of PyNEST in NEST 2.4, PyNN now has two backend simulators (<a class="reference external" href="http://www.neuron.yale.edu/neuron/">NEURON</a> being the other) that support
+Python 3. There was really no longer any excuse not to add Python 3 support to PyNN, which turned out to be very
+straightforward.</p>
+</section>
+<section id="standardization-of-random-distributions">
+<h2>Standardization of random distributions<a class="headerlink" href="#standardization-of-random-distributions" title="Permalink to this heading">¶</a></h2>
+<p>Since its earliest versions PyNN has supported swapping in and out different random number generators, but until
+now there has been no standardization of these RNGs; for example the <a class="reference external" href="https://www.gnu.org/software/gsl/manual/html_node/Random-Number-Generation.html">GSL</a> random number library uses “gaussian” where
+<a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/routines.random.html">NumPy</a> uses “normal”. This limited the usefulness of this feature, especially for the <code class="xref py py-class docutils literal notranslate"><span class="pre">NativeRNG</span></code> class, which
+signals that random number generation should be passed down to the simulator backend rather than being done at the
+Python level.</p>
+<p>This has now, finally, been fixed. The names of random number distributions and of their parameters have now been
+standardized, based for the most part on the nomenclature used by <a class="reference external" href="http://en.wikipedia.org/wiki/List_of_probability_distributions">Wikipedia</a>. A quick example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyNN.random</span> <span class="kn">import</span> <span class="n">NumpyRNG</span><span class="p">,</span> <span class="n">GSLRNG</span><span class="p">,</span> <span class="n">RandomDistribution</span>
+
+<span class="n">rd1</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;normal&#39;</span> <span class="n">mu</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">NumpyRNG</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">922843</span><span class="p">))</span>
+<span class="n">rd2</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;normal&#39;</span> <span class="n">mu</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">GSLRNG</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">426482</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="api-changes">
+<h2>API changes<a class="headerlink" href="#api-changes" title="Permalink to this heading">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">Population.record()</span></code> now has an optional <cite>sampling_interval</cite> argument, allowing recording at intervals larger
+than the integration time step.</p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">FixedNumberPostConnector</span></code> now has an option <cite>with_replacement</cite>, which controls how the post-synaptic
+population is sampled, and affects the incidence of multiple connections between pairs of neurons (“multapses”).</p></li>
+<li><p>The default value of the <cite>min_delay</cite> argument to <code class="xref py py-func docutils literal notranslate"><span class="pre">setup()</span></code> is now “auto”, which means that the simulator
+should calculate the minimal synaptic delay itself. This change can lead to large speedups for NEST and NEURON code.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="other-changes">
+<h2>Other changes<a class="headerlink" href="#other-changes" title="Permalink to this heading">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Reimplemented Izhikevich model for NEURON to allow current injection.</p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Connector</span></code>s that can generate multiple connections between a given pair of neurons (“multapses”) now work
+properly with the pyNN.nest backend.</p></li>
+<li><p>Added a version of <code class="xref py py-class docutils literal notranslate"><span class="pre">CSAConnector</span></code> for the NEST backend that passes down the CSA object to PyNEST’s
+<code class="xref py py-func docutils literal notranslate"><span class="pre">CGConnect()</span></code> function. This greatly speeds up <code class="xref py py-class docutils literal notranslate"><span class="pre">CSAConnector</span></code> with NEST.</p></li>
+<li><p>Added some new example scripts, deleted some of the more trivial, repetitive examples, and merged the several
+variants of the “VAbenchmarks” example into a single script.</p></li>
+<li><p>When data blocks from different MPI nodes are merged, the spike trains are now by default sorted by neuron ID.
+If this sorting proves to be too time-consuming we can in future expose sort/don’t sort as an option.</p></li>
+<li><p>Added <code class="xref py py-class docutils literal notranslate"><span class="pre">IF_cond_exp_gsfa_grr</span></code> standard model (integrate and fire neuron with spike frequency adaption and
+relative refractory period) to <a class="reference external" href="http://http://briansimulator.org">Brian</a> backend, and fixed broken <code class="xref py py-class docutils literal notranslate"><span class="pre">HH_cond_exp</span></code> model.</p></li>
+<li><p>Improvements to callback handling.</p></li>
+<li><p><a class="reference external" href="https://github.com/NeuralEnsemble/PyNN/issues?q=is%3Aclosed+closed%3A2013-11-15..2015-01-06+milestone%3A0.8.0">Assorted bug fixes</a></p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">PyNN 0.8 beta 2 release notes</a><ul>
+<li><a class="reference internal" href="#nest-2-4">NEST 2.4</a></li>
+<li><a class="reference internal" href="#python-3">Python 3</a></li>
+<li><a class="reference internal" href="#standardization-of-random-distributions">Standardization of random distributions</a></li>
+<li><a class="reference internal" href="#api-changes">API changes</a></li>
+<li><a class="reference internal" href="#other-changes">Other changes</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="0.8.0-rc-1.html"
+                          title="previous chapter">PyNN 0.8.0 release candidate 1 release notes</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="0.8-beta-1.html"
+                          title="next chapter">PyNN 0.8 beta 1 release notes</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/releases/0.8-beta-2.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="0.8-beta-1.html" title="PyNN 0.8 beta 1 release notes"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="0.8.0-rc-1.html" title="PyNN 0.8.0 release candidate 1 release notes"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../release_notes.html" >Release notes</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">PyNN 0.8 beta 2 release notes</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2022, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    </div>
+  </body>
+</html>

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyNN.common.projections &#8212; PyNN 0.10.1 documentation</title>
+    <title>pyNN.common.projections &#8212; PyNN 0.11.0.dev documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/nature.css" />
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
@@ -27,7 +27,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.11.0.dev documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyNN.common.projections</a></li> 
       </ul>
@@ -44,22 +44,22 @@
 <span class="sd">Common implementation of the Projection class, to be sub-classed by</span>
 <span class="sd">backend-specific Projection classes.</span>
 
-<span class="sd">:copyright: Copyright 2006-2022 by the PyNN team, see AUTHORS.</span>
+<span class="sd">:copyright: Copyright 2006-2023 by the PyNN team, see AUTHORS.</span>
 <span class="sd">:license: CeCILL, see LICENSE for details.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">operator</span>
 <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
 <span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">warn</span>
-<span class="kn">from</span> <span class="nn">pyNN</span> <span class="kn">import</span> <span class="n">recording</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">models</span><span class="p">,</span> <span class="n">core</span><span class="p">,</span> <span class="n">descriptions</span>
-<span class="kn">from</span> <span class="nn">pyNN.parameters</span> <span class="kn">import</span> <span class="n">ParameterSpace</span><span class="p">,</span> <span class="n">LazyArray</span>
-<span class="kn">from</span> <span class="nn">pyNN.space</span> <span class="kn">import</span> <span class="n">Space</span>
-<span class="kn">from</span> <span class="nn">pyNN.standardmodels</span> <span class="kn">import</span> <span class="n">StandardSynapseType</span>
-<span class="kn">from</span> <span class="nn">pyNN.connectors</span> <span class="kn">import</span> <span class="n">Connector</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">recording</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">models</span><span class="p">,</span> <span class="n">core</span><span class="p">,</span> <span class="n">descriptions</span>
+<span class="kn">from</span> <span class="nn">..parameters</span> <span class="kn">import</span> <span class="n">ParameterSpace</span><span class="p">,</span> <span class="n">LazyArray</span>
+<span class="kn">from</span> <span class="nn">..space</span> <span class="kn">import</span> <span class="n">Space</span>
+<span class="kn">from</span> <span class="nn">..standardmodels</span> <span class="kn">import</span> <span class="n">StandardSynapseType</span>
+<span class="kn">from</span> <span class="nn">..connectors</span> <span class="kn">import</span> <span class="n">Connector</span>
 <span class="kn">from</span> <span class="nn">.populations</span> <span class="kn">import</span> <span class="n">BasePopulation</span><span class="p">,</span> <span class="n">Assembly</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;PyNN&quot;</span><span class="p">)</span>
@@ -111,20 +111,22 @@
 <span class="sd">        Create a new projection, connecting the pre- and post-synaptic neurons.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_simulator&quot;</span><span class="p">):</span>
-            <span class="n">errmsg</span> <span class="o">=</span> <span class="s2">&quot;`common.Projection` should not be instantiated directly. &quot;</span> \
+            <span class="n">err_msg</span> <span class="o">=</span> <span class="s2">&quot;`common.Projection` should not be instantiated directly. &quot;</span> \
                      <span class="s2">&quot;You should import Projection from a PyNN backend module, &quot;</span> \
                      <span class="s2">&quot;e.g. pyNN.nest or pyNN.neuron&quot;</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">err_msg</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">pop</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">((</span><span class="s2">&quot;pre&quot;</span><span class="p">,</span> <span class="s2">&quot;post&quot;</span><span class="p">),</span>
                                <span class="p">(</span><span class="n">presynaptic_neurons</span><span class="p">,</span> <span class="n">postsynaptic_neurons</span><span class="p">)):</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pop</span><span class="p">,</span> <span class="p">(</span><span class="n">BasePopulation</span><span class="p">,</span> <span class="n">Assembly</span><span class="p">)):</span>
                 <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">(</span>
-                    <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">synaptic_neurons must be a Population, PopulationView or Assembly, not a </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">pop</span><span class="p">)))</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">synaptic_neurons must be a Population, PopulationView or Assembly, &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;not a </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">pop</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">postsynaptic_neurons</span><span class="p">,</span> <span class="n">Assembly</span><span class="p">):</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">postsynaptic_neurons</span><span class="o">.</span><span class="n">_homogeneous_synapses</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">(</span>
-                    <span class="s1">&#39;Projection to an Assembly object can be made only with homogeneous synapses types&#39;</span><span class="p">)</span>
+                    <span class="s2">&quot;Projection to an Assembly object can be made only &quot;</span>
+                    <span class="s2">&quot;with homogeneous synapses types&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">pre</span> <span class="o">=</span> <span class="n">presynaptic_neurons</span>    <span class="c1"># } these really</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="n">source</span>              <span class="c1"># } should be</span>
@@ -133,7 +135,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">space</span> <span class="o">=</span> <span class="n">space</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">connector</span><span class="p">,</span> <span class="n">Connector</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                <span class="s2">&quot;The connector argument should be an instance of a subclass of Connector. &quot;</span>
+                <span class="s2">&quot;`connector` should be an instance of a subclass of Connector. &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;The argument provided was of type &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">connector</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_connector</span> <span class="o">=</span> <span class="n">connector</span>
@@ -141,7 +143,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">synapse_type</span> <span class="o">=</span> <span class="n">synapse_type</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_static_synapse_class</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">synapse_type</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">BaseSynapseType</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                <span class="s2">&quot;The synapse_type argument should be an instance of a subclass of BaseSynapseType. &quot;</span>
+                <span class="s2">&quot;`synapse_type` should be an instance of a subclass of BaseSynapseType. &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;The argument provided was of type &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">synapse_type</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
             <span class="p">)</span>
 
@@ -151,8 +153,8 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">receptor_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">postsynaptic_neurons</span><span class="o">.</span><span class="n">receptor_types</span><span class="p">:</span>
             <span class="n">valid_types</span> <span class="o">=</span> <span class="n">postsynaptic_neurons</span><span class="o">.</span><span class="n">receptor_types</span>
             <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_types</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
-            <span class="n">errmsg</span> <span class="o">=</span> <span class="s2">&quot;User gave receptor_types=</span><span class="si">%s</span><span class="s2">, receptor_types must be one of: &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span>
-            <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">(</span><span class="n">errmsg</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">receptor_type</span><span class="p">,</span> <span class="s2">&quot;&#39;, &#39;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">valid_types</span><span class="p">)))</span>
+            <span class="n">err_msg</span> <span class="o">=</span> <span class="s2">&quot;User gave receptor_types=</span><span class="si">%s</span><span class="s2">, receptor_types must be one of: &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span>
+            <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">(</span><span class="n">err_msg</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">receptor_type</span><span class="p">,</span> <span class="s2">&quot;&#39;, &#39;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">valid_types</span><span class="p">)))</span>
 
         <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">label</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">label</span><span class="p">:</span>
@@ -411,7 +413,8 @@
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`multiple_synapses` argument must be one of </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="nb">list</span><span class="p">(</span><span class="n">Projection</span><span class="o">.</span><span class="n">MULTI_SYNAPSE_OPERATIONS</span><span class="p">)))</span>
             <span class="k">if</span> <span class="n">gather</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">num_processes</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="c1"># Node 0 is the only one creating a full connection matrix, and returning it (saving memory)</span>
+                <span class="c1"># Node 0 is the only one creating a full connection matrix, and returning it</span>
+                <span class="c1"># (saving memory)</span>
                 <span class="c1"># Slaves nodes are returning list of connections, so this may be inconsistent...</span>
                 <span class="n">names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">attribute_names</span><span class="p">)</span>
                 <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;presynaptic_index&quot;</span><span class="p">,</span> <span class="s2">&quot;postsynaptic_index&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">names</span>
@@ -595,13 +598,13 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.11.0.dev documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyNN.common.projections</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2022, the PyNN community.
+        &#169; Copyright 2006-2023, the PyNN community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
     </div>
   </body>

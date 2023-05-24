@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Building networks: connections &#8212; PyNN 0.10.1 documentation</title>
+    <title>Building networks: connections &#8212; PyNN 0.11.0.dev documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/nature.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="neurons.html" title="Building networks: neurons"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.11.0.dev documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="building_networks.html" accesskey="U">Building networks</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Building networks: connections</a></li> 
       </ul>
@@ -153,7 +153,7 @@ a “connection method” or “wiring method”) is encapsulated in a separate 
 <p>for those interested in design patterns, this is an example of the
 <a class="reference external" href="http://en.wikipedia.org/wiki/Strategy_pattern">Strategy Pattern</a></p>
 </div>
-<p>Each such class inherits from a base class, <code class="xref py py-class docutils literal notranslate"><span class="pre">Connector</span></code>, and must
+<p>Each such class inherits from a base class, <a class="reference internal" href="reference/connectors.html#pyNN.connectors.Connector" title="pyNN.connectors.Connector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Connector</span></code></a>, and must
 implement a <code class="xref py py-meth docutils literal notranslate"><span class="pre">connect()</span></code> method which takes a <code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code> object
 (see below) as its single argument.</p>
 <p>PyNN’s library of connection algorithms currently contains the following classes:</p>
@@ -163,7 +163,7 @@ implement a <code class="xref py py-meth docutils literal notranslate"><span cla
 post-synaptic population. (In this section, the term “population” should be
 understood as referring to any of the following: a <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>,
 a <code class="xref py py-class docutils literal notranslate"><span class="pre">PopulationView</span></code>, or an <code class="xref py py-class docutils literal notranslate"><span class="pre">Assembly</span></code> object.)</p>
-<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">AllToAllConnector</span></code> constructor has one
+<p>The <a class="reference internal" href="reference/connectors.html#pyNN.connectors.AllToAllConnector" title="pyNN.connectors.AllToAllConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">AllToAllConnector</span></code></a> constructor has one
 optional argument, <code class="docutils literal notranslate"><span class="pre">allow_self_connections</span></code>, for use when connecting a
 population to itself. By default it is <code class="docutils literal notranslate"><span class="pre">True</span></code>, but if a neuron should
 not connect to itself, set it to <code class="docutils literal notranslate"><span class="pre">False</span></code>, e.g.:</p>
@@ -173,7 +173,7 @@ not connect to itself, set it to <code class="docutils literal notranslate"><spa
 </section>
 <section id="one-to-one-connections">
 <h3>One-to-one connections<a class="headerlink" href="#one-to-one-connections" title="Permalink to this heading">¶</a></h3>
-<p>Use of the <code class="xref py py-class docutils literal notranslate"><span class="pre">OneToOneConnector</span></code> requires that the pre- and post-synaptic
+<p>Use of the <a class="reference internal" href="reference/connectors.html#pyNN.connectors.OneToOneConnector" title="pyNN.connectors.OneToOneConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">OneToOneConnector</span></code></a> requires that the pre- and post-synaptic
 populations have the same size. The neuron with index <em>i</em> in the pre-synaptic
 population is then connected to the neuron with index <em>i</em> in the post-synaptic
 population.</p>
@@ -184,7 +184,7 @@ population.</p>
 </section>
 <section id="connecting-neurons-with-a-fixed-probability">
 <h3>Connecting neurons with a fixed probability<a class="headerlink" href="#connecting-neurons-with-a-fixed-probability" title="Permalink to this heading">¶</a></h3>
-<p>With the <code class="xref py py-class docutils literal notranslate"><span class="pre">FixedProbabilityConnector</span></code> method, each possible connection
+<p>With the <a class="reference internal" href="reference/connectors.html#pyNN.connectors.FixedProbabilityConnector" title="pyNN.connectors.FixedProbabilityConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">FixedProbabilityConnector</span></code></a> method, each possible connection
 between all pre-synaptic neurons and all post-synaptic neurons is created with
 probability <code class="docutils literal notranslate"><span class="pre">p_connect</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">connector</span> <span class="o">=</span> <span class="n">FixedProbabilityConnector</span><span class="p">(</span><span class="n">p_connect</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
@@ -195,7 +195,7 @@ probability <code class="docutils literal notranslate"><span class="pre">p_conne
 <h3>Connecting neurons with a position-dependent probability<a class="headerlink" href="#connecting-neurons-with-a-position-dependent-probability" title="Permalink to this heading">¶</a></h3>
 <p>The connection probability can also depend on the positions of the pre- and
 post-synaptic neurons.</p>
-<p>With the <code class="xref py py-class docutils literal notranslate"><span class="pre">DistanceDependentProbabilityConnector</span></code>, the connection
+<p>With the <a class="reference internal" href="reference/connectors.html#pyNN.connectors.DistanceDependentProbabilityConnector" title="pyNN.connectors.DistanceDependentProbabilityConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">DistanceDependentProbabilityConnector</span></code></a>, the connection
 probability depends on the distance between the two neurons.</p>
 <p>The constructor requires a string <code class="docutils literal notranslate"><span class="pre">d_expression</span></code>, which should be a distance
 expression, as described above for delays, but returning a probability (a value
@@ -213,13 +213,13 @@ numerical values <code class="docutils literal notranslate"><span class="pre">1.
 <p>Calculation of distance may be controlled by specifying a <code class="xref py py-class docutils literal notranslate"><span class="pre">Space</span></code> object,
 passed to the <code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code> constructor (see below).</p>
 <p>For a more general dependence of connection probability on position, use the
-<code class="xref py py-class docutils literal notranslate"><span class="pre">IndexBasedProbabilityConnector</span></code>, which expects a function of the indices,
+<a class="reference internal" href="reference/connectors.html#pyNN.connectors.IndexBasedProbabilityConnector" title="pyNN.connectors.IndexBasedProbabilityConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">IndexBasedProbabilityConnector</span></code></a>, which expects a function of the indices,
 <code class="docutils literal notranslate"><span class="pre">i</span></code> and <code class="docutils literal notranslate"><span class="pre">j</span></code>, of the pre- and post-synaptic neurons. The function should
 return the probability of creating that connection.</p>
 </section>
 <section id="divergent-fan-out-connections">
 <h3>Divergent/fan-out connections<a class="headerlink" href="#divergent-fan-out-connections" title="Permalink to this heading">¶</a></h3>
-<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">FixedNumberPostConnector</span></code> connects each pre-synaptic neuron to
+<p>The <a class="reference internal" href="reference/connectors.html#pyNN.connectors.FixedNumberPostConnector" title="pyNN.connectors.FixedNumberPostConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">FixedNumberPostConnector</span></code></a> connects each pre-synaptic neuron to
 exactly <code class="docutils literal notranslate"><span class="pre">n</span></code> post-synaptic neurons chosen at random:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">connector</span> <span class="o">=</span> <span class="n">FixedNumberPostConnector</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
 </pre></div>
@@ -238,8 +238,8 @@ random from a <code class="xref py py-class docutils literal notranslate"><span 
 </section>
 <section id="convergent-fan-in-connections">
 <h3>Convergent/fan-in connections<a class="headerlink" href="#convergent-fan-in-connections" title="Permalink to this heading">¶</a></h3>
-<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">FixedNumberPreConnector</span></code> has the same arguments as
-<code class="xref py py-class docutils literal notranslate"><span class="pre">FixedNumberPostConnector</span></code>, but of course it connects each
+<p>The <a class="reference internal" href="reference/connectors.html#pyNN.connectors.FixedNumberPreConnector" title="pyNN.connectors.FixedNumberPreConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">FixedNumberPreConnector</span></code></a> has the same arguments as
+<a class="reference internal" href="reference/connectors.html#pyNN.connectors.FixedNumberPostConnector" title="pyNN.connectors.FixedNumberPostConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">FixedNumberPostConnector</span></code></a>, but of course it connects each
 <em>post</em>-synaptic neuron to <code class="docutils literal notranslate"><span class="pre">n</span></code> <em>pre</em>-synaptic neurons, e.g.:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">connector</span> <span class="o">=</span> <span class="n">FixedNumberPreConnector</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">distr_npre</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="n">distribution</span><span class="o">=</span><span class="s1">&#39;poisson&#39;</span><span class="p">,</span> <span class="n">lambda_</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
@@ -331,9 +331,9 @@ PyNN built-in ones, the options include:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>constructing a list or array of connections and using the
-<code class="xref py py-class docutils literal notranslate"><span class="pre">FromListConnector</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">ArrayConnector</span></code> class;</p></li>
-<li><p>using the Connection Set Algebra and the <code class="xref py py-class docutils literal notranslate"><span class="pre">CSAConnector</span></code> class;</p></li>
-<li><p>writing your own <code class="xref py py-class docutils literal notranslate"><span class="pre">Connector</span></code> class - see the
+<a class="reference internal" href="reference/connectors.html#pyNN.connectors.FromListConnector" title="pyNN.connectors.FromListConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">FromListConnector</span></code></a> or <a class="reference internal" href="reference/connectors.html#pyNN.connectors.ArrayConnector" title="pyNN.connectors.ArrayConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArrayConnector</span></code></a> class;</p></li>
+<li><p>using the Connection Set Algebra and the <a class="reference internal" href="reference/connectors.html#pyNN.connectors.CSAConnector" title="pyNN.connectors.CSAConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">CSAConnector</span></code></a> class;</p></li>
+<li><p>writing your own <a class="reference internal" href="reference/connectors.html#pyNN.connectors.Connector" title="pyNN.connectors.Connector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Connector</span></code></a> class - see the
 <a class="reference internal" href="developers_guide.html"><span class="doc">Developers’ guide</span></a> for guidance on this.</p></li>
 </ul>
 </div></blockquote>
@@ -626,13 +626,13 @@ number of connections.</p>
         <li class="right" >
           <a href="neurons.html" title="Building networks: neurons"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.11.0.dev documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="building_networks.html" >Building networks</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Building networks: connections</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2022, the PyNN community.
+        &#169; Copyright 2006-2023, the PyNN community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
     </div>
   </body>

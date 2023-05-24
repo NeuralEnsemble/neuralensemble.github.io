@@ -1,0 +1,358 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Utility classes and functions &#8212; PyNN 0.10.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Standard models" href="../standardmodels.html" />
+    <link rel="prev" title="Spatial structure" href="space.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../standardmodels.html" title="Standard models"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="space.html" title="Spatial structure"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API reference</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Utility classes and functions</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="utility-classes-and-functions">
+<h1>Utility classes and functions<a class="headerlink" href="#utility-classes-and-functions" title="Permalink to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyNN.utility.init_logging">
+<span class="sig-name descname"><span class="pre">init_logging</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_processes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/utility.html#init_logging"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.utility.init_logging" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple configuration of logging.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyNN.utility.get_simulator">
+<span class="sig-name descname"><span class="pre">get_simulator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arguments</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/utility.html#get_simulator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.utility.get_simulator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Import and return a PyNN simulator backend module based on command-line
+arguments.</p>
+<p>The simulator name should be the first positional argument. If your script
+needs additional arguments, you can specify them as (name, help_text) tuples.
+If you need more complex argument handling, you should use argparse
+directly.</p>
+<p>Returns (simulator, command-line arguments)</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.utility.Timer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Timer</span></span><a class="reference internal" href="../_modules/pyNN/utility.html#Timer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.utility.Timer" title="Permalink to this definition">¶</a></dt>
+<dd><p>For timing script execution.</p>
+<p>Timing starts on creation of the timer.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.utility.Timer.start">
+<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/utility.html#Timer.start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.utility.Timer.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start/restart timing.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.utility.Timer.elapsed_time">
+<span class="sig-name descname"><span class="pre">elapsed_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/utility.html#Timer.elapsed_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.utility.Timer.elapsed_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the elapsed time in seconds but keep the clock running.</p>
+<p>If called with <code class="docutils literal notranslate"><span class="pre">format=&quot;long&quot;</span></code>, return a text representation of the
+time. Examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">timer</span><span class="o">.</span><span class="n">elapsed_time</span><span class="p">()</span>
+<span class="go">987</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">timer</span><span class="o">.</span><span class="n">elapsed_time</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;long&#39;</span><span class="p">)</span>
+<span class="go">16 minutes, 27 seconds</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.utility.Timer.elapsedTime">
+<span class="sig-name descname"><span class="pre">elapsedTime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.utility.Timer.elapsedTime" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">elapsed_time()</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.utility.Timer.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/utility.html#Timer.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.utility.Timer.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the time to zero, and start the clock.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.utility.Timer.diff">
+<span class="sig-name descname"><span class="pre">diff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/utility.html#Timer.diff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.utility.Timer.diff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the time since the last time <a class="reference internal" href="#pyNN.utility.Timer.elapsed_time" title="pyNN.utility.Timer.elapsed_time"><code class="xref py py-meth docutils literal notranslate"><span class="pre">elapsed_time()</span></code></a> or
+<a class="reference internal" href="#pyNN.utility.Timer.diff" title="pyNN.utility.Timer.diff"><code class="xref py py-meth docutils literal notranslate"><span class="pre">diff()</span></code></a> was called.</p>
+<p>If called with <code class="docutils literal notranslate"><span class="pre">format='long'</span></code>, return a text representation of the
+time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.utility.Timer.time_in_words">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">time_in_words</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/utility.html#Timer.time_in_words"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.utility.Timer.time_in_words" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formats a time in seconds as a string containing the time in days,
+hours, minutes, seconds. Examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Timer</span><span class="o">.</span><span class="n">time_in_words</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">1 second</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Timer</span><span class="o">.</span><span class="n">time_in_words</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
+<span class="go">2 minutes, 3 seconds</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Timer</span><span class="o">.</span><span class="n">time_in_words</span><span class="p">(</span><span class="mi">24</span><span class="o">*</span><span class="mi">3600</span><span class="p">)</span>
+<span class="go">1 day</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.utility.Timer.mark">
+<span class="sig-name descname"><span class="pre">mark</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/utility.html#Timer.mark"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.utility.Timer.mark" title="Permalink to this definition">¶</a></dt>
+<dd><p>Store the time since the last time since the last time
+<a class="reference internal" href="#pyNN.utility.Timer.elapsed_time" title="pyNN.utility.Timer.elapsed_time"><code class="xref py py-meth docutils literal notranslate"><span class="pre">elapsed_time()</span></code></a>, <a class="reference internal" href="#pyNN.utility.Timer.diff" title="pyNN.utility.Timer.diff"><code class="xref py py-meth docutils literal notranslate"><span class="pre">diff()</span></code></a> or <a class="reference internal" href="#pyNN.utility.Timer.mark" title="pyNN.utility.Timer.mark"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mark()</span></code></a> was called,
+together with the provided label, in the attribute ‘marks’.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.utility.ProgressBar">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ProgressBar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">77</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">char</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'#'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fixed'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/utility.html#ProgressBar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.utility.ProgressBar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a progress bar in the shell.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.utility.ProgressBar.set_level">
+<span class="sig-name descname"><span class="pre">set_level</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/utility.html#ProgressBar.set_level"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.utility.ProgressBar.set_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rebuild the bar string based on <cite>level</cite>, which should be a number
+between 0 and 1.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyNN.utility.notify">
+<span class="sig-name descname"><span class="pre">notify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Simulation</span> <span class="pre">finished.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Simulation</span> <span class="pre">finished.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smtphost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/utility.html#notify"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.utility.notify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send an e-mail stating that the simulation has finished.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyNN.utility.save_population">
+<span class="sig-name descname"><span class="pre">save_population</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">population</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/utility.html#save_population"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.utility.save_population" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the spike_times of a  population and the size, structure, labels such
+that one can load it back into a SpikeSourceArray population using the
+load_population() function.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyNN.utility.load_population">
+<span class="sig-name descname"><span class="pre">load_population</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sim</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/utility.html#load_population"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.utility.load_population" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads a population that was saved with the save_population() function into
+SpikeSourceArray.</p>
+</dd></dl>
+
+<section id="basic-plotting">
+<h2>Basic plotting<a class="headerlink" href="#basic-plotting" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.utility.plotting.Figure">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Figure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">panels</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/utility/plotting.html#Figure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.utility.plotting.Figure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provide simple, declarative specification of multi-panel figures.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Figure</span><span class="p">(</span>
+    <span class="n">Panel</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;v&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Membrane potential (mV)&quot;</span><span class="p">)</span>
+    <span class="n">Panel</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">spiketrains</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Time (ms)&quot;</span><span class="p">),</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Network activity&quot;</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;figure3.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt>Valid options are:</dt><dd><dl class="simple">
+<dt><cite>settings</cite>:</dt><dd><p>for figure settings, e.g. {‘font.size’: 9}</p>
+</dd>
+<dt><cite>annotations</cite>:</dt><dd><p>a (multi-line) string to be printed at the bottom of the figure.</p>
+</dd>
+<dt><cite>title</cite>:</dt><dd><p>a string to be printed at the top of the figure.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.utility.plotting.Figure.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/utility/plotting.html#Figure.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.utility.plotting.Figure.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the figure to file. The format is taken from the file extension.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.utility.plotting.Figure.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/utility/plotting.html#Figure.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.utility.plotting.Figure.show" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.utility.plotting.Panel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Panel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/utility/plotting.html#Panel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.utility.plotting.Panel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a single panel in a multi-panel figure.</p>
+<p>A panel is a Matplotlib Axes or Subplot instance. A data item may be an
+AnalogSignal, AnalogSignal, or a list of SpikeTrains. The Panel will
+automatically choose an appropriate representation. Multiple data items may
+be plotted in the same panel.</p>
+<p>Valid options are any valid Matplotlib formatting options that should be
+applied to the Axes/Subplot, plus in addition:</p>
+<blockquote>
+<div><dl class="simple">
+<dt><cite>data_labels</cite>:</dt><dd><p>a list of strings of the same length as the number of data items.</p>
+</dd>
+<dt><cite>line_properties</cite>:</dt><dd><p>a list of dicts containing Matplotlib formatting options, of the
+same length as the number of data items.</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.utility.plotting.Panel.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/utility/plotting.html#Panel.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.utility.plotting.Panel.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the Panel’s data in the provided Axes/Subplot instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyNN.utility.plotting.comparison_plot">
+<span class="sig-name descname"><span class="pre">comparison_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segments</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_settings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_spikes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/utility/plotting.html#comparison_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.utility.plotting.comparison_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a list of segments, plot all the data they contain so as to be able
+to compare them.</p>
+<p>Return a Figure instance.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Utility classes and functions</a><ul>
+<li><a class="reference internal" href="#pyNN.utility.init_logging"><code class="docutils literal notranslate"><span class="pre">init_logging()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.utility.get_simulator"><code class="docutils literal notranslate"><span class="pre">get_simulator()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.utility.Timer"><code class="docutils literal notranslate"><span class="pre">Timer</span></code></a><ul>
+<li><a class="reference internal" href="#pyNN.utility.Timer.start"><code class="docutils literal notranslate"><span class="pre">Timer.start()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.utility.Timer.elapsed_time"><code class="docutils literal notranslate"><span class="pre">Timer.elapsed_time()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.utility.Timer.elapsedTime"><code class="docutils literal notranslate"><span class="pre">Timer.elapsedTime()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.utility.Timer.reset"><code class="docutils literal notranslate"><span class="pre">Timer.reset()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.utility.Timer.diff"><code class="docutils literal notranslate"><span class="pre">Timer.diff()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.utility.Timer.time_in_words"><code class="docutils literal notranslate"><span class="pre">Timer.time_in_words()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.utility.Timer.mark"><code class="docutils literal notranslate"><span class="pre">Timer.mark()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyNN.utility.ProgressBar"><code class="docutils literal notranslate"><span class="pre">ProgressBar</span></code></a><ul>
+<li><a class="reference internal" href="#pyNN.utility.ProgressBar.set_level"><code class="docutils literal notranslate"><span class="pre">ProgressBar.set_level()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyNN.utility.notify"><code class="docutils literal notranslate"><span class="pre">notify()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.utility.save_population"><code class="docutils literal notranslate"><span class="pre">save_population()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.utility.load_population"><code class="docutils literal notranslate"><span class="pre">load_population()</span></code></a></li>
+<li><a class="reference internal" href="#basic-plotting">Basic plotting</a><ul>
+<li><a class="reference internal" href="#pyNN.utility.plotting.Figure"><code class="docutils literal notranslate"><span class="pre">Figure</span></code></a><ul>
+<li><a class="reference internal" href="#pyNN.utility.plotting.Figure.save"><code class="docutils literal notranslate"><span class="pre">Figure.save()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.utility.plotting.Figure.show"><code class="docutils literal notranslate"><span class="pre">Figure.show()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyNN.utility.plotting.Panel"><code class="docutils literal notranslate"><span class="pre">Panel</span></code></a><ul>
+<li><a class="reference internal" href="#pyNN.utility.plotting.Panel.plot"><code class="docutils literal notranslate"><span class="pre">Panel.plot()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyNN.utility.plotting.comparison_plot"><code class="docutils literal notranslate"><span class="pre">comparison_plot()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="space.html"
+                          title="previous chapter">Spatial structure</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../standardmodels.html"
+                          title="next chapter">Standard models</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/reference/utility.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../standardmodels.html" title="Standard models"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="space.html" title="Spatial structure"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api_reference.html" >API reference</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Utility classes and functions</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2022, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    </div>
+  </body>
+</html>

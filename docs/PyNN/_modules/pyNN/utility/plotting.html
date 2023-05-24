@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyNN.utility.plotting &#8212; PyNN 0.10.1 documentation</title>
+    <title>pyNN.utility.plotting &#8212; PyNN 0.11.0.dev documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/nature.css" />
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
@@ -27,7 +27,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.11.0.dev documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../utility.html" accesskey="U">pyNN.utility</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyNN.utility.plotting</a></li> 
@@ -48,14 +48,13 @@
 <span class="sd">figures, it will probably be easier to use matplotlib or another plotting</span>
 <span class="sd">package directly rather than trying to extend this module.</span>
 
-<span class="sd">:copyright: Copyright 2006-2022 by the PyNN team, see AUTHORS.</span>
+<span class="sd">:copyright: Copyright 2006-2023 by the PyNN team, see AUTHORS.</span>
 <span class="sd">:license: CeCILL, see LICENSE for details.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
-<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">repeat</span>
 <span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">path</span><span class="p">,</span> <span class="n">makedirs</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -147,7 +146,7 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plot all spike trains in a Segment in a raster plot.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">spiketrains</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">t_start</span><span class="p">,</span> <span class="n">spiketrains</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">t_stop</span> <span class="o">/</span> <span class="n">ms</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">spiketrains</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">t_start</span><span class="p">,</span> <span class="n">spiketrains</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">t_stop</span><span class="p">)</span>
     <span class="n">handle_options</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
     <span class="n">max_index</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">min_index</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span>
@@ -169,12 +168,12 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plot all spike trains in a Segment in a raster plot.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">spiketrains</span><span class="o">.</span><span class="n">t_start</span><span class="p">,</span> <span class="n">spiketrains</span><span class="o">.</span><span class="n">t_stop</span> <span class="o">/</span> <span class="n">ms</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">spiketrains</span><span class="o">.</span><span class="n">t_start</span><span class="p">,</span> <span class="n">spiketrains</span><span class="o">.</span><span class="n">t_stop</span><span class="p">)</span>
     <span class="n">handle_options</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
     <span class="n">channel_ids</span><span class="p">,</span> <span class="n">spike_times</span> <span class="o">=</span> <span class="n">spiketrains</span><span class="o">.</span><span class="n">multiplexed</span>
     <span class="n">max_id</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">spiketrains</span><span class="o">.</span><span class="n">all_channel_ids</span><span class="p">)</span>
     <span class="n">min_id</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">spiketrains</span><span class="o">.</span><span class="n">all_channel_ids</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">channel_ids</span><span class="p">,</span> <span class="n">spike_times</span><span class="p">,</span> <span class="s1">&#39;k.&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">spike_times</span><span class="p">,</span> <span class="n">channel_ids</span><span class="p">,</span> <span class="s1">&#39;k.&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Neuron index&quot;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">+</span> <span class="n">min_id</span><span class="p">,</span> <span class="n">max_id</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">label</span><span class="p">:</span>
@@ -435,6 +434,19 @@
 <span class="k">def</span> <span class="nf">isi_histogram</span><span class="p">(</span><span class="n">segment</span><span class="p">):</span>
     <span class="n">all_isis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">st</span><span class="p">))</span> <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="n">segment</span><span class="o">.</span><span class="n">spiketrains</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">Histogram</span><span class="p">(</span><span class="n">all_isis</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">connection_plot</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="s2">&quot;O&quot;</span><span class="p">,</span> <span class="n">zero</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">empty</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">spacer</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Produce a simple text-based representation of a connectivity matrix&quot;&quot;&quot;</span>
+    <span class="n">connection_array</span> <span class="o">=</span> <span class="n">projection</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;weight&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;array&quot;</span><span class="p">)</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">connection_array</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+    <span class="c1"># ignore the complaint that x &gt; 0 is invalid for NaN</span>
+    <span class="n">old_settings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="n">invalid</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+    <span class="n">image</span><span class="p">[</span><span class="n">connection_array</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">positive</span>
+    <span class="n">image</span><span class="p">[</span><span class="n">connection_array</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">zero</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="o">**</span><span class="n">old_settings</span><span class="p">)</span>  <span class="c1"># restore original floating point error settings</span>
+    <span class="n">image</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">connection_array</span><span class="p">)]</span> <span class="o">=</span> <span class="n">empty</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">spacer</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">image</span><span class="p">])</span>
 </pre></div>
 
             <div class="clearer"></div>
@@ -469,14 +481,14 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.11.0.dev documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../utility.html" >pyNN.utility</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyNN.utility.plotting</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2022, the PyNN community.
+        &#169; Copyright 2006-2023, the PyNN community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
     </div>
   </body>

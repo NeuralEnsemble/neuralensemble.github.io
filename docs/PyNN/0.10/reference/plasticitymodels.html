@@ -1,0 +1,653 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Synapse models &#8212; PyNN 0.10.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Current sources" href="electrodes.html" />
+    <link rel="prev" title="Neuron models" href="neuronmodels.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="electrodes.html" title="Current sources"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="neuronmodels.html" title="Neuron models"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API reference</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Synapse models</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="synapse-models">
+<h1>Synapse models<a class="headerlink" href="#synapse-models" title="Permalink to this heading">¶</a></h1>
+<p>The synaptic connection between two neurons is represented as a “synapse type”
+class. Note that synaptic attributes that belong solely to the post-synaptic
+neuron, such as the decay of the post-synaptic conductance, are part of the
+cell type model. The “synapse type” models the synaptic delay, the synaptic
+weight, and any dynamic behaviour of the synaptic weight, i.e. synaptic
+plasticity.</p>
+<p>As for cell types, PyNN has a library of “standard” synapse types that should
+give the same behaviour on different simulators, and also supports the use of
+“native” synapse types, limited to a single simulator.</p>
+<section id="standard-synapse-types">
+<h2>Standard synapse types<a class="headerlink" href="#standard-synapse-types" title="Permalink to this heading">¶</a></h2>
+<section id="base-class">
+<h3>Base class<a class="headerlink" href="#base-class" title="Permalink to this heading">¶</a></h3>
+<p>All standard cell types inherit from the following base class, and have the
+same methods, as listed below.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.standardmodels.StandardSynapseType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StandardSynapseType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels.html#StandardSynapseType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.StandardSynapseType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">StandardModelType</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSynapseType</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.standardmodels.StandardSynapseType.parameter_checks">
+<span class="sig-name descname"><span class="pre">parameter_checks</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'weight':</span> <span class="pre">&lt;function</span> <span class="pre">check_weights&gt;}</span></em><a class="headerlink" href="#pyNN.standardmodels.StandardSynapseType.parameter_checks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.standardmodels.StandardSynapseType.get_schema">
+<span class="sig-name descname"><span class="pre">get_schema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels.html#StandardSynapseType.get_schema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.StandardSynapseType.get_schema" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the model schema: i.e. a mapping of parameter names to allowed
+parameter types.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.standardmodels.StandardSynapseType.computed_parameters">
+<span class="sig-name descname"><span class="pre">computed_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.standardmodels.StandardSynapseType.computed_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of parameters whose values must be computed from
+more than one other parameter.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.standardmodels.StandardSynapseType.connection_type">
+<span class="sig-name descname"><span class="pre">connection_type</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyNN.standardmodels.StandardSynapseType.connection_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.standardmodels.StandardSynapseType.default_initial_values">
+<span class="sig-name descname"><span class="pre">default_initial_values</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyNN.standardmodels.StandardSynapseType.default_initial_values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.standardmodels.StandardSynapseType.default_parameters">
+<span class="sig-name descname"><span class="pre">default_parameters</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyNN.standardmodels.StandardSynapseType.default_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.standardmodels.StandardSynapseType.describe">
+<span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'modeltype_default.txt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.standardmodels.StandardSynapseType.describe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a human-readable description of the cell or synapse type.</p>
+<p>The output may be customized by specifying a different template
+togther with an associated template engine (see <code class="docutils literal notranslate"><span class="pre">pyNN.descriptions</span></code>).</p>
+<p>If template is None, then a dictionary containing the template context
+will be returned.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.standardmodels.StandardSynapseType.extra_parameters">
+<span class="sig-name descname"><span class="pre">extra_parameters</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyNN.standardmodels.StandardSynapseType.extra_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.standardmodels.StandardSynapseType.get_native_names">
+<span class="sig-name descname"><span class="pre">get_native_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">names</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.standardmodels.StandardSynapseType.get_native_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of native parameter names for a given model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.standardmodels.StandardSynapseType.get_parameter_names">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_parameter_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.standardmodels.StandardSynapseType.get_parameter_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the names of the parameters of this model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.standardmodels.StandardSynapseType.has_parameter">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.standardmodels.StandardSynapseType.has_parameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does this model have a parameter with the given name?</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.standardmodels.StandardSynapseType.has_presynaptic_components">
+<span class="sig-name descname"><span class="pre">has_presynaptic_components</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#pyNN.standardmodels.StandardSynapseType.has_presynaptic_components" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.standardmodels.StandardSynapseType.native_parameters">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">native_parameters</span></span><a class="headerlink" href="#pyNN.standardmodels.StandardSynapseType.native_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSpace</span></code> containing parameter names and values
+translated from the standard PyNN names and units to simulator-specific
+(“native”) names and units.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.standardmodels.StandardSynapseType.reverse_translate">
+<span class="sig-name descname"><span class="pre">reverse_translate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">native_parameters</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.standardmodels.StandardSynapseType.reverse_translate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translate simulator-specific model parameters to standardized parameters.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.standardmodels.StandardSynapseType.scaled_parameters">
+<span class="sig-name descname"><span class="pre">scaled_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.standardmodels.StandardSynapseType.scaled_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of parameters for which there is a unit change between
+standard and native parameter values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.standardmodels.StandardSynapseType.simple_parameters">
+<span class="sig-name descname"><span class="pre">simple_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.standardmodels.StandardSynapseType.simple_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of parameters for which there is a one-to-one
+correspondance between standard and native parameter values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.standardmodels.StandardSynapseType.translate">
+<span class="sig-name descname"><span class="pre">translate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.standardmodels.StandardSynapseType.translate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translate standardized model parameters to simulator-specific parameters.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.standardmodels.StandardSynapseType.translations">
+<span class="sig-name descname"><span class="pre">translations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyNN.standardmodels.StandardSynapseType.translations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="static-fixed-synapses">
+<h3>Static/fixed synapses<a class="headerlink" href="#static-fixed-synapses" title="Permalink to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.standardmodels.synapses.StaticSynapse">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StaticSynapse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/synapses.html#StaticSynapse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.synapses.StaticSynapse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType" title="pyNN.standardmodels.StandardSynapseType"><code class="xref py py-class docutils literal notranslate"><span class="pre">StandardSynapseType</span></code></a></p>
+<p>Synaptic connection with fixed weight and delay.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.standardmodels.synapses.StaticSynapse.default_parameters">
+<span class="sig-name descname"><span class="pre">default_parameters</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'delay':</span> <span class="pre">None,</span> <span class="pre">'weight':</span> <span class="pre">0.0}</span></em><a class="headerlink" href="#pyNN.standardmodels.synapses.StaticSynapse.default_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="short-term-plasticity-mechanisms">
+<h3>Short-term plasticity mechanisms<a class="headerlink" href="#short-term-plasticity-mechanisms" title="Permalink to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.standardmodels.synapses.TsodyksMarkramSynapse">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TsodyksMarkramSynapse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/synapses.html#TsodyksMarkramSynapse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.synapses.TsodyksMarkramSynapse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType" title="pyNN.standardmodels.StandardSynapseType"><code class="xref py py-class docutils literal notranslate"><span class="pre">StandardSynapseType</span></code></a></p>
+<p>Synapse exhibiting facilitation and depression, implemented using the model
+of Tsodyks, Markram et al.:</p>
+<p><a class="reference external" href="http://www.jneurosci.org/content/20/1/RC50.long">Tsodyks, Uziel and Markram (2000)</a> Synchrony Generation in Recurrent Networks
+with Frequency-Dependent Synapses. Journal of Neuroscience 20:RC50</p>
+<p>Note that the time constant of the post-synaptic current is set in the
+neuron model, not here.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt><cite>U</cite>:</dt><dd><p>use parameter.</p>
+</dd>
+<dt><cite>tau_rec</cite>:</dt><dd><p>depression time constant (ms).</p>
+</dd>
+<dt><cite>tau_facil</cite>:</dt><dd><p>facilitation time constant (ms).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.standardmodels.synapses.TsodyksMarkramSynapse.default_parameters">
+<span class="sig-name descname"><span class="pre">default_parameters</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'U':</span> <span class="pre">0.5,</span> <span class="pre">'delay':</span> <span class="pre">None,</span> <span class="pre">'tau_facil':</span> <span class="pre">0.0,</span> <span class="pre">'tau_rec':</span> <span class="pre">100.0,</span> <span class="pre">'weight':</span> <span class="pre">0.0}</span></em><a class="headerlink" href="#pyNN.standardmodels.synapses.TsodyksMarkramSynapse.default_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.standardmodels.synapses.TsodyksMarkramSynapse.default_initial_values">
+<span class="sig-name descname"><span class="pre">default_initial_values</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'u':</span> <span class="pre">0.0}</span></em><a class="headerlink" href="#pyNN.standardmodels.synapses.TsodyksMarkramSynapse.default_initial_values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="long-term-plasticity-mechanisms">
+<h3>Long-term plasticity mechanisms<a class="headerlink" href="#long-term-plasticity-mechanisms" title="Permalink to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.standardmodels.synapses.STDPMechanism">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">STDPMechanism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timing_dependence</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_dependence</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voltage_dependence</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dendritic_delay_fraction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/synapses.html#STDPMechanism"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.synapses.STDPMechanism" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType" title="pyNN.standardmodels.StandardSynapseType"><code class="xref py py-class docutils literal notranslate"><span class="pre">StandardSynapseType</span></code></a></p>
+<p>A specification for an STDP mechanism, combining a weight-dependence, a
+timing-dependence, and, optionally, a voltage-dependence of the synaptic
+change.</p>
+<p>For point neurons, the synaptic delay <cite>d</cite> can be interpreted either as
+occurring purely in the pre-synaptic axon + synaptic cleft, in which
+case the synaptic plasticity mechanism ‘sees’ the post-synaptic spike
+immediately and the pre-synaptic spike after a delay <cite>d</cite>
+(<cite>dendritic_delay_fraction = 0</cite>) or as occurring purely in the post-
+synaptic dendrite, in which case the pre-synaptic spike is seen
+immediately, and the post-synaptic spike after a delay <cite>d</cite>
+(<cite>dendritic_delay_fraction = 1</cite>), or as having both pre- and post-
+synaptic components (<cite>dendritic_delay_fraction</cite> between 0 and 1).</p>
+<p>In a future version of the API, we will allow the different
+components of the synaptic delay to be specified separately in
+milliseconds.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.standardmodels.synapses.STDPMechanism.model">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#pyNN.standardmodels.synapses.STDPMechanism.model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.standardmodels.synapses.STDPMechanism.possible_models">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">possible_models</span></span><a class="headerlink" href="#pyNN.standardmodels.synapses.STDPMechanism.possible_models" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of available synaptic plasticity models for the current
+configuration (weight dependence, timing dependence, …) in the
+current simulator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.standardmodels.synapses.STDPMechanism.get_parameter_names">
+<span class="sig-name descname"><span class="pre">get_parameter_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/synapses.html#STDPMechanism.get_parameter_names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.synapses.STDPMechanism.get_parameter_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the names of the parameters of this model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.standardmodels.synapses.STDPMechanism.has_parameter">
+<span class="sig-name descname"><span class="pre">has_parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/synapses.html#STDPMechanism.has_parameter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.synapses.STDPMechanism.has_parameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does this model have a parameter with the given name?</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.standardmodels.synapses.STDPMechanism.get_schema">
+<span class="sig-name descname"><span class="pre">get_schema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/synapses.html#STDPMechanism.get_schema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.synapses.STDPMechanism.get_schema" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the model schema: i.e. a mapping of parameter names to allowed
+parameter types.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.standardmodels.synapses.STDPMechanism.parameter_space">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parameter_space</span></span><a class="headerlink" href="#pyNN.standardmodels.synapses.STDPMechanism.parameter_space" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.standardmodels.synapses.STDPMechanism.native_parameters">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">native_parameters</span></span><a class="headerlink" href="#pyNN.standardmodels.synapses.STDPMechanism.native_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dictionary containing the combination of parameters from the different
+components of the STDP model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.standardmodels.synapses.STDPMechanism.describe">
+<span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'stdpmechanism_default.txt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/synapses.html#STDPMechanism.describe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.synapses.STDPMechanism.describe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a human-readable description of the STDP mechanism.</p>
+<p>The output may be customized by specifying a different template
+togther with an associated template engine (see <code class="docutils literal notranslate"><span class="pre">pyNN.descriptions</span></code>).</p>
+<p>If template is None, then a dictionary containing the template context
+will be returned.</p>
+</dd></dl>
+
+</dd></dl>
+
+<section id="weight-dependence-components">
+<h4>Weight-dependence components<a class="headerlink" href="#weight-dependence-components" title="Permalink to this heading">¶</a></h4>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.standardmodels.STDPWeightDependence">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">STDPWeightDependence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels.html#STDPWeightDependence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.STDPWeightDependence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">StandardModelType</span></code></p>
+<p>Base class for models of STDP weight dependence.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.standardmodels.STDPWeightDependence.describe">
+<span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'modeltype_default.txt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.standardmodels.STDPWeightDependence.describe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a human-readable description of the cell or synapse type.</p>
+<p>The output may be customized by specifying a different template
+togther with an associated template engine (see <code class="docutils literal notranslate"><span class="pre">pyNN.descriptions</span></code>).</p>
+<p>If template is None, then a dictionary containing the template context
+will be returned.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.standardmodels.synapses.AdditiveWeightDependence">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AdditiveWeightDependence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/synapses.html#AdditiveWeightDependence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.synapses.AdditiveWeightDependence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.STDPWeightDependence" title="pyNN.standardmodels.STDPWeightDependence"><code class="xref py py-class docutils literal notranslate"><span class="pre">STDPWeightDependence</span></code></a></p>
+<p>The amplitude of the weight change is independent of the current weight.
+If the new weight would be less than <cite>w_min</cite> it is set to <cite>w_min</cite>. If it
+would be greater than <cite>w_max</cite> it is set to <cite>w_max</cite>.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt><cite>w_min</cite>:</dt><dd><p>minimum synaptic weight, in the same units as the weight, i.e.
+µS or nA.</p>
+</dd>
+<dt><cite>w_max</cite>:</dt><dd><p>maximum synaptic weight.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.standardmodels.synapses.AdditiveWeightDependence.default_parameters">
+<span class="sig-name descname"><span class="pre">default_parameters</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'w_max':</span> <span class="pre">1.0,</span> <span class="pre">'w_min':</span> <span class="pre">0.0}</span></em><a class="headerlink" href="#pyNN.standardmodels.synapses.AdditiveWeightDependence.default_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.standardmodels.synapses.MultiplicativeWeightDependence">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultiplicativeWeightDependence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/synapses.html#MultiplicativeWeightDependence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.synapses.MultiplicativeWeightDependence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.STDPWeightDependence" title="pyNN.standardmodels.STDPWeightDependence"><code class="xref py py-class docutils literal notranslate"><span class="pre">STDPWeightDependence</span></code></a></p>
+<p>The amplitude of the weight change depends on the current weight.
+For depression, Δw ∝ w - w_min
+For potentiation, Δw ∝ w_max - w</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt><cite>w_min</cite>:</dt><dd><p>minimum synaptic weight, in the same units as the weight, i.e.
+µS or nA.</p>
+</dd>
+<dt><cite>w_max</cite>:</dt><dd><p>maximum synaptic weight.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.standardmodels.synapses.MultiplicativeWeightDependence.default_parameters">
+<span class="sig-name descname"><span class="pre">default_parameters</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'w_max':</span> <span class="pre">1.0,</span> <span class="pre">'w_min':</span> <span class="pre">0.0}</span></em><a class="headerlink" href="#pyNN.standardmodels.synapses.MultiplicativeWeightDependence.default_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.standardmodels.synapses.AdditivePotentiationMultiplicativeDepression">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AdditivePotentiationMultiplicativeDepression</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/synapses.html#AdditivePotentiationMultiplicativeDepression"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.synapses.AdditivePotentiationMultiplicativeDepression" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.STDPWeightDependence" title="pyNN.standardmodels.STDPWeightDependence"><code class="xref py py-class docutils literal notranslate"><span class="pre">STDPWeightDependence</span></code></a></p>
+<p>The amplitude of the weight change depends on the current weight for
+depression (Δw ∝ w) and is fixed for potentiation.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt><cite>w_min</cite>:</dt><dd><p>minimum synaptic weight, in the same units as the weight, i.e.
+µS or nA.</p>
+</dd>
+<dt><cite>w_max</cite>:</dt><dd><p>maximum synaptic weight.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.standardmodels.synapses.AdditivePotentiationMultiplicativeDepression.default_parameters">
+<span class="sig-name descname"><span class="pre">default_parameters</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'w_max':</span> <span class="pre">1.0,</span> <span class="pre">'w_min':</span> <span class="pre">0.0}</span></em><a class="headerlink" href="#pyNN.standardmodels.synapses.AdditivePotentiationMultiplicativeDepression.default_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.standardmodels.synapses.GutigWeightDependence">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GutigWeightDependence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_plus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_minus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/synapses.html#GutigWeightDependence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.synapses.GutigWeightDependence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.STDPWeightDependence" title="pyNN.standardmodels.STDPWeightDependence"><code class="xref py py-class docutils literal notranslate"><span class="pre">STDPWeightDependence</span></code></a></p>
+<p>The amplitude of the weight change depends on (w_max-w)^mu_plus for
+potentiation and (w-w_min)^mu_minus for depression.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt><cite>w_min</cite>:</dt><dd><p>minimum synaptic weight, in the same units as the weight, i.e.
+µS or nA.</p>
+</dd>
+<dt><cite>w_max</cite>:</dt><dd><p>maximum synaptic weight.</p>
+</dd>
+<dt><cite>mu_plus</cite>:</dt><dd><p>see above</p>
+</dd>
+<dt><cite>mu_minus</cite>:</dt><dd><p>see above</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.standardmodels.synapses.GutigWeightDependence.default_parameters">
+<span class="sig-name descname"><span class="pre">default_parameters</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'mu_minus':</span> <span class="pre">0.5,</span> <span class="pre">'mu_plus':</span> <span class="pre">0.5,</span> <span class="pre">'w_max':</span> <span class="pre">1.0,</span> <span class="pre">'w_min':</span> <span class="pre">0.0}</span></em><a class="headerlink" href="#pyNN.standardmodels.synapses.GutigWeightDependence.default_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="timing-dependence-components">
+<h4>Timing-dependence components<a class="headerlink" href="#timing-dependence-components" title="Permalink to this heading">¶</a></h4>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.standardmodels.STDPTimingDependence">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">STDPTimingDependence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels.html#STDPTimingDependence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.STDPTimingDependence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">StandardModelType</span></code></p>
+<p>Base class for models of STDP timing dependence (triplets, etc)</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.standardmodels.synapses.SpikePairRule">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SpikePairRule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tau_plus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau_minus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A_plus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A_minus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/standardmodels/synapses.html#SpikePairRule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.standardmodels.synapses.SpikePairRule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyNN.standardmodels.STDPTimingDependence" title="pyNN.standardmodels.STDPTimingDependence"><code class="xref py py-class docutils literal notranslate"><span class="pre">STDPTimingDependence</span></code></a></p>
+<p>The amplitude of the weight change depends only on the relative timing of
+spike pairs, not triplets, etc. All possible spike pairs are taken into
+account (cf Song and Abbott).</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt><cite>tau_plus</cite>:</dt><dd><p>time constant of the positive part of the STDP curve, in milliseconds.</p>
+</dd>
+<dt><cite>tau_minus</cite></dt><dd><p>time constant of the negative part of the STDP curve, in milliseconds.</p>
+</dd>
+<dt><cite>A_plus</cite>:</dt><dd><p>amplitude of the positive part of the STDP curve.</p>
+</dd>
+<dt><cite>A_minus</cite>:</dt><dd><p>amplitude of the negative part of the STDP curve.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.standardmodels.synapses.SpikePairRule.describe">
+<span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'modeltype_default.txt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.standardmodels.synapses.SpikePairRule.describe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a human-readable description of the cell or synapse type.</p>
+<p>The output may be customized by specifying a different template
+togther with an associated template engine (see <code class="docutils literal notranslate"><span class="pre">pyNN.descriptions</span></code>).</p>
+<p>If template is None, then a dictionary containing the template context
+will be returned.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.standardmodels.synapses.SpikePairRule.default_parameters">
+<span class="sig-name descname"><span class="pre">default_parameters</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'A_minus':</span> <span class="pre">0.01,</span> <span class="pre">'A_plus':</span> <span class="pre">0.01,</span> <span class="pre">'tau_minus':</span> <span class="pre">20.0,</span> <span class="pre">'tau_plus':</span> <span class="pre">20.0}</span></em><a class="headerlink" href="#pyNN.standardmodels.synapses.SpikePairRule.default_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+</section>
+<section id="native-plasticity-models">
+<h2>Native plasticity models<a class="headerlink" href="#native-plasticity-models" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="nineml-plasticity-models">
+<h2>NineML plasticity models<a class="headerlink" href="#nineml-plasticity-models" title="Permalink to this heading">¶</a></h2>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Synapse models</a><ul>
+<li><a class="reference internal" href="#standard-synapse-types">Standard synapse types</a><ul>
+<li><a class="reference internal" href="#base-class">Base class</a><ul>
+<li><a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType"><code class="docutils literal notranslate"><span class="pre">StandardSynapseType</span></code></a><ul>
+<li><a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType.parameter_checks"><code class="docutils literal notranslate"><span class="pre">StandardSynapseType.parameter_checks</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType.get_schema"><code class="docutils literal notranslate"><span class="pre">StandardSynapseType.get_schema()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType.computed_parameters"><code class="docutils literal notranslate"><span class="pre">StandardSynapseType.computed_parameters()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType.connection_type"><code class="docutils literal notranslate"><span class="pre">StandardSynapseType.connection_type</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType.default_initial_values"><code class="docutils literal notranslate"><span class="pre">StandardSynapseType.default_initial_values</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType.default_parameters"><code class="docutils literal notranslate"><span class="pre">StandardSynapseType.default_parameters</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType.describe"><code class="docutils literal notranslate"><span class="pre">StandardSynapseType.describe()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType.extra_parameters"><code class="docutils literal notranslate"><span class="pre">StandardSynapseType.extra_parameters</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType.get_native_names"><code class="docutils literal notranslate"><span class="pre">StandardSynapseType.get_native_names()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType.get_parameter_names"><code class="docutils literal notranslate"><span class="pre">StandardSynapseType.get_parameter_names()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType.has_parameter"><code class="docutils literal notranslate"><span class="pre">StandardSynapseType.has_parameter()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType.has_presynaptic_components"><code class="docutils literal notranslate"><span class="pre">StandardSynapseType.has_presynaptic_components</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType.native_parameters"><code class="docutils literal notranslate"><span class="pre">StandardSynapseType.native_parameters</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType.reverse_translate"><code class="docutils literal notranslate"><span class="pre">StandardSynapseType.reverse_translate()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType.scaled_parameters"><code class="docutils literal notranslate"><span class="pre">StandardSynapseType.scaled_parameters()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType.simple_parameters"><code class="docutils literal notranslate"><span class="pre">StandardSynapseType.simple_parameters()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType.translate"><code class="docutils literal notranslate"><span class="pre">StandardSynapseType.translate()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.StandardSynapseType.translations"><code class="docutils literal notranslate"><span class="pre">StandardSynapseType.translations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#static-fixed-synapses">Static/fixed synapses</a><ul>
+<li><a class="reference internal" href="#pyNN.standardmodels.synapses.StaticSynapse"><code class="docutils literal notranslate"><span class="pre">StaticSynapse</span></code></a><ul>
+<li><a class="reference internal" href="#pyNN.standardmodels.synapses.StaticSynapse.default_parameters"><code class="docutils literal notranslate"><span class="pre">StaticSynapse.default_parameters</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#short-term-plasticity-mechanisms">Short-term plasticity mechanisms</a><ul>
+<li><a class="reference internal" href="#pyNN.standardmodels.synapses.TsodyksMarkramSynapse"><code class="docutils literal notranslate"><span class="pre">TsodyksMarkramSynapse</span></code></a><ul>
+<li><a class="reference internal" href="#pyNN.standardmodels.synapses.TsodyksMarkramSynapse.default_parameters"><code class="docutils literal notranslate"><span class="pre">TsodyksMarkramSynapse.default_parameters</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.synapses.TsodyksMarkramSynapse.default_initial_values"><code class="docutils literal notranslate"><span class="pre">TsodyksMarkramSynapse.default_initial_values</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#long-term-plasticity-mechanisms">Long-term plasticity mechanisms</a><ul>
+<li><a class="reference internal" href="#pyNN.standardmodels.synapses.STDPMechanism"><code class="docutils literal notranslate"><span class="pre">STDPMechanism</span></code></a><ul>
+<li><a class="reference internal" href="#pyNN.standardmodels.synapses.STDPMechanism.model"><code class="docutils literal notranslate"><span class="pre">STDPMechanism.model</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.synapses.STDPMechanism.possible_models"><code class="docutils literal notranslate"><span class="pre">STDPMechanism.possible_models</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.synapses.STDPMechanism.get_parameter_names"><code class="docutils literal notranslate"><span class="pre">STDPMechanism.get_parameter_names()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.synapses.STDPMechanism.has_parameter"><code class="docutils literal notranslate"><span class="pre">STDPMechanism.has_parameter()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.synapses.STDPMechanism.get_schema"><code class="docutils literal notranslate"><span class="pre">STDPMechanism.get_schema()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.synapses.STDPMechanism.parameter_space"><code class="docutils literal notranslate"><span class="pre">STDPMechanism.parameter_space</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.synapses.STDPMechanism.native_parameters"><code class="docutils literal notranslate"><span class="pre">STDPMechanism.native_parameters</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.synapses.STDPMechanism.describe"><code class="docutils literal notranslate"><span class="pre">STDPMechanism.describe()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#weight-dependence-components">Weight-dependence components</a><ul>
+<li><a class="reference internal" href="#pyNN.standardmodels.STDPWeightDependence"><code class="docutils literal notranslate"><span class="pre">STDPWeightDependence</span></code></a><ul>
+<li><a class="reference internal" href="#pyNN.standardmodels.STDPWeightDependence.describe"><code class="docutils literal notranslate"><span class="pre">STDPWeightDependence.describe()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyNN.standardmodels.synapses.AdditiveWeightDependence"><code class="docutils literal notranslate"><span class="pre">AdditiveWeightDependence</span></code></a><ul>
+<li><a class="reference internal" href="#pyNN.standardmodels.synapses.AdditiveWeightDependence.default_parameters"><code class="docutils literal notranslate"><span class="pre">AdditiveWeightDependence.default_parameters</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyNN.standardmodels.synapses.MultiplicativeWeightDependence"><code class="docutils literal notranslate"><span class="pre">MultiplicativeWeightDependence</span></code></a><ul>
+<li><a class="reference internal" href="#pyNN.standardmodels.synapses.MultiplicativeWeightDependence.default_parameters"><code class="docutils literal notranslate"><span class="pre">MultiplicativeWeightDependence.default_parameters</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyNN.standardmodels.synapses.AdditivePotentiationMultiplicativeDepression"><code class="docutils literal notranslate"><span class="pre">AdditivePotentiationMultiplicativeDepression</span></code></a><ul>
+<li><a class="reference internal" href="#pyNN.standardmodels.synapses.AdditivePotentiationMultiplicativeDepression.default_parameters"><code class="docutils literal notranslate"><span class="pre">AdditivePotentiationMultiplicativeDepression.default_parameters</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyNN.standardmodels.synapses.GutigWeightDependence"><code class="docutils literal notranslate"><span class="pre">GutigWeightDependence</span></code></a><ul>
+<li><a class="reference internal" href="#pyNN.standardmodels.synapses.GutigWeightDependence.default_parameters"><code class="docutils literal notranslate"><span class="pre">GutigWeightDependence.default_parameters</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#timing-dependence-components">Timing-dependence components</a><ul>
+<li><a class="reference internal" href="#pyNN.standardmodels.STDPTimingDependence"><code class="docutils literal notranslate"><span class="pre">STDPTimingDependence</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.synapses.SpikePairRule"><code class="docutils literal notranslate"><span class="pre">SpikePairRule</span></code></a><ul>
+<li><a class="reference internal" href="#pyNN.standardmodels.synapses.SpikePairRule.describe"><code class="docutils literal notranslate"><span class="pre">SpikePairRule.describe()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.standardmodels.synapses.SpikePairRule.default_parameters"><code class="docutils literal notranslate"><span class="pre">SpikePairRule.default_parameters</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#native-plasticity-models">Native plasticity models</a></li>
+<li><a class="reference internal" href="#nineml-plasticity-models">NineML plasticity models</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="neuronmodels.html"
+                          title="previous chapter">Neuron models</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="electrodes.html"
+                          title="next chapter">Current sources</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/reference/plasticitymodels.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="electrodes.html" title="Current sources"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="neuronmodels.html" title="Neuron models"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api_reference.html" >API reference</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Synapse models</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2022, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    </div>
+  </body>
+</html>

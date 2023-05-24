@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>NEST &#8212; PyNN 0.10.1 documentation</title>
+    <title>NEST &#8212; PyNN 0.11.0.dev documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="NEURON.html" title="NEURON"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.11.0.dev documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../backends.html" accesskey="U">Backends</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">NEST</a></li> 
       </ul>
@@ -142,6 +142,17 @@ efficient method for incorporating precise spike times in globally time-driven
 simulations. <em>Front. Neuroinform.</em> <strong>4</strong>:113.
 <a class="reference external" href="http://dx.doi.org/10.3389/fninf.2010.00113">doi:10.3389/fninf.2010.00113</a></p>
 </section>
+<section id="random-number-generator">
+<h3>Random number generator<a class="headerlink" href="#random-number-generator" title="Permalink to this heading">¶</a></h3>
+<p>To set the seed for the <a class="reference external" href="https://nest-simulator.readthedocs.io/en/stable/guides/random_numbers.html#select-the-type-of-random-number-generator">NEST random number generator</a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">setup</span><span class="p">(</span><span class="n">rng_seed</span><span class="o">=</span><span class="mi">12345</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also choose the type of RNG:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">setup</span><span class="p">(</span><span class="n">rng_type</span><span class="o">=</span><span class="s2">&quot;Philox_32&quot;</span><span class="p">,</span> <span class="n">rng_seed</span><span class="o">=</span><span class="mi">12345</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
 </section>
 <section id="using-native-cell-models">
 <h2>Using native cell models<a class="headerlink" href="#using-native-cell-models" title="Permalink to this heading">¶</a></h2>
@@ -230,6 +241,7 @@ However, they will only deviate from the default when changed manually.</p></li>
 <li><a class="reference internal" href="#">NEST</a><ul>
 <li><a class="reference internal" href="#configuration-options">Configuration options</a><ul>
 <li><a class="reference internal" href="#continuous-time-spiking">Continuous time spiking</a></li>
+<li><a class="reference internal" href="#random-number-generator">Random number generator</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#using-native-cell-models">Using native cell models</a></li>
@@ -288,13 +300,13 @@ However, they will only deviate from the default when changed manually.</p></li>
         <li class="right" >
           <a href="NEURON.html" title="NEURON"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.11.0.dev documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../backends.html" >Backends</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">NEST</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2022, the PyNN community.
+        &#169; Copyright 2006-2023, the PyNN community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
     </div>
   </body>

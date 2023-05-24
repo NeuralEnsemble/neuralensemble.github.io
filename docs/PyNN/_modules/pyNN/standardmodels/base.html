@@ -1,0 +1,448 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyNN.standardmodels.base &#8212; PyNN 0.11.0.dev documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/nature.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../../../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.11.0.dev documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyNN.standardmodels.base</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pyNN.standardmodels.base</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Base classes for standard models</span>
+
+<span class="sd">:copyright: Copyright 2006-2023 by the PyNN team, see AUTHORS.</span>
+<span class="sd">:license: CeCILL, see LICENSE for details.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">neo</span>
+<span class="kn">import</span> <span class="nn">quantities</span> <span class="k">as</span> <span class="nn">pq</span>
+
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">errors</span><span class="p">,</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">..parameters</span> <span class="kn">import</span> <span class="n">ParameterSpace</span>
+
+
+<span class="n">excitatory_receptor_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;excitatory&quot;</span><span class="p">,</span> <span class="s2">&quot;AMPA&quot;</span><span class="p">,</span> <span class="s2">&quot;NMDA&quot;</span><span class="p">]</span>
+<span class="n">inhibitory_receptor_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;inhibitory&quot;</span><span class="p">,</span> <span class="s2">&quot;GABA&quot;</span><span class="p">,</span> <span class="s2">&quot;GABAA&quot;</span><span class="p">,</span> <span class="s2">&quot;GABAB&quot;</span><span class="p">]</span>
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1">#   Standard cells</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<span class="k">def</span> <span class="nf">build_scaling_functions</span><span class="p">(</span><span class="n">pynn_name</span><span class="p">,</span> <span class="n">sim_name</span><span class="p">,</span> <span class="n">scale_factor</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="o">**</span><span class="n">p</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">p</span><span class="p">[</span><span class="n">pynn_name</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale_factor</span>
+
+    <span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="o">**</span><span class="n">p</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">p</span><span class="p">[</span><span class="n">sim_name</span><span class="p">]</span> <span class="o">/</span> <span class="n">scale_factor</span>
+    <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">g</span>
+
+
+<span class="k">def</span> <span class="nf">build_translations</span><span class="p">(</span><span class="o">*</span><span class="n">translation_list</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Build a translation dictionary from a list of translations/transformations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">translations</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">translation_list</span><span class="p">:</span>
+        <span class="n">err_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Translation tuples must have between 2 and 4 items. Actual content: </span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">assert</span> <span class="mi">2</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">err_msg</span>
+        <span class="n">pynn_name</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">sim_name</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># no transformation</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">pynn_name</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="n">sim_name</span>
+            <span class="n">type_</span> <span class="o">=</span> <span class="s2">&quot;simple&quot;</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>  <span class="c1"># simple multiplicative factor</span>
+            <span class="n">scale_factor</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">f</span><span class="p">,</span> <span class="n">g</span> <span class="o">=</span> <span class="n">build_scaling_functions</span><span class="p">(</span><span class="n">pynn_name</span><span class="p">,</span> <span class="n">sim_name</span><span class="p">,</span> <span class="n">scale_factor</span><span class="p">)</span>
+            <span class="n">type_</span> <span class="o">=</span> <span class="s2">&quot;scaled&quot;</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>  <span class="c1"># more complex transformation</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+            <span class="n">type_</span> <span class="o">=</span> <span class="s2">&quot;computed&quot;</span>
+        <span class="n">translations</span><span class="p">[</span><span class="n">pynn_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;translated_name&#39;</span><span class="p">:</span> <span class="n">sim_name</span><span class="p">,</span>
+                                   <span class="s1">&#39;forward_transform&#39;</span><span class="p">:</span> <span class="n">f</span><span class="p">,</span>
+                                   <span class="s1">&#39;reverse_transform&#39;</span><span class="p">:</span> <span class="n">g</span><span class="p">,</span>
+                                   <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">type_</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">translations</span>
+
+
+<span class="k">class</span> <span class="nc">StandardModelType</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">BaseModelType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for standardized cell model and synapse model classes.&quot;&quot;&quot;</span>
+
+    <span class="n">translations</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">extra_parameters</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">native_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A :class:`ParameterSpace` containing parameter names and values</span>
+<span class="sd">        translated from the standard PyNN names and units to simulator-specific</span>
+<span class="sd">        (&quot;native&quot;) names and units.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter_space</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Translate standardized model parameters to simulator-specific parameters.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">copy</span><span class="p">:</span>
+            <span class="n">_parameters</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">_parameters</span> <span class="o">=</span> <span class="n">parameters</span>
+        <span class="bp">cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span>
+        <span class="k">if</span> <span class="n">parameters</span><span class="o">.</span><span class="n">schema</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_schema</span><span class="p">():</span>
+            <span class="c1"># should replace this with a PyNN-specific exception type</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Schemas do not match: </span><span class="si">{</span><span class="n">parameters</span><span class="o">.</span><span class="n">schema</span><span class="si">}</span><span class="s2"> != </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_schema</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">native_parameters</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">D</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">translations</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="n">pname</span> <span class="o">=</span> <span class="n">D</span><span class="p">[</span><span class="s1">&#39;translated_name&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">D</span><span class="p">[</span><span class="s1">&#39;forward_transform&#39;</span><span class="p">]):</span>
+                <span class="n">pval</span> <span class="o">=</span> <span class="n">D</span><span class="p">[</span><span class="s1">&#39;forward_transform&#39;</span><span class="p">](</span><span class="o">**</span><span class="n">_parameters</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">pval</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">D</span><span class="p">[</span><span class="s1">&#39;forward_transform&#39;</span><span class="p">],</span> <span class="nb">globals</span><span class="p">(),</span> <span class="n">_parameters</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">NameError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Problem translating &#39;</span><span class="si">{</span><span class="n">pname</span><span class="si">}</span><span class="s2">&#39; in </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">. &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;Transform: &#39;</span><span class="si">{</span><span class="n">D</span><span class="p">[</span><span class="s1">&#39;forward_transform&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;. Parameters: </span><span class="si">{</span><span class="n">parameters</span><span class="si">}</span><span class="s2">. </span><span class="si">{</span><span class="n">err</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+                <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+                    <span class="k">raise</span>
+            <span class="n">native_parameters</span><span class="p">[</span><span class="n">pname</span><span class="p">]</span> <span class="o">=</span> <span class="n">pval</span>
+        <span class="k">return</span> <span class="n">ParameterSpace</span><span class="p">(</span><span class="n">native_parameters</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">parameters</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">reverse_translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">native_parameters</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Translate simulator-specific model parameters to standardized parameters.&quot;&quot;&quot;</span>
+        <span class="bp">cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span>
+        <span class="n">standard_parameters</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">D</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">translations</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">tname</span> <span class="o">=</span> <span class="n">D</span><span class="p">[</span><span class="s1">&#39;translated_name&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">tname</span> <span class="ow">in</span> <span class="n">native_parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">D</span><span class="p">[</span><span class="s1">&#39;reverse_transform&#39;</span><span class="p">]):</span>
+                    <span class="n">standard_parameters</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">D</span><span class="p">[</span><span class="s1">&#39;reverse_transform&#39;</span><span class="p">](</span><span class="o">**</span><span class="n">native_parameters</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">standard_parameters</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span>
+                            <span class="n">D</span><span class="p">[</span><span class="s1">&#39;reverse_transform&#39;</span><span class="p">],</span> <span class="p">{},</span> <span class="n">native_parameters</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">NameError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;Problem translating &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; in </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">. &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;Transform: &#39;</span><span class="si">{</span><span class="n">D</span><span class="p">[</span><span class="s1">&#39;reverse_transform&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;Parameters: </span><span class="si">{</span><span class="n">native_parameters</span><span class="si">}</span><span class="s2">. </span><span class="si">{</span><span class="n">err</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">ParameterSpace</span><span class="p">(</span><span class="n">standard_parameters</span><span class="p">,</span>
+                              <span class="n">schema</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_schema</span><span class="p">(),</span>
+                              <span class="n">shape</span><span class="o">=</span><span class="n">native_parameters</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">simple_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a list of parameters for which there is a one-to-one</span>
+<span class="sd">        correspondance between standard and native parameter values.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">translations</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">translations</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;simple&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">scaled_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a list of parameters for which there is a unit change between</span>
+<span class="sd">        standard and native parameter values.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">translations</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">translations</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;scaled&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">computed_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a list of parameters whose values must be computed from</span>
+<span class="sd">        more than one other parameter.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">translations</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">translations</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;computed&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">computed_parameters_include</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_names</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">computed_parameters</span><span class="p">()</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">parameter_names</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_native_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">names</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a list of native parameter names for a given model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">names</span><span class="p">:</span>
+            <span class="n">translations</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">translations</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># return all names</span>
+            <span class="n">translations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">translations</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">D</span><span class="p">[</span><span class="s1">&#39;translated_name&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">D</span> <span class="ow">in</span> <span class="n">translations</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="StandardCellType"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.StandardCellType">[docs]</a><span class="k">class</span> <span class="nc">StandardCellType</span><span class="p">(</span><span class="n">StandardModelType</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">BaseCellType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for standardized cell model classes.&quot;&quot;&quot;</span>
+    <span class="n">recordable</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;spikes&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;gsyn&#39;</span><span class="p">]</span>
+    <span class="n">receptor_types</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;excitatory&#39;</span><span class="p">,</span> <span class="s1">&#39;inhibitory&#39;</span><span class="p">)</span>
+    <span class="n">always_local</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># override for NEST spike sources</span></div>
+
+
+<span class="k">class</span> <span class="nc">StandardCellTypeComponent</span><span class="p">(</span><span class="n">StandardModelType</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">BaseCellTypeComponent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;docstring needed&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">StandardPostSynapticResponse</span><span class="p">(</span><span class="n">StandardModelType</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">BasePostSynapticResponse</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;docstring needed&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">set_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+
+
+<span class="k">class</span> <span class="nc">StandardCurrentSource</span><span class="p">(</span><span class="n">StandardModelType</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">BaseCurrentSource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for standardized current source model classes.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">inject_into</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cells</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Inject the current from this source into the supplied group of cells.</span>
+
+<span class="sd">        `cells` may be a :class:`Population`, :class:`PopulationView`,</span>
+<span class="sd">        :class:`Assembly` or a list of :class:`ID` objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Should be redefined in the local simulator electrodes&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;set&quot;</span><span class="p">:</span>
+            <span class="n">err_msg</span> <span class="o">=</span> <span class="s2">&quot;For current sources, set values using the parameter name directly, &quot;</span> \
+                      <span class="s2">&quot;e.g. source.amplitude = 0.5, or use &#39;set_parameters()&#39; &quot;</span> \
+                      <span class="s2">&quot;e.g. source.set_parameters(amplitude=0.5)&quot;</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">err_msg</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_parameters</span><span class="p">()[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">NonExistentParameterError</span><span class="p">(</span><span class="n">name</span><span class="p">,</span>
+                                                       <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+                                                       <span class="bp">self</span><span class="o">.</span><span class="n">get_parameter_names</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">val</span>
+
+    <span class="k">def</span> <span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_parameter</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_parameters</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">value</span><span class="p">})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">parameters</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set current source parameters, given as a sequence of parameter=value arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># if some of the parameters are computed from the values of other</span>
+        <span class="c1"># parameters, need to get and translate all parameters</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">computed_parameters_include</span><span class="p">(</span><span class="n">parameters</span><span class="p">):</span>
+            <span class="n">all_parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_parameters</span><span class="p">()</span>
+            <span class="n">all_parameters</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+            <span class="n">parameters</span> <span class="o">=</span> <span class="n">all_parameters</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">parameters</span> <span class="o">=</span> <span class="n">ParameterSpace</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_schema</span><span class="p">(),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_native_parameters</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a dict of all current source parameters.&quot;&quot;&quot;</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_native_parameters</span><span class="p">()</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reverse_translate</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">parameters</span>
+
+    <span class="k">def</span> <span class="nf">set_native_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="nf">get_native_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="nf">_round_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">resolution</span><span class="p">):</span>
+        <span class="c1"># todo: consider using decimals module,</span>
+        <span class="c1"># since rounding of floating point numbers is so horrible</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">value</span> <span class="o">/</span> <span class="n">resolution</span><span class="p">)</span> <span class="o">*</span> <span class="n">resolution</span>
+
+    <span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the recorded current as a Neo signal object&quot;&quot;&quot;</span>
+        <span class="n">t_arr</span><span class="p">,</span> <span class="n">i_arr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_data</span><span class="p">()</span>
+        <span class="n">intervals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t_arr</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">intervals</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">intervals</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">intervals</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">1e-9</span><span class="p">:</span>
+            <span class="n">signal</span> <span class="o">=</span> <span class="n">neo</span><span class="o">.</span><span class="n">AnalogSignal</span><span class="p">(</span><span class="n">i_arr</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;nA&quot;</span><span class="p">,</span> <span class="n">t_start</span><span class="o">=</span><span class="n">t_arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">pq</span><span class="o">.</span><span class="n">ms</span><span class="p">,</span>
+                                      <span class="n">sampling_period</span><span class="o">=</span><span class="n">intervals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">pq</span><span class="o">.</span><span class="n">ms</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">signal</span> <span class="o">=</span> <span class="n">neo</span><span class="o">.</span><span class="n">IrregularlySampledSignal</span><span class="p">(</span><span class="n">t_arr</span><span class="p">,</span> <span class="n">i_arr</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;nA&quot;</span><span class="p">,</span> <span class="n">time_units</span><span class="o">=</span><span class="s2">&quot;ms&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">signal</span>
+
+
+<span class="k">class</span> <span class="nc">ModelNotAvailable</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Not available for this simulator.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;The </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> model is not available for this simulator.&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1">#   Synapse Dynamics classes</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<span class="k">def</span> <span class="nf">check_weights</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
+    <span class="c1"># if projection.post is an Assembly, some components might have cond-synapses, others curr,</span>
+    <span class="c1"># so need a more sophisticated check here. For now, skipping check and emitting a warning</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="nb">hasattr</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="p">,</span> <span class="s2">&quot;_homogeneous_synapses&quot;</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="ow">not</span> <span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">_homogeneous_synapses</span>     <span class="c1"># noqa: W503</span>
+    <span class="p">):</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Not checking weights due to due mixture of synapse types&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">all_negative</span> <span class="o">=</span> <span class="p">(</span><span class="n">weights</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="n">all_positive</span> <span class="o">=</span> <span class="p">(</span><span class="n">weights</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">all_negative</span> <span class="ow">or</span> <span class="n">all_positive</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">(</span><span class="s2">&quot;Weights must be either all positive or all negative&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">isreal</span><span class="p">(</span><span class="n">weights</span><span class="p">):</span>
+        <span class="n">all_positive</span> <span class="o">=</span> <span class="n">weights</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+        <span class="n">all_negative</span> <span class="o">=</span> <span class="n">weights</span> <span class="o">&lt;=</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">(</span><span class="s2">&quot;Weights must be a number or an array of numbers.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">conductance_based</span> <span class="ow">or</span> <span class="n">projection</span><span class="o">.</span><span class="n">receptor_type</span> <span class="ow">in</span> <span class="n">excitatory_receptor_types</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">all_positive</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">(</span>
+                <span class="s2">&quot;Weights must be positive for conductance-based and/or excitatory synapses&quot;</span>
+            <span class="p">)</span>
+    <span class="k">elif</span> <span class="p">(</span>
+        <span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">conductance_based</span> <span class="ow">is</span> <span class="kc">False</span>
+        <span class="ow">and</span> <span class="n">projection</span><span class="o">.</span><span class="n">receptor_type</span> <span class="ow">in</span> <span class="n">inhibitory_receptor_types</span>  <span class="c1"># noqa: W503</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">all_negative</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">(</span>
+                <span class="s2">&quot;Weights must be negative for current-based, inhibitory synapses&quot;</span>
+            <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># This can happen for multi-synapse models</span>
+        <span class="c1"># if the receptor_type is not one of the commonly used ones</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Can&#39;t check weight, conductance status unknown.&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">check_delays</span><span class="p">(</span><span class="n">delays</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
+    <span class="n">min_delay</span> <span class="o">=</span> <span class="n">projection</span><span class="o">.</span><span class="n">_simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">min_delay</span>
+    <span class="n">max_delay</span> <span class="o">=</span> <span class="n">projection</span><span class="o">.</span><span class="n">_simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">max_delay</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">delays</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">below_max</span> <span class="o">=</span> <span class="p">(</span><span class="n">delays</span> <span class="o">&lt;=</span> <span class="n">max_delay</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="n">above_min</span> <span class="o">=</span> <span class="p">(</span><span class="n">delays</span> <span class="o">&gt;=</span> <span class="n">min_delay</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="n">in_range</span> <span class="o">=</span> <span class="n">below_max</span> <span class="ow">and</span> <span class="n">above_min</span>
+    <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">isreal</span><span class="p">(</span><span class="n">delays</span><span class="p">):</span>
+        <span class="n">in_range</span> <span class="o">=</span> <span class="n">min_delay</span> <span class="o">&lt;=</span> <span class="n">delays</span> <span class="o">&lt;=</span> <span class="n">max_delay</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">(</span><span class="s2">&quot;Delays must be a number or an array of numbers.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">in_range</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Delay (</span><span class="si">{</span><span class="n">delays</span><span class="si">}</span><span class="s2">) is out of range [</span><span class="si">{</span><span class="n">min_delay</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">max_delay</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="StandardSynapseType"><a class="viewcode-back" href="../../../reference/plasticitymodels.html#pyNN.standardmodels.StandardSynapseType">[docs]</a><span class="k">class</span> <span class="nc">StandardSynapseType</span><span class="p">(</span><span class="n">StandardModelType</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">BaseSynapseType</span><span class="p">):</span>
+    <span class="n">parameter_checks</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;weight&#39;</span><span class="p">:</span> <span class="n">check_weights</span><span class="p">,</span>
+        <span class="c1"># &#39;delay&#39;: check_delays  # this needs to be revisited in the context of min_delay = &quot;auto&quot;</span>
+    <span class="p">}</span>
+
+<div class="viewcode-block" id="StandardSynapseType.get_schema"><a class="viewcode-back" href="../../../reference/plasticitymodels.html#pyNN.standardmodels.StandardSynapseType.get_schema">[docs]</a>    <span class="k">def</span> <span class="nf">get_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the model schema: i.e. a mapping of parameter names to allowed</span>
+<span class="sd">        parameter types.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">base_schema</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+                           <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_parameters</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+        <span class="n">base_schema</span><span class="p">[</span><span class="s1">&#39;delay&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span>
+        <span class="c1"># delay has default value None, meaning &quot;use the minimum delay&quot;,</span>
+        <span class="c1"># so we have to correct the auto-generated schema</span>
+        <span class="k">return</span> <span class="n">base_schema</span></div></div>
+
+
+<div class="viewcode-block" id="STDPWeightDependence"><a class="viewcode-back" href="../../../reference/plasticitymodels.html#pyNN.standardmodels.STDPWeightDependence">[docs]</a><span class="k">class</span> <span class="nc">STDPWeightDependence</span><span class="p">(</span><span class="n">StandardModelType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for models of STDP weight dependence.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">parameters</span><span class="p">):</span>
+        <span class="n">StandardModelType</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">parameters</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="STDPTimingDependence"><a class="viewcode-back" href="../../../reference/plasticitymodels.html#pyNN.standardmodels.STDPTimingDependence">[docs]</a><span class="k">class</span> <span class="nc">STDPTimingDependence</span><span class="p">(</span><span class="n">StandardModelType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for models of STDP timing dependence (triplets, etc)&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">parameters</span><span class="p">):</span>
+        <span class="n">StandardModelType</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">parameters</span><span class="p">)</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.11.0.dev documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyNN.standardmodels.base</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2023, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    </div>
+  </body>
+</html>
