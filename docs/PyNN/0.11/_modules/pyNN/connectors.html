@@ -1,0 +1,1197 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyNN.connectors &#8212; PyNN 0.11.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">PyNN 0.11.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyNN.connectors</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pyNN.connectors</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Defines a common implementation of the built-in PyNN Connector classes.</span>
+
+<span class="sd">Simulator modules may use these directly, or may implement their own versions</span>
+<span class="sd">for improved performance.</span>
+
+<span class="sd">:copyright: Copyright 2006-2023 by the PyNN team, see AUTHORS.</span>
+<span class="sd">:license: CeCILL, see LICENSE for details.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">.random</span> <span class="kn">import</span> <span class="n">RandomDistribution</span><span class="p">,</span> <span class="n">AbstractRNG</span><span class="p">,</span> <span class="n">NumpyRNG</span>
+<span class="kn">from</span> <span class="nn">.core</span> <span class="kn">import</span> <span class="n">IndexBasedExpression</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">errors</span><span class="p">,</span> <span class="n">descriptions</span>
+<span class="kn">from</span> <span class="nn">.recording</span> <span class="kn">import</span> <span class="n">files</span>
+<span class="kn">from</span> <span class="nn">.parameters</span> <span class="kn">import</span> <span class="n">LazyArray</span>
+<span class="kn">from</span> <span class="nn">.standardmodels</span> <span class="kn">import</span> <span class="n">StandardSynapseType</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">repeat</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span><span class="p">,</span> <span class="n">deepcopy</span>
+
+<span class="c1"># the following imports are for use within eval()</span>
+<span class="kn">from</span> <span class="nn">lazyarray</span> <span class="kn">import</span> <span class="n">arccos</span><span class="p">,</span> <span class="n">arcsin</span><span class="p">,</span> <span class="n">arctan</span><span class="p">,</span> <span class="n">arctan2</span><span class="p">,</span> <span class="n">ceil</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">cosh</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span> \
+    <span class="n">fabs</span><span class="p">,</span> <span class="n">floor</span><span class="p">,</span> <span class="n">fmod</span><span class="p">,</span> <span class="n">hypot</span><span class="p">,</span> <span class="n">ldexp</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">log10</span><span class="p">,</span> <span class="n">modf</span><span class="p">,</span> <span class="n">power</span><span class="p">,</span> \
+    <span class="n">sin</span><span class="p">,</span> <span class="n">sinh</span><span class="p">,</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">tan</span><span class="p">,</span> <span class="n">tanh</span><span class="p">,</span> <span class="n">maximum</span><span class="p">,</span> <span class="n">minimum</span>  <span class="c1"># noqa: F401</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">e</span><span class="p">,</span> <span class="n">pi</span>  <span class="c1"># noqa: F401</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">csa</span>
+    <span class="n">haveCSA</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">haveCSA</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;PyNN&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_get_rng</span><span class="p">(</span><span class="n">rng</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">AbstractRNG</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">rng</span>
+    <span class="k">elif</span> <span class="n">rng</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">NumpyRNG</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">151985012</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;rng must be either None, or a subclass of pyNN.random.AbstractRNG&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Connector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.Connector">[docs]</a><span class="k">class</span> <span class="nc">Connector</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base class for connectors.</span>
+
+<span class="sd">    All connector sub-classes have the following optional keyword arguments:</span>
+<span class="sd">        `safe`:</span>
+<span class="sd">            if True, check that weights and delays have valid values. If False,</span>
+<span class="sd">            this check is skipped.</span>
+<span class="sd">        `callback`:</span>
+<span class="sd">            a function that will be called with the fractional progress of the</span>
+<span class="sd">            connection routine. An example would be `progress_bar.set_level`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        docstring needed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">safe</span> <span class="o">=</span> <span class="n">safe</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="n">callback</span>
+        <span class="k">if</span> <span class="n">callback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">callable</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Connector.connect"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.Connector.connect">[docs]</a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Connector.get_parameters"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.Connector.get_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">get_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">P</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameter_names</span><span class="p">:</span>
+            <span class="n">P</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">P</span></div>
+
+    <span class="k">def</span> <span class="nf">_generate_distance_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
+        <span class="n">position_generators</span> <span class="o">=</span> <span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">position_generator</span><span class="p">,</span>
+                               <span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">position_generator</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">LazyArray</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">distance_generator</span><span class="p">(</span><span class="o">*</span><span class="n">position_generators</span><span class="p">),</span>
+                         <span class="n">shape</span><span class="o">=</span><span class="n">projection</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_parameters_from_synapse_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">,</span> <span class="n">distance_map</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtain the parameters to be used for the connections from the projection&#39;s `synapse_type`</span>
+<span class="sd">        attribute. Each parameter value is a `LazyArray`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">distance_map</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">distance_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_distance_map</span><span class="p">(</span><span class="n">projection</span><span class="p">)</span>
+        <span class="n">parameter_space</span> <span class="o">=</span> <span class="n">projection</span><span class="o">.</span><span class="n">synapse_type</span><span class="o">.</span><span class="n">native_parameters</span>
+        <span class="c1"># TODO: in the documentation, we claim that a parameter value can be</span>
+        <span class="c1">#       a list or 1D array of the same length as the number of connections.</span>
+        <span class="c1">#       We do not currently handle this scenario, although it is only</span>
+        <span class="c1">#       really useful for fixed-number connectors anyway.</span>
+        <span class="c1">#       Probably the best solution is to remove the parameter at this stage,</span>
+        <span class="c1">#       then set it after the connections have already been created.</span>
+        <span class="n">parameter_space</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="nb">map</span> <span class="ow">in</span> <span class="n">parameter_space</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="nb">map</span><span class="o">.</span><span class="n">base_value</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">map</span><span class="o">.</span><span class="n">base_value</span><span class="p">,</span> <span class="n">IndexBasedExpression</span><span class="p">):</span>
+                    <span class="c1"># Assumes map is a function of index and hence requires the projection to</span>
+                    <span class="c1"># determine its value. It and its index function are copied so as to be able</span>
+                    <span class="c1"># to set the projection without altering the connector, which would perhaps</span>
+                    <span class="c1"># not be expected from the &#39;connect&#39; call.</span>
+                    <span class="n">new_map</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="nb">map</span><span class="p">)</span>
+                    <span class="n">new_map</span><span class="o">.</span><span class="n">base_value</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="nb">map</span><span class="o">.</span><span class="n">base_value</span><span class="p">)</span>
+                    <span class="n">new_map</span><span class="o">.</span><span class="n">base_value</span><span class="o">.</span><span class="n">projection</span> <span class="o">=</span> <span class="n">projection</span>
+                    <span class="n">parameter_space</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_map</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Assumes map is a function of distance</span>
+                    <span class="n">parameter_space</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">distance_map</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">parameter_space</span>
+
+<div class="viewcode-block" id="Connector.describe"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.Connector.describe">[docs]</a>    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="s1">&#39;connector_default.txt&#39;</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a human-readable description of the connection method.</span>
+
+<span class="sd">        The output may be customized by specifying a different template</span>
+<span class="sd">        togther with an associated template engine (see ``pyNN.descriptions``).</span>
+
+<span class="sd">        If template is None, then a dictionary containing the template context</span>
+<span class="sd">        will be returned.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+                   <span class="s1">&#39;parameters&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_parameters</span><span class="p">()}</span>
+        <span class="k">return</span> <span class="n">descriptions</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div></div>
+
+
+<span class="k">class</span> <span class="nc">MapConnector</span><span class="p">(</span><span class="n">Connector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract base class for Connectors based on connection maps, where a map is a 2D lazy array</span>
+<span class="sd">    containing either the (boolean) connectivity matrix (aka adjacency matrix, connection set</span>
+<span class="sd">    mask, etc.) or the values of a synaptic connection parameter.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_standard_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">,</span> <span class="n">connection_map_generator</span><span class="p">,</span> <span class="n">distance_map</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        `connection_map_generator` should be a function or other callable, with one optional</span>
+<span class="sd">        argument `mask`, which returns an iterable.</span>
+
+<span class="sd">        The iterable should produce one element per post-synaptic neuron.</span>
+
+<span class="sd">        Each element should be either:</span>
+<span class="sd">            (i) a boolean array, indicating which of the pre-synaptic neurons</span>
+<span class="sd">                should be connected to,</span>
+<span class="sd">            (ii) an integer array indicating the same thing using indices,</span>
+<span class="sd">            (iii) or a single boolean, meaning connect to all/none.</span>
+
+<span class="sd">        The `mask` argument, a boolean array, can be used to limit processing to just</span>
+<span class="sd">        neurons which exist on the local MPI node.</span>
+
+<span class="sd">        todo: explain the argument `distance_map`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">column_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+        <span class="n">postsynaptic_indices</span> <span class="o">=</span> <span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">id_to_index</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">all_cells</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">synapse_type</span><span class="o">.</span><span class="n">native_parameters</span><span class="o">.</span><span class="n">parallel_safe</span>
+                <span class="ow">or</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;rng&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">parallel_safe</span><span class="p">):</span>
+
+            <span class="c1"># If any of the synapse parameters are based on parallel-safe random number generators,</span>
+            <span class="c1"># we need to iterate over all post-synaptic cells, so we can generate then</span>
+            <span class="c1"># throw away the random numbers for the non-local nodes.</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Parallel-safe iteration.&quot;</span><span class="p">)</span>
+            <span class="n">components</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">column_indices</span><span class="p">,</span>
+                <span class="n">postsynaptic_indices</span><span class="p">,</span>
+                <span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">_mask_local</span><span class="p">,</span>
+                <span class="n">connection_map_generator</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Otherwise, we only need to iterate over local post-synaptic cells.</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">_mask_local</span>
+            <span class="n">components</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">column_indices</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span>
+                <span class="n">postsynaptic_indices</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span>
+                <span class="n">repeat</span><span class="p">(</span><span class="kc">True</span><span class="p">),</span>
+                <span class="n">connection_map_generator</span><span class="p">(</span><span class="n">mask</span><span class="p">))</span>
+
+        <span class="n">parameter_space</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameters_from_synapse_type</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">distance_map</span><span class="p">)</span>
+
+        <span class="c1"># Loop over columns of the connection_map array</span>
+        <span class="c1"># (equivalent to looping over post-synaptic neurons)</span>
+        <span class="k">for</span> <span class="n">count</span><span class="p">,</span> <span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">postsynaptic_index</span><span class="p">,</span> <span class="n">local</span><span class="p">,</span> <span class="n">source_mask</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">components</span><span class="p">)):</span>
+            <span class="c1"># `col`: column index</span>
+            <span class="c1"># `postsynaptic_index`: index of the post-synaptic neuron</span>
+            <span class="c1"># `local`: boolean - does the post-synaptic neuron exist on this MPI node</span>
+            <span class="c1"># `source_mask`: boolean numpy array, indicating which of the pre-synaptic neurons</span>
+            <span class="c1">#                should be connected to, or a single boolean, meaning connect to</span>
+            <span class="c1">#                all/none of the pre-synaptic neurons.</span>
+            <span class="c1">#                It can also be an array of addresses.</span>
+            <span class="n">_proceed</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="n">source_mask</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="n">source_mask</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+                <span class="n">_proceed</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">source_mask</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">source_mask</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="nb">bool</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">source_mask</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+                        <span class="n">_proceed</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">source_mask</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">_proceed</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="n">_proceed</span><span class="p">:</span>
+                <span class="c1"># Convert from boolean to integer mask, if necessary</span>
+                <span class="k">if</span> <span class="n">source_mask</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="n">source_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">source_mask</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="nb">bool</span><span class="p">:</span>
+                    <span class="n">source_mask</span> <span class="o">=</span> <span class="n">source_mask</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+                <span class="c1"># Evaluate the lazy arrays containing the synaptic parameters</span>
+                <span class="n">connection_parameters</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="nb">map</span> <span class="ow">in</span> <span class="n">parameter_space</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="nb">map</span><span class="o">.</span><span class="n">is_homogeneous</span><span class="p">:</span>
+                        <span class="n">connection_parameters</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">map</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">simplify</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">connection_parameters</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">map</span><span class="p">[</span><span class="n">source_mask</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span>
+
+                <span class="c1"># Check that parameter values are valid</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe</span><span class="p">:</span>
+                    <span class="c1"># it might be cheaper to do the weight and delay check before evaluating the</span>
+                    <span class="c1"># larray, however this is challenging to do if the base value is a function or</span>
+                    <span class="c1"># if there are a lot of operations, so for simplicity we do the check after</span>
+                    <span class="c1"># evaluation</span>
+                    <span class="n">syn</span> <span class="o">=</span> <span class="n">projection</span><span class="o">.</span><span class="n">synapse_type</span>
+                    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">syn</span><span class="p">,</span> <span class="s2">&quot;parameter_checks&quot;</span><span class="p">):</span>
+                        <span class="k">for</span> <span class="n">parameter_name</span><span class="p">,</span> <span class="n">check</span> <span class="ow">in</span> <span class="n">syn</span><span class="o">.</span><span class="n">parameter_checks</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                            <span class="n">native_parameter_name</span> <span class="o">=</span> <span class="n">syn</span><span class="o">.</span><span class="n">translations</span><span class="p">[</span><span class="n">parameter_name</span><span class="p">][</span><span class="s2">&quot;translated_name&quot;</span><span class="p">]</span>  <span class="c1"># noqa:E501</span>
+                            <span class="c1"># note that for delays we should also apply units scaling to the check</span>
+                            <span class="c1"># values, since this currently only affects Brian we can probably</span>
+                            <span class="c1"># handle that separately (for weights, checks are all based on zero)</span>
+                            <span class="k">if</span> <span class="n">native_parameter_name</span> <span class="ow">in</span> <span class="n">connection_parameters</span><span class="p">:</span>
+                                <span class="n">check</span><span class="p">(</span><span class="n">connection_parameters</span><span class="p">[</span><span class="n">native_parameter_name</span><span class="p">],</span> <span class="n">projection</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">local</span><span class="p">:</span>
+                    <span class="c1"># Connect the neurons</span>
+                    <span class="n">projection</span><span class="o">.</span><span class="n">_convergent_connect</span><span class="p">(</span>
+                        <span class="n">source_mask</span><span class="p">,</span> <span class="n">postsynaptic_index</span><span class="p">,</span> <span class="o">**</span><span class="n">connection_parameters</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="n">count</span> <span class="o">/</span> <span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">local_size</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_connect_with_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">,</span> <span class="n">connection_map</span><span class="p">,</span> <span class="n">distance_map</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create connections according to a connection map.</span>
+
+<span class="sd">        Arguments:</span>
+
+<span class="sd">            `projection`:</span>
+<span class="sd">                the `Projection` that is being created.</span>
+<span class="sd">            `connection_map`:</span>
+<span class="sd">                a boolean `LazyArray` of the same shape as `projection`,</span>
+<span class="sd">                representing the connectivity matrix.</span>
+<span class="sd">            `distance_map`:</span>
+<span class="sd">                TODO</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Connecting </span><span class="si">%s</span><span class="s2"> using a connection map&quot;</span> <span class="o">%</span> <span class="n">projection</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_standard_connect</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">connection_map</span><span class="o">.</span><span class="n">by_column</span><span class="p">,</span> <span class="n">distance_map</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_connection_map_no_self_connections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">pyNN.common</span> <span class="kn">import</span> <span class="n">Population</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">pre</span><span class="p">,</span> <span class="n">Population</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="p">,</span> <span class="n">Population</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="n">projection</span><span class="o">.</span><span class="n">pre</span> <span class="o">==</span> <span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="p">):</span>
+            <span class="c1"># special case, expected to be faster than the default, below</span>
+            <span class="n">connection_map</span> <span class="o">=</span> <span class="n">LazyArray</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">projection</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># this could be optimized by checking parent or component populations</span>
+            <span class="c1"># but should handle both views and assemblies</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">all_cells</span><span class="p">,</span>
+                                <span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">projection</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">size</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">all_cells</span>
+            <span class="n">connection_map</span> <span class="o">=</span> <span class="n">LazyArray</span><span class="p">(</span><span class="n">a</span> <span class="o">!=</span> <span class="n">b</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">projection</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">connection_map</span>
+
+    <span class="k">def</span> <span class="nf">_get_connection_map_no_mutual_connections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">pyNN.common</span> <span class="kn">import</span> <span class="n">Population</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">pre</span><span class="p">,</span> <span class="n">Population</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="p">,</span> <span class="n">Population</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="n">projection</span><span class="o">.</span><span class="n">pre</span> <span class="o">==</span> <span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="p">):</span>
+            <span class="n">connection_map</span> <span class="o">=</span> <span class="n">LazyArray</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="n">j</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">projection</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;todo&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">connection_map</span>
+
+
+<div class="viewcode-block" id="AllToAllConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.AllToAllConnector">[docs]</a><span class="k">class</span> <span class="nc">AllToAllConnector</span><span class="p">(</span><span class="n">MapConnector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Connects all cells in the presynaptic population to all cells in the</span>
+<span class="sd">    postsynaptic population.</span>
+
+<span class="sd">    Takes any of the standard :class:`Connector` optional arguments and, in</span>
+<span class="sd">    addition:</span>
+
+<span class="sd">        `allow_self_connections`:</span>
+<span class="sd">            if the connector is used to connect a Population to itself, this</span>
+<span class="sd">            flag determines whether a neuron is allowed to connect to itself,</span>
+<span class="sd">            or only to other neurons in the Population.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parameter_names</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;allow_self_connections&#39;</span><span class="p">,)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">allow_self_connections</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new connector.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Connector</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">safe</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">allow_self_connections</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allow_self_connections</span> <span class="o">=</span> <span class="n">allow_self_connections</span>
+
+    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_self_connections</span><span class="p">:</span>
+            <span class="n">connection_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_connection_map_no_self_connections</span><span class="p">(</span><span class="n">projection</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_self_connections</span> <span class="o">==</span> <span class="s1">&#39;NoMutual&#39;</span><span class="p">:</span>
+            <span class="n">connection_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_connection_map_no_mutual_connections</span><span class="p">(</span><span class="n">projection</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">connection_map</span> <span class="o">=</span> <span class="n">LazyArray</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">projection</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connect_with_map</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">connection_map</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="FixedProbabilityConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.FixedProbabilityConnector">[docs]</a><span class="k">class</span> <span class="nc">FixedProbabilityConnector</span><span class="p">(</span><span class="n">MapConnector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    For each pair of pre-post cells, the connection probability is constant.</span>
+
+<span class="sd">    Takes any of the standard :class:`Connector` optional arguments and, in</span>
+<span class="sd">    addition:</span>
+
+<span class="sd">        `p_connect`:</span>
+<span class="sd">            a float between zero and one. Each potential connection is created</span>
+<span class="sd">            with this probability.</span>
+<span class="sd">        `allow_self_connections`:</span>
+<span class="sd">            if the connector is used to connect a Population to itself, this</span>
+<span class="sd">            flag determines whether a neuron is allowed to connect to itself,</span>
+<span class="sd">            or only to other neurons in the Population.</span>
+<span class="sd">        `rng`:</span>
+<span class="sd">            an :class:`RNG` instance used to evaluate whether connections exist</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parameter_names</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;allow_self_connections&#39;</span><span class="p">,</span> <span class="s1">&#39;p_connect&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p_connect</span><span class="p">,</span> <span class="n">allow_self_connections</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="n">rng</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new connector.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Connector</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">safe</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">allow_self_connections</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">or</span> <span class="n">allow_self_connections</span> <span class="o">==</span> <span class="s1">&#39;NoMutual&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allow_self_connections</span> <span class="o">=</span> <span class="n">allow_self_connections</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p_connect</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">p_connect</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_connect</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rng</span> <span class="o">=</span> <span class="n">_get_rng</span><span class="p">(</span><span class="n">rng</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
+        <span class="n">random_map</span> <span class="o">=</span> <span class="n">LazyArray</span><span class="p">(</span><span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;uniform&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">rng</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="p">),</span>
+                               <span class="n">projection</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">connection_map</span> <span class="o">=</span> <span class="n">random_map</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_connect</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_self_connections</span><span class="p">:</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_connection_map_no_self_connections</span><span class="p">(</span><span class="n">projection</span><span class="p">)</span>
+            <span class="n">connection_map</span> <span class="o">*=</span> <span class="n">mask</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_self_connections</span> <span class="o">==</span> <span class="s1">&#39;NoMutual&#39;</span><span class="p">:</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_connection_map_no_mutual_connections</span><span class="p">(</span><span class="n">projection</span><span class="p">)</span>
+            <span class="n">connection_map</span> <span class="o">*=</span> <span class="n">mask</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connect_with_map</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">connection_map</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DistanceDependentProbabilityConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.DistanceDependentProbabilityConnector">[docs]</a><span class="k">class</span> <span class="nc">DistanceDependentProbabilityConnector</span><span class="p">(</span><span class="n">MapConnector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    For each pair of pre-post cells, the connection probability depends on distance.</span>
+
+<span class="sd">    Takes any of the standard :class:`Connector` optional arguments and, in</span>
+<span class="sd">    addition:</span>
+
+<span class="sd">        `d_expression`:</span>
+<span class="sd">            the right-hand side of a valid Python expression for probability,</span>
+<span class="sd">            involving &#39;d&#39;, e.g. &quot;exp(-abs(d))&quot;, or &quot;d&lt;3&quot;</span>
+<span class="sd">        `allow_self_connections`:</span>
+<span class="sd">            if the connector is used to connect a Population to itself, this</span>
+<span class="sd">            flag determines whether a neuron is allowed to connect to itself,</span>
+<span class="sd">            or only to other neurons in the Population.</span>
+<span class="sd">        `rng`:</span>
+<span class="sd">            an :class:`RNG` instance used to evaluate whether connections exist</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parameter_names</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;allow_self_connections&#39;</span><span class="p">,</span> <span class="s1">&#39;d_expression&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d_expression</span><span class="p">,</span> <span class="n">allow_self_connections</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="n">rng</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new connector.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Connector</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">safe</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d_expression</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="n">callable</span><span class="p">(</span><span class="n">d_expression</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">allow_self_connections</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">or</span> <span class="n">allow_self_connections</span> <span class="o">==</span> <span class="s1">&#39;NoMutual&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d_expression</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="mi">0</span>     <span class="c1"># noqa: F841  (`d` is used in eval)</span>
+                <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">d_expression</span><span class="p">),</span> <span class="nb">eval</span><span class="p">(</span><span class="n">d_expression</span><span class="p">)</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="mf">1e12</span>  <span class="c1"># noqa: F841</span>
+                <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">d_expression</span><span class="p">),</span> <span class="nb">eval</span><span class="p">(</span><span class="n">d_expression</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ZeroDivisionError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ZeroDivisionError</span><span class="p">(</span><span class="s2">&quot;Error in the distance expression </span><span class="si">%s</span><span class="s2">. </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span>
+                                    <span class="p">(</span><span class="n">d_expression</span><span class="p">,</span> <span class="n">err</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">d_expression</span> <span class="o">=</span> <span class="n">d_expression</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allow_self_connections</span> <span class="o">=</span> <span class="n">allow_self_connections</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">distance_function</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="s2">&quot;lambda d: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_expression</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rng</span> <span class="o">=</span> <span class="n">_get_rng</span><span class="p">(</span><span class="n">rng</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
+        <span class="n">distance_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_distance_map</span><span class="p">(</span><span class="n">projection</span><span class="p">)</span>
+        <span class="n">probability_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">distance_function</span><span class="p">(</span><span class="n">distance_map</span><span class="p">)</span>
+        <span class="n">random_map</span> <span class="o">=</span> <span class="n">LazyArray</span><span class="p">(</span><span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;uniform&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">rng</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="p">),</span>
+                               <span class="n">projection</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">connection_map</span> <span class="o">=</span> <span class="n">random_map</span> <span class="o">&lt;</span> <span class="n">probability_map</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_self_connections</span><span class="p">:</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_connection_map_no_self_connections</span><span class="p">(</span><span class="n">projection</span><span class="p">)</span>
+            <span class="n">connection_map</span> <span class="o">*=</span> <span class="n">mask</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_self_connections</span> <span class="o">==</span> <span class="s1">&#39;NoMutual&#39;</span><span class="p">:</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_connection_map_no_mutual_connections</span><span class="p">(</span><span class="n">projection</span><span class="p">)</span>
+            <span class="n">connection_map</span> <span class="o">*=</span> <span class="n">mask</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connect_with_map</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">connection_map</span><span class="p">,</span> <span class="n">distance_map</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="IndexBasedProbabilityConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.IndexBasedProbabilityConnector">[docs]</a><span class="k">class</span> <span class="nc">IndexBasedProbabilityConnector</span><span class="p">(</span><span class="n">MapConnector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    For each pair of pre-post cells, the connection probability depends on an arbitrary functions</span>
+<span class="sd">    that takes the indices of the pre and post populations.</span>
+
+<span class="sd">    Takes any of the standard :class:`Connector` optional arguments and, in</span>
+<span class="sd">    addition:</span>
+
+<span class="sd">        `index_expression`:</span>
+<span class="sd">            a function that takes the two cell indices as inputs and calculates the</span>
+<span class="sd">            probability matrix from it.</span>
+<span class="sd">        `allow_self_connections`:</span>
+<span class="sd">            if the connector is used to connect a Population to itself, this</span>
+<span class="sd">            flag determines whether a neuron is allowed to connect to itself,</span>
+<span class="sd">            or only to other neurons in the Population.</span>
+<span class="sd">        `rng`:</span>
+<span class="sd">            an :class:`RNG` instance used to evaluate whether connections exist</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parameter_names</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;allow_self_connections&#39;</span><span class="p">,</span> <span class="s1">&#39;index_expression&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index_expression</span><span class="p">,</span> <span class="n">allow_self_connections</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="n">rng</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new connector.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Connector</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">safe</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">callable</span><span class="p">(</span><span class="n">index_expression</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index_expression</span><span class="p">,</span> <span class="n">IndexBasedExpression</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">allow_self_connections</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">or</span> <span class="n">allow_self_connections</span> <span class="o">==</span> <span class="s1">&#39;NoMutual&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index_expression</span> <span class="o">=</span> <span class="n">index_expression</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allow_self_connections</span> <span class="o">=</span> <span class="n">allow_self_connections</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rng</span> <span class="o">=</span> <span class="n">_get_rng</span><span class="p">(</span><span class="n">rng</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
+        <span class="c1"># The index function is copied so as to avoid the connector being altered by the &quot;connect&quot;</span>
+        <span class="c1"># function, which is probably unexpected behaviour.</span>
+        <span class="n">index_expression</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index_expression</span><span class="p">)</span>
+        <span class="n">index_expression</span><span class="o">.</span><span class="n">projection</span> <span class="o">=</span> <span class="n">projection</span>
+        <span class="n">probability_map</span> <span class="o">=</span> <span class="n">LazyArray</span><span class="p">(</span><span class="n">index_expression</span><span class="p">,</span> <span class="n">projection</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">random_map</span> <span class="o">=</span> <span class="n">LazyArray</span><span class="p">(</span><span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;uniform&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">rng</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="p">),</span>
+                               <span class="n">projection</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">connection_map</span> <span class="o">=</span> <span class="n">random_map</span> <span class="o">&lt;</span> <span class="n">probability_map</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_self_connections</span><span class="p">:</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_connection_map_no_self_connections</span><span class="p">(</span><span class="n">projection</span><span class="p">)</span>
+            <span class="n">connection_map</span> <span class="o">*=</span> <span class="n">mask</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_self_connections</span> <span class="o">==</span> <span class="s1">&#39;NoMutual&#39;</span><span class="p">:</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_connection_map_no_mutual_connections</span><span class="p">(</span><span class="n">projection</span><span class="p">)</span>
+            <span class="n">connection_map</span> <span class="o">*=</span> <span class="n">mask</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connect_with_map</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">connection_map</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DisplacementDependentProbabilityConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.DisplacementDependentProbabilityConnector">[docs]</a><span class="k">class</span> <span class="nc">DisplacementDependentProbabilityConnector</span><span class="p">(</span><span class="n">IndexBasedProbabilityConnector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    For each pair of pre-post cells, the connection probability depends on the</span>
+<span class="sd">    displacement of the two neurons, i.e. on the triplet (dx, dy, dz) where</span>
+<span class="sd">    dx is the distance between the x-coordinates of the two neurons, and so on.</span>
+
+<span class="sd">    Takes any of the standard :class:`Connector` optional arguments and, in</span>
+<span class="sd">    addition:</span>
+
+<span class="sd">        `disp_function`:</span>
+<span class="sd">            the right-hand side of a valid Python expression for probability,</span>
+<span class="sd">            involving an array named &#39;d&#39; whose first dimension has size 3.</span>
+<span class="sd">            e.g. &quot;(d[0] &lt; 3) * (d[1] &lt; 2) * exp(-abs(d[2]))&quot;</span>
+<span class="sd">        `allow_self_connections`:</span>
+<span class="sd">            if the connector is used to connect a Population to itself, this</span>
+<span class="sd">            flag determines whether a neuron is allowed to connect to itself,</span>
+<span class="sd">            or only to other neurons in the Population.</span>
+<span class="sd">        `rng`:</span>
+<span class="sd">            an :class:`RNG` instance used to evaluate whether connections exist</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">class</span> <span class="nc">DisplacementExpression</span><span class="p">(</span><span class="n">IndexBasedExpression</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A displacement based expression function used to determine the connection probability</span>
+<span class="sd">        and the value of variable connection parameters of a projection</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">disp_function</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            `disp_function`: a function that takes a 3xN numpy displacement matrix and maps each</span>
+<span class="sd">                             row (displacement) to a probability between 0 and 1</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_disp_function</span> <span class="o">=</span> <span class="n">disp_function</span>
+
+        <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+            <span class="n">disp</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">projection</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disp_function</span><span class="p">(</span><span class="n">disp</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">disp_function</span><span class="p">,</span> <span class="n">allow_self_connections</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="n">rng</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DisplacementDependentProbabilityConnector</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">DisplacementExpression</span><span class="p">(</span><span class="n">disp_function</span><span class="p">),</span>
+            <span class="n">allow_self_connections</span><span class="o">=</span><span class="n">allow_self_connections</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="FromListConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.FromListConnector">[docs]</a><span class="k">class</span> <span class="nc">FromListConnector</span><span class="p">(</span><span class="n">Connector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Make connections according to a list.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        `conn_list`:</span>
+<span class="sd">            a list of tuples, one tuple for each connection. Each tuple should contain:</span>
+<span class="sd">            `(pre_idx, post_idx, p1, p2, ..., pn)` where `pre_idx` is the index</span>
+<span class="sd">            (i.e. order in the Population, not the ID) of the presynaptic</span>
+<span class="sd">            neuron, `post_idx` is the index of the postsynaptic neuron, and</span>
+<span class="sd">            p1, p2, etc. are the synaptic parameters (e.g. weight, delay,</span>
+<span class="sd">            plasticity parameters).</span>
+<span class="sd">        `column_names`:</span>
+<span class="sd">            the names of the parameters p1, p2, etc. If not provided, it is</span>
+<span class="sd">            assumed the parameters are &#39;weight&#39;, &#39;delay&#39; (for backwards</span>
+<span class="sd">            compatibility). This should be specified using a tuple.</span>
+<span class="sd">        `safe`:</span>
+<span class="sd">            if True, check that weights and delays have valid values. If False,</span>
+<span class="sd">            this check is skipped.</span>
+<span class="sd">        `callback`:</span>
+<span class="sd">            if True, display a progress bar on the terminal.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parameter_names</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;conn_list&#39;</span><span class="p">,)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn_list</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new connector.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Connector</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="n">safe</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conn_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">conn_list</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">conn_list</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">n_columns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn_list</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">column_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">n_columns</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">column_names</span> <span class="o">=</span> <span class="p">()</span>
+                <span class="k">elif</span> <span class="n">n_columns</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">column_names</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;weight&#39;</span><span class="p">,</span> <span class="s1">&#39;delay&#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Argument &#39;column_names&#39; is required.&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">column_names</span> <span class="o">=</span> <span class="n">column_names</span>
+                <span class="k">if</span> <span class="n">n_columns</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column_names</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;connection list has </span><span class="si">{</span><span class="n">n_columns</span> <span class="o">-</span> <span class="mi">2</span><span class="si">}</span><span class="s2"> parameter columns, &quot;</span>
+                                     <span class="sa">f</span><span class="s2">&quot;but </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column_names</span><span class="p">)</span><span class="si">}</span><span class="s2"> column names provided.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">column_names</span> <span class="o">=</span> <span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Connect-up a Projection.&quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;conn_list (original) = </span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn_list</span><span class="p">)</span>
+        <span class="n">synapse_parameter_names</span> <span class="o">=</span> <span class="n">projection</span><span class="o">.</span><span class="n">synapse_type</span><span class="o">.</span><span class="n">get_parameter_names</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">column_names</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">synapse_parameter_names</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> is not a valid parameter for </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                                 <span class="n">name</span><span class="p">,</span> <span class="n">projection</span><span class="o">.</span><span class="n">synapse_type</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn_list</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conn_list</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">projection</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">(</span><span class="s2">&quot;source index out of range&quot;</span><span class="p">)</span>
+        <span class="c1"># need to do some profiling, to figure out the best way to do this:</span>
+        <span class="c1">#  - order of sorting/filtering by local</span>
+        <span class="c1">#  - use np.unique, or just do in1d(self.conn_list)?</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conn_list</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">targets</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conn_list</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">local</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">in1d</span><span class="p">(</span><span class="n">targets</span><span class="p">,</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">size</span><span class="p">)[</span><span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">_mask_local</span><span class="p">],</span>
+                        <span class="n">assume_unique</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">local_targets</span> <span class="o">=</span> <span class="n">targets</span><span class="p">[</span><span class="n">local</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conn_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn_list</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">left</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conn_list</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">local_targets</span><span class="p">,</span> <span class="s1">&#39;left&#39;</span><span class="p">)</span>
+        <span class="n">right</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conn_list</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">local_targets</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;idx = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;targets = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;local_targets = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">local_targets</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;conn_list (sorted by target) = </span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn_list</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;left = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">left</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;right = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">tgt</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">local_targets</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+            <span class="n">sources</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn_list</span><span class="p">[</span><span class="n">l</span><span class="p">:</span><span class="n">r</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+            <span class="n">connection_parameters</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">synapse_type</span><span class="o">.</span><span class="n">parameter_space</span><span class="p">)</span>
+
+            <span class="n">connection_parameters</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">r</span> <span class="o">-</span> <span class="n">l</span><span class="p">,)</span>
+            <span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column_names</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+                <span class="n">connection_parameters</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn_list</span><span class="p">[</span><span class="n">l</span><span class="p">:</span><span class="n">r</span><span class="p">,</span> <span class="n">col</span><span class="p">]})</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">synapse_type</span><span class="p">,</span> <span class="n">StandardSynapseType</span><span class="p">):</span>
+                <span class="n">connection_parameters</span> <span class="o">=</span> <span class="n">projection</span><span class="o">.</span><span class="n">synapse_type</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span>
+                    <span class="n">connection_parameters</span><span class="p">)</span>
+            <span class="n">connection_parameters</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span>
+            <span class="n">projection</span><span class="o">.</span><span class="n">_convergent_connect</span><span class="p">(</span><span class="n">sources</span><span class="p">,</span> <span class="n">tgt</span><span class="p">,</span> <span class="o">**</span><span class="n">connection_parameters</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="FromFileConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.FromFileConnector">[docs]</a><span class="k">class</span> <span class="nc">FromFileConnector</span><span class="p">(</span><span class="n">FromListConnector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Make connections according to a list read from a file.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        `file`:</span>
+<span class="sd">            either an open file object or the filename of a file containing a</span>
+<span class="sd">            list of connections, in the format required by `FromListConnector`.</span>
+<span class="sd">            Column headers, if included in the file,  must be specified using</span>
+<span class="sd">            a list or tuple, e.g.::</span>
+
+<span class="sd">                # columns = [&quot;i&quot;, &quot;j&quot;, &quot;weight&quot;, &quot;delay&quot;, &quot;U&quot;, &quot;tau_rec&quot;]</span>
+
+<span class="sd">            Note that the header requires `#` at the beginning of the line.</span>
+
+<span class="sd">        `distributed`:</span>
+<span class="sd">            if this is True, then each node will read connections from a file</span>
+<span class="sd">            called `filename.x`, where `x` is the MPI rank. This speeds up</span>
+<span class="sd">            loading connections for distributed simulations.</span>
+<span class="sd">        `safe`:</span>
+<span class="sd">            if True, check that weights and delays have valid values. If False,</span>
+<span class="sd">            this check is skipped.</span>
+<span class="sd">        `callback`:</span>
+<span class="sd">            if True, display a progress bar on the terminal.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parameter_names</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="s1">&#39;distributed&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">distributed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new connector.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Connector</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="n">safe</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">file</span> <span class="o">=</span> <span class="n">files</span><span class="o">.</span><span class="n">StandardTextFile</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">distributed</span> <span class="o">=</span> <span class="n">distributed</span>
+
+    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Connect-up a Projection.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">distributed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                                        <span class="n">projection</span><span class="o">.</span><span class="n">_simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">mpi_rank</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">column_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;columns&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;weight&#39;</span><span class="p">,</span> <span class="s1">&#39;delay&#39;</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">ignore</span> <span class="ow">in</span> <span class="s2">&quot;ij&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ignore</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">column_names</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">column_names</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">ignore</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conn_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">FromListConnector</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">)</span></div>
+
+
+<span class="k">class</span> <span class="nc">FixedNumberConnector</span><span class="p">(</span><span class="n">MapConnector</span><span class="p">):</span>
+    <span class="c1"># base class - should not be instantiated</span>
+    <span class="n">parameter_names</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;allow_self_connections&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">allow_self_connections</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_replacement</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">rng</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new connector.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Connector</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">safe</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">allow_self_connections</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">or</span> <span class="n">allow_self_connections</span> <span class="o">==</span> <span class="s1">&#39;NoMutual&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allow_self_connections</span> <span class="o">=</span> <span class="n">allow_self_connections</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">with_replacement</span> <span class="o">=</span> <span class="n">with_replacement</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">assert</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">RandomDistribution</span><span class="p">):</span>
+            <span class="c1"># weak check that the random distribution is ok</span>
+            <span class="n">err_msg</span> <span class="o">=</span> <span class="s2">&quot;the random distribution produces negative numbers&quot;</span>
+            <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">),</span> <span class="n">err_msg</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;n must be an integer or a RandomDistribution object&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rng</span> <span class="o">=</span> <span class="n">_get_rng</span><span class="p">(</span><span class="n">rng</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_rng_uniform_int_exclude</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">exclude</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s1">&#39;uniform_int&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;low&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;high&quot;</span><span class="p">:</span> <span class="n">size</span><span class="p">},</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;RNG0 res=</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">res</span><span class="p">)</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">res</span> <span class="o">==</span> <span class="n">exclude</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;RNG1 exclude=</span><span class="si">%d</span><span class="s2">, res=</span><span class="si">%s</span><span class="s2"> idx=</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">exclude</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">idx</span><span class="p">))</span>
+        <span class="k">while</span> <span class="n">idx</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">redrawn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="n">idx</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="s1">&#39;uniform_int&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;low&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;high&quot;</span><span class="p">:</span> <span class="n">size</span><span class="p">},</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+            <span class="n">res</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">redrawn</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">idx</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">res</span> <span class="o">==</span> <span class="n">exclude</span><span class="p">)[</span><span class="mi">0</span><span class="p">]]</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;RNG2 exclude=</span><span class="si">%d</span><span class="s2"> redrawn=</span><span class="si">%s</span><span class="s2"> res=</span><span class="si">%s</span><span class="s2"> idx=</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">exclude</span><span class="p">,</span> <span class="n">redrawn</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">idx</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">res</span>
+
+
+<div class="viewcode-block" id="FixedNumberPostConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.FixedNumberPostConnector">[docs]</a><span class="k">class</span> <span class="nc">FixedNumberPostConnector</span><span class="p">(</span><span class="n">FixedNumberConnector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Each pre-synaptic neuron is connected to exactly `n` post-synaptic neurons</span>
+<span class="sd">    chosen at random.</span>
+
+<span class="sd">    The sampling behaviour is controlled by the `with_replacement` argument.</span>
+
+<span class="sd">    &quot;With replacement&quot; means that each post-synaptic neuron is chosen from the</span>
+<span class="sd">    entire population. There is always therefore a possibility of multiple</span>
+<span class="sd">    connections between a given pair of neurons.</span>
+
+<span class="sd">    &quot;Without replacement&quot; means that once a neuron has been selected, it cannot</span>
+<span class="sd">    be selected again until the entire population has been selected. This means</span>
+<span class="sd">    that if `n` is less than the size of the post-synaptic population, there</span>
+<span class="sd">    are no multiple connections. If `n` is greater than the size of the post-</span>
+<span class="sd">    synaptic population, all possible single connections are made before</span>
+<span class="sd">    starting to add duplicate connections.</span>
+
+<span class="sd">    Takes any of the standard :class:`Connector` optional arguments and, in</span>
+<span class="sd">    addition:</span>
+
+<span class="sd">        `n`:</span>
+<span class="sd">            either a positive integer, or a `RandomDistribution` that produces</span>
+<span class="sd">            positive integers. If `n` is a `RandomDistribution`, then the</span>
+<span class="sd">            number of post-synaptic neurons is drawn from this distribution</span>
+<span class="sd">            for each pre-synaptic neuron.</span>
+<span class="sd">        `with_replacement`:</span>
+<span class="sd">            if True, the selection of neurons to connect is made from the</span>
+<span class="sd">            entire population. If False, once a neuron is selected it cannot</span>
+<span class="sd">            be selected again until the entire population has been connected.</span>
+<span class="sd">        `allow_self_connections`:</span>
+<span class="sd">            if the connector is used to connect a Population to itself, this</span>
+<span class="sd">            flag determines whether a neuron is allowed to connect to itself,</span>
+<span class="sd">            or only to other neurons in the Population.</span>
+<span class="sd">        `rng`:</span>
+<span class="sd">            an :class:`RNG` instance used to evaluate which potential connections</span>
+<span class="sd">            are created.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_get_num_post</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">n_post</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">n_post</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">n_post</span>
+
+    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
+        <span class="n">connections</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">size</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">source_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_num_post</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">with_replacement</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_self_connections</span> <span class="ow">and</span> <span class="n">projection</span><span class="o">.</span><span class="n">pre</span> <span class="o">==</span> <span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="p">:</span>
+                    <span class="n">targets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rng_uniform_int_exclude</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">source_index</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">targets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">next</span><span class="p">(</span>
+                        <span class="n">n</span><span class="p">,</span> <span class="s1">&#39;uniform_int&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;low&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;high&quot;</span><span class="p">:</span> <span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">size</span><span class="p">},</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">all_cells</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_self_connections</span> <span class="ow">and</span> <span class="n">projection</span><span class="o">.</span><span class="n">pre</span> <span class="o">==</span> <span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="p">:</span>
+                    <span class="n">all_cells</span> <span class="o">=</span> <span class="n">all_cells</span><span class="p">[</span><span class="n">all_cells</span> <span class="o">!=</span> <span class="n">source_index</span><span class="p">]</span>
+                <span class="n">full_sets</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="n">all_cells</span><span class="o">.</span><span class="n">size</span>
+                <span class="n">remainder</span> <span class="o">=</span> <span class="n">n</span> <span class="o">%</span> <span class="n">all_cells</span><span class="o">.</span><span class="n">size</span>
+                <span class="n">target_sets</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">if</span> <span class="n">full_sets</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">target_sets</span> <span class="o">=</span> <span class="p">[</span><span class="n">all_cells</span><span class="p">]</span> <span class="o">*</span> <span class="n">full_sets</span>
+                <span class="k">if</span> <span class="n">remainder</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">target_sets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">all_cells</span><span class="p">)[:</span><span class="n">remainder</span><span class="p">])</span>
+                <span class="n">targets</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">target_sets</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="n">targets</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">n</span>
+            <span class="k">for</span> <span class="n">target_index</span> <span class="ow">in</span> <span class="n">targets</span><span class="p">:</span>
+                <span class="n">connections</span><span class="p">[</span><span class="n">target_index</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">source_index</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">build_source_masks</span><span class="p">(</span><span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">connections</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">connections</span><span class="p">)[</span><span class="n">mask</span><span class="p">]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_standard_connect</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">build_source_masks</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="FixedNumberPreConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.FixedNumberPreConnector">[docs]</a><span class="k">class</span> <span class="nc">FixedNumberPreConnector</span><span class="p">(</span><span class="n">FixedNumberConnector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Each post-synaptic neuron is connected to exactly `n` pre-synaptic neurons</span>
+<span class="sd">    chosen at random.</span>
+
+<span class="sd">    The sampling behaviour is controlled by the `with_replacement` argument.</span>
+
+<span class="sd">    &quot;With replacement&quot; means that each pre-synaptic neuron is chosen from the</span>
+<span class="sd">    entire population. There is always therefore a possibility of multiple</span>
+<span class="sd">    connections between a given pair of neurons.</span>
+
+<span class="sd">    &quot;Without replacement&quot; means that once a neuron has been selected, it cannot</span>
+<span class="sd">    be selected again until the entire population has been selected. This means</span>
+<span class="sd">    that if `n` is less than the size of the pre-synaptic population, there</span>
+<span class="sd">    are no multiple connections. If `n` is greater than the size of the pre-</span>
+<span class="sd">    synaptic population, all possible single connections are made before</span>
+<span class="sd">    starting to add duplicate connections.</span>
+
+<span class="sd">    Takes any of the standard :class:`Connector` optional arguments and, in</span>
+<span class="sd">    addition:</span>
+
+<span class="sd">        `n`:</span>
+<span class="sd">            either a positive integer, or a `RandomDistribution` that produces</span>
+<span class="sd">            positive integers. If `n` is a `RandomDistribution`, then the</span>
+<span class="sd">            number of pre-synaptic neurons is drawn from this distribution</span>
+<span class="sd">            for each post-synaptic neuron.</span>
+<span class="sd">        `with_replacement`:</span>
+<span class="sd">            if True, the selection of neurons to connect is made from the</span>
+<span class="sd">            entire population. If False, once a neuron is selected it cannot</span>
+<span class="sd">            be selected again until the entire population has been connected.</span>
+<span class="sd">        `allow_self_connections`:</span>
+<span class="sd">            if the connector is used to connect a Population to itself, this</span>
+<span class="sd">            flag determines whether a neuron is allowed to connect to itself,</span>
+<span class="sd">            or only to other neurons in the Population.</span>
+<span class="sd">        `rng`:</span>
+<span class="sd">            an :class:`RNG` instance used to evaluate which potential connections</span>
+<span class="sd">            are created.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_get_num_pre</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">n_pre</span> <span class="o">=</span> <span class="n">repeat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">n_pre</span> <span class="o">=</span> <span class="n">repeat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">mask</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">n_pre</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">parallel_safe</span><span class="p">:</span>
+                    <span class="n">n_pre</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="n">size</span><span class="p">)[</span><span class="n">mask</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">n_pre</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="n">mask</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">n_pre</span>
+
+    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">with_replacement</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_self_connections</span> <span class="ow">or</span> <span class="n">projection</span><span class="o">.</span><span class="n">pre</span> <span class="o">!=</span> <span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="p">:</span>
+                <span class="k">def</span> <span class="nf">build_source_masks</span><span class="p">(</span><span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                    <span class="n">n_pre</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_num_pre</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">n_pre</span><span class="p">:</span>
+                        <span class="n">sources</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">next</span><span class="p">(</span>
+                            <span class="n">n</span><span class="p">,</span> <span class="s1">&#39;uniform_int&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;low&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;high&quot;</span><span class="p">:</span> <span class="n">projection</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">size</span><span class="p">},</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+                        <span class="k">assert</span> <span class="n">sources</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">n</span>
+                        <span class="k">yield</span> <span class="n">sources</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">def</span> <span class="nf">build_source_masks</span><span class="p">(</span><span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                    <span class="n">n_pre</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_num_pre</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">parallel_safe</span> <span class="ow">or</span> <span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">n_pre</span><span class="p">):</span>
+                            <span class="n">sources</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rng_uniform_int_exclude</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">projection</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                            <span class="k">assert</span> <span class="n">sources</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">n</span>
+                            <span class="k">yield</span> <span class="n">sources</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># TODO: use mask to obtain indices i</span>
+                        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                            <span class="s2">&quot;allow_self_connections=False currently requires a parallel safe RNG.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_self_connections</span> <span class="ow">or</span> <span class="n">projection</span><span class="o">.</span><span class="n">pre</span> <span class="o">!=</span> <span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="p">:</span>
+                <span class="k">def</span> <span class="nf">build_source_masks</span><span class="p">(</span><span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                    <span class="c1"># where n &gt; projection.pre.size, first all pre-synaptic cells</span>
+                    <span class="c1"># are connected one or more times, then the remainder</span>
+                    <span class="c1"># are chosen randomly</span>
+                    <span class="n">n_pre</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_num_pre</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+                    <span class="n">all_cells</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">n_pre</span><span class="p">:</span>
+                        <span class="n">full_sets</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="n">projection</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">size</span>
+                        <span class="n">remainder</span> <span class="o">=</span> <span class="n">n</span> <span class="o">%</span> <span class="n">projection</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">size</span>
+                        <span class="n">source_sets</span> <span class="o">=</span> <span class="p">[]</span>
+                        <span class="k">if</span> <span class="n">full_sets</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="n">source_sets</span> <span class="o">=</span> <span class="p">[</span><span class="n">all_cells</span><span class="p">]</span> <span class="o">*</span> <span class="n">full_sets</span>
+                        <span class="k">if</span> <span class="n">remainder</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="n">source_sets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">all_cells</span><span class="p">)[:</span><span class="n">remainder</span><span class="p">])</span>
+                        <span class="n">sources</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">source_sets</span><span class="p">)</span>
+                        <span class="k">assert</span> <span class="n">sources</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">n</span>
+                        <span class="k">yield</span> <span class="n">sources</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">def</span> <span class="nf">build_source_masks</span><span class="p">(</span><span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                    <span class="c1"># where n &gt; projection.pre.size, first all pre-synaptic cells</span>
+                    <span class="c1"># are connected one or more times, then the remainder</span>
+                    <span class="c1"># are chosen randomly</span>
+                    <span class="n">n_pre</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_num_pre</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+                    <span class="n">all_cells</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">parallel_safe</span> <span class="ow">or</span> <span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">n_pre</span><span class="p">):</span>
+                            <span class="n">full_sets</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                            <span class="n">remainder</span> <span class="o">=</span> <span class="n">n</span> <span class="o">%</span> <span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                            <span class="n">allowed_cells</span> <span class="o">=</span> <span class="n">all_cells</span><span class="p">[</span><span class="n">all_cells</span> <span class="o">!=</span> <span class="n">i</span><span class="p">]</span>
+                            <span class="n">source_sets</span> <span class="o">=</span> <span class="p">[]</span>
+                            <span class="k">if</span> <span class="n">full_sets</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                                <span class="n">source_sets</span> <span class="o">=</span> <span class="p">[</span><span class="n">allowed_cells</span><span class="p">]</span> <span class="o">*</span> <span class="n">full_sets</span>
+                            <span class="k">if</span> <span class="n">remainder</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                                <span class="n">source_sets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">allowed_cells</span><span class="p">)[:</span><span class="n">remainder</span><span class="p">])</span>
+                            <span class="n">sources</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">source_sets</span><span class="p">)</span>
+                            <span class="k">assert</span> <span class="n">sources</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">n</span>
+                            <span class="k">yield</span> <span class="n">sources</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                            <span class="s2">&quot;allow_self_connections=False currently requires a parallel safe RNG.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_standard_connect</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">build_source_masks</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OneToOneConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.OneToOneConnector">[docs]</a><span class="k">class</span> <span class="nc">OneToOneConnector</span><span class="p">(</span><span class="n">MapConnector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Where the pre- and postsynaptic populations have the same size, connect</span>
+<span class="sd">    cell *i* in the presynaptic population to cell *i* in the postsynaptic</span>
+<span class="sd">    population for all *i*.</span>
+
+<span class="sd">    Takes any of the standard :class:`Connector` optional arguments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parameter_names</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Connect-up a Projection.&quot;&quot;&quot;</span>
+        <span class="n">connection_map</span> <span class="o">=</span> <span class="n">LazyArray</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">projection</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connect_with_map</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">connection_map</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SmallWorldConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.SmallWorldConnector">[docs]</a><span class="k">class</span> <span class="nc">SmallWorldConnector</span><span class="p">(</span><span class="n">Connector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Connect cells so as to create a small-world network.</span>
+
+<span class="sd">    Takes any of the standard :class:`Connector` optional arguments and, in</span>
+<span class="sd">    addition:</span>
+
+<span class="sd">        `degree`:</span>
+<span class="sd">            the region length where nodes will be connected locally.</span>
+<span class="sd">        `rewiring`:</span>
+<span class="sd">            the probability of rewiring each edge.</span>
+<span class="sd">        `allow_self_connections`:</span>
+<span class="sd">            if the connector is used to connect a Population to itself, this</span>
+<span class="sd">            flag determines whether a neuron is allowed to connect to itself,</span>
+<span class="sd">            or only to other neurons in the Population.</span>
+<span class="sd">        `n_connections`:</span>
+<span class="sd">            if specified, the number of efferent synaptic connections per neuron.</span>
+<span class="sd">        `rng`:</span>
+<span class="sd">            an :class:`RNG` instance used to evaluate which connections</span>
+<span class="sd">            are created.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parameter_names</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;allow_self_connections&#39;</span><span class="p">,</span> <span class="s1">&#39;degree&#39;</span><span class="p">,</span> <span class="s1">&#39;rewiring&#39;</span><span class="p">,</span> <span class="s1">&#39;n_connections&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">rewiring</span><span class="p">,</span> <span class="n">allow_self_connections</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="n">n_connections</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new connector.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Connector</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">safe</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">rewiring</span> <span class="o">&lt;=</span> <span class="mi">1</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">allow_self_connections</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">or</span> <span class="n">allow_self_connections</span> <span class="o">==</span> <span class="s1">&#39;NoMutual&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rewiring</span> <span class="o">=</span> <span class="n">rewiring</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">d_expression</span> <span class="o">=</span> <span class="s2">&quot;d &lt; </span><span class="si">%g</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">degree</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allow_self_connections</span> <span class="o">=</span> <span class="n">allow_self_connections</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_connections</span> <span class="o">=</span> <span class="n">n_connections</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rng</span> <span class="o">=</span> <span class="n">_get_rng</span><span class="p">(</span><span class="n">rng</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Connect-up a Projection.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="CSAConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.CSAConnector">[docs]</a><span class="k">class</span> <span class="nc">CSAConnector</span><span class="p">(</span><span class="n">MapConnector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Use the Connection Set Algebra (Djurfeldt, 2012) to connect cells.</span>
+
+<span class="sd">    Takes any of the standard :class:`Connector` optional arguments and, in</span>
+<span class="sd">    addition:</span>
+
+<span class="sd">        `cset`:</span>
+<span class="sd">            a connection set object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parameter_names</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;cset&#39;</span><span class="p">,)</span>
+
+    <span class="k">if</span> <span class="n">haveCSA</span><span class="p">:</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cset</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">Connector</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="n">safe</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cset</span> <span class="o">=</span> <span class="n">cset</span>
+            <span class="n">arity</span> <span class="o">=</span> <span class="n">csa</span><span class="o">.</span><span class="n">arity</span><span class="p">(</span><span class="n">cset</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="n">arity</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;must specify mask or connection-set with arity 0 or 2&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cset</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;CSAConnector not available---couldn&#39;t import csa module&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Connect-up a Projection.&quot;&quot;&quot;</span>
+        <span class="c1"># Cut out finite part</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">csa</span><span class="o">.</span><span class="n">cross</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="n">projection</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">cset</span>  <span class="c1"># can&#39;t we cut out just the columns we want?</span>
+
+        <span class="k">if</span> <span class="n">csa</span><span class="o">.</span><span class="n">arity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cset</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="c1"># Connection-set with arity 2</span>
+            <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">delay</span><span class="p">)</span> <span class="ow">in</span> <span class="n">c</span><span class="p">:</span>
+                <span class="n">projection</span><span class="o">.</span><span class="n">_convergent_connect</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">projection</span><span class="o">.</span><span class="n">pre</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">weight</span><span class="p">,</span> <span class="n">delay</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">csa</span><span class="o">.</span><span class="n">arity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cset</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># inefficient implementation as a starting point</span>
+            <span class="n">connection_map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">projection</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">size</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">addr</span> <span class="ow">in</span> <span class="n">c</span><span class="p">:</span>
+                <span class="n">connection_map</span><span class="p">[</span><span class="n">addr</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_connect_with_map</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">LazyArray</span><span class="p">(</span><span class="n">connection_map</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="CloneConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.CloneConnector">[docs]</a><span class="k">class</span> <span class="nc">CloneConnector</span><span class="p">(</span><span class="n">MapConnector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Connects cells with the same connectivity pattern as a previous projection.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parameter_names</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;reference_projection&#39;</span><span class="p">,)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reference_projection</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new CloneConnector.</span>
+
+<span class="sd">        `reference_projection` -- the projection to clone the connectivity pattern from</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">MapConnector</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">safe</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reference_projection</span> <span class="o">=</span> <span class="n">reference_projection</span>
+
+    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">pre</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_projection</span><span class="o">.</span><span class="n">pre</span> <span class="ow">or</span>
+                <span class="n">projection</span><span class="o">.</span><span class="n">post</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_projection</span><span class="o">.</span><span class="n">post</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">(</span>
+                <span class="s2">&quot;Pre and post populations must match between reference (</span><span class="si">{0}</span><span class="s2">&quot;</span>
+                <span class="s2">&quot; and </span><span class="si">{1}</span><span class="s2">) and clone projections (</span><span class="si">{2}</span><span class="s2"> and </span><span class="si">{3}</span><span class="s2">) for CloneConnector&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">reference_projection</span><span class="o">.</span><span class="n">pre</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">reference_projection</span><span class="o">.</span><span class="n">post</span><span class="p">,</span>
+                    <span class="n">projection</span><span class="o">.</span><span class="n">pre</span><span class="p">,</span> <span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="p">))</span>
+        <span class="n">connection_map</span> <span class="o">=</span> <span class="n">LazyArray</span><span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reference_projection</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="s1">&#39;weight&#39;</span><span class="p">],</span> <span class="s1">&#39;array&#39;</span><span class="p">,</span>
+                                                                           <span class="n">gather</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connect_with_map</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">connection_map</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ArrayConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.ArrayConnector">[docs]</a><span class="k">class</span> <span class="nc">ArrayConnector</span><span class="p">(</span><span class="n">MapConnector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Provide an explicit boolean connection matrix, with shape (m, n) where m is</span>
+<span class="sd">    the size of the presynaptic population and n that of the postsynaptic</span>
+<span class="sd">    population.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parameter_names</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;array&#39;</span><span class="p">,)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new connector.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Connector</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">safe</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">array</span> <span class="o">=</span> <span class="n">array</span>
+
+    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
+        <span class="n">connection_map</span> <span class="o">=</span> <span class="n">LazyArray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">projection</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connect_with_map</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">connection_map</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="FixedTotalNumberConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.FixedTotalNumberConnector">[docs]</a><span class="k">class</span> <span class="nc">FixedTotalNumberConnector</span><span class="p">(</span><span class="n">FixedNumberConnector</span><span class="p">):</span>
+    <span class="n">parameter_names</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;allow_self_connections&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">allow_self_connections</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_replacement</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="n">rng</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new connector.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Connector</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">safe</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">allow_self_connections</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">or</span> <span class="n">allow_self_connections</span> <span class="o">==</span> <span class="s1">&#39;NoMutual&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allow_self_connections</span> <span class="o">=</span> <span class="n">allow_self_connections</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">with_replacement</span> <span class="o">=</span> <span class="n">with_replacement</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">assert</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">RandomDistribution</span><span class="p">):</span>
+            <span class="c1"># weak check that the random distribution is ok</span>
+            <span class="n">err_msg</span> <span class="o">=</span> <span class="s2">&quot;the random distribution produces negative numbers&quot;</span>
+            <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">),</span> <span class="n">err_msg</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;n must be an integer or a RandomDistribution object&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rng</span> <span class="o">=</span> <span class="n">_get_rng</span><span class="p">(</span><span class="n">rng</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
+        <span class="c1"># This implementation is not &quot;parallel safe&quot; for random numbers.</span>
+        <span class="c1"># todo: support the `parallel_safe` flag.</span>
+
+        <span class="c1"># Determine number of processes and current rank</span>
+        <span class="n">rank</span> <span class="o">=</span> <span class="n">projection</span><span class="o">.</span><span class="n">_simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">mpi_rank</span>
+        <span class="n">num_processes</span> <span class="o">=</span> <span class="n">projection</span><span class="o">.</span><span class="n">_simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">num_processes</span>
+
+        <span class="c1"># Assume that targets are equally distributed over processes</span>
+        <span class="n">targets_per_process</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_processes</span><span class="p">)</span>
+
+        <span class="c1"># Calculate the number of synapses on each process</span>
+        <span class="n">bino</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;binomial&#39;</span><span class="p">,</span>
+                                  <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">targets_per_process</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="p">)],</span>
+                                  <span class="n">rng</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="p">)</span>
+        <span class="n">num_conns_on_vp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_processes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">sum_dist</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">sum_partitions</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_processes</span><span class="p">):</span>
+            <span class="n">p_local</span> <span class="o">=</span> <span class="n">targets_per_process</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="p">)</span> <span class="o">-</span> <span class="n">sum_dist</span><span class="p">)</span>
+            <span class="n">bino</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;p&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">p_local</span>
+            <span class="n">bino</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">-</span> <span class="n">sum_partitions</span>
+            <span class="n">num_conns_on_vp</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">bino</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+            <span class="n">sum_dist</span> <span class="o">+=</span> <span class="n">targets_per_process</span>
+            <span class="n">sum_partitions</span> <span class="o">+=</span> <span class="n">num_conns_on_vp</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+
+        <span class="c1"># Draw random sources and targets</span>
+        <span class="n">connections</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">size</span><span class="p">)]</span>
+        <span class="n">possible_targets</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">size</span><span class="p">)[</span><span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">_mask_local</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_conns_on_vp</span><span class="p">[</span><span class="n">rank</span><span class="p">]):</span>
+            <span class="n">source_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;uniform_int&#39;</span><span class="p">,</span>
+                                         <span class="p">{</span><span class="s2">&quot;low&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;high&quot;</span><span class="p">:</span> <span class="n">projection</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">size</span><span class="p">},</span>
+                                         <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">target_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">possible_targets</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">connections</span><span class="p">[</span><span class="n">target_index</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">source_index</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">build_source_masks</span><span class="p">(</span><span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">connections</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">connections</span><span class="p">)[</span><span class="n">mask</span><span class="p">]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_standard_connect</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">build_source_masks</span><span class="p">)</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">PyNN 0.11.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyNN.connectors</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2023, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    </div>
+  </body>
+</html>

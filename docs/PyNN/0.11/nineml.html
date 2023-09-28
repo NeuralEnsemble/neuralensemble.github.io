@@ -1,0 +1,203 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>PyNN and NineML &#8212; PyNN 0.11.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.11.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">PyNN and NineML</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="pynn-and-nineml">
+<h1>PyNN and NineML<a class="headerlink" href="#pynn-and-nineml" title="Permalink to this heading">¶</a></h1>
+<p><a class="reference external" href="http://nineml.incf.org">NineML</a> is a declarative XML-based language for describing neuronal network
+models. One of its key features is the separation into an “abstraction layer”,
+which provides the mathematical details of the model components (neurons,
+synapses, etc.), and a “user layer”, which describes how the components are put
+together to form a network model.</p>
+<dl class="simple">
+<dt>PyNN can work with NineML in two ways:</dt><dd><ul class="simple">
+<li><p>at the user layer level - exporting an entire PyNN model as XML or
+importing a NineML XML file into PyNN and running simulations with the
+resulting model;</p></li>
+<li><p>at the abstraction layer level - constructing PyNN <code class="docutils literal notranslate"><span class="pre">CellType</span></code> classes from
+NineML neuron/synapse components (and, in the future, PyNN dynamic synapse
+classes from NineML synaptic plasticity components).</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>most of what is described below does not work yet, or is not properly
+tested - this document is currently a statement of intent, which will gradually
+turn into proper documentation as things get implemented/tested]</p>
+</div>
+</section>
+<section id="exporting-a-pynn-model-as-xml">
+<h1>Exporting a PyNN model as XML<a class="headerlink" href="#exporting-a-pynn-model-as-xml" title="Permalink to this heading">¶</a></h1>
+<p>Using <code class="docutils literal notranslate"><span class="pre">pyNN.nineml</span></code> as the simulator backend will cause the model to be
+written to XML rather than simulated. This requires specifying an output
+file name in the <code class="docutils literal notranslate"><span class="pre">setup()</span></code> call:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyNN.nineml</span> <span class="k">as</span> <span class="nn">sim</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;my_model.xml&quot;</span><span class="p">)</span>
+
+<span class="o">...</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Writing to file takes place when <code class="docutils literal notranslate"><span class="pre">sim.end()</span></code> is called. Note that any PyNN
+calls related to recording or saving data are ignored. It is possible that in
+future this information could be saved in a simulation experiment description
+format such as <a class="reference external" href="http://sedml.org/">SEDML</a></p>
+</section>
+<section id="using-a-nineml-abstraction-layer-model-in-a-nest-or-neuron-simulation">
+<h1>Using a NineML abstraction layer model in a NEST or NEURON simulation<a class="headerlink" href="#using-a-nineml-abstraction-layer-model-in-a-nest-or-neuron-simulation" title="Permalink to this heading">¶</a></h1>
+<p>This requires code-generation support for the backend simulator. For NEST, this
+will be built-in to some future release; for NEURON, the nineml2nmodl package
+is required [currently available in the NineML svn, will be released on PyPI at
+some point]. Brian support is also envisaged.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyNN.neuron</span> <span class="k">as</span> <span class="nn">sim</span>
+
+<span class="n">celltype_cls</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">nineml_celltype</span><span class="p">(</span>
+                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;my_neuron_type&quot;</span><span class="p">,</span>
+                    <span class="n">neuron_model</span><span class="o">=</span><span class="s2">&quot;iaf.xml&quot;</span><span class="p">,</span>
+                    <span class="n">synapse_models</span><span class="o">=</span><span class="p">{</span>
+                        <span class="s2">&quot;AMPA&quot;</span><span class="p">:</span> <span class="s2">&quot;coba_syn.xml&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;NMDA&quot;</span><span class="p">:</span> <span class="s2">&quot;nmda_syn.xml&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;GABAA&quot;</span><span class="p">:</span> <span class="s2">&quot;coba_syn.xml&quot;</span>
+                    <span class="p">})</span>
+
+<span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;iaf.cm&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;iaf.gl&#39;</span><span class="p">:</span> <span class="mf">50.0</span><span class="p">,</span> <span class="s1">&#39;iaf.taurefrac&#39;</span><span class="p">:</span> <span class="mf">5.0</span><span class="p">,</span>
+    <span class="s1">&#39;iaf.vrest&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">65.0</span><span class="p">,</span> <span class="s1">&#39;iaf.vreset&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">65.0</span><span class="p">,</span> <span class="s1">&#39;iaf.vthresh&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">50.0</span><span class="p">,</span>
+    <span class="s1">&#39;AMPA.tau&#39;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span> <span class="s1">&#39;GABAA.tau&#39;</span><span class="p">:</span> <span class="mf">5.0</span><span class="p">,</span> <span class="s1">&#39;AMPA.vrev&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">&#39;GABAA.vrev&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">70.0</span><span class="p">,</span>
+    <span class="s1">&#39;NMDA.taur&#39;</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span> <span class="s1">&#39;NMDA.taud&#39;</span><span class="p">:</span> <span class="mf">40.0</span><span class="p">,</span> <span class="s1">&#39;NMDA.gmax&#39;</span><span class="p">:</span> <span class="mf">1.2</span><span class="p">,</span> <span class="s1">&#39;NMDA.E&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">&#39;NMDA.gamma&#39;</span><span class="p">:</span> <span class="mf">0.062</span><span class="p">,</span> <span class="s1">&#39;NMDA.mgconc&#39;</span><span class="p">:</span> <span class="mf">1.2</span><span class="p">,</span> <span class="s1">&#39;NMDA.beta&#39;</span><span class="p">:</span> <span class="mf">3.57</span>
+    <span class="p">}</span>
+
+<span class="n">cells</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Population</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">celltype_cls</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+
+<span class="n">cells</span><span class="o">.</span><span class="n">record</span><span class="p">((</span><span class="s2">&quot;iaf.v&quot;</span><span class="p">,</span> <span class="s2">&quot;AMPA.g&quot;</span><span class="p">,</span> <span class="s2">&quot;NMDA.g&quot;</span><span class="p">,</span> <span class="s2">&quot;GABAA.v&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="simulating-an-entire-nineml-model-with-nest-or-neuron">
+<h1>Simulating an entire NineML model with NEST or NEURON<a class="headerlink" href="#simulating-an-entire-nineml-model-with-nest-or-neuron" title="Permalink to this heading">¶</a></h1>
+<p>Again, this requires code-generation support for the backend simulator, or for
+PyNN to be able to recognize the components as equivalent to existing PyNN
+standard models.</p>
+<div class="admonition-todo admonition" id="id1">
+<p class="admonition-title">Todo</p>
+<p>For example, the PyNN Git repository could contain</p>
+</div>
+<p>NineML representations of the standard models; these representations would then
+each have a URL including version information, and if these URLs are used in the
+user layer description, PyNN can safely use a standard model rather than
+doing code generation.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyNN.neuron</span> <span class="k">as</span> <span class="nn">sim</span>
+
+<span class="n">network</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">NineMLNetwork</span><span class="p">(</span><span class="s2">&quot;my_network_model.xml&quot;</span><span class="p">)</span> <span class="c1"># user layer description</span>
+
+<span class="n">network</span><span class="o">.</span><span class="n">populations</span><span class="p">[</span><span class="s2">&quot;excitatory cells&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s2">&quot;spikes&quot;</span><span class="p">)</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mf">1000.0</span><span class="p">)</span>
+
+<span class="n">network</span><span class="o">.</span><span class="n">populations</span><span class="p">[</span><span class="s2">&quot;excitatory_cells&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;spikes&quot;</span><span class="p">)</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">PyNN and NineML</a></li>
+<li><a class="reference internal" href="#exporting-a-pynn-model-as-xml">Exporting a PyNN model as XML</a></li>
+<li><a class="reference internal" href="#using-a-nineml-abstraction-layer-model-in-a-nest-or-neuron-simulation">Using a NineML abstraction layer model in a NEST or NEURON simulation</a></li>
+<li><a class="reference internal" href="#simulating-an-entire-nineml-model-with-nest-or-neuron">Simulating an entire NineML model with NEST or NEURON</a></li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/nineml.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.11.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">PyNN and NineML</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2023, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    </div>
+  </body>
+</html>

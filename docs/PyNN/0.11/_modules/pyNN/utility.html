@@ -1,0 +1,213 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyNN.utility &#8212; PyNN 0.11.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">PyNN 0.11.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyNN.utility</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pyNN.utility</h1><div class="highlight"><pre>
+<span></span><span class="c1"># encoding: utf-8</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">A collection of utility functions and classes.</span>
+
+<span class="sd">Functions:</span>
+<span class="sd">    notify()          - send an e-mail when a simulation has finished.</span>
+<span class="sd">    get_script_args() - get the command line arguments to the script, however</span>
+<span class="sd">                        it was run (python, nrniv, mpirun, etc.).</span>
+<span class="sd">    get_simulator() -</span>
+<span class="sd">    init_logging()    - convenience function for setting up logging to file and</span>
+<span class="sd">                        to the screen.</span>
+<span class="sd">    save_population()</span>
+<span class="sd">    load_population()</span>
+<span class="sd">    normalized_filename()</span>
+<span class="sd">    sort_by_column()</span>
+<span class="sd">    forgetful_memoize()</span>
+
+<span class="sd">    plotting module</span>
+
+<span class="sd">    Timer    - a convenience wrapper around the time.perf_counter() function from the</span>
+<span class="sd">               standard library.</span>
+<span class="sd">    ProgressBar</span>
+<span class="sd">    SimulationProgressBar</span>
+
+<span class="sd">:copyright: Copyright 2006-2023 by the PyNN team, see AUTHORS.</span>
+<span class="sd">:license: CeCILL, see LICENSE for details.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">functools</span>
+
+<span class="kn">from</span> <span class="nn">.progress_bar</span> <span class="kn">import</span> <span class="n">ProgressBar</span><span class="p">,</span> <span class="n">SimulationProgressBar</span>  <span class="c1"># noqa: F401</span>
+<span class="kn">from</span> <span class="nn">.script_tools</span> <span class="kn">import</span> <span class="p">(</span>                                   <span class="c1"># noqa: F401</span>
+    <span class="n">get_script_args</span><span class="p">,</span>
+    <span class="n">get_simulator</span><span class="p">,</span>
+    <span class="n">normalized_filename</span><span class="p">,</span>
+    <span class="n">init_logging</span><span class="p">,</span>
+    <span class="n">notify</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.timer</span> <span class="kn">import</span> <span class="n">Timer</span>                                      <span class="c1"># noqa: F401</span>
+
+
+<span class="c1"># todo: review whether it is worth keeping the following, little-used functions</span>
+
+
+<div class="viewcode-block" id="save_population"><a class="viewcode-back" href="../../reference/utility.html#pyNN.utility.save_population">[docs]</a><span class="k">def</span> <span class="nf">save_population</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Saves the spike_times of a  population and the size, structure, labels such</span>
+<span class="sd">    that one can load it back into a SpikeSourceArray population using the</span>
+<span class="sd">    load_population() function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">shelve</span>
+
+    <span class="n">s</span> <span class="o">=</span> <span class="n">shelve</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">s</span><span class="p">[</span><span class="s2">&quot;spike_times&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">population</span><span class="o">.</span><span class="n">getSpikes</span><span class="p">()</span>
+    <span class="n">s</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">population</span><span class="o">.</span><span class="n">label</span>
+    <span class="n">s</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">population</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">s</span><span class="p">[</span><span class="s2">&quot;structure&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">population</span><span class="o">.</span><span class="n">structure</span>  <span class="c1"># should perhaps just save the positions?</span>
+    <span class="n">variables_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">variables</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">variables</span><span class="p">:</span>
+            <span class="n">variables_dict</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">variable</span><span class="p">)</span>
+    <span class="n">s</span><span class="p">[</span><span class="s2">&quot;variables&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">variables_dict</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="load_population"><a class="viewcode-back" href="../../reference/utility.html#pyNN.utility.load_population">[docs]</a><span class="k">def</span> <span class="nf">load_population</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">sim</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Loads a population that was saved with the save_population() function into</span>
+<span class="sd">    SpikeSourceArray.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">shelve</span>
+
+    <span class="n">s</span> <span class="o">=</span> <span class="n">shelve</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">ssa</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span> <span class="s2">&quot;SpikeSourceArray&quot;</span><span class="p">)</span>
+    <span class="n">population</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span> <span class="s2">&quot;Population&quot;</span><span class="p">)(</span>
+        <span class="n">s</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">],</span> <span class="n">ssa</span><span class="p">,</span> <span class="n">structure</span><span class="o">=</span><span class="n">s</span><span class="p">[</span><span class="s2">&quot;structure&quot;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">s</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="c1"># set the spiketimes</span>
+    <span class="n">spikes</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="s2">&quot;spike_times&quot;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">neuron</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">]):</span>
+        <span class="n">spike_times</span> <span class="o">=</span> <span class="n">spikes</span><span class="p">[</span><span class="n">spikes</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">neuron</span><span class="p">][:,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">neuron_in_new_population</span> <span class="o">=</span> <span class="n">neuron</span> <span class="o">+</span> <span class="n">population</span><span class="o">.</span><span class="n">first_id</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">population</span><span class="o">.</span><span class="n">id_to_index</span><span class="p">(</span><span class="n">neuron_in_new_population</span><span class="p">)</span>
+        <span class="n">population</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">set_parameters</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="s2">&quot;spike_times&quot;</span><span class="p">:</span> <span class="n">spike_times</span><span class="p">})</span>
+    <span class="c1"># set the variables</span>
+    <span class="k">for</span> <span class="n">variable</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">s</span><span class="p">[</span><span class="s2">&quot;variables&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">population</span></div>
+
+
+<span class="k">def</span> <span class="nf">sort_by_column</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
+    <span class="c1"># see stackoverflow.com/questions/2828059/</span>
+    <span class="k">return</span> <span class="n">a</span><span class="p">[</span><span class="n">a</span><span class="p">[:,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">argsort</span><span class="p">(),</span> <span class="p">:]</span>
+
+
+<span class="c1"># based on http://wiki.python.org/moin/PythonDecoratorLibrary#Memoize</span>
+<span class="k">class</span> <span class="nc">forgetful_memoize</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Decorator that caches the result from the last time a function was called.</span>
+<span class="sd">    If the next call uses the same arguments, the cached value is returned, and</span>
+<span class="sd">    not re-evaluated. If the next call uses different arguments, the cached</span>
+<span class="sd">    value is overwritten.</span>
+
+<span class="sd">    The use case is when the same, heavy-weight function is called repeatedly</span>
+<span class="sd">    with the same arguments in different places.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cached_args</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cached_value</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">args</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">cached_args</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using cached value&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cached_value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cached_args</span> <span class="o">=</span> <span class="n">args</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cached_value</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">return</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">objtype</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Support instance methods.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="fm">__call__</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">PyNN 0.11.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyNN.utility</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2023, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    </div>
+  </body>
+</html>

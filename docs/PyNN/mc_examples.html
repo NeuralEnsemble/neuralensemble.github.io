@@ -1,0 +1,502 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Multicompartmental modelling with PyNN: examples &#8212; PyNN 0.12.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Multicompartmental modelling with PyNN: examples</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="multicompartmental-modelling-with-pynn-examples">
+<h1>Multicompartmental modelling with PyNN: examples<a class="headerlink" href="#multicompartmental-modelling-with-pynn-examples" title="Permalink to this heading">¶</a></h1>
+<section id="injecting-time-varying-current-into-two-compartment-cells">
+<h2>Injecting time-varying current into two-compartment cells<a class="headerlink" href="#injecting-time-varying-current-into-two-compartment-cells" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Injecting time-varying current into multi-compartment cells.</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;Agg&quot;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">neuroml</span> <span class="kn">import</span> <span class="n">Morphology</span><span class="p">,</span> <span class="n">Segment</span><span class="p">,</span> <span class="n">Point3DWithDiam</span> <span class="k">as</span> <span class="n">P</span>
+<span class="kn">from</span> <span class="nn">pyNN.morphology</span> <span class="kn">import</span> <span class="n">NeuroMLMorphology</span>
+<span class="kn">from</span> <span class="nn">pyNN.parameters</span> <span class="kn">import</span> <span class="n">IonicSpecies</span>
+<span class="c1">#from pyNN.units import uF_per_cm2, ohm_cm, S_per_cm2, mV, nA, ms</span>
+<span class="kn">from</span> <span class="nn">pyNN.utility</span> <span class="kn">import</span> <span class="n">get_simulator</span>
+<span class="kn">from</span> <span class="nn">pyNN.utility.plotting</span> <span class="kn">import</span> <span class="n">Figure</span><span class="p">,</span> <span class="n">Panel</span>
+
+
+<span class="c1"># === Configure the simulator ================================================</span>
+
+<span class="n">sim</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="n">get_simulator</span><span class="p">()</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="mf">0.025</span><span class="p">)</span> <span class="c1">#*ms)</span>
+
+
+<span class="c1"># === Create neuron model template ===========================================</span>
+
+<span class="n">soma</span> <span class="o">=</span> <span class="n">Segment</span><span class="p">(</span><span class="n">proximal</span><span class="o">=</span><span class="n">P</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">18.8</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">diameter</span><span class="o">=</span><span class="mf">18.8</span><span class="p">),</span>
+               <span class="n">distal</span><span class="o">=</span><span class="n">P</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">diameter</span><span class="o">=</span><span class="mf">18.8</span><span class="p">),</span>
+               <span class="n">name</span><span class="o">=</span><span class="s2">&quot;soma&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">dend</span> <span class="o">=</span> <span class="n">Segment</span><span class="p">(</span><span class="n">proximal</span><span class="o">=</span><span class="n">P</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">diameter</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+               <span class="n">distal</span><span class="o">=</span><span class="n">P</span><span class="p">(</span><span class="n">x</span><span class="o">=-</span><span class="mi">500</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">diameter</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+               <span class="n">name</span><span class="o">=</span><span class="s2">&quot;dendrite&quot;</span><span class="p">,</span>
+               <span class="n">parent</span><span class="o">=</span><span class="n">soma</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># need to specify nseg for dendrite</span>
+
+<span class="n">cell_class</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">MultiCompartmentNeuron</span>
+<span class="n">cell_class</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;ExampleMultiCompartmentNeuron&quot;</span>
+<span class="n">cell_class</span><span class="o">.</span><span class="n">ion_channels</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;pas&#39;</span><span class="p">:</span> <span class="n">sim</span><span class="o">.</span><span class="n">PassiveLeak</span><span class="p">,</span> <span class="s1">&#39;na&#39;</span><span class="p">:</span> <span class="n">sim</span><span class="o">.</span><span class="n">NaChannel</span><span class="p">,</span> <span class="s1">&#39;kdr&#39;</span><span class="p">:</span> <span class="n">sim</span><span class="o">.</span><span class="n">KdrChannel</span><span class="p">}</span>
+
+<span class="c1"># cell_class.insert(pas=sim.PassiveLeak, sections=(&#39;soma&#39;, &#39;dendrite&#39;))  # or cell_class.whole_cell.pas = sim.PassiveLeak</span>
+<span class="c1"># cell_class.soma.insert(na=sim.NaChannel)  # or cell_class.soma.na = sim.NaChannel</span>
+<span class="c1"># cell_class.soma.insert(kdr=sim.KdrChannel) # or cell_class.soma.kdr = sim.KdrChannel</span>
+
+<span class="n">cell_type</span> <span class="o">=</span> <span class="n">cell_class</span><span class="p">(</span>
+    <span class="n">morphology</span><span class="o">=</span><span class="n">NeuroMLMorphology</span><span class="p">(</span><span class="n">Morphology</span><span class="p">(</span><span class="n">segments</span><span class="o">=</span><span class="p">(</span><span class="n">soma</span><span class="p">,</span> <span class="n">dend</span><span class="p">))),</span>  <span class="c1"># yuck</span>
+    <span class="n">cm</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>    <span class="c1"># mF / cm**2</span>
+    <span class="n">Ra</span><span class="o">=</span><span class="mf">500.0</span><span class="p">,</span>  <span class="c1"># ohm.cm</span>
+    <span class="n">ionic_species</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;na&quot;</span><span class="p">:</span> <span class="n">IonicSpecies</span><span class="p">(</span><span class="s2">&quot;na&quot;</span><span class="p">,</span> <span class="n">reversal_potential</span><span class="o">=</span><span class="mf">50.0</span><span class="p">),</span>
+            <span class="s2">&quot;k&quot;</span><span class="p">:</span> <span class="n">IonicSpecies</span><span class="p">(</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">reversal_potential</span><span class="o">=-</span><span class="mf">77.0</span><span class="p">)</span>
+    <span class="p">},</span>
+    <span class="n">pas</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;conductance_density&quot;</span><span class="p">:</span> <span class="n">sim</span><span class="o">.</span><span class="n">morphology</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="mf">0.0003</span><span class="p">),</span>
+         <span class="s2">&quot;e_rev&quot;</span><span class="p">:</span><span class="o">-</span><span class="mf">54.3</span><span class="p">},</span>
+    <span class="n">na</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;conductance_density&quot;</span><span class="p">:</span> <span class="n">sim</span><span class="o">.</span><span class="n">morphology</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="s1">&#39;soma&#39;</span><span class="p">,</span> <span class="mf">0.120</span><span class="p">)},</span>
+    <span class="n">kdr</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;conductance_density&quot;</span><span class="p">:</span> <span class="n">sim</span><span class="o">.</span><span class="n">morphology</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="s1">&#39;soma&#39;</span><span class="p">,</span> <span class="mf">0.036</span><span class="p">)}</span>
+<span class="p">)</span>
+
+<span class="c1">#import pdb; pdb.set_trace()</span>
+
+<span class="c1"># === Create a population with two cells ====================================</span>
+
+<span class="n">cells</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Population</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">cell_type</span><span class="p">,</span> <span class="n">initial_values</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">50.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">65.0</span><span class="p">]})</span>  <span class="c1">#*mV})</span>
+
+<span class="c1"># === Inject current into the soma of cell #0 and the dendrite of cell #1 ===</span>
+
+<span class="n">step_current</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">DCSource</span><span class="p">(</span><span class="n">amplitude</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mf">50.0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mf">150.0</span><span class="p">)</span>
+<span class="n">step_current</span><span class="o">.</span><span class="n">inject_into</span><span class="p">(</span><span class="n">cells</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">],</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;soma&quot;</span><span class="p">)</span>
+<span class="n">step_current</span><span class="o">.</span><span class="n">inject_into</span><span class="p">(</span><span class="n">cells</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;dendrite&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># cells[0] --&gt; ID - 1 cell</span>
+<span class="c1"># cells[0:1] --&gt; PopulationView containing 1 cell</span>
+
+<span class="c1"># === Record from both compartments of both cells ===========================</span>
+
+<span class="n">cells</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s1">&#39;spikes&#39;</span><span class="p">)</span>
+<span class="n">cells</span><span class="o">.</span><span class="n">record</span><span class="p">([</span><span class="s1">&#39;na.m&#39;</span><span class="p">,</span> <span class="s1">&#39;na.h&#39;</span><span class="p">,</span> <span class="s1">&#39;kdr.n&#39;</span><span class="p">],</span> <span class="n">locations</span><span class="o">=</span><span class="s2">&quot;soma&quot;</span><span class="p">)</span>
+<span class="n">cells</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="n">locations</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;soma&quot;</span><span class="p">,</span> <span class="s2">&quot;dendrite&quot;</span><span class="p">))</span>
+
+<span class="c1"># === Run the simulation =====================================================</span>
+
+<span class="c1">#breakpoint()</span>
+<span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mf">200.0</span><span class="p">)</span>
+
+
+<span class="c1"># === Plot recorded data =====================================================</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">cells</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># this is a Neo Segment</span>
+
+<span class="c1">#data = cells.soma.get_data().segments[0]  # this is a Neo Segment</span>
+<span class="c1">#data = cells.get_data(sections=[&quot;soma&quot;]).segments[0]  # this is a Neo Segment</span>
+
+<span class="c1"># The segment contains one AnalogSignal per compartment and per recorded variable</span>
+<span class="c1"># and one SpikeTrain per neuron</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Spike times: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">spiketrains</span><span class="p">))</span>
+
+<span class="n">Figure</span><span class="p">(</span>
+        <span class="n">Panel</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;soma.v&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+              <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Membrane potential, soma (mV)&quot;</span><span class="p">,</span>
+              <span class="n">yticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">80</span><span class="p">,</span> <span class="mi">40</span><span class="p">)),</span>
+        <span class="n">Panel</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;dendrite.v&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+              <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Membrane potential, dendrite (mV)&quot;</span><span class="p">,</span>
+              <span class="n">yticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">80</span><span class="p">,</span> <span class="o">-</span><span class="mi">20</span><span class="p">)),</span>
+        <span class="n">Panel</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;soma.na.m&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+              <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;m, soma&quot;</span><span class="p">,</span>
+              <span class="n">yticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+         <span class="n">Panel</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;soma.na.h&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+               <span class="n">xticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Time (ms)&quot;</span><span class="p">,</span>
+               <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;h, soma&quot;</span><span class="p">,</span>
+               <span class="n">yticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+        <span class="n">Panel</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;soma.kdr.n&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+              <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;n, soma&quot;</span><span class="p">,</span>
+              <span class="n">xticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Time (ms)&quot;</span><span class="p">,</span>
+              <span class="n">yticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Responses of two-compartment neurons to current injection&quot;</span><span class="p">,</span>
+        <span class="n">annotations</span><span class="o">=</span><span class="s2">&quot;Simulated with </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;current_injection_mc_</span><span class="si">{</span><span class="n">options</span><span class="o">.</span><span class="n">simulator</span><span class="si">}</span><span class="s2">.png&quot;</span><span class="p">)</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="injecting-time-varying-current-into-multi-compartment-cells">
+<h2>Injecting time-varying current into multi-compartment cells<a class="headerlink" href="#injecting-time-varying-current-into-multi-compartment-cells" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Injecting time-varying current into multi-compartment cells.</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;Agg&quot;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">pyNN.morphology</span> <span class="kn">import</span> <span class="n">load_morphology</span>
+<span class="kn">from</span> <span class="nn">pyNN.parameters</span> <span class="kn">import</span> <span class="n">IonicSpecies</span>
+<span class="kn">from</span> <span class="nn">pyNN.utility</span> <span class="kn">import</span> <span class="n">get_simulator</span>
+<span class="kn">from</span> <span class="nn">pyNN.utility.plotting</span> <span class="kn">import</span> <span class="n">Figure</span><span class="p">,</span> <span class="n">Panel</span>
+
+
+<span class="c1"># === Configure the simulator ================================================</span>
+
+<span class="n">sim</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="n">get_simulator</span><span class="p">()</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="mf">0.025</span><span class="p">)</span> <span class="c1">#*ms)</span>
+
+
+<span class="c1"># === Create neuron model template ===========================================</span>
+
+<span class="c1">#morph = load_morphology(&quot;http://neuromorpho.org/dableFiles/kisvarday/CNG%20version/oi15rpy4-1.CNG.swc&quot;)  # todo: smart inference of morphology file format</span>
+<span class="n">morph</span> <span class="o">=</span> <span class="n">load_morphology</span><span class="p">(</span><span class="s2">&quot;oi15rpy4-1.CNG_alt.swc&quot;</span><span class="p">,</span> <span class="n">use_library</span><span class="o">=</span><span class="s2">&quot;morphio&quot;</span><span class="p">)</span>
+
+<span class="c1"># need to specify nseg for dendrite</span>
+
+<span class="n">cell_class</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">MultiCompartmentNeuron</span>
+<span class="n">cell_class</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;ExampleMultiCompartmentNeuron&quot;</span>
+<span class="n">cell_class</span><span class="o">.</span><span class="n">ion_channels</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;pas&#39;</span><span class="p">:</span> <span class="n">sim</span><span class="o">.</span><span class="n">PassiveLeak</span><span class="p">,</span> <span class="s1">&#39;na&#39;</span><span class="p">:</span> <span class="n">sim</span><span class="o">.</span><span class="n">NaChannel</span><span class="p">,</span> <span class="s1">&#39;kdr&#39;</span><span class="p">:</span> <span class="n">sim</span><span class="o">.</span><span class="n">KdrChannel</span><span class="p">}</span>
+
+<span class="n">m</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">morphology</span>
+
+<span class="n">cell_type</span> <span class="o">=</span> <span class="n">cell_class</span><span class="p">(</span><span class="n">morphology</span><span class="o">=</span><span class="n">morph</span><span class="p">,</span>
+                       <span class="n">cm</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+                       <span class="n">Ra</span><span class="o">=</span><span class="mf">500.0</span><span class="p">,</span>  <span class="c1"># allow to set per segment?</span>
+                       <span class="n">ionic_species</span><span class="o">=</span><span class="p">{</span>
+                              <span class="s2">&quot;na&quot;</span><span class="p">:</span> <span class="n">IonicSpecies</span><span class="p">(</span><span class="s2">&quot;na&quot;</span><span class="p">,</span> <span class="n">reversal_potential</span><span class="o">=</span><span class="mf">50.0</span><span class="p">),</span>
+                              <span class="s2">&quot;k&quot;</span><span class="p">:</span> <span class="n">IonicSpecies</span><span class="p">(</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">reversal_potential</span><span class="o">=-</span><span class="mf">77.0</span><span class="p">)</span>
+                       <span class="p">},</span>
+                       <span class="n">pas</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;conductance_density&quot;</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="mf">0.0003</span><span class="p">),</span>
+                            <span class="s2">&quot;e_rev&quot;</span><span class="p">:</span><span class="o">-</span><span class="mf">54.3</span><span class="p">},</span>
+                       <span class="n">na</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;conductance_density&quot;</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="s1">&#39;soma&#39;</span><span class="p">,</span> <span class="mf">0.120</span><span class="p">)},</span>
+                       <span class="n">kdr</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;conductance_density&quot;</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="s1">&#39;soma&#39;</span><span class="p">,</span> <span class="mf">0.036</span><span class="p">)}</span>
+                       <span class="p">)</span>
+
+<span class="c1"># === Create a population with two cells ====================================</span>
+
+<span class="n">cells</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Population</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">cell_type</span><span class="p">,</span> <span class="n">initial_values</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">50.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">65.0</span><span class="p">]})</span>  <span class="c1">#*mV})</span>
+
+<span class="c1"># === Inject current into the soma of cell #0 and the dendrite of cell #1 ===</span>
+
+<span class="n">step_current_soma</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">DCSource</span><span class="p">(</span><span class="n">amplitude</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mf">50.0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mf">150.0</span><span class="p">)</span>
+<span class="n">step_current_soma</span><span class="o">.</span><span class="n">inject_into</span><span class="p">(</span><span class="n">cells</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">],</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;soma&quot;</span><span class="p">)</span>
+
+<span class="n">step_current_dend</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">DCSource</span><span class="p">(</span><span class="n">amplitude</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mf">120.0</span><span class="p">)</span>
+<span class="c1">#step_current.inject_into(cells[1:2], location=apical_dendrites(fraction_along=0.9))</span>
+<span class="c1">#step_current.inject_into(cells[1:2], location=random(after_branch_point(3)(apical_dendrites))</span>
+<span class="n">random_location</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">random_placement</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">apical_dendrites</span><span class="p">()))</span>
+<span class="n">step_current_dend</span><span class="o">.</span><span class="n">inject_into</span><span class="p">(</span><span class="n">cells</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">location</span><span class="o">=</span><span class="n">random_location</span><span class="p">)</span>
+
+
+<span class="c1"># cells[0] --&gt; ID - 1 cell</span>
+<span class="c1"># cells[0:1] --&gt; PopulationView containing 1 cell</span>
+
+<span class="c1"># === Record from both compartments of both cells ===========================</span>
+
+<span class="n">cells</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s1">&#39;spikes&#39;</span><span class="p">)</span>
+<span class="n">cells</span><span class="o">.</span><span class="n">record</span><span class="p">([</span><span class="s1">&#39;na.m&#39;</span><span class="p">,</span> <span class="s1">&#39;na.h&#39;</span><span class="p">,</span> <span class="s1">&#39;kdr.n&#39;</span><span class="p">],</span> <span class="n">locations</span><span class="o">=</span><span class="s2">&quot;soma&quot;</span><span class="p">)</span>
+<span class="n">cells</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="n">locations</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;soma&quot;</span><span class="p">,</span> <span class="n">random_location</span><span class="p">])</span>
+
+<span class="c1"># === Run the simulation =====================================================</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mf">200.0</span><span class="p">)</span>
+
+<span class="c1"># === Plot recorded data =====================================================</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">cells</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># this is a Neo Segment</span>
+
+<span class="c1">#data = cells.soma.get_data().segments[0]  # this is a Neo Segment</span>
+<span class="c1">#data = cells.get_data(sections=[&quot;soma&quot;]).segments[0]  # this is a Neo Segment</span>
+
+<span class="c1"># The segment contains one AnalogSignal per compartment and per recorded variable</span>
+<span class="c1"># and one SpikeTrain per neuron</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Spike times: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">spiketrains</span><span class="p">))</span>
+<span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;current_injection_mc_swc_alt_</span><span class="si">{</span><span class="n">options</span><span class="o">.</span><span class="n">simulator</span><span class="si">}</span><span class="s2">.png&quot;</span>
+
+<span class="n">Figure</span><span class="p">(</span>
+        <span class="n">Panel</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;soma.v&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+              <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Membrane potential, soma (mV)&quot;</span><span class="p">,</span>
+              <span class="n">yticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">80</span><span class="p">,</span> <span class="mi">40</span><span class="p">)),</span>
+        <span class="n">Panel</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;dendrite.v&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+              <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Membrane potential, dendrite (mV)&quot;</span><span class="p">,</span>
+              <span class="n">yticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">80</span><span class="p">,</span> <span class="mi">40</span><span class="p">)),</span>
+        <span class="n">Panel</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;soma.na.m&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+              <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;m, soma&quot;</span><span class="p">,</span>
+              <span class="n">yticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+         <span class="n">Panel</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;soma.na.h&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+               <span class="n">xticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Time (ms)&quot;</span><span class="p">,</span>
+               <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;h, soma&quot;</span><span class="p">,</span>
+               <span class="n">yticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+        <span class="n">Panel</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;soma.kdr.n&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+              <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;n, soma&quot;</span><span class="p">,</span>
+              <span class="n">xticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Time (ms)&quot;</span><span class="p">,</span>
+              <span class="n">yticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Responses of multi-compartment neurons to current injection&quot;</span><span class="p">,</span>
+        <span class="n">annotations</span><span class="o">=</span><span class="s2">&quot;Simulated with </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="a-network-of-multi-compartment-cells">
+<h2>A network of multi-compartment cells<a class="headerlink" href="#a-network-of-multi-compartment-cells" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># encoding: utf-8</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Some ideas for syntax for multicompartmental modelling in PyNN</span>
+
+<span class="sd">Andrew Davison, May 2012</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">pyNN.neuron</span> <span class="k">as</span> <span class="nn">sim</span>
+<span class="kn">from</span> <span class="nn">pyNN.morphology</span> <span class="kn">import</span> <span class="n">load_morphology</span><span class="p">,</span> <span class="n">uniform</span><span class="p">,</span> <span class="n">random_section</span><span class="p">,</span> <span class="n">dendrites</span><span class="p">,</span> <span class="n">apical_dendrites</span><span class="p">,</span> <span class="n">by_distance</span>
+<span class="kn">import</span> <span class="nn">neuroml.loaders</span> <span class="c1">##</span>
+<span class="c1">#from nineml.abstraction_layer.readers import XMLReader</span>
+<span class="kn">from</span> <span class="nn">quantities</span> <span class="kn">import</span> <span class="n">S</span><span class="p">,</span> <span class="n">cm</span><span class="p">,</span> <span class="n">um</span>
+<span class="kn">from</span> <span class="nn">pyNN.space</span> <span class="kn">import</span> <span class="n">Grid2D</span><span class="p">,</span> <span class="n">RandomStructure</span><span class="p">,</span> <span class="n">Sphere</span> <span class="c1">#, uniform, by_distance</span>
+<span class="kn">from</span> <span class="nn">pyNN.parameters</span> <span class="kn">import</span> <span class="n">IonicSpecies</span>
+<span class="kn">from</span> <span class="nn">pyNN.utility</span> <span class="kn">import</span> <span class="n">get_simulator</span>
+<span class="kn">from</span> <span class="nn">pyNN.utility.plotting</span> <span class="kn">import</span> <span class="n">Figure</span><span class="p">,</span> <span class="n">Panel</span>
+<span class="c1">#from neurom import longest_dendrite</span>
+
+
+<span class="c1"># === Configure the simulator ================================================</span>
+
+<span class="n">sim</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="n">get_simulator</span><span class="p">()</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="mf">0.025</span><span class="p">)</span> <span class="c1">#*ms)</span>
+
+
+<span class="n">pyr_morph</span> <span class="o">=</span> <span class="n">load_morphology</span><span class="p">(</span><span class="s2">&quot;oi15rpy4-1.CNG.swc&quot;</span><span class="p">,</span> <span class="n">replace_axon</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_library</span><span class="o">=</span><span class="s2">&quot;morphio&quot;</span><span class="p">)</span>
+
+<span class="c1"># # support ion channel models defined in NineML, LEMS, or from built-in library</span>
+<span class="c1"># na_channel = XMLReader.read(&quot;na.xml&quot;)</span>
+<span class="c1"># kdr_channel = load_lems(&quot;kd.xml&quot;)</span>
+<span class="c1"># ka_channel = XMLReader.read(&quot;ka.xml&quot;)</span>
+<span class="c1"># ampa = XMLReader.read(&quot;ampa.xml&quot;)</span>
+<span class="c1"># gabaa = sim.ExpSynCond</span>
+<span class="c1">#</span>
+<span class="c1"># # first we define cell types (templates)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Building populations&quot;</span><span class="p">)</span>
+
+<span class="n">pyramidal_cell_class</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">MultiCompartmentNeuron</span>
+<span class="n">pyramidal_cell_class</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;PyramidalNeuron&quot;</span>
+<span class="n">pyramidal_cell_class</span><span class="o">.</span><span class="n">ion_channels</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="s1">&#39;pas&#39;</span><span class="p">:</span> <span class="n">sim</span><span class="o">.</span><span class="n">PassiveLeak</span><span class="p">,</span>
+      <span class="s1">&#39;na&#39;</span><span class="p">:</span> <span class="n">sim</span><span class="o">.</span><span class="n">NaChannel</span><span class="p">,</span>
+      <span class="s1">&#39;kdr&#39;</span><span class="p">:</span> <span class="n">sim</span><span class="o">.</span><span class="n">KdrChannel</span>
+<span class="p">}</span>
+<span class="n">pyramidal_cell_class</span><span class="o">.</span><span class="n">post_synaptic_entities</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;AMPA&#39;</span><span class="p">:</span> <span class="n">sim</span><span class="o">.</span><span class="n">CondExpPostSynapticResponse</span><span class="p">,</span>
+                                               <span class="s1">&#39;GABA_A&#39;</span><span class="p">:</span> <span class="n">sim</span><span class="o">.</span><span class="n">CondExpPostSynapticResponse</span><span class="p">}</span>
+
+<span class="n">pyramidal_cell</span> <span class="o">=</span> <span class="n">pyramidal_cell_class</span><span class="p">(</span>
+    <span class="n">morphology</span><span class="o">=</span><span class="n">pyr_morph</span><span class="p">,</span>
+    <span class="n">pas</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;conductance_density&quot;</span><span class="p">:</span> <span class="n">uniform</span><span class="p">(</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="mf">0.0003</span><span class="p">),</span> <span class="s2">&quot;e_rev&quot;</span><span class="p">:</span><span class="o">-</span><span class="mf">54.3</span><span class="p">},</span>
+    <span class="n">na</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;conductance_density&quot;</span><span class="p">:</span> <span class="n">uniform</span><span class="p">(</span><span class="s1">&#39;soma&#39;</span><span class="p">,</span> <span class="mf">0.120</span><span class="p">)},</span>
+    <span class="n">kdr</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;conductance_density&quot;</span><span class="p">:</span> <span class="n">uniform</span><span class="p">(</span><span class="s1">&#39;soma&#39;</span><span class="p">,</span> <span class="mf">0.036</span><span class="p">)},</span>
+    <span class="c1">#kdr={&quot;conductance_density&quot;: by_distance(apical_dendrites(), lambda d: 0.05*d/200.0)},</span>
+    <span class="n">ionic_species</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;na&quot;</span><span class="p">:</span> <span class="n">IonicSpecies</span><span class="p">(</span><span class="s2">&quot;na&quot;</span><span class="p">,</span> <span class="n">reversal_potential</span><span class="o">=</span><span class="mf">50.0</span><span class="p">),</span>
+        <span class="s2">&quot;k&quot;</span><span class="p">:</span> <span class="n">IonicSpecies</span><span class="p">(</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">reversal_potential</span><span class="o">=-</span><span class="mf">77.0</span><span class="p">)</span>
+    <span class="p">},</span>
+    <span class="n">cm</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">Ra</span><span class="o">=</span><span class="mf">500.0</span><span class="p">,</span>
+    <span class="n">AMPA</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;density&quot;</span><span class="p">:</span> <span class="n">uniform</span><span class="p">(</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">),</span>  <span class="c1"># number per µm</span>
+        <span class="s2">&quot;e_syn&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s2">&quot;tau_syn&quot;</span><span class="p">:</span> <span class="mf">2.0</span>
+    <span class="p">},</span>
+    <span class="n">GABA_A</span><span class="o">=</span><span class="p">{</span>
+        <span class="c1">#&quot;density&quot;: by_distance(dendrites(), lambda d: 0.05 * (d &lt; 50.0)),  # number per µm</span>
+        <span class="s2">&quot;density&quot;</span><span class="p">:</span> <span class="n">uniform</span><span class="p">(</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">),</span>
+        <span class="s2">&quot;e_syn&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">70.0</span><span class="p">,</span>
+        <span class="s2">&quot;tau_syn&quot;</span><span class="p">:</span> <span class="mf">5.0</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="c1"># interneuron = ...</span>
+<span class="c1">#</span>
+<span class="c1"># now we actually create the cells in the simulator</span>
+<span class="n">pyramidal_cells</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Population</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">pyramidal_cell</span><span class="p">,</span> <span class="n">initial_values</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">60.0</span><span class="p">},</span> <span class="n">structure</span><span class="o">=</span><span class="n">Grid2D</span><span class="p">())</span>
+<span class="c1"># interneurons = sim.Population(1000, interneuron, structure=RandomStructure(boundary=Sphere(radius=300.0)))</span>
+<span class="n">inputs</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Population</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">sim</span><span class="o">.</span><span class="n">SpikeSourcePoisson</span><span class="p">(</span><span class="n">rate</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">))</span>
+
+<span class="c1"># inject current into soma of Pyramidal cells</span>
+<span class="c1">##noise = sim.NoisyCurrentSource(mean=0.0, stdev=0.5, start=1.0, stop=9.0) # nA</span>
+<span class="c1">##noise.inject_into(pyramidal_cells, location=&#39;soma&#39;)</span>
+
+<span class="c1"># define which variables to record</span>
+<span class="c1">#(pyramidal_cells + interneurons).record(&#39;spikes&#39;)    # record spikes from all cells</span>
+<span class="n">pyramidal_cells</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s1">&#39;spikes&#39;</span><span class="p">)</span>
+<span class="n">pyramidal_cells</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="n">locations</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;soma&quot;</span><span class="p">:</span> <span class="s2">&quot;soma&quot;</span><span class="p">})</span>
+<span class="n">pyramidal_cells</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="n">locations</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;dend&quot;</span><span class="p">:</span> <span class="n">apical_dendrites</span><span class="p">()})</span>
+<span class="c1"># interneurons.sample(20).record(&#39;v&#39;)                 # record soma.v from a sample of 20 granule cells</span>
+<span class="c1"># interneurons[0:5].record(&#39;GABA_A.i&#39;, locations=[&#39;dendrite&#39;])  # record the GABA_A synaptic current from the synapse</span>
+<span class="c1"># pyramidal_cells[0].record(&#39;na.m&#39;, locations=longest_dendrite(pkj_morph)) # record the sodium channel m state variable along the length of one dendrite</span>
+<span class="c1">#</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Connecting populations&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># # connect populations</span>
+<span class="c1"># weight_distr = sim.RandomDistribution(&#39;normal&#39;, (0.5, 0.1))</span>
+<span class="c1"># depressing = sim.TsodysMarkramSynapse(U=500.0, weight=weight_distr, delay=&quot;0.2+d/100.0&quot;)</span>
+<span class="c1">#</span>
+<span class="c1"># p2g_connector = sim.DistanceDependentProbabilityConnector(&quot;0.1*exp(-d/100.0)&quot;,</span>
+<span class="c1">#                                                           target=&quot;GABA_A&quot;)</span>
+<span class="c1">#</span>
+<span class="c1"># p2g = sim.Projection(pyramidal_cells, interneurons,</span>
+<span class="c1">#                      connector=p2g_connector,</span>
+<span class="c1">#                      synapse_type=depressing,</span>
+<span class="c1">#                      source=&quot;soma.v&quot;)</span>
+<span class="c1">#</span>
+<span class="c1"># g2p = sim.Projection(interneurons, pyramidal_cells,</span>
+<span class="c1">#                      sim.FromFileConnector(&quot;connections.h5&quot;),</span>
+<span class="c1">#                      sim.StaticSynapse(weight=weight_distr, delay=0.5),</span>
+<span class="c1">#                      source=&quot;soma.v&quot;, target=&quot;AMPA&quot;)</span>
+
+<span class="n">i2p</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Projection</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">pyramidal_cells</span><span class="p">,</span>
+                     <span class="n">connector</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">AllToAllConnector</span><span class="p">(</span><span class="n">location_selector</span><span class="o">=</span><span class="n">random_section</span><span class="p">(</span><span class="n">apical_dendrites</span><span class="p">())),</span>
+                     <span class="n">synapse_type</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">StaticSynapse</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
+                     <span class="n">receptor_type</span><span class="o">=</span><span class="s2">&quot;AMPA&quot;</span>
+                     <span class="p">)</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Running simulation&quot;</span><span class="p">)</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># (pyramidal_cells + interneurons).write_data(&quot;output.h5&quot;)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pyramidal_cells</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+
+
+<span class="n">Figure</span><span class="p">(</span>
+        <span class="n">Panel</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;soma.v&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+              <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Membrane potential, soma (mV)&quot;</span><span class="p">,</span>
+              <span class="n">yticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">80</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span>
+              <span class="n">xticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Time (ms)&quot;</span><span class="p">),</span>
+        <span class="n">Panel</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;dend.v&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">::</span><span class="mi">10</span><span class="p">],</span>
+              <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Membrane potential, dendrites (mV)&quot;</span><span class="p">,</span>
+              <span class="n">yticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">80</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span>
+              <span class="n">xticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Time (ms)&quot;</span><span class="p">),</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Multi-compartment network&quot;</span><span class="p">,</span>
+        <span class="n">annotations</span><span class="o">=</span><span class="s2">&quot;Simulated with NEURON&quot;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mc_network_</span><span class="si">{</span><span class="n">options</span><span class="o">.</span><span class="n">simulator</span><span class="si">}</span><span class="s2">.png&quot;</span><span class="p">)</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Multicompartmental modelling with PyNN: examples</a><ul>
+<li><a class="reference internal" href="#injecting-time-varying-current-into-two-compartment-cells">Injecting time-varying current into two-compartment cells</a></li>
+<li><a class="reference internal" href="#injecting-time-varying-current-into-multi-compartment-cells">Injecting time-varying current into multi-compartment cells</a></li>
+<li><a class="reference internal" href="#a-network-of-multi-compartment-cells">A network of multi-compartment cells</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/mc_examples.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Multicompartmental modelling with PyNN: examples</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2023, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,175 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyNN.standardmodels.receptors &#8212; PyNN 0.11.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/nature.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../../../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.11.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyNN.standardmodels.receptors</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pyNN.standardmodels.receptors</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Definition of default parameters (and hence, standard parameter names) for</span>
+<span class="sd">standard post-synaptic response models.</span>
+
+<span class="sd">:copyright: Copyright 2006-2023 by the PyNN team, see AUTHORS.</span>
+<span class="sd">:license: CeCILL, see LICENSE for details.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">StandardPostSynapticResponse</span>
+
+
+<div class="viewcode-block" id="CurrExpPostSynapticResponse"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.receptors.CurrExpPostSynapticResponse">[docs]</a><span class="k">class</span> <span class="nc">CurrExpPostSynapticResponse</span><span class="p">(</span><span class="n">StandardPostSynapticResponse</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Post-synaptic response consisting of a step increase in synaptic current</span>
+<span class="sd">    followed by exponential decay.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;tau_syn&#39;</span><span class="p">:</span> <span class="mf">5.0</span>  <span class="c1"># time constant of the synaptic conductance in ms.</span>
+    <span class="p">}</span>
+    <span class="n">default_initial_values</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;isyn&quot;</span><span class="p">:</span> <span class="mf">0.0</span>
+    <span class="p">}</span>
+    <span class="n">units</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;isyn&quot;</span><span class="p">:</span> <span class="s2">&quot;nA&quot;</span>
+    <span class="p">}</span>
+    <span class="n">conductance_based</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="CondExpPostSynapticResponse"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.receptors.CondExpPostSynapticResponse">[docs]</a><span class="k">class</span> <span class="nc">CondExpPostSynapticResponse</span><span class="p">(</span><span class="n">StandardPostSynapticResponse</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Post-synaptic response consisting of a step increase in synaptic conductance</span>
+<span class="sd">    followed by exponential decay.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;e_syn&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>   <span class="c1"># synaptic reversal potential in mV.</span>
+        <span class="s1">&#39;tau_syn&#39;</span><span class="p">:</span> <span class="mf">5.0</span>  <span class="c1"># time constant of the synaptic conductance in ms.</span>
+    <span class="p">}</span>
+    <span class="n">default_initial_values</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;gsyn&quot;</span><span class="p">:</span> <span class="mf">0.0</span>
+    <span class="p">}</span>
+    <span class="n">units</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;gsyn&quot;</span><span class="p">:</span> <span class="s2">&quot;uS&quot;</span>
+    <span class="p">}</span>
+    <span class="n">conductance_based</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="CondAlphaPostSynapticResponse"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.receptors.CondAlphaPostSynapticResponse">[docs]</a><span class="k">class</span> <span class="nc">CondAlphaPostSynapticResponse</span><span class="p">(</span><span class="n">StandardPostSynapticResponse</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Post-synaptic response consisting of an &quot;alpha-function&quot;-shaped synaptic conductance:</span>
+
+<span class="sd">        g(t) = t * exp(1 - t/tau_syn)</span>
+
+<span class="sd">    (see A. Roth and M. C. W. van Rossum (2013) Modeling Synapses.</span>
+<span class="sd">     In: Computational Modeling Methods for Neuroscientists, MIT Press 2013, pp 139-160)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;e_syn&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>   <span class="c1"># synaptic reversal potential in mV.</span>
+        <span class="s1">&#39;tau_syn&#39;</span><span class="p">:</span> <span class="mf">5.0</span>  <span class="c1"># time constant of the synaptic conductance in ms.</span>
+    <span class="p">}</span>
+    <span class="n">default_initial_values</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;gsyn&quot;</span><span class="p">:</span> <span class="mf">0.0</span>
+    <span class="p">}</span>
+    <span class="n">units</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;gsyn&quot;</span><span class="p">:</span> <span class="s2">&quot;uS&quot;</span>
+    <span class="p">}</span>
+    <span class="n">conductance_based</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="CondBetaPostSynapticResponse"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.receptors.CondBetaPostSynapticResponse">[docs]</a><span class="k">class</span> <span class="nc">CondBetaPostSynapticResponse</span><span class="p">(</span><span class="n">StandardPostSynapticResponse</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Post-synaptic response consisting of an beta-function-shaped synaptic conductance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;e_syn&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>   <span class="c1"># synaptic reversal potential in mV.</span>
+        <span class="s1">&#39;tau_rise&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>  <span class="c1"># rise time constant of the synaptic conductance in ms.</span>
+        <span class="s1">&#39;tau_decay&#39;</span><span class="p">:</span> <span class="mf">1.7</span>  <span class="c1"># decay time constant of the synaptic conductance in ms.</span>
+    <span class="p">}</span>
+    <span class="n">default_initial_values</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;gsyn&quot;</span><span class="p">:</span> <span class="mf">0.0</span>
+    <span class="p">}</span>
+    <span class="n">units</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;gsyn&quot;</span><span class="p">:</span> <span class="s2">&quot;uS&quot;</span>
+    <span class="p">}</span>
+    <span class="n">conductance_based</span> <span class="o">=</span> <span class="kc">True</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.11.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyNN.standardmodels.receptors</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2023, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    </div>
+  </body>
+</html>

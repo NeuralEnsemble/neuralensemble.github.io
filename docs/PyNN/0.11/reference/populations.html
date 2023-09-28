@@ -1,0 +1,1490 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Populations, Views and Assemblies &#8212; PyNN 0.11.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Connectors" href="connectors.html" />
+    <link rel="prev" title="API reference" href="../api_reference.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="connectors.html" title="Connectors"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../api_reference.html" title="API reference"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.11.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API reference</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Populations, Views and Assemblies</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="populations-views-and-assemblies">
+<h1>Populations, Views and Assemblies<a class="headerlink" href="#populations-views-and-assemblies" title="Permalink to this heading">¶</a></h1>
+<section id="populations">
+<h2>Populations<a class="headerlink" href="#populations" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.neuron.Population">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Population</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cellclass</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cellparams</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">structure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/neuron/populations.html#Population"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Population" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PopulationMixin</span></code></p>
+<p>A group of neurons all of the same type. “Population” is used as a generic
+term intended to include layers, columns, nuclei, etc., of cells.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt><cite>size</cite>:</dt><dd><p>number of cells in the Population. For backwards-compatibility,
+<cite>size</cite> may also be a tuple giving the dimensions of a grid,
+e.g. <code class="docutils literal notranslate"><span class="pre">size=(10,10)</span></code> is equivalent to <code class="docutils literal notranslate"><span class="pre">size=100</span></code> with <code class="docutils literal notranslate"><span class="pre">structure=Grid2D()</span></code>.</p>
+</dd>
+<dt><cite>cellclass</cite>:</dt><dd><p>a cell type (a class inheriting from <code class="xref py py-class docutils literal notranslate"><span class="pre">pyNN.models.BaseCellType</span></code>).</p>
+</dd>
+<dt><cite>cellparams</cite>:</dt><dd><p>a dict, or other mapping, containing parameters, which is passed to
+the neuron model constructor.</p>
+</dd>
+<dt><cite>structure</cite>:</dt><dd><p>a <code class="xref py py-class docutils literal notranslate"><span class="pre">pyNN.space.Structure</span></code> instance, used to specify the
+positions of neurons in space.</p>
+</dd>
+<dt><cite>initial_values</cite>:</dt><dd><p>a dict, or other mapping, containing initial values for the neuron
+state variables.</p>
+</dd>
+<dt><cite>label</cite>:</dt><dd><p>a name for the population. One will be auto-generated if this is not
+supplied.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.size">
+<span class="sig-name descname"><span class="pre">size</span></span><a class="headerlink" href="#pyNN.neuron.Population.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>The total number of neurons in the Population.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.label">
+<span class="sig-name descname"><span class="pre">label</span></span><a class="headerlink" href="#pyNN.neuron.Population.label" title="Permalink to this definition">¶</a></dt>
+<dd><p>A label for the Population.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.celltype">
+<span class="sig-name descname"><span class="pre">celltype</span></span><a class="headerlink" href="#pyNN.neuron.Population.celltype" title="Permalink to this definition">¶</a></dt>
+<dd><p>The type of neurons making up the Population.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.initial_values">
+<span class="sig-name descname"><span class="pre">initial_values</span></span><a class="headerlink" href="#pyNN.neuron.Population.initial_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dict containing the initial values of the state variables.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.all_cells">
+<span class="sig-name descname"><span class="pre">all_cells</span></span><a class="headerlink" href="#pyNN.neuron.Population.all_cells" title="Permalink to this definition">¶</a></dt>
+<dd><p>An array containing the cell ids of all neurons in the Population
+(all MPI nodes)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.__add__">
+<span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.__add__" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Population/PopulationView can be added to another Population,
+PopulationView or Assembly, returning an Assembly.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.__getitem__">
+<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return either a single cell (ID object) from the Population, if <cite>index</cite>
+is an integer, or a subset of the cells (PopulationView object), if
+<cite>index</cite> is a slice or array.</p>
+<dl class="simple">
+<dt>Note that __getitem__ is called when using [] access, e.g.</dt><dd><p>p = Population(…)
+p[2] is equivalent to p.__getitem__(2).
+p[3:6] is equivalent to p.__getitem__(slice(3, 6))</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.__iter__">
+<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterator over cell ids on the local node.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the total number of cells in the population (all nodes).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.all">
+<span class="sig-name descname"><span class="pre">all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterator over cell ids on all MPI nodes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.annotate">
+<span class="sig-name descname"><span class="pre">annotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">annotations</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.annotate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.can_record">
+<span class="sig-name descname"><span class="pre">can_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variable</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.can_record" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine whether <cite>variable</cite> can be recorded from this population.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.conductance_based">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">conductance_based</span></span><a class="headerlink" href="#pyNN.neuron.Population.conductance_based" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates whether the post-synaptic response is modelled as a change
+in conductance or a change in current.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.describe">
+<span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'population_default.txt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/populations.html#Population.describe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Population.describe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a human-readable description of the population.</p>
+<p>The output may be customized by specifying a different template
+together with an associated template engine (see <code class="xref py py-mod docutils literal notranslate"><span class="pre">pyNN.descriptions</span></code>).</p>
+<p>If template is None, then a dictionary containing the template context
+will be returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.find_units">
+<span class="sig-name descname"><span class="pre">find_units</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variable</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.find_units" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns units of the specified variable or parameter, as a string.
+Works for all the recordable variables and neuron parameters of all standard models.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameter_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gather</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simplify</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the values of the given parameters for every local cell in the
+population, or, if gather=True, for all cells in the population.</p>
+<p>Values will be expressed in the standard PyNN units (i.e. millivolts,
+nanoamps, milliseconds, microsiemens, nanofarads, event per second).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.getSpikes">
+<span class="sig-name descname"><span class="pre">getSpikes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.getSpikes" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">get_data('spikes')</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.get_data">
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gather</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.get_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a Neo <cite>Block</cite> containing the data (spikes, state variables)
+recorded from the Population.</p>
+<dl class="simple">
+<dt><cite>variables</cite> - either a single variable name or a list of variable names</dt><dd><p>Variables must have been previously recorded, otherwise an
+Exception will be raised.</p>
+</dd>
+</dl>
+<p>For parallel simulators, if <cite>gather</cite> is True, all data will be gathered
+to all nodes and the Neo <cite>Block</cite> will contain data from all nodes.
+Otherwise, the Neo <cite>Block</cite> will contain only data from the cells
+simulated on the local node.</p>
+<p>If <cite>clear</cite> is True, recorded data will be deleted from the <cite>Population</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.get_gsyn">
+<span class="sig-name descname"><span class="pre">get_gsyn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.get_gsyn" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">get_data(['gsyn_exc',</span> <span class="pre">'gsyn_inh'])</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.get_spike_counts">
+<span class="sig-name descname"><span class="pre">get_spike_counts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gather</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.get_spike_counts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dict containing the number of spikes for each neuron.</p>
+<p>The dict keys are neuron IDs, not indices.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.get_v">
+<span class="sig-name descname"><span class="pre">get_v</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.get_v" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">get_data('v')</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.id_to_index">
+<span class="sig-name descname"><span class="pre">id_to_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/populations.html#Population.id_to_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Population.id_to_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given the ID(s) of cell(s) in the Population, return its (their) index
+(order in the Population).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">p</span><span class="o">.</span><span class="n">id_to_index</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span> <span class="o">==</span> <span class="mi">5</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.id_to_local_index">
+<span class="sig-name descname"><span class="pre">id_to_local_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/populations.html#Population.id_to_local_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Population.id_to_local_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given the ID(s) of cell(s) in the Population, return its (their) index
+(order in the Population), counting only cells on the local MPI node.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">initial_values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set initial values of state variables, e.g. the membrane potential.</p>
+<dl class="simple">
+<dt>Values passed to initialize() may be:</dt><dd><ol class="arabic simple">
+<li><p>single numeric values (all neurons set to the same value)</p></li>
+<li><p>RandomDistribution objects</p></li>
+<li><p>lists/arrays of numbers of the same size as the population</p></li>
+<li><p>mapping functions, where a mapping function accepts a single
+argument (the cell index) and returns a single number.</p></li>
+</ol>
+</dd>
+</dl>
+<p>Values should be expressed in the standard PyNN units (i.e. millivolts,
+nanoamps, milliseconds, microsiemens, nanofarads, event per second).</p>
+<p>Examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">v</span><span class="o">=-</span><span class="mf">70.0</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">v</span><span class="o">=</span><span class="n">rand_distr</span><span class="p">,</span> <span class="n">gsyn_exc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">v</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="o">-</span><span class="mi">65</span> <span class="o">+</span> <span class="n">i</span><span class="o">/</span><span class="mf">10.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.inject">
+<span class="sig-name descname"><span class="pre">inject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_source</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.inject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect a current source to all cells in the Population.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.injectable">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">injectable</span></span><a class="headerlink" href="#pyNN.neuron.Population.injectable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.is_local">
+<span class="sig-name descname"><span class="pre">is_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.is_local" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates whether the cell with the given ID exists on the local MPI node.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.local_cells">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">local_cells</span></span><a class="headerlink" href="#pyNN.neuron.Population.local_cells" title="Permalink to this definition">¶</a></dt>
+<dd><p>An array containing cell ids for the local node.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.local_size">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">local_size</span></span><a class="headerlink" href="#pyNN.neuron.Population.local_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of cells in the population on the local MPI node</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.meanSpikeCount">
+<span class="sig-name descname"><span class="pre">meanSpikeCount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.meanSpikeCount" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">mean_spike_count()</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.mean_spike_count">
+<span class="sig-name descname"><span class="pre">mean_spike_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gather</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.mean_spike_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the mean number of spikes per neuron.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.nearest">
+<span class="sig-name descname"><span class="pre">nearest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.nearest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the neuron closest to the specified position.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.position_generator">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">position_generator</span></span><a class="headerlink" href="#pyNN.neuron.Population.position_generator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.positions">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">positions</span></span><a class="headerlink" href="#pyNN.neuron.Population.positions" title="Permalink to this definition">¶</a></dt>
+<dd><p>A 3xN array (where N is the number of neurons in the Population)
+giving the x,y,z coordinates of all the neurons (soma, in the
+case of non-point models).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.printSpikes">
+<span class="sig-name descname"><span class="pre">printSpikes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.printSpikes" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">write_data(file,</span> <span class="pre">'spikes')</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.print_gsyn">
+<span class="sig-name descname"><span class="pre">print_gsyn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.print_gsyn" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">write_data(file,</span> <span class="pre">['gsyn_exc',</span> <span class="pre">'gsyn_inh'])</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.print_v">
+<span class="sig-name descname"><span class="pre">print_v</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.print_v" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">write_data(file,</span> <span class="pre">'v')</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.receptor_types">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">receptor_types</span></span><a class="headerlink" href="#pyNN.neuron.Population.receptor_types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.record">
+<span class="sig-name descname"><span class="pre">record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variables</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.record" title="Permalink to this definition">¶</a></dt>
+<dd><p>Record the specified variable or variables for all cells in the
+Population or view.</p>
+<p><cite>variables</cite> may be either a single variable name or a list of variable
+names. For a given celltype class, <cite>celltype.recordable</cite> contains a list of
+variables that can be recorded for that celltype.</p>
+<p>If specified, <cite>to_file</cite> should be either a filename or a Neo IO instance and <cite>write_data()</cite>
+will be automatically called when <cite>end()</cite> is called.</p>
+<p><cite>sampling_interval</cite> should be a value in milliseconds, and an integer
+multiple of the simulation timestep.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.record_gsyn">
+<span class="sig-name descname"><span class="pre">record_gsyn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.record_gsyn" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">record(['gsyn_exc',</span> <span class="pre">'gsyn_inh'])</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.record_v">
+<span class="sig-name descname"><span class="pre">record_v</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.record_v" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">record('v')</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.rset">
+<span class="sig-name descname"><span class="pre">rset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.rset" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">set(parametername=rand_distr)</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.sample">
+<span class="sig-name descname"><span class="pre">sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rng</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Randomly sample <cite>n</cite> cells from the Population, and return a
+PopulationView object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.save_positions">
+<span class="sig-name descname"><span class="pre">save_positions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.save_positions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save positions to file. The output format is <code class="docutils literal notranslate"><span class="pre">index</span> <span class="pre">x</span> <span class="pre">y</span> <span class="pre">z</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set one or more parameters for every cell in the population.</p>
+<dl class="simple">
+<dt>Values passed to set() may be:</dt><dd><ol class="arabic simple">
+<li><p>single values</p></li>
+<li><p>RandomDistribution objects</p></li>
+<li><p>lists/arrays of values of the same size as the population</p></li>
+<li><p>mapping functions, where a mapping function accepts a single
+argument (the cell index) and returns a single value.</p></li>
+</ol>
+</dd>
+</dl>
+<p>Here, a “single value” may be either a single number or a list/array of
+numbers (e.g. for spike times). Values should be expressed in the
+standard PyNN units (i.e. millivolts, nanoamps, milliseconds,
+microsiemens, nanofarads, event per second).</p>
+<p>Examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">tau_m</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">v_rest</span><span class="o">=-</span><span class="mi">65</span><span class="p">)</span><span class="o">.</span>
+<span class="n">p</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">spike_times</span><span class="o">=</span><span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">])</span>
+<span class="n">p</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">cm</span><span class="o">=</span><span class="n">rand_distr</span><span class="p">,</span> <span class="n">tau_m</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="mi">10</span> <span class="o">+</span> <span class="n">i</span><span class="o">/</span><span class="mf">10.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.structure">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">structure</span></span><a class="headerlink" href="#pyNN.neuron.Population.structure" title="Permalink to this definition">¶</a></dt>
+<dd><p>The spatial structure of the Population.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.tset">
+<span class="sig-name descname"><span class="pre">tset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.tset" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">set(parametername=value_array)</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Population.write_data">
+<span class="sig-name descname"><span class="pre">write_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">io</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gather</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Population.write_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write recorded data to file, using one of the file formats supported by
+Neo.</p>
+<dl class="simple">
+<dt><cite>io</cite>:</dt><dd><p>a Neo IO instance</p>
+</dd>
+<dt><cite>variables</cite>:</dt><dd><p>either a single variable name or a list of variable names.
+Variables must have been previously recorded, otherwise an
+Exception will be raised.</p>
+</dd>
+</dl>
+<p>For parallel simulators, if <cite>gather</cite> is True, all data will be gathered
+to the master node and a single output file created there. Otherwise, a
+file will be written on each node, containing only data from the cells
+simulated on that node.</p>
+<p>If <cite>clear</cite> is True, recorded data will be deleted from the <cite>Population</cite>.</p>
+<p><cite>annotations</cite> should be a dict containing simple data types such as
+numbers and strings. The contents will be written into the output data
+file as metadata.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyNN.neuron.create">
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.create" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">Population()</span></code> instead.</p>
+</dd></dl>
+
+</section>
+<section id="views-sub-populations">
+<h2>Views (sub-populations)<a class="headerlink" href="#views-sub-populations" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PopulationView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/neuron/populations.html#PopulationView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.PopulationView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PopulationView</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PopulationMixin</span></code></p>
+<p>A view of a subset of neurons within a Population.</p>
+<p>In most ways, Populations and PopulationViews have the same behaviour, i.e.
+they can be recorded, connected with Projections, etc. It should be noted
+that any changes to neurons in a PopulationView will be reflected in the
+parent Population and vice versa.</p>
+<p>It is possible to have views of views.</p>
+<dl>
+<dt>Arguments:</dt><dd><dl>
+<dt>selector:</dt><dd><p>a slice or numpy mask array. The mask array should either be a
+boolean array of the same size as the parent, or an integer array
+containing cell indices, i.e. if p.size == 5:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">PopulationView</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">array</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]))</span>
+<span class="n">PopulationView</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">]))</span>
+<span class="n">PopulationView</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>will all create the same view.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.size">
+<span class="sig-name descname"><span class="pre">size</span></span><a class="headerlink" href="#pyNN.neuron.PopulationView.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>The total number of neurons in the Population.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.label">
+<span class="sig-name descname"><span class="pre">label</span></span><a class="headerlink" href="#pyNN.neuron.PopulationView.label" title="Permalink to this definition">¶</a></dt>
+<dd><p>A label for the Population.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.celltype">
+<span class="sig-name descname"><span class="pre">celltype</span></span><a class="headerlink" href="#pyNN.neuron.PopulationView.celltype" title="Permalink to this definition">¶</a></dt>
+<dd><p>The type of neurons making up the Population.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.initial_values">
+<span class="sig-name descname"><span class="pre">initial_values</span></span><a class="headerlink" href="#pyNN.neuron.PopulationView.initial_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dict containing the initial values of the state variables.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.parent">
+<span class="sig-name descname"><span class="pre">parent</span></span><a class="headerlink" href="#pyNN.neuron.PopulationView.parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>A reference to the parent Population (that this is a view of).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.mask">
+<span class="sig-name descname"><span class="pre">mask</span></span><a class="headerlink" href="#pyNN.neuron.PopulationView.mask" title="Permalink to this definition">¶</a></dt>
+<dd><p>The selector mask that was used to create this view.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.all_cells">
+<span class="sig-name descname"><span class="pre">all_cells</span></span><a class="headerlink" href="#pyNN.neuron.PopulationView.all_cells" title="Permalink to this definition">¶</a></dt>
+<dd><p>An array containing the cell ids of all neurons in the Population
+(all MPI nodes).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.local_cells">
+<span class="sig-name descname"><span class="pre">local_cells</span></span><a class="headerlink" href="#pyNN.neuron.PopulationView.local_cells" title="Permalink to this definition">¶</a></dt>
+<dd><p>An array containing the cell ids of those neurons in the Population
+that exist on the local MPI node.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.__add__">
+<span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.__add__" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Population/PopulationView can be added to another Population,
+PopulationView or Assembly, returning an Assembly.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.__getitem__">
+<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return either a single cell (ID object) from the Population, if <cite>index</cite>
+is an integer, or a subset of the cells (PopulationView object), if
+<cite>index</cite> is a slice or array.</p>
+<dl class="simple">
+<dt>Note that __getitem__ is called when using [] access, e.g.</dt><dd><p>p = Population(…)
+p[2] is equivalent to p.__getitem__(2).
+p[3:6] is equivalent to p.__getitem__(slice(3, 6))</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.__iter__">
+<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterator over cell ids on the local node.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the total number of cells in the population (all nodes).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.all">
+<span class="sig-name descname"><span class="pre">all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterator over cell ids on all MPI nodes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.annotate">
+<span class="sig-name descname"><span class="pre">annotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">annotations</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.annotate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.can_record">
+<span class="sig-name descname"><span class="pre">can_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variable</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.can_record" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine whether <cite>variable</cite> can be recorded from this population.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.conductance_based">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">conductance_based</span></span><a class="headerlink" href="#pyNN.neuron.PopulationView.conductance_based" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates whether the post-synaptic response is modelled as a change
+in conductance or a change in current.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.describe">
+<span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'populationview_default.txt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/populations.html#PopulationView.describe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.PopulationView.describe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a human-readable description of the population view.</p>
+<p>The output may be customized by specifying a different template
+togther with an associated template engine (see <code class="docutils literal notranslate"><span class="pre">pyNN.descriptions</span></code>).</p>
+<p>If template is None, then a dictionary containing the template context
+will be returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.find_units">
+<span class="sig-name descname"><span class="pre">find_units</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variable</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.find_units" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns units of the specified variable or parameter, as a string.
+Works for all the recordable variables and neuron parameters of all standard models.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameter_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gather</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simplify</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the values of the given parameters for every local cell in the
+population, or, if gather=True, for all cells in the population.</p>
+<p>Values will be expressed in the standard PyNN units (i.e. millivolts,
+nanoamps, milliseconds, microsiemens, nanofarads, event per second).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.getSpikes">
+<span class="sig-name descname"><span class="pre">getSpikes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.getSpikes" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">get_data('spikes')</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.get_data">
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gather</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.get_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a Neo <cite>Block</cite> containing the data (spikes, state variables)
+recorded from the Population.</p>
+<dl class="simple">
+<dt><cite>variables</cite> - either a single variable name or a list of variable names</dt><dd><p>Variables must have been previously recorded, otherwise an
+Exception will be raised.</p>
+</dd>
+</dl>
+<p>For parallel simulators, if <cite>gather</cite> is True, all data will be gathered
+to all nodes and the Neo <cite>Block</cite> will contain data from all nodes.
+Otherwise, the Neo <cite>Block</cite> will contain only data from the cells
+simulated on the local node.</p>
+<p>If <cite>clear</cite> is True, recorded data will be deleted from the <cite>Population</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.get_gsyn">
+<span class="sig-name descname"><span class="pre">get_gsyn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.get_gsyn" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">get_data(['gsyn_exc',</span> <span class="pre">'gsyn_inh'])</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.get_spike_counts">
+<span class="sig-name descname"><span class="pre">get_spike_counts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gather</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.get_spike_counts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dict containing the number of spikes for each neuron.</p>
+<p>The dict keys are neuron IDs, not indices.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.get_v">
+<span class="sig-name descname"><span class="pre">get_v</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.get_v" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">get_data('v')</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.grandparent">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">grandparent</span></span><a class="headerlink" href="#pyNN.neuron.PopulationView.grandparent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the parent Population at the root of the tree (since the
+immediate parent may itself be a PopulationView).</p>
+<p>The name “grandparent” is of course a little misleading, as it could
+be just the parent, or the great, great, great, …, grandparent.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.id_to_index">
+<span class="sig-name descname"><span class="pre">id_to_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/populations.html#PopulationView.id_to_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.PopulationView.id_to_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given the ID(s) of cell(s) in the PopulationView, return its/their
+index/indices (order in the PopulationView).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">pv</span><span class="o">.</span><span class="n">id_to_index</span><span class="p">(</span><span class="n">pv</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">==</span> <span class="mi">3</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.index_from_parent_index">
+<span class="sig-name descname"><span class="pre">index_from_parent_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/populations.html#PopulationView.index_from_parent_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.PopulationView.index_from_parent_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an index(indices) in the parent population, return
+the index(indices) within this view.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.index_in_grandparent">
+<span class="sig-name descname"><span class="pre">index_in_grandparent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/populations.html#PopulationView.index_in_grandparent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.PopulationView.index_in_grandparent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an array of indices, return the indices in the parent population
+at the root of the tree.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="id0">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">initial_values</span></span><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">initial_values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set initial values of state variables, e.g. the membrane potential.</p>
+<dl class="simple">
+<dt>Values passed to initialize() may be:</dt><dd><ol class="arabic simple">
+<li><p>single numeric values (all neurons set to the same value)</p></li>
+<li><p>RandomDistribution objects</p></li>
+<li><p>lists/arrays of numbers of the same size as the population</p></li>
+<li><p>mapping functions, where a mapping function accepts a single
+argument (the cell index) and returns a single number.</p></li>
+</ol>
+</dd>
+</dl>
+<p>Values should be expressed in the standard PyNN units (i.e. millivolts,
+nanoamps, milliseconds, microsiemens, nanofarads, event per second).</p>
+<p>Examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">v</span><span class="o">=-</span><span class="mf">70.0</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">v</span><span class="o">=</span><span class="n">rand_distr</span><span class="p">,</span> <span class="n">gsyn_exc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">v</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="o">-</span><span class="mi">65</span> <span class="o">+</span> <span class="n">i</span><span class="o">/</span><span class="mf">10.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.inject">
+<span class="sig-name descname"><span class="pre">inject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_source</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.inject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect a current source to all cells in the Population.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.injectable">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">injectable</span></span><a class="headerlink" href="#pyNN.neuron.PopulationView.injectable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.is_local">
+<span class="sig-name descname"><span class="pre">is_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.is_local" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates whether the cell with the given ID exists on the local MPI node.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.local_size">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">local_size</span></span><a class="headerlink" href="#pyNN.neuron.PopulationView.local_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of cells in the population on the local MPI node</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.meanSpikeCount">
+<span class="sig-name descname"><span class="pre">meanSpikeCount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.meanSpikeCount" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">mean_spike_count()</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.mean_spike_count">
+<span class="sig-name descname"><span class="pre">mean_spike_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gather</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.mean_spike_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the mean number of spikes per neuron.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.nearest">
+<span class="sig-name descname"><span class="pre">nearest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.nearest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the neuron closest to the specified position.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.position_generator">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">position_generator</span></span><a class="headerlink" href="#pyNN.neuron.PopulationView.position_generator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.positions">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">positions</span></span><a class="headerlink" href="#pyNN.neuron.PopulationView.positions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.printSpikes">
+<span class="sig-name descname"><span class="pre">printSpikes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.printSpikes" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">write_data(file,</span> <span class="pre">'spikes')</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.print_gsyn">
+<span class="sig-name descname"><span class="pre">print_gsyn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.print_gsyn" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">write_data(file,</span> <span class="pre">['gsyn_exc',</span> <span class="pre">'gsyn_inh'])</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.print_v">
+<span class="sig-name descname"><span class="pre">print_v</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.print_v" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">write_data(file,</span> <span class="pre">'v')</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.receptor_types">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">receptor_types</span></span><a class="headerlink" href="#pyNN.neuron.PopulationView.receptor_types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.record">
+<span class="sig-name descname"><span class="pre">record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variables</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.record" title="Permalink to this definition">¶</a></dt>
+<dd><p>Record the specified variable or variables for all cells in the
+Population or view.</p>
+<p><cite>variables</cite> may be either a single variable name or a list of variable
+names. For a given celltype class, <cite>celltype.recordable</cite> contains a list of
+variables that can be recorded for that celltype.</p>
+<p>If specified, <cite>to_file</cite> should be either a filename or a Neo IO instance and <cite>write_data()</cite>
+will be automatically called when <cite>end()</cite> is called.</p>
+<p><cite>sampling_interval</cite> should be a value in milliseconds, and an integer
+multiple of the simulation timestep.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.record_gsyn">
+<span class="sig-name descname"><span class="pre">record_gsyn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.record_gsyn" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">record(['gsyn_exc',</span> <span class="pre">'gsyn_inh'])</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.record_v">
+<span class="sig-name descname"><span class="pre">record_v</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.record_v" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">record('v')</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.rset">
+<span class="sig-name descname"><span class="pre">rset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.rset" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">set(parametername=rand_distr)</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.sample">
+<span class="sig-name descname"><span class="pre">sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rng</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Randomly sample <cite>n</cite> cells from the Population, and return a
+PopulationView object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.save_positions">
+<span class="sig-name descname"><span class="pre">save_positions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.save_positions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save positions to file. The output format is <code class="docutils literal notranslate"><span class="pre">index</span> <span class="pre">x</span> <span class="pre">y</span> <span class="pre">z</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set one or more parameters for every cell in the population.</p>
+<dl class="simple">
+<dt>Values passed to set() may be:</dt><dd><ol class="arabic simple">
+<li><p>single values</p></li>
+<li><p>RandomDistribution objects</p></li>
+<li><p>lists/arrays of values of the same size as the population</p></li>
+<li><p>mapping functions, where a mapping function accepts a single
+argument (the cell index) and returns a single value.</p></li>
+</ol>
+</dd>
+</dl>
+<p>Here, a “single value” may be either a single number or a list/array of
+numbers (e.g. for spike times). Values should be expressed in the
+standard PyNN units (i.e. millivolts, nanoamps, milliseconds,
+microsiemens, nanofarads, event per second).</p>
+<p>Examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">tau_m</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">v_rest</span><span class="o">=-</span><span class="mi">65</span><span class="p">)</span><span class="o">.</span>
+<span class="n">p</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">spike_times</span><span class="o">=</span><span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">])</span>
+<span class="n">p</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">cm</span><span class="o">=</span><span class="n">rand_distr</span><span class="p">,</span> <span class="n">tau_m</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="mi">10</span> <span class="o">+</span> <span class="n">i</span><span class="o">/</span><span class="mf">10.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.structure">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">structure</span></span><a class="headerlink" href="#pyNN.neuron.PopulationView.structure" title="Permalink to this definition">¶</a></dt>
+<dd><p>The spatial structure of the parent Population.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.tset">
+<span class="sig-name descname"><span class="pre">tset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.tset" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">set(parametername=value_array)</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.PopulationView.write_data">
+<span class="sig-name descname"><span class="pre">write_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">io</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gather</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.PopulationView.write_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write recorded data to file, using one of the file formats supported by
+Neo.</p>
+<dl class="simple">
+<dt><cite>io</cite>:</dt><dd><p>a Neo IO instance</p>
+</dd>
+<dt><cite>variables</cite>:</dt><dd><p>either a single variable name or a list of variable names.
+Variables must have been previously recorded, otherwise an
+Exception will be raised.</p>
+</dd>
+</dl>
+<p>For parallel simulators, if <cite>gather</cite> is True, all data will be gathered
+to the master node and a single output file created there. Otherwise, a
+file will be written on each node, containing only data from the cells
+simulated on that node.</p>
+<p>If <cite>clear</cite> is True, recorded data will be deleted from the <cite>Population</cite>.</p>
+<p><cite>annotations</cite> should be a dict containing simple data types such as
+numbers and strings. The contents will be written into the output data
+file as metadata.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="assemblies">
+<h2>Assemblies<a class="headerlink" href="#assemblies" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Assembly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">populations</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/neuron/populations.html#Assembly"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Assembly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Assembly</span></code></p>
+<p>A group of neurons, may be heterogeneous, in contrast to a Population where
+all the neurons are of the same type.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>populations:</dt><dd><p>Populations or PopulationViews</p>
+</dd>
+<dt>kwargs:</dt><dd><p>May contain a keyword argument ‘label’</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.__add__">
+<span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/populations.html#Assembly.__add__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Assembly.__add__" title="Permalink to this definition">¶</a></dt>
+<dd><p>An Assembly may be added to a Population, PopulationView or Assembly
+with the ‘+’ operator, returning a new Assembly, e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">a2</span> <span class="o">=</span> <span class="n">a1</span> <span class="o">+</span> <span class="n">p</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.__iadd__">
+<span class="sig-name descname"><span class="pre">__iadd__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/populations.html#Assembly.__iadd__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Assembly.__iadd__" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Population, PopulationView or Assembly may be added to an existing
+Assembly using the ‘+=’ operator, e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">+=</span> <span class="n">p</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.__getitem__">
+<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/populations.html#Assembly.__getitem__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Assembly.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Where <cite>index</cite> is an integer, return an ID.
+Where <cite>index</cite> is a slice, tuple, list or numpy array, return a new Assembly
+consisting of appropriate populations and (possibly newly created)
+population views.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.__iter__">
+<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/populations.html#Assembly.__iter__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Assembly.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterator over cells in all populations within the Assembly, for cells
+on the local MPI node.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/populations.html#Assembly.__len__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Assembly.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the total number of cells in the population (all nodes).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.all">
+<span class="sig-name descname"><span class="pre">all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/populations.html#Assembly.all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Assembly.all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterator over cell ids on all nodes.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.all_cells">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">all_cells</span></span><a class="headerlink" href="#pyNN.neuron.Assembly.all_cells" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.conductance_based">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">conductance_based</span></span><a class="headerlink" href="#pyNN.neuron.Assembly.conductance_based" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>True</cite> if the post-synaptic response is modelled as a change
+in conductance, <cite>False</cite> if a change in current.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.describe">
+<span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'assembly_default.txt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/populations.html#Assembly.describe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Assembly.describe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a human-readable description of the assembly.</p>
+<p>The output may be customized by specifying a different template
+togther with an associated template engine (see <code class="docutils literal notranslate"><span class="pre">pyNN.descriptions</span></code>).</p>
+<p>If template is None, then a dictionary containing the template context
+will be returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.find_units">
+<span class="sig-name descname"><span class="pre">find_units</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variable</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/populations.html#Assembly.find_units"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Assembly.find_units" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns units of the specified variable or parameter, as a string.
+Works for all the recordable variables and neuron parameters of all standard models.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.first_id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">first_id</span></span><a class="headerlink" href="#pyNN.neuron.Assembly.first_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameter_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gather</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simplify</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/populations.html#Assembly.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Assembly.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the values of the given parameters for every local cell in the
+Assembly, or, if gather=True, for all cells in the Assembly.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.getSpikes">
+<span class="sig-name descname"><span class="pre">getSpikes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Assembly.getSpikes" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">get_data('spikes')</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.get_annotations">
+<span class="sig-name descname"><span class="pre">get_annotations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annotation_keys</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simplify</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/populations.html#Assembly.get_annotations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Assembly.get_annotations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the values of the given annotations for each population in the Assembly.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.get_data">
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gather</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/populations.html#Assembly.get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Assembly.get_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a Neo <cite>Block</cite> containing the data (spikes, state variables)
+recorded from the Assembly.</p>
+<dl class="simple">
+<dt><cite>variables</cite> - either a single variable name or a list of variable names</dt><dd><p>Variables must have been previously recorded, otherwise an
+Exception will be raised.</p>
+</dd>
+</dl>
+<p>For parallel simulators, if <cite>gather</cite> is True, all data will be gathered
+to all nodes and the Neo <cite>Block</cite> will contain data from all nodes.
+Otherwise, the Neo <cite>Block</cite> will contain only data from the cells
+simulated on the local node.</p>
+<p>If <cite>clear</cite> is True, recorded data will be deleted from the <cite>Assembly</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.get_gsyn">
+<span class="sig-name descname"><span class="pre">get_gsyn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Assembly.get_gsyn" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">get_data(['gsyn_exc',</span> <span class="pre">'gsyn_inh'])</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.get_population">
+<span class="sig-name descname"><span class="pre">get_population</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/populations.html#Assembly.get_population"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Assembly.get_population" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the Population/PopulationView from within the Assembly that has
+the given label. If no such Population exists, raise KeyError.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.get_spike_counts">
+<span class="sig-name descname"><span class="pre">get_spike_counts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gather</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/populations.html#Assembly.get_spike_counts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Assembly.get_spike_counts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of spikes for each neuron.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.get_v">
+<span class="sig-name descname"><span class="pre">get_v</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Assembly.get_v" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">get_data('v')</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.id_to_index">
+<span class="sig-name descname"><span class="pre">id_to_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/populations.html#Assembly.id_to_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Assembly.id_to_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given the ID(s) of cell(s) in the Assembly, return its (their) index
+(order in the Assembly):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">p</span><span class="o">.</span><span class="n">id_to_index</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span> <span class="o">==</span> <span class="mi">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">p</span><span class="o">.</span><span class="n">id_to_index</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">index</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]))</span> <span class="o">==</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">initial_values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/populations.html#Assembly.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Assembly.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the initial values of the state variables of the neurons in
+this assembly.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.inject">
+<span class="sig-name descname"><span class="pre">inject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_source</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/populations.html#Assembly.inject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Assembly.inject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect a current source to all cells in the Assembly.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.injectable">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">injectable</span></span><a class="headerlink" href="#pyNN.neuron.Assembly.injectable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.last_id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">last_id</span></span><a class="headerlink" href="#pyNN.neuron.Assembly.last_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.local_cells">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">local_cells</span></span><a class="headerlink" href="#pyNN.neuron.Assembly.local_cells" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.mean_spike_count">
+<span class="sig-name descname"><span class="pre">mean_spike_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gather</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/populations.html#Assembly.mean_spike_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Assembly.mean_spike_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the mean number of spikes per neuron.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.position_generator">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">position_generator</span></span><a class="headerlink" href="#pyNN.neuron.Assembly.position_generator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.positions">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">positions</span></span><a class="headerlink" href="#pyNN.neuron.Assembly.positions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.printSpikes">
+<span class="sig-name descname"><span class="pre">printSpikes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Assembly.printSpikes" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">write_data(file,</span> <span class="pre">'spikes')</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.print_gsyn">
+<span class="sig-name descname"><span class="pre">print_gsyn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Assembly.print_gsyn" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">write_data(['gsyn_exc',</span> <span class="pre">'gsyn_inh'])</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.print_v">
+<span class="sig-name descname"><span class="pre">print_v</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Assembly.print_v" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">write_data(file,</span> <span class="pre">'v')</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.receptor_types">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">receptor_types</span></span><a class="headerlink" href="#pyNN.neuron.Assembly.receptor_types" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of receptor types that are common to all populations
+within the assembly.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.record">
+<span class="sig-name descname"><span class="pre">record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variables</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/populations.html#Assembly.record"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Assembly.record" title="Permalink to this definition">¶</a></dt>
+<dd><p>Record the specified variable or variables for all cells in the Assembly.</p>
+<p><cite>variables</cite> may be either a single variable name or a list of variable
+names. For a given celltype class, <cite>celltype.recordable</cite> contains a list of
+variables that can be recorded for that celltype.</p>
+<p>If specified, <cite>to_file</cite> should be either a filename or a Neo IO instance and <cite>write_data()</cite>
+will be automatically called when <cite>end()</cite> is called.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.record_gsyn">
+<span class="sig-name descname"><span class="pre">record_gsyn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Assembly.record_gsyn" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">record(['gsyn_exc',</span> <span class="pre">'gsyn_inh'])</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.record_v">
+<span class="sig-name descname"><span class="pre">record_v</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Assembly.record_v" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">record('v')</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.rset">
+<span class="sig-name descname"><span class="pre">rset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Assembly.rset" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">set(parametername=rand_distr)</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.sample">
+<span class="sig-name descname"><span class="pre">sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rng</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/populations.html#Assembly.sample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Assembly.sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Randomly sample <cite>n</cite> cells from the Assembly, and return a Assembly
+object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.save_positions">
+<span class="sig-name descname"><span class="pre">save_positions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/populations.html#Assembly.save_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Assembly.save_positions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save positions to file. The output format is id x y z</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/populations.html#Assembly.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Assembly.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set one or more parameters for every cell in the Assembly.</p>
+<dl class="simple">
+<dt>Values passed to set() may be:</dt><dd><ol class="arabic simple">
+<li><p>single values</p></li>
+<li><p>RandomDistribution objects</p></li>
+<li><p>mapping functions, where a mapping function accepts a single
+argument (the cell index) and returns a single value.</p></li>
+</ol>
+</dd>
+</dl>
+<p>Here, a “single value” may be either a single number or a list/array of
+numbers (e.g. for spike times).</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.size">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">size</span></span><a class="headerlink" href="#pyNN.neuron.Assembly.size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Assembly.write_data">
+<span class="sig-name descname"><span class="pre">write_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">io</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gather</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/populations.html#Assembly.write_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Assembly.write_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write recorded data to file, using one of the file formats supported by
+Neo.</p>
+<dl class="simple">
+<dt><cite>io</cite>:</dt><dd><p>a Neo IO instance</p>
+</dd>
+<dt><cite>variables</cite>:</dt><dd><p>either a single variable name or a list of variable names.
+Variables must have been previously recorded, otherwise an
+Exception will be raised.</p>
+</dd>
+</dl>
+<p>For parallel simulators, if <cite>gather</cite> is True, all data will be gathered
+to the master node and a single output file created there. Otherwise, a
+file will be written on each node, containing only data from the cells
+simulated on that node.</p>
+<p>If <cite>clear</cite> is True, recorded data will be deleted from the <cite>Population</cite>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Populations, Views and Assemblies</a><ul>
+<li><a class="reference internal" href="#populations">Populations</a><ul>
+<li><a class="reference internal" href="#pyNN.neuron.Population"><code class="docutils literal notranslate"><span class="pre">Population</span></code></a><ul>
+<li><a class="reference internal" href="#pyNN.neuron.Population.size"><code class="docutils literal notranslate"><span class="pre">Population.size</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.label"><code class="docutils literal notranslate"><span class="pre">Population.label</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.celltype"><code class="docutils literal notranslate"><span class="pre">Population.celltype</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.initial_values"><code class="docutils literal notranslate"><span class="pre">Population.initial_values</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.all_cells"><code class="docutils literal notranslate"><span class="pre">Population.all_cells</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.__add__"><code class="docutils literal notranslate"><span class="pre">Population.__add__()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.__getitem__"><code class="docutils literal notranslate"><span class="pre">Population.__getitem__()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.__iter__"><code class="docutils literal notranslate"><span class="pre">Population.__iter__()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.__len__"><code class="docutils literal notranslate"><span class="pre">Population.__len__()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.all"><code class="docutils literal notranslate"><span class="pre">Population.all()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.annotate"><code class="docutils literal notranslate"><span class="pre">Population.annotate()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.can_record"><code class="docutils literal notranslate"><span class="pre">Population.can_record()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.conductance_based"><code class="docutils literal notranslate"><span class="pre">Population.conductance_based</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.describe"><code class="docutils literal notranslate"><span class="pre">Population.describe()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.find_units"><code class="docutils literal notranslate"><span class="pre">Population.find_units()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.get"><code class="docutils literal notranslate"><span class="pre">Population.get()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.getSpikes"><code class="docutils literal notranslate"><span class="pre">Population.getSpikes()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.get_data"><code class="docutils literal notranslate"><span class="pre">Population.get_data()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.get_gsyn"><code class="docutils literal notranslate"><span class="pre">Population.get_gsyn()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.get_spike_counts"><code class="docutils literal notranslate"><span class="pre">Population.get_spike_counts()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.get_v"><code class="docutils literal notranslate"><span class="pre">Population.get_v()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.id_to_index"><code class="docutils literal notranslate"><span class="pre">Population.id_to_index()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.id_to_local_index"><code class="docutils literal notranslate"><span class="pre">Population.id_to_local_index()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.initialize"><code class="docutils literal notranslate"><span class="pre">Population.initialize()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.inject"><code class="docutils literal notranslate"><span class="pre">Population.inject()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.injectable"><code class="docutils literal notranslate"><span class="pre">Population.injectable</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.is_local"><code class="docutils literal notranslate"><span class="pre">Population.is_local()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.local_cells"><code class="docutils literal notranslate"><span class="pre">Population.local_cells</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.local_size"><code class="docutils literal notranslate"><span class="pre">Population.local_size</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.meanSpikeCount"><code class="docutils literal notranslate"><span class="pre">Population.meanSpikeCount()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.mean_spike_count"><code class="docutils literal notranslate"><span class="pre">Population.mean_spike_count()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.nearest"><code class="docutils literal notranslate"><span class="pre">Population.nearest()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.position_generator"><code class="docutils literal notranslate"><span class="pre">Population.position_generator</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.positions"><code class="docutils literal notranslate"><span class="pre">Population.positions</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.printSpikes"><code class="docutils literal notranslate"><span class="pre">Population.printSpikes()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.print_gsyn"><code class="docutils literal notranslate"><span class="pre">Population.print_gsyn()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.print_v"><code class="docutils literal notranslate"><span class="pre">Population.print_v()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.receptor_types"><code class="docutils literal notranslate"><span class="pre">Population.receptor_types</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.record"><code class="docutils literal notranslate"><span class="pre">Population.record()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.record_gsyn"><code class="docutils literal notranslate"><span class="pre">Population.record_gsyn()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.record_v"><code class="docutils literal notranslate"><span class="pre">Population.record_v()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.rset"><code class="docutils literal notranslate"><span class="pre">Population.rset()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.sample"><code class="docutils literal notranslate"><span class="pre">Population.sample()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.save_positions"><code class="docutils literal notranslate"><span class="pre">Population.save_positions()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.set"><code class="docutils literal notranslate"><span class="pre">Population.set()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.structure"><code class="docutils literal notranslate"><span class="pre">Population.structure</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.tset"><code class="docutils literal notranslate"><span class="pre">Population.tset()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Population.write_data"><code class="docutils literal notranslate"><span class="pre">Population.write_data()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyNN.neuron.create"><code class="docutils literal notranslate"><span class="pre">create()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#views-sub-populations">Views (sub-populations)</a><ul>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView"><code class="docutils literal notranslate"><span class="pre">PopulationView</span></code></a><ul>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.size"><code class="docutils literal notranslate"><span class="pre">PopulationView.size</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.label"><code class="docutils literal notranslate"><span class="pre">PopulationView.label</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.celltype"><code class="docutils literal notranslate"><span class="pre">PopulationView.celltype</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.initial_values"><code class="docutils literal notranslate"><span class="pre">PopulationView.initial_values</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.parent"><code class="docutils literal notranslate"><span class="pre">PopulationView.parent</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.mask"><code class="docutils literal notranslate"><span class="pre">PopulationView.mask</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.all_cells"><code class="docutils literal notranslate"><span class="pre">PopulationView.all_cells</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.local_cells"><code class="docutils literal notranslate"><span class="pre">PopulationView.local_cells</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.__add__"><code class="docutils literal notranslate"><span class="pre">PopulationView.__add__()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.__getitem__"><code class="docutils literal notranslate"><span class="pre">PopulationView.__getitem__()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.__iter__"><code class="docutils literal notranslate"><span class="pre">PopulationView.__iter__()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.__len__"><code class="docutils literal notranslate"><span class="pre">PopulationView.__len__()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.all"><code class="docutils literal notranslate"><span class="pre">PopulationView.all()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.annotate"><code class="docutils literal notranslate"><span class="pre">PopulationView.annotate()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.can_record"><code class="docutils literal notranslate"><span class="pre">PopulationView.can_record()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.conductance_based"><code class="docutils literal notranslate"><span class="pre">PopulationView.conductance_based</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.describe"><code class="docutils literal notranslate"><span class="pre">PopulationView.describe()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.find_units"><code class="docutils literal notranslate"><span class="pre">PopulationView.find_units()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.get"><code class="docutils literal notranslate"><span class="pre">PopulationView.get()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.getSpikes"><code class="docutils literal notranslate"><span class="pre">PopulationView.getSpikes()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.get_data"><code class="docutils literal notranslate"><span class="pre">PopulationView.get_data()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.get_gsyn"><code class="docutils literal notranslate"><span class="pre">PopulationView.get_gsyn()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.get_spike_counts"><code class="docutils literal notranslate"><span class="pre">PopulationView.get_spike_counts()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.get_v"><code class="docutils literal notranslate"><span class="pre">PopulationView.get_v()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.grandparent"><code class="docutils literal notranslate"><span class="pre">PopulationView.grandparent</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.id_to_index"><code class="docutils literal notranslate"><span class="pre">PopulationView.id_to_index()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.index_from_parent_index"><code class="docutils literal notranslate"><span class="pre">PopulationView.index_from_parent_index()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.index_in_grandparent"><code class="docutils literal notranslate"><span class="pre">PopulationView.index_in_grandparent()</span></code></a></li>
+<li><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">PopulationView.initial_values</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.initialize"><code class="docutils literal notranslate"><span class="pre">PopulationView.initialize()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.inject"><code class="docutils literal notranslate"><span class="pre">PopulationView.inject()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.injectable"><code class="docutils literal notranslate"><span class="pre">PopulationView.injectable</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.is_local"><code class="docutils literal notranslate"><span class="pre">PopulationView.is_local()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.local_size"><code class="docutils literal notranslate"><span class="pre">PopulationView.local_size</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.meanSpikeCount"><code class="docutils literal notranslate"><span class="pre">PopulationView.meanSpikeCount()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.mean_spike_count"><code class="docutils literal notranslate"><span class="pre">PopulationView.mean_spike_count()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.nearest"><code class="docutils literal notranslate"><span class="pre">PopulationView.nearest()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.position_generator"><code class="docutils literal notranslate"><span class="pre">PopulationView.position_generator</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.positions"><code class="docutils literal notranslate"><span class="pre">PopulationView.positions</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.printSpikes"><code class="docutils literal notranslate"><span class="pre">PopulationView.printSpikes()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.print_gsyn"><code class="docutils literal notranslate"><span class="pre">PopulationView.print_gsyn()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.print_v"><code class="docutils literal notranslate"><span class="pre">PopulationView.print_v()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.receptor_types"><code class="docutils literal notranslate"><span class="pre">PopulationView.receptor_types</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.record"><code class="docutils literal notranslate"><span class="pre">PopulationView.record()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.record_gsyn"><code class="docutils literal notranslate"><span class="pre">PopulationView.record_gsyn()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.record_v"><code class="docutils literal notranslate"><span class="pre">PopulationView.record_v()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.rset"><code class="docutils literal notranslate"><span class="pre">PopulationView.rset()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.sample"><code class="docutils literal notranslate"><span class="pre">PopulationView.sample()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.save_positions"><code class="docutils literal notranslate"><span class="pre">PopulationView.save_positions()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.set"><code class="docutils literal notranslate"><span class="pre">PopulationView.set()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.structure"><code class="docutils literal notranslate"><span class="pre">PopulationView.structure</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.tset"><code class="docutils literal notranslate"><span class="pre">PopulationView.tset()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.PopulationView.write_data"><code class="docutils literal notranslate"><span class="pre">PopulationView.write_data()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#assemblies">Assemblies</a><ul>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly"><code class="docutils literal notranslate"><span class="pre">Assembly</span></code></a><ul>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.__add__"><code class="docutils literal notranslate"><span class="pre">Assembly.__add__()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.__iadd__"><code class="docutils literal notranslate"><span class="pre">Assembly.__iadd__()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.__getitem__"><code class="docutils literal notranslate"><span class="pre">Assembly.__getitem__()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.__iter__"><code class="docutils literal notranslate"><span class="pre">Assembly.__iter__()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.__len__"><code class="docutils literal notranslate"><span class="pre">Assembly.__len__()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.all"><code class="docutils literal notranslate"><span class="pre">Assembly.all()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.all_cells"><code class="docutils literal notranslate"><span class="pre">Assembly.all_cells</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.conductance_based"><code class="docutils literal notranslate"><span class="pre">Assembly.conductance_based</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.describe"><code class="docutils literal notranslate"><span class="pre">Assembly.describe()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.find_units"><code class="docutils literal notranslate"><span class="pre">Assembly.find_units()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.first_id"><code class="docutils literal notranslate"><span class="pre">Assembly.first_id</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.get"><code class="docutils literal notranslate"><span class="pre">Assembly.get()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.getSpikes"><code class="docutils literal notranslate"><span class="pre">Assembly.getSpikes()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.get_annotations"><code class="docutils literal notranslate"><span class="pre">Assembly.get_annotations()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.get_data"><code class="docutils literal notranslate"><span class="pre">Assembly.get_data()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.get_gsyn"><code class="docutils literal notranslate"><span class="pre">Assembly.get_gsyn()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.get_population"><code class="docutils literal notranslate"><span class="pre">Assembly.get_population()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.get_spike_counts"><code class="docutils literal notranslate"><span class="pre">Assembly.get_spike_counts()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.get_v"><code class="docutils literal notranslate"><span class="pre">Assembly.get_v()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.id_to_index"><code class="docutils literal notranslate"><span class="pre">Assembly.id_to_index()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.initialize"><code class="docutils literal notranslate"><span class="pre">Assembly.initialize()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.inject"><code class="docutils literal notranslate"><span class="pre">Assembly.inject()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.injectable"><code class="docutils literal notranslate"><span class="pre">Assembly.injectable</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.last_id"><code class="docutils literal notranslate"><span class="pre">Assembly.last_id</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.local_cells"><code class="docutils literal notranslate"><span class="pre">Assembly.local_cells</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.mean_spike_count"><code class="docutils literal notranslate"><span class="pre">Assembly.mean_spike_count()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.position_generator"><code class="docutils literal notranslate"><span class="pre">Assembly.position_generator</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.positions"><code class="docutils literal notranslate"><span class="pre">Assembly.positions</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.printSpikes"><code class="docutils literal notranslate"><span class="pre">Assembly.printSpikes()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.print_gsyn"><code class="docutils literal notranslate"><span class="pre">Assembly.print_gsyn()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.print_v"><code class="docutils literal notranslate"><span class="pre">Assembly.print_v()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.receptor_types"><code class="docutils literal notranslate"><span class="pre">Assembly.receptor_types</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.record"><code class="docutils literal notranslate"><span class="pre">Assembly.record()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.record_gsyn"><code class="docutils literal notranslate"><span class="pre">Assembly.record_gsyn()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.record_v"><code class="docutils literal notranslate"><span class="pre">Assembly.record_v()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.rset"><code class="docutils literal notranslate"><span class="pre">Assembly.rset()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.sample"><code class="docutils literal notranslate"><span class="pre">Assembly.sample()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.save_positions"><code class="docutils literal notranslate"><span class="pre">Assembly.save_positions()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.set"><code class="docutils literal notranslate"><span class="pre">Assembly.set()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.size"><code class="docutils literal notranslate"><span class="pre">Assembly.size</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Assembly.write_data"><code class="docutils literal notranslate"><span class="pre">Assembly.write_data()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../api_reference.html"
+                          title="previous chapter">API reference</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="connectors.html"
+                          title="next chapter">Connectors</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/reference/populations.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="connectors.html" title="Connectors"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../api_reference.html" title="API reference"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.11.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api_reference.html" >API reference</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Populations, Views and Assemblies</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2023, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    </div>
+  </body>
+</html>

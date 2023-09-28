@@ -1,0 +1,495 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Projections &#8212; PyNN 0.11.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Neuron models" href="neuronmodels.html" />
+    <link rel="prev" title="Connectors" href="connectors.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="neuronmodels.html" title="Neuron models"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="connectors.html" title="Connectors"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.11.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API reference</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Projections</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="projections">
+<h1>Projections<a class="headerlink" href="#projections" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Projection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">presynaptic_population</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postsynaptic_population</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">synapse_type=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">receptor_type=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space=&lt;pyNN.space.Space</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/neuron/projections.html#Projection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code></p>
+<p>A container for all the connections of a given type (same synapse type and
+plasticity mechanisms) between two populations, together with methods to
+set the parameters of those connections, including the parameters of
+plasticity mechanisms.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt><cite>presynaptic_neurons</cite> and <cite>postsynaptic_neurons</cite>:</dt><dd><p>Population, PopulationView or Assembly objects.</p>
+</dd>
+<dt><cite>source</cite>:</dt><dd><p>string specifying which attribute of the presynaptic cell signals
+action potentials. This is only needed for multicompartmental cells
+with branching axons or dendrodendritic synapses. All standard cells
+have a single source, and this is the default.</p>
+</dd>
+<dt><cite>receptor_type</cite>:</dt><dd><p>string specifying which synaptic receptor_type type on the postsynaptic cell to connect
+to. For standard cells, this can be ‘excitatory’ or ‘inhibitory’.
+For non-standard cells, it could be ‘NMDA’, etc. If receptor_type is not
+given, the default values of ‘excitatory’ is used.</p>
+</dd>
+<dt><cite>connector</cite>:</dt><dd><p>a Connector object, encapsulating the algorithm to use for
+connecting the neurons.</p>
+</dd>
+<dt><cite>synapse_type</cite>:</dt><dd><p>a SynapseType object specifying which synaptic connection
+mechanisms to use.</p>
+</dd>
+<dt><cite>space</cite>:</dt><dd><p>TO DOCUMENT</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.pre">
+<span class="sig-name descname"><span class="pre">pre</span></span><a class="headerlink" href="#pyNN.neuron.Projection.pre" title="Permalink to this definition">¶</a></dt>
+<dd><p>The pre-synaptic Population, PopulationView or Assembly.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.post">
+<span class="sig-name descname"><span class="pre">post</span></span><a class="headerlink" href="#pyNN.neuron.Projection.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>The post-synaptic Population, PopulationView or Assembly.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.source">
+<span class="sig-name descname"><span class="pre">source</span></span><a class="headerlink" href="#pyNN.neuron.Projection.source" title="Permalink to this definition">¶</a></dt>
+<dd><p>A string specifying which attribute of the presynaptic cell signals
+action potentials.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.target">
+<span class="sig-name descname"><span class="pre">target</span></span><a class="headerlink" href="#pyNN.neuron.Projection.target" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the postsynaptic mechanism type (e.g. ‘excitatory’, ‘NMDA’).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.label">
+<span class="sig-name descname"><span class="pre">label</span></span><a class="headerlink" href="#pyNN.neuron.Projection.label" title="Permalink to this definition">¶</a></dt>
+<dd><p>A label for the Projection.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.rng">
+<span class="sig-name descname"><span class="pre">rng</span></span><a class="headerlink" href="#pyNN.neuron.Projection.rng" title="Permalink to this definition">¶</a></dt>
+<dd><p>The RNG object that was used by the Connector.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.synapse_dynamics">
+<span class="sig-name descname"><span class="pre">synapse_dynamics</span></span><a class="headerlink" href="#pyNN.neuron.Projection.synapse_dynamics" title="Permalink to this definition">¶</a></dt>
+<dd><p>The SynapseDynamics object that was used to specify the synaptic
+plasticity mechanism, or <cite>None</cite> if the synapses are static.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/neuron/projections.html#Projection.__len__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of connections on the local MPI node.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.__getitem__">
+<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/neuron/projections.html#Projection.__getitem__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the /i/th connection within the Projection.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.__iter__">
+<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/projections.html#Projection.__iter__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an iterator over all connections on the local MPI node.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.connections">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">connections</span></span><a class="headerlink" href="#pyNN.neuron.Projection.connections" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.MULTI_SYNAPSE_OPERATIONS">
+<span class="sig-name descname"><span class="pre">MULTI_SYNAPSE_OPERATIONS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'first':</span> <span class="pre">&lt;function</span> <span class="pre">Projection.&lt;lambda&gt;&gt;,</span> <span class="pre">'last':</span> <span class="pre">&lt;function</span> <span class="pre">Projection.&lt;lambda&gt;&gt;,</span> <span class="pre">'max':</span> <span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">max&gt;,</span> <span class="pre">'min':</span> <span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">min&gt;,</span> <span class="pre">'sum':</span> <span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">iadd&gt;}</span></em><a class="headerlink" href="#pyNN.neuron.Projection.MULTI_SYNAPSE_OPERATIONS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.annotate">
+<span class="sig-name descname"><span class="pre">annotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">annotations</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/projections.html#Projection.annotate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.annotate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.describe">
+<span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'projection_default.txt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/projections.html#Projection.describe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.describe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a human-readable description of the projection.</p>
+<p>The output may be customized by specifying a different template
+togther with an associated template engine (see <code class="docutils literal notranslate"><span class="pre">pyNN.descriptions</span></code>).</p>
+<p>If template is None, then a dictionary containing the template context
+will be returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attribute_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gather</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_address</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiple_synapses</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sum'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/projections.html#Projection.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the values of a given attribute (weight or delay) for all
+connections in this Projection.</p>
+<dl class="simple">
+<dt><cite>attribute_names</cite>:</dt><dd><p>name of the attributes whose values are wanted, or a list of such
+names.</p>
+</dd>
+<dt><cite>format</cite>:</dt><dd><p>“list” or “array”.</p>
+</dd>
+<dt><cite>gather</cite>:</dt><dd><p>If True, node 0 gets connection information from all MPI nodes,
+other nodes get information only from connections that exist in this node.
+If ‘all’, all nodes will receive connection information from all other nodes.
+If False, all nodes get only information about local connections.</p>
+</dd>
+</dl>
+<p>With list format, returns a list of tuples. By default, each tuple
+contains the indices of the pre- and post-synaptic cell followed by
+the attribute values in the order given in <cite>attribute_names</cite>.
+Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prj</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="s2">&quot;weight&quot;</span><span class="p">,</span> <span class="s2">&quot;delay&quot;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;list&quot;</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
+<span class="go">[(0.0, 0.0, 0.3401892507507171, 0.1),</span>
+<span class="go"> (0.0, 1.0, 0.7990713166233654, 0.30000000000000004),</span>
+<span class="go"> (0.0, 2.0, 0.6180841812877726, 0.5),</span>
+<span class="go"> (0.0, 3.0, 0.6758149775627305, 0.7000000000000001),</span>
+<span class="go"> (0.0, 4.0, 0.7166906726862953, 0.9)]</span>
+</pre></div>
+</div>
+<p>If <cite>with_address</cite> is set to False, then the tuples will contain only the
+attribute values, not the cell indices.</p>
+<p>With array format, returns a tuple of 2D NumPy arrays, one for each
+name in <cite>attribute_names</cite>. The array element X_ij contains the
+attribute value for the connection from the ith neuron in the pre-
+synaptic Population to the jth neuron in the post-synaptic Population,
+if a single such connection exists. If there are no such connections,
+X_ij will be NaN. Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">weights</span><span class="p">,</span> <span class="n">delays</span> <span class="o">=</span> <span class="n">prj</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="s2">&quot;weight&quot;</span><span class="p">,</span> <span class="s2">&quot;delay&quot;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;array&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">weights</span>
+<span class="go">array([[ 0.66210438,         nan,  0.10744555,  0.54557088],</span>
+<span class="go">       [ 0.3676134 ,         nan,  0.41463193,         nan],</span>
+<span class="go">       [ 0.57434871,  0.4329354 ,  0.58482943,  0.42863916]])</span>
+</pre></div>
+</div>
+<p>If there are multiple such connections, the action to take is
+controlled by the <cite>multiple_synapses</cite> argument, which must be one of
+{‘last’, ‘first’, ‘sum’, ‘min’, ‘max’}.</p>
+<p>Values will be expressed in the standard PyNN units (i.e. millivolts,
+nanoamps, milliseconds, microsiemens, nanofarads, event per second).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.getDelays">
+<span class="sig-name descname"><span class="pre">getDelays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.getDelays" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">get('delay',</span> <span class="pre">format,</span> <span class="pre">gather)</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.getSynapseDynamics">
+<span class="sig-name descname"><span class="pre">getSynapseDynamics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.getSynapseDynamics" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">get(parameter_name,</span> <span class="pre">format,</span> <span class="pre">gather)</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.getWeights">
+<span class="sig-name descname"><span class="pre">getWeights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.getWeights" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">get('weight',</span> <span class="pre">format,</span> <span class="pre">gather)</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">initial_values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/projections.html#Projection.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set initial values of state variables of synaptic plasticity models.</p>
+<dl class="simple">
+<dt>Values passed to initialize() may be:</dt><dd><ol class="arabic simple">
+<li><p>single numeric values (all neurons set to the same value)</p></li>
+<li><p>RandomDistribution objects</p></li>
+<li><p>a 2D array with the same dimensions as the connectivity matrix
+(as returned by <cite>get(format=’array’)</cite></p></li>
+<li><p>a mapping function, which accepts a single float argument (the
+distance between pre- and post-synaptic cells) and returns a single value.</p></li>
+</ol>
+</dd>
+</dl>
+<p>Values should be expressed in the standard PyNN units (i.e. millivolts,
+nanoamps, milliseconds, microsiemens, nanofarads, event per second).</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">prj</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">u</span><span class="o">=-</span><span class="mf">70.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.printDelays">
+<span class="sig-name descname"><span class="pre">printDelays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.printDelays" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">save('delay',</span> <span class="pre">file,</span> <span class="pre">format,</span> <span class="pre">gather)</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.printWeights">
+<span class="sig-name descname"><span class="pre">printWeights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.printWeights" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">save('weight',</span> <span class="pre">file,</span> <span class="pre">format,</span> <span class="pre">gather)</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.randomizeDelays">
+<span class="sig-name descname"><span class="pre">randomizeDelays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.randomizeDelays" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">set(delay=rand_distr)</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.randomizeSynapseDynamics">
+<span class="sig-name descname"><span class="pre">randomizeSynapseDynamics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.randomizeSynapseDynamics" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">set(name=rand_distr)</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.randomizeWeights">
+<span class="sig-name descname"><span class="pre">randomizeWeights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.randomizeWeights" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">set(weight=rand_distr)</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attribute_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'list'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gather</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_address</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/projections.html#Projection.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print synaptic attributes (weights, delays, etc.) to file. In the array
+format, zeros are printed for non-existent connections.</p>
+<p>Values will be expressed in the standard PyNN units (i.e. millivolts,
+nanoamps, milliseconds, microsiemens, nanofarads, event per second).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.saveConnections">
+<span class="sig-name descname"><span class="pre">saveConnections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.saveConnections" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">save('all',</span> <span class="pre">file,</span> <span class="pre">format='list',</span> <span class="pre">gather=gather)</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/projections.html#Projection.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set connection attributes for all connections on the local MPI node.</p>
+<p>Attribute names may be ‘weight’, ‘delay’, or the name of any parameter
+of a synapse dynamics model (e.g. ‘U’ for TsodyksMarkramSynapse).</p>
+<dl class="simple">
+<dt>Each attribute value may be:</dt><dd><ol class="arabic simple">
+<li><p>a single number</p></li>
+<li><p>a RandomDistribution object</p></li>
+<li><p>a 2D array with the same dimensions as the connectivity matrix
+(as returned by <cite>get(format=’array’)</cite></p></li>
+<li><p>a mapping function, which accepts a single float argument (the
+distance between pre- and post-synaptic cells) and returns a single value.</p></li>
+</ol>
+</dd>
+</dl>
+<p>Weights should be in nA for current-based and µS for conductance-based
+synapses. Delays should be in milliseconds.</p>
+<p>Note that where a projection contains multiple connections between a given pair
+of neurons, all these connections will be set to the same value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.setDelays">
+<span class="sig-name descname"><span class="pre">setDelays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.setDelays" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">set(delay=d)</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.setSynapseDynamics">
+<span class="sig-name descname"><span class="pre">setSynapseDynamics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.setSynapseDynamics" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">set(parameter_name=value)</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.setWeights">
+<span class="sig-name descname"><span class="pre">setWeights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.setWeights" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">set(weight=w)</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.shape">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shape</span></span><a class="headerlink" href="#pyNN.neuron.Projection.shape" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.size">
+<span class="sig-name descname"><span class="pre">size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gather</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/projections.html#Projection.size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.size" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Return the total number of connections.</dt><dd><ul class="simple">
+<li><p>only local connections, if gather is False,</p></li>
+<li><p>all connections, if gather is True (default)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.Projection.weightHistogram">
+<span class="sig-name descname"><span class="pre">weightHistogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.weightHistogram" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">np.histogram()</span></code> instead.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyNN.neuron.connect">
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">Projection()</span></code> instead.</p>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Projections</a><ul>
+<li><a class="reference internal" href="#pyNN.neuron.Projection"><code class="docutils literal notranslate"><span class="pre">Projection</span></code></a><ul>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.pre"><code class="docutils literal notranslate"><span class="pre">Projection.pre</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.post"><code class="docutils literal notranslate"><span class="pre">Projection.post</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.source"><code class="docutils literal notranslate"><span class="pre">Projection.source</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.target"><code class="docutils literal notranslate"><span class="pre">Projection.target</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.label"><code class="docutils literal notranslate"><span class="pre">Projection.label</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.rng"><code class="docutils literal notranslate"><span class="pre">Projection.rng</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.synapse_dynamics"><code class="docutils literal notranslate"><span class="pre">Projection.synapse_dynamics</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.__len__"><code class="docutils literal notranslate"><span class="pre">Projection.__len__()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.__getitem__"><code class="docutils literal notranslate"><span class="pre">Projection.__getitem__()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.__iter__"><code class="docutils literal notranslate"><span class="pre">Projection.__iter__()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.connections"><code class="docutils literal notranslate"><span class="pre">Projection.connections</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.MULTI_SYNAPSE_OPERATIONS"><code class="docutils literal notranslate"><span class="pre">Projection.MULTI_SYNAPSE_OPERATIONS</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.annotate"><code class="docutils literal notranslate"><span class="pre">Projection.annotate()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.describe"><code class="docutils literal notranslate"><span class="pre">Projection.describe()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.get"><code class="docutils literal notranslate"><span class="pre">Projection.get()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.getDelays"><code class="docutils literal notranslate"><span class="pre">Projection.getDelays()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.getSynapseDynamics"><code class="docutils literal notranslate"><span class="pre">Projection.getSynapseDynamics()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.getWeights"><code class="docutils literal notranslate"><span class="pre">Projection.getWeights()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.initialize"><code class="docutils literal notranslate"><span class="pre">Projection.initialize()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.printDelays"><code class="docutils literal notranslate"><span class="pre">Projection.printDelays()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.printWeights"><code class="docutils literal notranslate"><span class="pre">Projection.printWeights()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.randomizeDelays"><code class="docutils literal notranslate"><span class="pre">Projection.randomizeDelays()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.randomizeSynapseDynamics"><code class="docutils literal notranslate"><span class="pre">Projection.randomizeSynapseDynamics()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.randomizeWeights"><code class="docutils literal notranslate"><span class="pre">Projection.randomizeWeights()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.save"><code class="docutils literal notranslate"><span class="pre">Projection.save()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.saveConnections"><code class="docutils literal notranslate"><span class="pre">Projection.saveConnections()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.set"><code class="docutils literal notranslate"><span class="pre">Projection.set()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.setDelays"><code class="docutils literal notranslate"><span class="pre">Projection.setDelays()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.setSynapseDynamics"><code class="docutils literal notranslate"><span class="pre">Projection.setSynapseDynamics()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.setWeights"><code class="docutils literal notranslate"><span class="pre">Projection.setWeights()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.shape"><code class="docutils literal notranslate"><span class="pre">Projection.shape</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.size"><code class="docutils literal notranslate"><span class="pre">Projection.size()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.Projection.weightHistogram"><code class="docutils literal notranslate"><span class="pre">Projection.weightHistogram()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyNN.neuron.connect"><code class="docutils literal notranslate"><span class="pre">connect()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="connectors.html"
+                          title="previous chapter">Connectors</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="neuronmodels.html"
+                          title="next chapter">Neuron models</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/reference/projections.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="neuronmodels.html" title="Neuron models"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="connectors.html" title="Connectors"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.11.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api_reference.html" >API reference</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Projections</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2023, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    </div>
+  </body>
+</html>

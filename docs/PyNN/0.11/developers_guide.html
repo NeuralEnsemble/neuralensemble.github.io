@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Developers’ guide &#8212; PyNN 0.11.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Bug reports and feature requests" href="developers/bug_reports.html" />
+    <link rel="prev" title="PyNN 0.6 release notes" href="releases/0.6.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="developers/bug_reports.html" title="Bug reports and feature requests"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="releases/0.6.html" title="PyNN 0.6 release notes"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.11.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Developers’ guide</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="developers-guide">
+<h1>Developers’ guide<a class="headerlink" href="#developers-guide" title="Permalink to this heading">¶</a></h1>
+<p>This guide contains information about contributing to PyNN development, and aims
+to explain the overall architecture and some of the internal details of the
+PyNN codebase.</p>
+<p>PyNN is open-source software, with a community-based development model:
+contributions from users are welcomed, and the direction that PyNN development
+should take in the future is determined by the needs of its users.</p>
+<p>There are several ways to contribute to PyNN:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>reporting bugs, errors and other mistakes in the code or documentation;</p></li>
+<li><p>making suggestions for improvements;</p></li>
+<li><p>fixing bugs and other mistakes;</p></li>
+<li><p>adding or maintaining a simulator backend;</p></li>
+<li><p>major refactoring to improve performance, reduce code complexity, or both.</p></li>
+<li><p>becoming a maintainer</p></li>
+</ul>
+</div></blockquote>
+<p>The following sections contain guidelines for each of these.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="developers/bug_reports.html">Bug reports and feature requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developers/contributing.html">Contributing to PyNN</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developers/contributing.html#mailing-list">Mailing list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developers/contributing.html#setting-up-a-development-environment">Setting up a development environment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers/contributing.html#requirements">Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers/contributing.html#code-checkout">Code checkout</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers/contributing.html#coding-style">Coding style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developers/contributing.html#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developers/contributing.html#submitting-code">Submitting code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developers/contributing.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developers/contributing.html#making-a-release">Making a release</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developers/governance.html">Governance</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developers/governance.html#contributions">Contributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developers/governance.html#maintainers">Maintainers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developers/governance.html#contributor-code-of-conduct">Contributor Code of Conduct</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers/governance.html#our-pledge">Our Pledge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers/governance.html#our-standards">Our Standards</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers/governance.html#our-responsibilities">Our Responsibilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers/governance.html#scope">Scope</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers/governance.html#enforcement">Enforcement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers/governance.html#attribution">Attribution</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="releases/0.6.html"
+                          title="previous chapter">PyNN 0.6 release notes</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="developers/bug_reports.html"
+                          title="next chapter">Bug reports and feature requests</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/developers_guide.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="developers/bug_reports.html" title="Bug reports and feature requests"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="releases/0.6.html" title="PyNN 0.6 release notes"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.11.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Developers’ guide</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2023, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    </div>
+  </body>
+</html>

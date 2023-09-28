@@ -1,0 +1,505 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Connectors &#8212; PyNN 0.11.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Projections" href="projections.html" />
+    <link rel="prev" title="Populations, Views and Assemblies" href="populations.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="projections.html" title="Projections"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="populations.html" title="Populations, Views and Assemblies"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.11.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API reference</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Connectors</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-pyNN.connectors">
+<span id="connectors"></span><h1>Connectors<a class="headerlink" href="#module-pyNN.connectors" title="Permalink to this heading">¶</a></h1>
+<section id="base-class">
+<h2>Base class<a class="headerlink" href="#base-class" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.connectors.Connector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Connector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">safe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/connectors.html#Connector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.connectors.Connector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for connectors.</p>
+<dl class="simple">
+<dt>All connector sub-classes have the following optional keyword arguments:</dt><dd><dl class="simple">
+<dt><cite>safe</cite>:</dt><dd><p>if True, check that weights and delays have valid values. If False,
+this check is skipped.</p>
+</dd>
+<dt><cite>callback</cite>:</dt><dd><p>a function that will be called with the fractional progress of the
+connection routine. An example would be <cite>progress_bar.set_level</cite>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.connectors.Connector.connect">
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projection</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/connectors.html#Connector.connect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.connectors.Connector.connect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.connectors.Connector.get_parameters">
+<span class="sig-name descname"><span class="pre">get_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/connectors.html#Connector.get_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.connectors.Connector.get_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.connectors.Connector.describe">
+<span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'connector_default.txt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/connectors.html#Connector.describe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.connectors.Connector.describe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a human-readable description of the connection method.</p>
+<p>The output may be customized by specifying a different template
+togther with an associated template engine (see <code class="docutils literal notranslate"><span class="pre">pyNN.descriptions</span></code>).</p>
+<p>If template is None, then a dictionary containing the template context
+will be returned.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="built-in-connectors">
+<h2>Built-in connectors<a class="headerlink" href="#built-in-connectors" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.connectors.AllToAllConnector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AllToAllConnector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allow_self_connections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">safe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/connectors.html#AllToAllConnector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.connectors.AllToAllConnector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connects all cells in the presynaptic population to all cells in the
+postsynaptic population.</p>
+<p>Takes any of the standard <a class="reference internal" href="#pyNN.connectors.Connector" title="pyNN.connectors.Connector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Connector</span></code></a> optional arguments and, in
+addition:</p>
+<blockquote>
+<div><dl class="simple">
+<dt><cite>allow_self_connections</cite>:</dt><dd><p>if the connector is used to connect a Population to itself, this
+flag determines whether a neuron is allowed to connect to itself,
+or only to other neurons in the Population.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.connectors.OneToOneConnector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">OneToOneConnector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">safe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/connectors.html#OneToOneConnector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.connectors.OneToOneConnector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Where the pre- and postsynaptic populations have the same size, connect
+cell <em>i</em> in the presynaptic population to cell <em>i</em> in the postsynaptic
+population for all <em>i</em>.</p>
+<p>Takes any of the standard <a class="reference internal" href="#pyNN.connectors.Connector" title="pyNN.connectors.Connector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Connector</span></code></a> optional arguments.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.connectors.FixedProbabilityConnector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FixedProbabilityConnector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p_connect</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_self_connections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rng</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">safe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/connectors.html#FixedProbabilityConnector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.connectors.FixedProbabilityConnector" title="Permalink to this definition">¶</a></dt>
+<dd><p>For each pair of pre-post cells, the connection probability is constant.</p>
+<p>Takes any of the standard <a class="reference internal" href="#pyNN.connectors.Connector" title="pyNN.connectors.Connector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Connector</span></code></a> optional arguments and, in
+addition:</p>
+<blockquote>
+<div><dl class="simple">
+<dt><cite>p_connect</cite>:</dt><dd><p>a float between zero and one. Each potential connection is created
+with this probability.</p>
+</dd>
+<dt><cite>allow_self_connections</cite>:</dt><dd><p>if the connector is used to connect a Population to itself, this
+flag determines whether a neuron is allowed to connect to itself,
+or only to other neurons in the Population.</p>
+</dd>
+<dt><cite>rng</cite>:</dt><dd><p>an <code class="xref py py-class docutils literal notranslate"><span class="pre">RNG</span></code> instance used to evaluate whether connections exist</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.connectors.FromListConnector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FromListConnector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conn_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">safe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/connectors.html#FromListConnector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.connectors.FromListConnector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make connections according to a list.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt><cite>conn_list</cite>:</dt><dd><p>a list of tuples, one tuple for each connection. Each tuple should contain:
+<cite>(pre_idx, post_idx, p1, p2, …, pn)</cite> where <cite>pre_idx</cite> is the index
+(i.e. order in the Population, not the ID) of the presynaptic
+neuron, <cite>post_idx</cite> is the index of the postsynaptic neuron, and
+p1, p2, etc. are the synaptic parameters (e.g. weight, delay,
+plasticity parameters).</p>
+</dd>
+<dt><cite>column_names</cite>:</dt><dd><p>the names of the parameters p1, p2, etc. If not provided, it is
+assumed the parameters are ‘weight’, ‘delay’ (for backwards
+compatibility). This should be specified using a tuple.</p>
+</dd>
+<dt><cite>safe</cite>:</dt><dd><p>if True, check that weights and delays have valid values. If False,
+this check is skipped.</p>
+</dd>
+<dt><cite>callback</cite>:</dt><dd><p>if True, display a progress bar on the terminal.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.connectors.FromFileConnector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FromFileConnector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distributed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">safe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/connectors.html#FromFileConnector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.connectors.FromFileConnector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make connections according to a list read from a file.</p>
+<dl>
+<dt>Arguments:</dt><dd><dl>
+<dt><cite>file</cite>:</dt><dd><p>either an open file object or the filename of a file containing a
+list of connections, in the format required by <cite>FromListConnector</cite>.
+Column headers, if included in the file,  must be specified using
+a list or tuple, e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># columns = [&quot;i&quot;, &quot;j&quot;, &quot;weight&quot;, &quot;delay&quot;, &quot;U&quot;, &quot;tau_rec&quot;]</span>
+</pre></div>
+</div>
+<p>Note that the header requires <cite>#</cite> at the beginning of the line.</p>
+</dd>
+<dt><cite>distributed</cite>:</dt><dd><p>if this is True, then each node will read connections from a file
+called <cite>filename.x</cite>, where <cite>x</cite> is the MPI rank. This speeds up
+loading connections for distributed simulations.</p>
+</dd>
+<dt><cite>safe</cite>:</dt><dd><p>if True, check that weights and delays have valid values. If False,
+this check is skipped.</p>
+</dd>
+<dt><cite>callback</cite>:</dt><dd><p>if True, display a progress bar on the terminal.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.connectors.ArrayConnector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ArrayConnector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">safe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/connectors.html#ArrayConnector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.connectors.ArrayConnector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provide an explicit boolean connection matrix, with shape (m, n) where m is
+the size of the presynaptic population and n that of the postsynaptic
+population.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.connectors.FixedNumberPreConnector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FixedNumberPreConnector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_self_connections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_replacement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rng</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">safe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/connectors.html#FixedNumberPreConnector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.connectors.FixedNumberPreConnector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Each post-synaptic neuron is connected to exactly <cite>n</cite> pre-synaptic neurons
+chosen at random.</p>
+<p>The sampling behaviour is controlled by the <cite>with_replacement</cite> argument.</p>
+<p>“With replacement” means that each pre-synaptic neuron is chosen from the
+entire population. There is always therefore a possibility of multiple
+connections between a given pair of neurons.</p>
+<p>“Without replacement” means that once a neuron has been selected, it cannot
+be selected again until the entire population has been selected. This means
+that if <cite>n</cite> is less than the size of the pre-synaptic population, there
+are no multiple connections. If <cite>n</cite> is greater than the size of the pre-
+synaptic population, all possible single connections are made before
+starting to add duplicate connections.</p>
+<p>Takes any of the standard <a class="reference internal" href="#pyNN.connectors.Connector" title="pyNN.connectors.Connector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Connector</span></code></a> optional arguments and, in
+addition:</p>
+<blockquote>
+<div><dl class="simple">
+<dt><cite>n</cite>:</dt><dd><p>either a positive integer, or a <cite>RandomDistribution</cite> that produces
+positive integers. If <cite>n</cite> is a <cite>RandomDistribution</cite>, then the
+number of pre-synaptic neurons is drawn from this distribution
+for each post-synaptic neuron.</p>
+</dd>
+<dt><cite>with_replacement</cite>:</dt><dd><p>if True, the selection of neurons to connect is made from the
+entire population. If False, once a neuron is selected it cannot
+be selected again until the entire population has been connected.</p>
+</dd>
+<dt><cite>allow_self_connections</cite>:</dt><dd><p>if the connector is used to connect a Population to itself, this
+flag determines whether a neuron is allowed to connect to itself,
+or only to other neurons in the Population.</p>
+</dd>
+<dt><cite>rng</cite>:</dt><dd><p>an <code class="xref py py-class docutils literal notranslate"><span class="pre">RNG</span></code> instance used to evaluate which potential connections
+are created.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.connectors.FixedNumberPostConnector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FixedNumberPostConnector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_self_connections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_replacement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rng</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">safe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/connectors.html#FixedNumberPostConnector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.connectors.FixedNumberPostConnector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Each pre-synaptic neuron is connected to exactly <cite>n</cite> post-synaptic neurons
+chosen at random.</p>
+<p>The sampling behaviour is controlled by the <cite>with_replacement</cite> argument.</p>
+<p>“With replacement” means that each post-synaptic neuron is chosen from the
+entire population. There is always therefore a possibility of multiple
+connections between a given pair of neurons.</p>
+<p>“Without replacement” means that once a neuron has been selected, it cannot
+be selected again until the entire population has been selected. This means
+that if <cite>n</cite> is less than the size of the post-synaptic population, there
+are no multiple connections. If <cite>n</cite> is greater than the size of the post-
+synaptic population, all possible single connections are made before
+starting to add duplicate connections.</p>
+<p>Takes any of the standard <a class="reference internal" href="#pyNN.connectors.Connector" title="pyNN.connectors.Connector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Connector</span></code></a> optional arguments and, in
+addition:</p>
+<blockquote>
+<div><dl class="simple">
+<dt><cite>n</cite>:</dt><dd><p>either a positive integer, or a <cite>RandomDistribution</cite> that produces
+positive integers. If <cite>n</cite> is a <cite>RandomDistribution</cite>, then the
+number of post-synaptic neurons is drawn from this distribution
+for each pre-synaptic neuron.</p>
+</dd>
+<dt><cite>with_replacement</cite>:</dt><dd><p>if True, the selection of neurons to connect is made from the
+entire population. If False, once a neuron is selected it cannot
+be selected again until the entire population has been connected.</p>
+</dd>
+<dt><cite>allow_self_connections</cite>:</dt><dd><p>if the connector is used to connect a Population to itself, this
+flag determines whether a neuron is allowed to connect to itself,
+or only to other neurons in the Population.</p>
+</dd>
+<dt><cite>rng</cite>:</dt><dd><p>an <code class="xref py py-class docutils literal notranslate"><span class="pre">RNG</span></code> instance used to evaluate which potential connections
+are created.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.connectors.FixedTotalNumberConnector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FixedTotalNumberConnector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_self_connections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_replacement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rng</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">safe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/connectors.html#FixedTotalNumberConnector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.connectors.FixedTotalNumberConnector" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.connectors.DistanceDependentProbabilityConnector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DistanceDependentProbabilityConnector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_expression</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_self_connections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rng</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">safe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/connectors.html#DistanceDependentProbabilityConnector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.connectors.DistanceDependentProbabilityConnector" title="Permalink to this definition">¶</a></dt>
+<dd><p>For each pair of pre-post cells, the connection probability depends on distance.</p>
+<p>Takes any of the standard <a class="reference internal" href="#pyNN.connectors.Connector" title="pyNN.connectors.Connector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Connector</span></code></a> optional arguments and, in
+addition:</p>
+<blockquote>
+<div><dl class="simple">
+<dt><cite>d_expression</cite>:</dt><dd><p>the right-hand side of a valid Python expression for probability,
+involving ‘d’, e.g. “exp(-abs(d))”, or “d&lt;3”</p>
+</dd>
+<dt><cite>allow_self_connections</cite>:</dt><dd><p>if the connector is used to connect a Population to itself, this
+flag determines whether a neuron is allowed to connect to itself,
+or only to other neurons in the Population.</p>
+</dd>
+<dt><cite>rng</cite>:</dt><dd><p>an <code class="xref py py-class docutils literal notranslate"><span class="pre">RNG</span></code> instance used to evaluate whether connections exist</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.connectors.IndexBasedProbabilityConnector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">IndexBasedProbabilityConnector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index_expression</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_self_connections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rng</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">safe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/connectors.html#IndexBasedProbabilityConnector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.connectors.IndexBasedProbabilityConnector" title="Permalink to this definition">¶</a></dt>
+<dd><p>For each pair of pre-post cells, the connection probability depends on an arbitrary functions
+that takes the indices of the pre and post populations.</p>
+<p>Takes any of the standard <a class="reference internal" href="#pyNN.connectors.Connector" title="pyNN.connectors.Connector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Connector</span></code></a> optional arguments and, in
+addition:</p>
+<blockquote>
+<div><dl class="simple">
+<dt><cite>index_expression</cite>:</dt><dd><p>a function that takes the two cell indices as inputs and calculates the
+probability matrix from it.</p>
+</dd>
+<dt><cite>allow_self_connections</cite>:</dt><dd><p>if the connector is used to connect a Population to itself, this
+flag determines whether a neuron is allowed to connect to itself,
+or only to other neurons in the Population.</p>
+</dd>
+<dt><cite>rng</cite>:</dt><dd><p>an <code class="xref py py-class docutils literal notranslate"><span class="pre">RNG</span></code> instance used to evaluate whether connections exist</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.connectors.DisplacementDependentProbabilityConnector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DisplacementDependentProbabilityConnector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">disp_function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_self_connections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rng</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">safe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/connectors.html#DisplacementDependentProbabilityConnector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.connectors.DisplacementDependentProbabilityConnector" title="Permalink to this definition">¶</a></dt>
+<dd><p>For each pair of pre-post cells, the connection probability depends on the
+displacement of the two neurons, i.e. on the triplet (dx, dy, dz) where
+dx is the distance between the x-coordinates of the two neurons, and so on.</p>
+<p>Takes any of the standard <a class="reference internal" href="#pyNN.connectors.Connector" title="pyNN.connectors.Connector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Connector</span></code></a> optional arguments and, in
+addition:</p>
+<blockquote>
+<div><dl class="simple">
+<dt><cite>disp_function</cite>:</dt><dd><p>the right-hand side of a valid Python expression for probability,
+involving an array named ‘d’ whose first dimension has size 3.
+e.g. “(d[0] &lt; 3) * (d[1] &lt; 2) * exp(-abs(d[2]))”</p>
+</dd>
+<dt><cite>allow_self_connections</cite>:</dt><dd><p>if the connector is used to connect a Population to itself, this
+flag determines whether a neuron is allowed to connect to itself,
+or only to other neurons in the Population.</p>
+</dd>
+<dt><cite>rng</cite>:</dt><dd><p>an <code class="xref py py-class docutils literal notranslate"><span class="pre">RNG</span></code> instance used to evaluate whether connections exist</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.connectors.SmallWorldConnector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SmallWorldConnector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rewiring</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_self_connections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_connections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rng</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">safe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/connectors.html#SmallWorldConnector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.connectors.SmallWorldConnector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect cells so as to create a small-world network.</p>
+<p>Takes any of the standard <a class="reference internal" href="#pyNN.connectors.Connector" title="pyNN.connectors.Connector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Connector</span></code></a> optional arguments and, in
+addition:</p>
+<blockquote>
+<div><dl class="simple">
+<dt><cite>degree</cite>:</dt><dd><p>the region length where nodes will be connected locally.</p>
+</dd>
+<dt><cite>rewiring</cite>:</dt><dd><p>the probability of rewiring each edge.</p>
+</dd>
+<dt><cite>allow_self_connections</cite>:</dt><dd><p>if the connector is used to connect a Population to itself, this
+flag determines whether a neuron is allowed to connect to itself,
+or only to other neurons in the Population.</p>
+</dd>
+<dt><cite>n_connections</cite>:</dt><dd><p>if specified, the number of efferent synaptic connections per neuron.</p>
+</dd>
+<dt><cite>rng</cite>:</dt><dd><p>an <code class="xref py py-class docutils literal notranslate"><span class="pre">RNG</span></code> instance used to evaluate which connections
+are created.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.connectors.CSAConnector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CSAConnector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">safe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/connectors.html#CSAConnector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.connectors.CSAConnector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use the Connection Set Algebra (Djurfeldt, 2012) to connect cells.</p>
+<p>Takes any of the standard <a class="reference internal" href="#pyNN.connectors.Connector" title="pyNN.connectors.Connector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Connector</span></code></a> optional arguments and, in
+addition:</p>
+<blockquote>
+<div><dl class="simple">
+<dt><cite>cset</cite>:</dt><dd><p>a connection set object.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.connectors.CloneConnector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CloneConnector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reference_projection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">safe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/connectors.html#CloneConnector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.connectors.CloneConnector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connects cells with the same connectivity pattern as a previous projection.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Connectors</a><ul>
+<li><a class="reference internal" href="#base-class">Base class</a><ul>
+<li><a class="reference internal" href="#pyNN.connectors.Connector"><code class="docutils literal notranslate"><span class="pre">Connector</span></code></a><ul>
+<li><a class="reference internal" href="#pyNN.connectors.Connector.connect"><code class="docutils literal notranslate"><span class="pre">Connector.connect()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.connectors.Connector.get_parameters"><code class="docutils literal notranslate"><span class="pre">Connector.get_parameters()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.connectors.Connector.describe"><code class="docutils literal notranslate"><span class="pre">Connector.describe()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#built-in-connectors">Built-in connectors</a><ul>
+<li><a class="reference internal" href="#pyNN.connectors.AllToAllConnector"><code class="docutils literal notranslate"><span class="pre">AllToAllConnector</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.connectors.OneToOneConnector"><code class="docutils literal notranslate"><span class="pre">OneToOneConnector</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.connectors.FixedProbabilityConnector"><code class="docutils literal notranslate"><span class="pre">FixedProbabilityConnector</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.connectors.FromListConnector"><code class="docutils literal notranslate"><span class="pre">FromListConnector</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.connectors.FromFileConnector"><code class="docutils literal notranslate"><span class="pre">FromFileConnector</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.connectors.ArrayConnector"><code class="docutils literal notranslate"><span class="pre">ArrayConnector</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.connectors.FixedNumberPreConnector"><code class="docutils literal notranslate"><span class="pre">FixedNumberPreConnector</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.connectors.FixedNumberPostConnector"><code class="docutils literal notranslate"><span class="pre">FixedNumberPostConnector</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.connectors.FixedTotalNumberConnector"><code class="docutils literal notranslate"><span class="pre">FixedTotalNumberConnector</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.connectors.DistanceDependentProbabilityConnector"><code class="docutils literal notranslate"><span class="pre">DistanceDependentProbabilityConnector</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.connectors.IndexBasedProbabilityConnector"><code class="docutils literal notranslate"><span class="pre">IndexBasedProbabilityConnector</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.connectors.DisplacementDependentProbabilityConnector"><code class="docutils literal notranslate"><span class="pre">DisplacementDependentProbabilityConnector</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.connectors.SmallWorldConnector"><code class="docutils literal notranslate"><span class="pre">SmallWorldConnector</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.connectors.CSAConnector"><code class="docutils literal notranslate"><span class="pre">CSAConnector</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.connectors.CloneConnector"><code class="docutils literal notranslate"><span class="pre">CloneConnector</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="populations.html"
+                          title="previous chapter">Populations, Views and Assemblies</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="projections.html"
+                          title="next chapter">Projections</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/reference/connectors.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="projections.html" title="Projections"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="populations.html" title="Populations, Views and Assemblies"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.11.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api_reference.html" >API reference</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Connectors</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2023, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,330 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Current sources &#8212; PyNN 0.11.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Simulation control" href="simulationcontrol.html" />
+    <link rel="prev" title="Synapse models" href="plasticitymodels.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="simulationcontrol.html" title="Simulation control"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="plasticitymodels.html" title="Synapse models"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.11.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API reference</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Current sources</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="current-sources">
+<h1>Current sources<a class="headerlink" href="#current-sources" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.neuron.standardmodels.electrodes.DCSource">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DCSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/neuron/standardmodels/electrodes.html#DCSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.standardmodels.electrodes.DCSource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">NeuronCurrentSource</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">DCSource</span></code></p>
+<p>Source producing a single pulse of current of constant amplitude.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt><cite>start</cite>:</dt><dd><p>onset time of pulse in ms</p>
+</dd>
+<dt><cite>stop</cite>:</dt><dd><p>end of pulse in ms</p>
+</dd>
+<dt><cite>amplitude</cite>:</dt><dd><p>pulse amplitude in nA</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.standardmodels.electrodes.DCSource.inject_into">
+<span class="sig-name descname"><span class="pre">inject_into</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cells</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.standardmodels.electrodes.DCSource.inject_into" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inject the current from this source into the supplied group of cells.</p>
+<p><cite>cells</cite> may be a <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PopulationView</span></code>,
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Assembly</span></code> or a list of <code class="xref py py-class docutils literal notranslate"><span class="pre">ID</span></code> objects.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.standardmodels.electrodes.DCSource.get_parameters">
+<span class="sig-name descname"><span class="pre">get_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.standardmodels.electrodes.DCSource.get_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dict of all current source parameters.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.standardmodels.electrodes.DCSource.set_parameters">
+<span class="sig-name descname"><span class="pre">set_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.standardmodels.electrodes.DCSource.set_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set current source parameters, given as a sequence of parameter=value arguments.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.neuron.standardmodels.electrodes.ACSource">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ACSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/neuron/standardmodels/electrodes.html#ACSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.standardmodels.electrodes.ACSource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">NeuronCurrentSource</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ACSource</span></code></p>
+<p>Source producing a single pulse of current of constant amplitude.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt><cite>start</cite>:</dt><dd><p>onset time of pulse in ms</p>
+</dd>
+<dt><cite>stop</cite>:</dt><dd><p>end of pulse in ms</p>
+</dd>
+<dt><cite>amplitude</cite>:</dt><dd><p>sine amplitude in nA</p>
+</dd>
+<dt><cite>offset</cite>:</dt><dd><p>sine offset in nA</p>
+</dd>
+<dt><cite>frequency</cite>:</dt><dd><p>frequency in Hz</p>
+</dd>
+<dt><cite>phase</cite>:</dt><dd><p>phase in degrees</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.standardmodels.electrodes.ACSource.inject_into">
+<span class="sig-name descname"><span class="pre">inject_into</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cells</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.standardmodels.electrodes.ACSource.inject_into" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inject the current from this source into the supplied group of cells.</p>
+<p><cite>cells</cite> may be a <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PopulationView</span></code>,
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Assembly</span></code> or a list of <code class="xref py py-class docutils literal notranslate"><span class="pre">ID</span></code> objects.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.standardmodels.electrodes.ACSource.get_parameters">
+<span class="sig-name descname"><span class="pre">get_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.standardmodels.electrodes.ACSource.get_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dict of all current source parameters.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.standardmodels.electrodes.ACSource.set_parameters">
+<span class="sig-name descname"><span class="pre">set_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.standardmodels.electrodes.ACSource.set_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set current source parameters, given as a sequence of parameter=value arguments.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.neuron.standardmodels.electrodes.StepCurrentSource">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StepCurrentSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/neuron/standardmodels/electrodes.html#StepCurrentSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.standardmodels.electrodes.StepCurrentSource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">NeuronCurrentSource</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">StepCurrentSource</span></code></p>
+<p>A step-wise time-varying current source.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt><cite>times</cite>:</dt><dd><p>list/array of times at which the injected current changes.</p>
+</dd>
+<dt><cite>amplitudes</cite>:</dt><dd><p>list/array of current amplitudes to be injected at the times
+specified in <cite>times</cite>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>The injected current will be zero up until the first time in <cite>times</cite>. The
+current will continue at the final value in <cite>amplitudes</cite> until the end
+of the simulation.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.standardmodels.electrodes.StepCurrentSource.inject_into">
+<span class="sig-name descname"><span class="pre">inject_into</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cells</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.standardmodels.electrodes.StepCurrentSource.inject_into" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inject the current from this source into the supplied group of cells.</p>
+<p><cite>cells</cite> may be a <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PopulationView</span></code>,
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Assembly</span></code> or a list of <code class="xref py py-class docutils literal notranslate"><span class="pre">ID</span></code> objects.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.standardmodels.electrodes.StepCurrentSource.get_parameters">
+<span class="sig-name descname"><span class="pre">get_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.standardmodels.electrodes.StepCurrentSource.get_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dict of all current source parameters.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.standardmodels.electrodes.StepCurrentSource.set_parameters">
+<span class="sig-name descname"><span class="pre">set_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.standardmodels.electrodes.StepCurrentSource.set_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set current source parameters, given as a sequence of parameter=value arguments.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyNN.neuron.standardmodels.electrodes.NoisyCurrentSource">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NoisyCurrentSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/neuron/standardmodels/electrodes.html#NoisyCurrentSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.standardmodels.electrodes.NoisyCurrentSource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">NeuronCurrentSource</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">NoisyCurrentSource</span></code></p>
+<p>A Gaussian “white” noise current source. The current amplitude changes at fixed
+intervals, with the new value drawn from a Gaussian distribution.</p>
+<dl class="simple">
+<dt>Required arguments:</dt><dd><dl class="simple">
+<dt><cite>mean</cite>:</dt><dd><p>mean current amplitude in nA</p>
+</dd>
+<dt><cite>stdev</cite>:</dt><dd><p>standard deviation of the current amplitude in nA</p>
+</dd>
+</dl>
+</dd>
+<dt>Optional arguments:</dt><dd><dl class="simple">
+<dt><cite>dt</cite>:</dt><dd><p>interval between updates of the current amplitude. Must be a
+multiple of the simulation time step. If not specified, the
+simulation time step will be used.</p>
+</dd>
+<dt><cite>start</cite>:</dt><dd><p>onset of the current injection in ms. If not specified, the current
+will begin at the start of the simulation.</p>
+</dd>
+<dt><cite>stop</cite>:</dt><dd><p>end of the current injection in ms. If not specified, the current
+will continue until the end of the simulation.</p>
+</dd>
+<dt><cite>rng</cite>:</dt><dd><p>an RNG object from the <cite>pyNN.random</cite> module. For speed, this should
+be a <cite>NativeRNG</cite> instance (uses the simulator’s internal random
+number generator). For reproducibility across simulators, use one of
+the other RNG types. If not specified, a NumpyRNG is used.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.standardmodels.electrodes.NoisyCurrentSource.inject_into">
+<span class="sig-name descname"><span class="pre">inject_into</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cells</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.standardmodels.electrodes.NoisyCurrentSource.inject_into" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inject the current from this source into the supplied group of cells.</p>
+<p><cite>cells</cite> may be a <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PopulationView</span></code>,
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Assembly</span></code> or a list of <code class="xref py py-class docutils literal notranslate"><span class="pre">ID</span></code> objects.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.standardmodels.electrodes.NoisyCurrentSource.get_parameters">
+<span class="sig-name descname"><span class="pre">get_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.standardmodels.electrodes.NoisyCurrentSource.get_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dict of all current source parameters.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyNN.neuron.standardmodels.electrodes.NoisyCurrentSource.set_parameters">
+<span class="sig-name descname"><span class="pre">set_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.standardmodels.electrodes.NoisyCurrentSource.set_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set current source parameters, given as a sequence of parameter=value arguments.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Current sources</a><ul>
+<li><a class="reference internal" href="#pyNN.neuron.standardmodels.electrodes.DCSource"><code class="docutils literal notranslate"><span class="pre">DCSource</span></code></a><ul>
+<li><a class="reference internal" href="#pyNN.neuron.standardmodels.electrodes.DCSource.inject_into"><code class="docutils literal notranslate"><span class="pre">DCSource.inject_into()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.standardmodels.electrodes.DCSource.get_parameters"><code class="docutils literal notranslate"><span class="pre">DCSource.get_parameters()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.standardmodels.electrodes.DCSource.set_parameters"><code class="docutils literal notranslate"><span class="pre">DCSource.set_parameters()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyNN.neuron.standardmodels.electrodes.ACSource"><code class="docutils literal notranslate"><span class="pre">ACSource</span></code></a><ul>
+<li><a class="reference internal" href="#pyNN.neuron.standardmodels.electrodes.ACSource.inject_into"><code class="docutils literal notranslate"><span class="pre">ACSource.inject_into()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.standardmodels.electrodes.ACSource.get_parameters"><code class="docutils literal notranslate"><span class="pre">ACSource.get_parameters()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.standardmodels.electrodes.ACSource.set_parameters"><code class="docutils literal notranslate"><span class="pre">ACSource.set_parameters()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyNN.neuron.standardmodels.electrodes.StepCurrentSource"><code class="docutils literal notranslate"><span class="pre">StepCurrentSource</span></code></a><ul>
+<li><a class="reference internal" href="#pyNN.neuron.standardmodels.electrodes.StepCurrentSource.inject_into"><code class="docutils literal notranslate"><span class="pre">StepCurrentSource.inject_into()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.standardmodels.electrodes.StepCurrentSource.get_parameters"><code class="docutils literal notranslate"><span class="pre">StepCurrentSource.get_parameters()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.standardmodels.electrodes.StepCurrentSource.set_parameters"><code class="docutils literal notranslate"><span class="pre">StepCurrentSource.set_parameters()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyNN.neuron.standardmodels.electrodes.NoisyCurrentSource"><code class="docutils literal notranslate"><span class="pre">NoisyCurrentSource</span></code></a><ul>
+<li><a class="reference internal" href="#pyNN.neuron.standardmodels.electrodes.NoisyCurrentSource.inject_into"><code class="docutils literal notranslate"><span class="pre">NoisyCurrentSource.inject_into()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.standardmodels.electrodes.NoisyCurrentSource.get_parameters"><code class="docutils literal notranslate"><span class="pre">NoisyCurrentSource.get_parameters()</span></code></a></li>
+<li><a class="reference internal" href="#pyNN.neuron.standardmodels.electrodes.NoisyCurrentSource.set_parameters"><code class="docutils literal notranslate"><span class="pre">NoisyCurrentSource.set_parameters()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="plasticitymodels.html"
+                          title="previous chapter">Synapse models</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="simulationcontrol.html"
+                          title="next chapter">Simulation control</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/reference/electrodes.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="simulationcontrol.html" title="Simulation control"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="plasticitymodels.html" title="Synapse models"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.11.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api_reference.html" >API reference</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Current sources</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2023, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    </div>
+  </body>
+</html>

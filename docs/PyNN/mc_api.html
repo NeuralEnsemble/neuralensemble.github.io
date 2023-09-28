@@ -1,0 +1,334 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Multicompartmental modelling &#8212; PyNN 0.12.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Injecting current" href="injecting_current.html" />
+    <link rel="prev" title="Representing spatial structure and calculating distances" href="space.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="injecting_current.html" title="Injecting current"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="space.html" title="Representing spatial structure and calculating distances"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="building_networks.html" accesskey="U">Building networks</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Multicompartmental modelling</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="multicompartmental-modelling">
+<h1>Multicompartmental modelling<a class="headerlink" href="#multicompartmental-modelling" title="Permalink to this heading">¶</a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The extensions to the API for multicompartmental models are an experimental feature.
+We encourage users to try them out, but at this stage we do not recommend publishing
+work using these extensions without very thorough checking and validation of results.</p>
+</div>
+<section id="cell-types">
+<h2>Cell types<a class="headerlink" href="#cell-types" title="Permalink to this heading">¶</a></h2>
+<p>As noted in <a class="reference internal" href="neurons.html"><span class="doc">Building networks: neurons</span></a>, the “standard library” approach described above needs to be modified for morphologically and biophysically-detailed neuron models,
+as the number of possible combinations of morphologies, ion-channel models and synapse models is infinite.</p>
+<p>Rather than a library of standard neuron models, we have a library of standard components (ion-channel models, synapse models)
+from which multi-compartment models can be composed by writing a simple class:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyNeuronModel</span><span class="p">(</span><span class="n">MultiCompartmentNeuron</span><span class="p">):</span>
+    <span class="n">ion_channels</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;pas&#39;</span><span class="p">:</span> <span class="n">sim</span><span class="o">.</span><span class="n">PassiveLeak</span><span class="p">,</span>  <span class="c1"># standard library of ion channel models</span>
+        <span class="s1">&#39;na&#39;</span><span class="p">:</span> <span class="n">sim</span><span class="o">.</span><span class="n">NaChannel</span><span class="p">,</span>
+        <span class="s1">&#39;kdr&#39;</span><span class="p">:</span> <span class="n">sim</span><span class="o">.</span><span class="n">KdrChannel</span>
+    <span class="p">}</span>
+    <span class="n">post_synaptic_entities</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;AMPA&#39;</span><span class="p">:</span> <span class="n">sim</span><span class="o">.</span><span class="n">CondExpPostSynapticResponse</span><span class="p">,</span>  <span class="c1"># standard library of synapse models</span>
+        <span class="s1">&#39;GABA_A&#39;</span><span class="p">:</span> <span class="n">sim</span><span class="o">.</span><span class="n">CondExpPostSynapticResponse</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>here we are using ion channel and synapse models from a standard library, but we also plan to support
+LEMS (NeuroML) and NineML model specifications for this.</p>
+</div>
+</section>
+<section id="parameterization">
+<h2>Parameterization<a class="headerlink" href="#parameterization" title="Permalink to this heading">¶</a></h2>
+<p>When it come to instantiating such a cell type in order to create a population, three extensions are needed when compared
+to the point-neuron case:</p>
+<dl class="simple">
+<dt><strong>Hierarchical parameter sets</strong></dt><dd><p>Ion channel and synapse parameters should be in a separate dictionary nested inside the main parameter dictionary.</p>
+</dd>
+<dt><strong>More complex parameter types</strong></dt><dd><p>For the standard library of point neurons, most of the parameters are floats, with <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code> being the only special case.
+For morphologically-detailed neurons, one of the parameters is a representation of an entire morphology, since
+different neurons within a population can be expected to have different morphologies.</p>
+</dd>
+<dt><strong>Spatial parameterization within neuron morphologies</strong></dt><dd><p>Point neurons may have parameter values that depend on the position of the neuron in space.
+Neurons with axons and dendrites may have parameters whose value depends on location <em>within</em> a single neuron.</p>
+</dd>
+</dl>
+<p>Handling of morphologies and spatial parameterization are described in the next section.</p>
+</section>
+<section id="morphologies">
+<h2>Morphologies<a class="headerlink" href="#morphologies" title="Permalink to this heading">¶</a></h2>
+<p>A number of existing Python tools for handling neuronal morphologies already exist
+(e.g. <a class="reference external" href="https://libneuroml.readthedocs.io/en/latest/">libNeuroML</a>, <a class="reference external" href="http://briansimulator.org">Brian 2</a>, <a class="reference external" href="https://morphio.readthedocs.io/en/latest/">MorphIO</a>, <a class="reference external" href="https://github.com/btorb/btmorph_v2">btmorph</a>)
+In the interest of integrating with other open-source simulation tools and standards wherever possible,
+rather than reinventing the wheel (see <a class="reference internal" href="mc_aims.html"><span class="doc">Multicompartmental modelling with PyNN: design goals</span></a>), we would like to make use of these tools within PyNN,
+and give users a choice of tools where there is overlap.</p>
+<p>Our proposed implementation of this is to define an interface through a parent <code class="xref py py-class docutils literal notranslate"><span class="pre">Morphology</span></code>,
+which can be sub-classed for the different Python representations of neuronal morphology,
+e.g. <code class="xref py py-class docutils literal notranslate"><span class="pre">NeuroMLMorphology</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">BrianMorphology</span></code>.</p>
+<p>This standard interface for working with morphologies allows us to define tools for spatial parameterization,
+and, more generally, for specifying points and regions within the neurites, in a format-independent way.</p>
+<p>The general principle is to present an interface to the user that treats the neuron as a continuous
+tree structure, and hides details of the spatial discretization, while mapping points and regions defined by the user
+to the particular section/segment used internally by the simulator.</p>
+<section id="selecting-points-and-regions">
+<h3>Selecting points and regions<a class="headerlink" href="#selecting-points-and-regions" title="Permalink to this heading">¶</a></h3>
+<p>For simple morphologies, each section/segment/compartment of the neuron can be given an explicit label.
+Where we wish to distinguish a point <em>within</em> a section, we can add a <cite>fraction_along</cite> parameter.
+By default, a label is taken to refer to the centre of a section.</p>
+<p>Thus, for example, if we specify a two-compartment neuron using NeuroML:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">neuroml</span> <span class="kn">import</span> <span class="n">Segment</span><span class="p">,</span> <span class="n">Point3DWithDiam</span> <span class="k">as</span> <span class="n">P</span>
+<span class="kn">from</span> <span class="nn">pyNN.morphology</span> <span class="kn">import</span> <span class="n">NeuroMLMorphology</span>
+
+<span class="n">soma</span> <span class="o">=</span> <span class="n">Segment</span><span class="p">(</span><span class="n">proximal</span><span class="o">=</span><span class="n">P</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">diameter</span><span class="o">=</span><span class="mf">18.8</span><span class="p">),</span>
+               <span class="n">distal</span><span class="o">=</span><span class="n">P</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">18.8</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">diameter</span><span class="o">=</span><span class="mf">18.8</span><span class="p">),</span>
+               <span class="n">name</span><span class="o">=</span><span class="s2">&quot;soma&quot;</span><span class="p">)</span>
+<span class="n">dend</span> <span class="o">=</span> <span class="n">Segment</span><span class="p">(</span><span class="n">proximal</span><span class="o">=</span><span class="n">P</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">diameter</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+               <span class="n">distal</span><span class="o">=</span><span class="n">P</span><span class="p">(</span><span class="n">x</span><span class="o">=-</span><span class="mi">500</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">diameter</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+               <span class="n">name</span><span class="o">=</span><span class="s2">&quot;dendrite&quot;</span><span class="p">,</span>
+               <span class="n">parent</span><span class="o">=</span><span class="n">soma</span><span class="p">)</span>
+
+<span class="n">cell_type</span> <span class="o">=</span> <span class="n">cell_class</span><span class="p">(</span><span class="n">morphology</span><span class="o">=</span><span class="n">NeuroMLMorphology</span><span class="p">(</span><span class="n">segments</span><span class="o">=</span><span class="p">(</span><span class="n">soma</span><span class="p">,</span> <span class="n">dend</span><span class="p">)),</span>
+                       <span class="o">...</span><span class="n">other</span> <span class="n">parameters</span><span class="o">...</span><span class="p">)</span>
+<span class="n">cells</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Population</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">cell_type</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then we can, for example, specify where to inject a current using the segment labels:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">step_current</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">DCSource</span><span class="p">(</span><span class="n">amplitude</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mf">50.0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mf">150.0</span><span class="p">)</span>
+<span class="n">step_current</span><span class="o">.</span><span class="n">inject_into</span><span class="p">(</span><span class="n">cells</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">],</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;soma&quot;</span><span class="p">)</span>
+<span class="n">step_current</span><span class="o">.</span><span class="n">inject_into</span><span class="p">(</span><span class="n">cells</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;dendrite&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>or, similarly, where to record the membrane voltage:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cells</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="n">locations</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;soma&#39;</span><span class="p">,</span> <span class="s1">&#39;dendrite&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>For detailed morphologies it is less easy/useful to address/label specific sections,
+with the exception of the soma and perhaps the axon initial segment.
+We create such a morphology using, for example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyNN.morphology</span> <span class="kn">import</span> <span class="n">load_morphology</span>
+
+<span class="n">pyr_morph</span> <span class="o">=</span> <span class="n">load_morphology</span><span class="p">(</span><span class="s2">&quot;oi15rpy4-1.CNG.swc&quot;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">PyramidalCell</span><span class="p">(</span><span class="n">MultiCompartmentNeuron</span><span class="p">):</span>
+    <span class="n">ion_channels</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;pas&#39;</span><span class="p">:</span> <span class="n">sim</span><span class="o">.</span><span class="n">PassiveLeak</span><span class="p">,</span>
+        <span class="s1">&#39;na&#39;</span><span class="p">:</span> <span class="n">sim</span><span class="o">.</span><span class="n">NaChannel</span><span class="p">,</span>
+        <span class="s1">&#39;kdr&#39;</span><span class="p">:</span> <span class="n">sim</span><span class="o">.</span><span class="n">KdrChannel</span>
+    <span class="p">}</span>
+    <span class="o">...</span>
+
+<span class="n">pyramidal_cell_type</span> <span class="o">=</span> <span class="n">PyramidalCell</span><span class="p">(</span><span class="n">morphology</span><span class="o">=</span><span class="n">pyr_morph</span><span class="p">,</span>
+                                    <span class="o">...</span><span class="n">other</span> <span class="n">parameters</span><span class="o">...</span><span class="p">)</span>
+<span class="n">pyramidal_cells</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Population</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">pyramidal_cell_type</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can select regions of the axonal and/or dendritic trees using a morphology filter.
+At present, the available filters are <code class="xref py py-class docutils literal notranslate"><span class="pre">soma</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">apical_dendrites</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">basal_dendrites</span></code>,
+<code class="xref py py-class docutils literal notranslate"><span class="pre">dendrites</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">axon</span></code>, and <code class="xref py py-class docutils literal notranslate"><span class="pre">all</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>identifying apical and basal dendrites depends on the morphology description file providing these labels.
+This is the case for SWC files, and it is also supported by NeuroML.</p>
+</div>
+<p>Within these regions, we can specify parameters whose values depend on the position within the region,
+for example, distance along the dendrites from the soma:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">kdr_conductance_density_apical</span> <span class="o">=</span> <span class="n">by_distance</span><span class="p">(</span><span class="n">apical_dendrites</span><span class="p">(),</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="mf">0.05</span> <span class="o">*</span> <span class="n">d</span> <span class="o">/</span> <span class="mf">200.0</span><span class="p">)</span>
+<span class="n">kdr_conductance_density_basal</span> <span class="o">=</span> <span class="n">uniform</span><span class="p">(</span><span class="n">basal_dendrites</span><span class="p">(),</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="mf">0.07</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To specify specific points within a region (for injecting current, placing synapses or recording state variables)
+we specify a “location generator”:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">locations</span> <span class="o">=</span> <span class="n">at_distances</span><span class="p">(</span><span class="n">apical_dendrites</span><span class="p">(),</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">250</span><span class="p">])</span>  <span class="c1"># distances in µm</span>
+</pre></div>
+</div>
+<p>Note that this may specify more than five points, due to branching
+(i.e. there will be a point on each branch at 100 µm from the soma);
+equally, some branches may be shorter than 250 µm and so no point will be generated for that branch.</p>
+<p>In addition to <code class="xref py py-class docutils literal notranslate"><span class="pre">at_distances</span></code>, PyNN currently provides <code class="xref py py-class docutils literal notranslate"><span class="pre">centre</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">random_placement</span></code>;
+points can also be defined using labels provided in the morphology definition.
+Further location generator methods are planned.</p>
+</section>
+</section>
+<section id="projections">
+<h2>Projections<a class="headerlink" href="#projections" title="Permalink to this heading">¶</a></h2>
+<p>In making synaptic connections onto neurons with detailed morphologies,
+we have to consider not only which post-synaptic neuron to connect to and which synapse <em>type</em> to use,
+but also in which location within the morphology the synapse should be.</p>
+<p>There are two possible strategies when placing the post-synaptic component of synapses on neurons:</p>
+<ol class="arabic simple">
+<li><p>place the post-synaptic mechanisms when creating the population (parameterized in the cell type),
+then when making connections select from this pre-existing list;</p></li>
+<li><p>place the post-synaptic mechanisms at the moment of creating connections.</p></li>
+</ol>
+<p>Both strategies are in fairly widespread use, so it would be worthwhile to support both approaches in PyNN.</p>
+<p>For Strategy 1, we specify the synaptic density when creating the cell type,
+as seen in the “pyramidal_cell” example above.
+It should also be possible to specify the placement of individual synapses in labelled sections,
+in the simple, few-compartment case (todo).</p>
+<p>For Strategy 2, post-synaptic parameters are specified in the <code class="xref py py-class docutils literal notranslate"><span class="pre">Connector</span></code> class, see next section.</p>
+<p>In making synaptic connections <em>from</em> neurons with detailed morphologies,
+we need to consider the location of the source of the action potential.
+Where the axon is represented explicitly, this location could be any point in the axon (terminal section or en-passant).
+Where the axon is not represented explicitly or is truncated, this location will be the soma, action initial segment,
+or terminal point of the truncation.
+In this case the synaptic delay should include a distance-dependent component, where the distance could be
+as-the-crow-flies, or the path length along the original axon (before truncation).
+In both cases, this is specified using the <cite>source</cite> argument of the <code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code> constructor.</p>
+</section>
+<section id="connectors">
+<h2>Connectors<a class="headerlink" href="#connectors" title="Permalink to this heading">¶</a></h2>
+<p>As noted above, for a given type of synapse, we have to consider both which post-synaptic neuron to connect to
+and in which location within the morphology the synapse should be.</p>
+<p>In principle, these two choices could be independent, or the choice of location could depend on which post-synaptic
+neuron was chosen.</p>
+<p>To support the second, more general case, we propose that the PyNN <code class="xref py py-class docutils literal notranslate"><span class="pre">Connector</span></code> classes should implement
+the algorithms for both choices in a single class. The first case, of independent choices, is likely to be fairly
+common however, so we also propose to extend the standard connectors from earlier versions of PyNN with a
+<cite>location_selector</cite> argument, so for example we might create a projection with:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sim</span><span class="o">.</span><span class="n">Projection</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">pyramidal_cells</span><span class="p">,</span>
+               <span class="n">connector</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">AllToAllConnector</span><span class="p">(</span><span class="n">location_selector</span><span class="o">=</span><span class="n">sample</span><span class="p">(</span><span class="n">apical_dendrites</span><span class="p">())),</span>
+               <span class="n">synapse_type</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">StaticSynapse</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
+               <span class="n">receptor_type</span><span class="o">=</span><span class="s2">&quot;AMPA&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This will connect all inputs to all pyramidal cells, selecting one synapse location at random from the apical dendrites
+(this random location would be different for each neuron in the pyramidal cell population).</p>
+<p>If Strategy 1 (as described above) is being used,
+the random sample is over those post-synaptic mechanisms already placed in the apical dendrites.</p>
+<p>If Strategy 2 is being used, the random sample is over all possible locations in the apical dendrites,
+and the post-synaptic mechanism is inserted at the same time as the connection is created.
+In this scenario, it should be possible to set post-synaptic model and parameters at the same time, for example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sim</span><span class="o">.</span><span class="n">Projection</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">pyramidal_cells</span><span class="p">,</span>
+           <span class="n">connector</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">AllToAllConnector</span><span class="p">(</span><span class="n">location_selector</span><span class="o">=</span><span class="n">sample</span><span class="p">(</span><span class="n">apical_dendrites</span><span class="p">())),</span>
+           <span class="n">synapse_type</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">StaticSynapse</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
+           <span class="n">receptor_type</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">CondExpPostSynapticResponse</span><span class="p">(</span><span class="n">tau_syn</span><span class="o">=</span><span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;normal&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">))))</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Multicompartmental modelling</a><ul>
+<li><a class="reference internal" href="#cell-types">Cell types</a></li>
+<li><a class="reference internal" href="#parameterization">Parameterization</a></li>
+<li><a class="reference internal" href="#morphologies">Morphologies</a><ul>
+<li><a class="reference internal" href="#selecting-points-and-regions">Selecting points and regions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#projections">Projections</a></li>
+<li><a class="reference internal" href="#connectors">Connectors</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="space.html"
+                          title="previous chapter">Representing spatial structure and calculating distances</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="injecting_current.html"
+                          title="next chapter">Injecting current</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/mc_api.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="injecting_current.html" title="Injecting current"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="space.html" title="Representing spatial structure and calculating distances"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="building_networks.html" >Building networks</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Multicompartmental modelling</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2023, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    </div>
+  </body>
+</html>

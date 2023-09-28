@@ -1,0 +1,221 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Example of depressing and facilitating synapses &#8212; PyNN 0.11.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="A demonstration of the use of callbacks to vary the rate of a SpikeSourcePoisson" href="varying_poisson.html" />
+    <link rel="prev" title="A demonstration of the responses of different standard neuron models to synaptic input" href="synaptic_input.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="varying_poisson.html" title="A demonstration of the use of callbacks to vary the rate of a SpikeSourcePoisson"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="synaptic_input.html" title="A demonstration of the responses of different standard neuron models to synaptic input"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.11.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../examples.html" accesskey="U">Examples</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Example of depressing and facilitating synapses</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="example-of-depressing-and-facilitating-synapses">
+<h1>Example of depressing and facilitating synapses<a class="headerlink" href="#example-of-depressing-and-facilitating-synapses" title="Permalink to this heading">¶</a></h1>
+<img alt="../_images/tsodyksmarkram_nest_20170505-150340.png" src="../_images/tsodyksmarkram_nest_20170505-150340.png" />
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># encoding: utf-8</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Example of depressing and facilitating synapses</span>
+
+<span class="sd">Usage: tsodyksmarkram.py [-h] [--plot-figure] [--debug DEBUG] simulator</span>
+
+<span class="sd">positional arguments:</span>
+<span class="sd">  simulator      neuron, nest, brian or another backend simulator</span>
+
+<span class="sd">optional arguments:</span>
+<span class="sd">  -h, --help     show this help message and exit</span>
+<span class="sd">  --plot-figure  Plot the simulation results to a file.</span>
+<span class="sd">  --debug DEBUG  Print debugging information</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">pyNN.utility</span> <span class="kn">import</span> <span class="n">get_simulator</span><span class="p">,</span> <span class="n">init_logging</span><span class="p">,</span> <span class="n">normalized_filename</span>
+
+
+<span class="c1"># === Configure the simulator ================================================</span>
+
+<span class="n">sim</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="n">get_simulator</span><span class="p">((</span><span class="s2">&quot;--plot-figure&quot;</span><span class="p">,</span> <span class="s2">&quot;Plot the simulation results to a file.&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;store_true&quot;</span><span class="p">}),</span>
+                             <span class="p">(</span><span class="s2">&quot;--debug&quot;</span><span class="p">,</span> <span class="s2">&quot;Print debugging information&quot;</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+    <span class="n">init_logging</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">quit_on_end</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+
+<span class="c1"># === Build and instrument the network =======================================</span>
+
+<span class="n">spike_source</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Population</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">sim</span><span class="o">.</span><span class="n">SpikeSourceArray</span><span class="p">(</span><span class="n">spike_times</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">)))</span>
+
+<span class="n">connector</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">AllToAllConnector</span><span class="p">()</span>
+
+<span class="n">synapse_types</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;static&#39;</span><span class="p">:</span> <span class="n">sim</span><span class="o">.</span><span class="n">StaticSynapse</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
+    <span class="s1">&#39;depressing&#39;</span><span class="p">:</span> <span class="n">sim</span><span class="o">.</span><span class="n">TsodyksMarkramSynapse</span><span class="p">(</span><span class="n">U</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">tau_rec</span><span class="o">=</span><span class="mf">800.0</span><span class="p">,</span> <span class="n">tau_facil</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                                            <span class="n">weight</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
+    <span class="s1">&#39;facilitating&#39;</span><span class="p">:</span> <span class="n">sim</span><span class="o">.</span><span class="n">TsodyksMarkramSynapse</span><span class="p">(</span><span class="n">U</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">tau_rec</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span>
+                                              <span class="n">tau_facil</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+                                              <span class="n">delay</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
+<span class="p">}</span>
+
+<span class="n">populations</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">projections</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="s1">&#39;static&#39;</span><span class="p">,</span> <span class="s1">&#39;depressing&#39;</span><span class="p">,</span> <span class="s1">&#39;facilitating&#39;</span><span class="p">:</span>
+    <span class="n">populations</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Population</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">sim</span><span class="o">.</span><span class="n">IF_cond_exp</span><span class="p">(</span><span class="n">e_rev_I</span><span class="o">=-</span><span class="mi">75</span><span class="p">,</span> <span class="n">tau_syn_I</span><span class="o">=</span><span class="p">[</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">6.7</span><span class="p">,</span> <span class="mf">4.3</span><span class="p">]),</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+    <span class="n">populations</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">record</span><span class="p">([</span><span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;gsyn_inh&#39;</span><span class="p">])</span>
+    <span class="n">projections</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">Projection</span><span class="p">(</span><span class="n">spike_source</span><span class="p">,</span> <span class="n">populations</span><span class="p">[</span><span class="n">label</span><span class="p">],</span> <span class="n">connector</span><span class="p">,</span>
+                                        <span class="n">receptor_type</span><span class="o">=</span><span class="s1">&#39;inhibitory&#39;</span><span class="p">,</span>
+                                        <span class="n">synapse_type</span><span class="o">=</span><span class="n">synapse_types</span><span class="p">[</span><span class="n">label</span><span class="p">])</span>
+
+<span class="n">spike_source</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s1">&#39;spikes&#39;</span><span class="p">)</span>
+
+
+<span class="c1"># === Run the simulation =====================================================</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mf">200.0</span><span class="p">)</span>
+
+
+<span class="c1"># === Save the results, optionally plot a figure =============================</span>
+
+<span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">populations</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">normalized_filename</span><span class="p">(</span><span class="s2">&quot;Results&quot;</span><span class="p">,</span> <span class="s2">&quot;tsodyksmarkram_</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">label</span><span class="p">,</span>
+                                   <span class="s2">&quot;pkl&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">simulator</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">write_data</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">annotations</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;script_name&#39;</span><span class="p">:</span> <span class="vm">__file__</span><span class="p">})</span>
+
+
+<span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">plot_figure</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">pyNN.utility.plotting</span> <span class="kn">import</span> <span class="n">Figure</span><span class="p">,</span> <span class="n">Panel</span>
+    <span class="n">figure_filename</span> <span class="o">=</span> <span class="n">normalized_filename</span><span class="p">(</span><span class="s2">&quot;Results&quot;</span><span class="p">,</span> <span class="s2">&quot;tsodyksmarkram&quot;</span><span class="p">,</span>
+                                          <span class="s2">&quot;png&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">simulator</span><span class="p">)</span>
+    <span class="n">panels</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;gsyn_inh&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">population</span> <span class="ow">in</span> <span class="n">populations</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">panels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">Panel</span><span class="p">(</span><span class="n">population</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">variable</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+                      <span class="n">data_labels</span><span class="o">=</span><span class="p">[</span><span class="n">population</span><span class="o">.</span><span class="n">label</span><span class="p">],</span> <span class="n">yticks</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="p">)</span>
+    <span class="c1"># add ylabel to top panel in each group</span>
+    <span class="n">panels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="sa">u</span><span class="s1">&#39;Synaptic conductance (µS)&#39;</span><span class="p">)</span>
+    <span class="n">panels</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Membrane potential (mV)&#39;</span><span class="p">)</span>
+    <span class="c1"># add xticks and xlabel to final panel</span>
+    <span class="n">panels</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">xticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Time (ms)&quot;</span><span class="p">)</span>
+
+    <span class="n">Figure</span><span class="p">(</span><span class="o">*</span><span class="n">panels</span><span class="p">,</span>
+           <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Example of static, facilitating and depressing synapses&quot;</span><span class="p">,</span>
+           <span class="n">annotations</span><span class="o">=</span><span class="s2">&quot;Simulated with </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">figure_filename</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">figure_filename</span><span class="p">)</span>
+
+
+<span class="c1"># === Clean up and quit ========================================================</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="synaptic_input.html"
+                          title="previous chapter">A demonstration of the responses of different standard neuron models to synaptic input</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="varying_poisson.html"
+                          title="next chapter">A demonstration of the use of callbacks to vary the rate of a SpikeSourcePoisson</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/examples/tsodyksmarkram.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="varying_poisson.html" title="A demonstration of the use of callbacks to vary the rate of a SpikeSourcePoisson"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="synaptic_input.html" title="A demonstration of the responses of different standard neuron models to synaptic input"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.11.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../examples.html" >Examples</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Example of depressing and facilitating synapses</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2023, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    </div>
+  </body>
+</html>

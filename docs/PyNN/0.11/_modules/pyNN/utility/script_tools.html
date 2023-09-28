@@ -1,0 +1,254 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyNN.utility.script_tools &#8212; PyNN 0.11.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/nature.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../../../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.11.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../utility.html" accesskey="U">pyNN.utility</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyNN.utility.script_tools</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pyNN.utility.script_tools</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">A collection of functions to help writing simualtion scripts.</span>
+
+<span class="sd">:copyright: Copyright 2006-2023 by the PyNN team, see AUTHORS.</span>
+<span class="sd">:license: CeCILL, see LICENSE for details.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">import_module</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="c1"># If there is a settings.py file on the path, defaults will be</span>
+<span class="c1"># taken from there.</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">settings</span> <span class="kn">import</span> <span class="n">SMTPHOST</span><span class="p">,</span> <span class="n">EMAIL</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">SMTPHOST</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">EMAIL</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<span class="k">def</span> <span class="nf">get_script_args</span><span class="p">(</span><span class="n">n_args</span><span class="p">,</span> <span class="n">usage</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get command line arguments.</span>
+
+<span class="sd">    This works by finding the name of the main script and assuming any</span>
+<span class="sd">    arguments after this in sys.argv are arguments to the script.</span>
+<span class="sd">    It would be nicer to use optparse, but this doesn&#39;t seem to work too well</span>
+<span class="sd">    with nrniv or mpirun.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">calling_frame</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s1">&#39;__file__&#39;</span> <span class="ow">in</span> <span class="n">calling_frame</span><span class="o">.</span><span class="n">f_locals</span><span class="p">:</span>
+        <span class="n">script</span> <span class="o">=</span> <span class="n">calling_frame</span><span class="o">.</span><span class="n">f_locals</span><span class="p">[</span><span class="s1">&#39;__file__&#39;</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">script_index</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">script</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">script_index</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">script</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">script_index</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">script_index</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="n">script_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span><span class="n">script_index</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">n_args</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n_args</span><span class="p">:</span>
+        <span class="n">usage</span> <span class="o">=</span> <span class="n">usage</span> <span class="ow">or</span> <span class="s2">&quot;Script requires </span><span class="si">%d</span><span class="s2"> arguments, you supplied </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">n_args</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">usage</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">args</span>
+
+
+<div class="viewcode-block" id="get_simulator"><a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.get_simulator">[docs]</a><span class="k">def</span> <span class="nf">get_simulator</span><span class="p">(</span><span class="o">*</span><span class="n">arguments</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Import and return a PyNN simulator backend module based on command-line</span>
+<span class="sd">    arguments.</span>
+
+<span class="sd">    The simulator name should be the first positional argument. If your script</span>
+<span class="sd">    needs additional arguments, you can specify them as (name, help_text) tuples.</span>
+<span class="sd">    If you need more complex argument handling, you should use argparse</span>
+<span class="sd">    directly.</span>
+
+<span class="sd">    Returns (simulator, command-line arguments)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">argparse</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;simulator&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;neuron, nest, brian or another backend simulator&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">argument</span> <span class="ow">in</span> <span class="n">arguments</span><span class="p">:</span>
+        <span class="n">arg_name</span><span class="p">,</span> <span class="n">help_text</span> <span class="o">=</span> <span class="n">argument</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">extra_args</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">argument</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">extra_args</span> <span class="o">=</span> <span class="n">argument</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="n">arg_name</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="n">help_text</span><span class="p">,</span> <span class="o">**</span><span class="n">extra_args</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">sim</span> <span class="o">=</span> <span class="n">import_module</span><span class="p">(</span><span class="s2">&quot;pyNN.</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">args</span><span class="o">.</span><span class="n">simulator</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sim</span><span class="p">,</span> <span class="n">args</span></div>
+
+
+<div class="viewcode-block" id="init_logging"><a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.init_logging">[docs]</a><span class="k">def</span> <span class="nf">init_logging</span><span class="p">(</span><span class="n">logfile</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">num_processes</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simple configuration of logging.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># allow logfile == None</span>
+    <span class="c1"># which implies output to stderr</span>
+    <span class="c1"># num_processes and rank should be obtained using mpi4py, rather than having them as arguments</span>
+    <span class="k">if</span> <span class="n">logfile</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">num_processes</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">logfile</span> <span class="o">+=</span> <span class="s1">&#39;.</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">rank</span>
+        <span class="n">logfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">logfile</span><span class="p">)</span>
+
+    <span class="c1"># prefix log messages with mpi rank</span>
+    <span class="n">mpi_prefix</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">num_processes</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">mpi_prefix</span> <span class="o">=</span> <span class="s1">&#39;Rank </span><span class="si">%d</span><span class="s1"> of </span><span class="si">%d</span><span class="s1">: &#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">num_processes</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+        <span class="n">log_level</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">log_level</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span>
+
+    <span class="c1"># allow user to override exact log_level</span>
+    <span class="k">if</span> <span class="n">level</span><span class="p">:</span>
+        <span class="n">log_level</span> <span class="o">=</span> <span class="n">level</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
+        <span class="n">level</span><span class="o">=</span><span class="n">log_level</span><span class="p">,</span>
+        <span class="nb">format</span><span class="o">=</span><span class="n">mpi_prefix</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(levelname)-8s</span><span class="s1"> [</span><span class="si">%(name)s</span><span class="s1">] </span><span class="si">%(message)s</span><span class="s1"> (</span><span class="si">%(pathname)s</span><span class="s1">[</span><span class="si">%(lineno)d</span><span class="s1">]:</span><span class="si">%(funcName)s</span><span class="s1">)&#39;</span><span class="p">,</span>  <span class="c1"># noqa: E501</span>
+        <span class="n">filename</span><span class="o">=</span><span class="n">logfile</span><span class="p">,</span>
+        <span class="n">filemode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;PyNN&quot;</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">normalized_filename</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span> <span class="n">extension</span><span class="p">,</span> <span class="n">simulator</span><span class="p">,</span>
+                        <span class="n">num_processes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_iso8601</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate a file path containing a timestamp and information about the</span>
+<span class="sd">    simulator used and the number of MPI processes.</span>
+
+<span class="sd">    The date is used as a sub-directory name, the date &amp; time are included in the</span>
+<span class="sd">    filename.</span>
+<span class="sd">    If use_iso8601 is True, follow https://en.wikipedia.org/wiki/ISO_8601</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">use_iso8601</span><span class="p">:</span>
+        <span class="n">date</span> <span class="o">=</span> <span class="n">timestamp</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">date_time</span> <span class="o">=</span> <span class="n">timestamp</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">date</span> <span class="o">=</span> <span class="n">timestamp</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">date_time</span> <span class="o">=</span> <span class="n">timestamp</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">-%H%M%S&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">num_processes</span><span class="p">:</span>
+        <span class="n">np</span> <span class="o">=</span> <span class="s2">&quot;_np</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">num_processes</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">np</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span>
+                        <span class="n">date</span><span class="p">,</span>
+                        <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">basename</span><span class="p">,</span>
+                                           <span class="n">simulator</span><span class="p">,</span>
+                                           <span class="n">np</span><span class="p">,</span>
+                                           <span class="n">date_time</span><span class="p">,</span>
+                                           <span class="n">extension</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="notify"><a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.notify">[docs]</a><span class="k">def</span> <span class="nf">notify</span><span class="p">(</span>
+    <span class="n">msg</span><span class="o">=</span><span class="s2">&quot;Simulation finished.&quot;</span><span class="p">,</span>
+    <span class="n">subject</span><span class="o">=</span><span class="s2">&quot;Simulation finished.&quot;</span><span class="p">,</span>
+    <span class="n">smtphost</span><span class="o">=</span><span class="n">SMTPHOST</span><span class="p">,</span>
+    <span class="n">address</span><span class="o">=</span><span class="n">EMAIL</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Send an e-mail stating that the simulation has finished.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">smtphost</span> <span class="ow">and</span> <span class="n">address</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;SMTP host and/or e-mail address not specified.</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;Unable to send notification message.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">smtplib</span>
+
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;From: </span><span class="si">%s</span><span class="se">\r\n</span><span class="s2">To: </span><span class="si">%s</span><span class="se">\r\n</span><span class="s2">Subject: </span><span class="si">%s</span><span class="se">\r\n\r\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">address</span><span class="p">,</span>
+            <span class="n">address</span><span class="p">,</span>
+            <span class="n">subject</span><span class="p">,</span>
+        <span class="p">)</span> <span class="o">+</span> <span class="n">msg</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Timestamp: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M:%S, </span><span class="si">%F</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">server</span> <span class="o">=</span> <span class="n">smtplib</span><span class="o">.</span><span class="n">SMTP</span><span class="p">(</span><span class="n">smtphost</span><span class="p">)</span>
+        <span class="n">server</span><span class="o">.</span><span class="n">sendmail</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+        <span class="n">server</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.11.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../utility.html" >pyNN.utility</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyNN.utility.script_tools</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2023, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    </div>
+  </body>
+</html>

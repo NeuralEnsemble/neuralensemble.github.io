@@ -1,0 +1,336 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>PyNN 0.7 release notes &#8212; PyNN 0.11.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="PyNN 0.6 release notes" href="0.6.html" />
+    <link rel="prev" title="PyNN 0.8 alpha 1 release notes" href="0.8-alpha-1.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="0.6.html" title="PyNN 0.6 release notes"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="0.8-alpha-1.html" title="PyNN 0.8 alpha 1 release notes"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.11.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../release_notes.html" accesskey="U">Release notes</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">PyNN 0.7 release notes</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="pynn-0-7-release-notes">
+<h1>PyNN 0.7 release notes<a class="headerlink" href="#pynn-0-7-release-notes" title="Permalink to this heading">¶</a></h1>
+<p>4th February 2011</p>
+<p>This release sees a major extension of the API with the addition of the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">PopulationView</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">Assembly</span></code> classes, which aim to make
+building large, structured networks much simpler and cleaner. A
+<code class="xref py py-class docutils literal notranslate"><span class="pre">PopulationView</span></code> allows a sub-set of the neurons from a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code> to be encapsulated in an object. We call it a “view”, rather
+than a “sub-population”, to emphasize the fact that the neurons are not copied:
+they are the same neurons as in the parent <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>, and any
+operations on either view or parent (setting parameter values, recording, etc.)
+will be reflected in the other. An <code class="xref py py-class docutils literal notranslate"><span class="pre">Assembly</span></code> is a list of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code> and/or <code class="xref py py-class docutils literal notranslate"><span class="pre">PopulationView</span></code> objects, enabling multiple
+cell types to be encapsulated in a single object. <code class="xref py py-class docutils literal notranslate"><span class="pre">PopulationView</span></code> and
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Assembly</span></code> objects behave in most ways like <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>: you can
+record them, connect them using a <code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code>, you can have views of
+views…</p>
+<p>The “low-level API” (rechristened “procedural API”) has been reimplemented in in
+terms of <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code>. For example,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">create()</span></code> now returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code> object rather than a list of
+IDs, and <code class="xref py py-func docutils literal notranslate"><span class="pre">connect()</span></code> returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code> object. This change
+should be almost invisible to the user, since <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code> now behaves
+very much like a list of IDs (can be sliced, joined, etc.).</p>
+<p>There has been a major change to cell addressing: <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>s now
+always store cells in a one-dimensional array, which means cells no longer have
+an address but just an index. To specify the spatial structure of a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>, pass a <code class="xref py py-class docutils literal notranslate"><span class="pre">Structure</span></code> object to the constructor, e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">Population</span><span class="p">((</span><span class="mi">12</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span> <span class="n">IF_cond_exp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>is now:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">Population</span><span class="p">(</span><span class="mi">120</span><span class="p">,</span> <span class="n">IF_cond_exp</span><span class="p">,</span> <span class="n">structure</span><span class="o">=</span><span class="n">Grid2D</span><span class="p">(</span><span class="mf">1.2</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>although the former syntax still works, for backwards compatibility. The reasons
+for doing this are:</p>
+<ol class="arabic simple">
+<li><p>we can now have more interesting structures than just grids</p></li>
+<li><p>efficiency (less juggling addresses, flattening)</p></li>
+<li><p>simplicity (less juggling addresses, less code).</p></li>
+</ol>
+<p>The API for setting initial values has changed: this is now done via the
+<code class="xref py py-func docutils literal notranslate"><span class="pre">initialize()</span></code> function or the <code class="xref py py-meth docutils literal notranslate"><span class="pre">Population.initialize()</span></code> method,
+rather than by having <cite>v_init</cite> and similar parameters for cell models.</p>
+<section id="other-api-changes">
+<h2>Other API changes<a class="headerlink" href="#other-api-changes" title="Permalink to this heading">¶</a></h2>
+<ul>
+<li><p>simplification of the <code class="xref py py-meth docutils literal notranslate"><span class="pre">record_X()</span></code> methods.With the addition of the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">PopulationView</span></code> class, the selection logic implemented by the
+<cite>record_from</cite> and <cite>rng</cite> arguments duplicated that in
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">Population.__getitem__()</span></code> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">Population.sample()</span></code>, and so these arguments
+have been removed, and the <code class="xref py py-meth docutils literal notranslate"><span class="pre">record_X()</span></code> methods now record all neurons within
+a <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PopulationView</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">Assembly</span></code>.
+Examples of syntax changes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pop</span><span class="o">.</span><span class="n">record_v</span><span class="p">([</span><span class="n">pop</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pop</span><span class="p">[</span><span class="mi">17</span><span class="p">]])</span> <span class="o">--&gt;</span> <span class="n">pop</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">17</span><span class="p">)]</span><span class="o">.</span><span class="n">record_v</span><span class="p">()</span>
+<span class="n">pop</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span> <span class="o">--&gt;</span> <span class="n">pop</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">rng</span><span class="p">)</span><span class="o">.</span><span class="n">record</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+<li><p>enhanced <code class="xref py py-meth docutils literal notranslate"><span class="pre">describe()</span></code> methods: can now use Jinja2 or Cheetah templating
+engines to produce much nicer, better formatted network descriptions.</p></li>
+<li><p>connections and neuron positions can now be saved to various binary formats as
+well as to text files.</p></li>
+<li><p>added some new connectors: <code class="xref py py-class docutils literal notranslate"><span class="pre">SmallWorldConnector</span></code> and
+<code class="xref py py-class docutils literal notranslate"><span class="pre">CSAConnector</span></code> (CSA = Connection Set Algebra)</p></li>
+<li><p>native neuron and synapse models are now supported using a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">NativeModelType</span></code> subclass, rather than specified as strings. This
+simplifies the code internally and increases the range of PyNN functionality
+that can be used with native models (e.g. you can now record any variable from
+a native NEST or NEURON model). For NEST, there is a class factory
+<code class="xref py py-func docutils literal notranslate"><span class="pre">native_cell_type()</span></code>, for NEURON the <code class="xref py py-class docutils literal notranslate"><span class="pre">NativeModelType</span></code> subclasses
+have to be written by hand.</p></li>
+</ul>
+</section>
+<section id="backend-changes">
+<h2>Backend changes<a class="headerlink" href="#backend-changes" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>the NEST backend has been updated to work with NEST version 2.0.0.</p></li>
+<li><p>the Brian backend has seen extensive work on performance and on bringing it
+to feature parity with the other backends.</p></li>
+</ul>
+</section>
+<section id="details">
+<h2>Details<a class="headerlink" href="#details" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Where <code class="xref py py-meth docutils literal notranslate"><span class="pre">Population.initial_values()</span></code> contains arrays, these arrays now
+consistently contain only enough values for local cells. Before, there was
+some inconsistency about how this was handled. Still need more tests to be
+sure it’s really working as expected.</p></li>
+<li><p>Allow override of <cite>default_maxstep</cite> for NEURON backend as setup paramter. This
+is for the case that the user wants to add network connections across nodes
+after simulation start time.</p></li>
+<li><p>Discovered that when using NEST with mpi4py, you must <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">nest</span></code> first
+and let it do the MPI initialization. The only time this seems to be a problem
+with PyNN is if a user imports <a class="reference internal" href="../reference/random.html#module-pyNN.random" title="pyNN.random"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyNN.random</span></code></a> before <code class="xref py py-mod docutils literal notranslate"><span class="pre">pyNN.nest</span></code>. It
+would be nice to handle this more gracefully, but for now I’ve just added a
+test that NEST and mpi4py agree on the rank, and a hopefully useful error
+message.</p></li>
+<li><p>Added a new <code class="xref py py-func docutils literal notranslate"><span class="pre">setup()</span></code> option for <code class="xref py py-mod docutils literal notranslate"><span class="pre">pyNN.nest</span></code>:
+<cite>recording_precision</cite>. By default, <cite>recording_precision</cite> is 3 for on-grid and
+15 for off-grid.</p></li>
+<li><p>Partially fixed the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pyNN.nest</span></code> implementation of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">TsodyksMarkramMechanism</span></code> (cf ticket:172). The ‘tsodyks_synapse’ model
+has a ‘tau_psc’ parameter, which should be set to the same value as the decay
+time constant of the post-synaptic current (which is a parameter of the neuron
+model). I consider this only a partial fix, because if ‘tau_syn_E’ or
+‘tau_syn_I’ is changed after the creation of the Projection, ‘tau_psc’ will
+not be updated to match (unlike in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pyNN.neuron</span></code> implementation. I’m
+also not sure how well it will work with native neuron models.</p></li>
+<li><p>reverted <code class="xref py py-mod docutils literal notranslate"><span class="pre">pyNN.nest</span></code> to reading/resetting the current time from the
+kernel rather than keeping track of it within PyNN. NEST warns that this is
+dangerous, but all the tests pass, so let’s wait and see.</p></li>
+<li><p>In <code class="xref py py-class docutils literal notranslate"><span class="pre">HH_cond_exp</span></code>, conductances are now in µS, as for all other
+conductances in PyNN, instead of nS.</p></li>
+<li><p>NEURON now supports Tsodyks-Markram synapses for current-based exponential
+synapses (before it was only for conductance-based).</p></li>
+<li><p>NEURON backend now supports the <code class="xref py py-class docutils literal notranslate"><span class="pre">IF_cond_exp_gsfa_grr</span></code> model.</p></li>
+<li><p>Added a <code class="xref py py-meth docutils literal notranslate"><span class="pre">sample()</span></code> method to <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>, which returns a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">PopulationView</span></code> of a random sample of the neurons in the parent
+population.</p></li>
+<li><p>Added the <code class="xref py py-class docutils literal notranslate"><span class="pre">EIF_cond_exp/alpha_isfa/ista</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">HH_cond_exp</span></code>
+standard models in Brian.</p></li>
+<li><p>Added a <cite>gather</cite> option to the <code class="xref py py-meth docutils literal notranslate"><span class="pre">Population.get()</span></code> method.</p></li>
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">brian.setup()</span></code> now accepts a number of additional arguments in
+<cite>extra_params</cite>, For example, <code class="docutils literal notranslate"><span class="pre">extra_params={'useweave':</span> <span class="pre">True}</span></code> will lead to
+inline C++ code generation</p></li>
+<li><p>Wrote a first draft of a developers’ guide.</p></li>
+<li><p>Considerably extended the <code class="xref py py-class docutils literal notranslate"><span class="pre">core.LazyArray</span></code> class, as a basis for a
+possible rewrite of the <cite>connectors</cite> module.</p></li>
+<li><p>The <code class="xref py py-mod docutils literal notranslate"><span class="pre">random</span></code> module now uses <code class="xref py py-mod docutils literal notranslate"><span class="pre">mpi4py</span></code> to determine the MPI rank and
+<cite>num_processes</cite>, rather than receiving these as arguments to the RNG
+constructor (see ticket:164).</p></li>
+<li><p>Many fixes and performance enhancements for the <code class="xref py py-mod docutils literal notranslate"><span class="pre">brian</span></code> module, which now
+supports synaptic plasticity.</p></li>
+<li><p>No more GSL warning every time! Just raise an Exception if we attempt to use
+GSLRNG and pygsl is not available.</p></li>
+<li><p>Added some more flexibility to <code class="xref py py-func docutils literal notranslate"><span class="pre">init_logging()</span></code>: <code class="docutils literal notranslate"><span class="pre">logfile=None</span></code> -&gt;
+stderr, format includes size &amp; rank, user can override log-level</p></li>
+<li><p>NEST <code class="file docutils literal notranslate"><span class="pre">__init__.py</span></code> changed to query NEST for filling
+<code class="docutils literal notranslate"><span class="pre">NEST_SYNAPSE_TYPES</span></code>.</p></li>
+<li><p>Started to move synapse dynamics related stuff out of <code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code> and
+into the synapse dynamics-related classes, where it belongs.</p></li>
+<li><p>Added a new “spike_precision” option to <code class="xref py py-func docutils literal notranslate"><span class="pre">nest.setup()</span></code>
+(see <a class="reference external" href="http://neuralensemble.org/trac/PyNN/wiki/SimulatorSpecificOptions">http://neuralensemble.org/trac/PyNN/wiki/SimulatorSpecificOptions</a>)</p></li>
+<li><p>Updated the NEST backend to work with version 2.0.0</p></li>
+<li><p>Rewrote the test suite, making a much cleaner distinction between unit tests,
+which now make heavy use of mock objects to better-isolate components, and
+system tests. Test suite now runs with nose
+(<a class="reference external" href="https://nose.readthedocs.org/en/latest/">https://nose.readthedocs.org/en/latest/</a>), in order to facilitate
+continuous integration testing.</p></li>
+<li><p>Changed the format of connection files, as written by
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">saveConnections()</span></code> and read by <code class="xref py py-class docutils literal notranslate"><span class="pre">FromFileConnector</span></code>: files no
+longer contain the population label. Connections can now also be written to
+<code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyBinaryFile</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">PickleFile</span></code> objects, instead of just text
+files. Same for <code class="xref py py-meth docutils literal notranslate"><span class="pre">Population.save_positions()</span></code>.</p></li>
+<li><p>Added CSAConnector, which wraps the Connection Set Algebra for use by PyNN.
+Requires the csa package: <a class="reference external" href="https://pypi.python.org/pypi/csa/">https://pypi.python.org/pypi/csa/</a></p></li>
+<li><p>Enhanced distance expressions by allowing expressions such as
+<code class="docutils literal notranslate"><span class="pre">(d[0]</span> <span class="pre">&lt;</span> <span class="pre">0.1)</span> <span class="pre">&amp;</span> <span class="pre">(d[1]</span> <span class="pre">&lt;</span> <span class="pre">0.2)</span></code>. Complex forms can therefore now be drawn,
+such as squares, ellipses, and so on.</p></li>
+<li><p>Added an <cite>n_connections</cite> flag to the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">DistanceDependentProbabiblityConnector</span></code> in order to be able to
+constrain the total number of connections. Can be useful for normalizations.</p></li>
+<li><p>Added a simple <code class="xref py py-class docutils literal notranslate"><span class="pre">SmallWorldConnector</span></code>. Cells are connected within a
+certain degree <em>d</em>. Then, all the connections are rewired with a probability
+given by a rewiring parameter and new targets are uniformly selected among all
+the possible targets.</p></li>
+<li><p>Added a method to save cell positions to file.</p></li>
+<li><p>Added a progress bar to connectors. Now, a <cite>verbose</cite> flag allows to display or
+not a progress bar indicating the percentage of connections established.</p></li>
+<li><p>New implementation of the connector classes, with much improved performance
+and scaling with MPI, and extension of distance-dependent weights and delays
+to all connectors. In addition, a <cite>safe</cite> flag has been added to all connectors:
+on by default, a user can turn it off to avoid tests on weights and delays.</p></li>
+<li><p>Added the ability to set the <cite>atol</cite> and <cite>rtol</cite> parameters of NEURON’s cvode
+solver in the <cite>extra_params</cite> argument of <code class="xref py py-func docutils literal notranslate"><span class="pre">setup()</span></code> (patch from Johannes
+Partzsch).</p></li>
+<li><p>Made <code class="xref py py-mod docutils literal notranslate"><span class="pre">pyNN.nest</span></code>’s handling of the refractory period consistent with the
+other backends. Made the default refractory period 0.1 ms rather than 0.0 ms,
+since NEST appears not to handle zero refractory period.</p></li>
+<li><p>Moved standard model (cells and synapses) machinery, the <code class="xref py py-class docutils literal notranslate"><span class="pre">Space</span></code> class,
+and <code class="xref py py-class docutils literal notranslate"><span class="pre">Error</span></code> classes out of <code class="xref py py-mod docutils literal notranslate"><span class="pre">common</span></code> into their own modules.</p></li>
+</ul>
+</section>
+<section id="release-0-7-1">
+<h2>Release 0.7.1<a class="headerlink" href="#release-0-7-1" title="Permalink to this heading">¶</a></h2>
+<p>This bug-fix release added copyright statements to all files, together with some
+minor bug fixes.</p>
+</section>
+<section id="release-0-7-2">
+<h2>Release 0.7.2<a class="headerlink" href="#release-0-7-2" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="release-0-7-3">
+<h2>Release 0.7.3<a class="headerlink" href="#release-0-7-3" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="release-0-7-4">
+<h2>Release 0.7.4<a class="headerlink" href="#release-0-7-4" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="release-0-7-5">
+<h2>Release 0.7.5<a class="headerlink" href="#release-0-7-5" title="Permalink to this heading">¶</a></h2>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">PyNN 0.7 release notes</a><ul>
+<li><a class="reference internal" href="#other-api-changes">Other API changes</a></li>
+<li><a class="reference internal" href="#backend-changes">Backend changes</a></li>
+<li><a class="reference internal" href="#details">Details</a></li>
+<li><a class="reference internal" href="#release-0-7-1">Release 0.7.1</a></li>
+<li><a class="reference internal" href="#release-0-7-2">Release 0.7.2</a></li>
+<li><a class="reference internal" href="#release-0-7-3">Release 0.7.3</a></li>
+<li><a class="reference internal" href="#release-0-7-4">Release 0.7.4</a></li>
+<li><a class="reference internal" href="#release-0-7-5">Release 0.7.5</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="0.8-alpha-1.html"
+                          title="previous chapter">PyNN 0.8 alpha 1 release notes</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="0.6.html"
+                          title="next chapter">PyNN 0.6 release notes</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/releases/0.7.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="0.6.html" title="PyNN 0.6 release notes"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="0.8-alpha-1.html" title="PyNN 0.8 alpha 1 release notes"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.11.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../release_notes.html" >Release notes</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">PyNN 0.7 release notes</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2023, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    </div>
+  </body>
+</html>

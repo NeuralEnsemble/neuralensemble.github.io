@@ -1,0 +1,371 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>API reference &#8212; PyNN 0.11.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Populations, Views and Assemblies" href="reference/populations.html" />
+    <link rel="prev" title="Governance" href="developers/governance.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="reference/populations.html" title="Populations, Views and Assemblies"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="developers/governance.html" title="Governance"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.11.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">API reference</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="api-reference">
+<h1>API reference<a class="headerlink" href="#api-reference" title="Permalink to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="reference/populations.html">Populations, Views and Assemblies</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/populations.html#populations">Populations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/populations.html#pyNN.neuron.Population"><code class="docutils literal notranslate"><span class="pre">Population</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/populations.html#pyNN.neuron.create"><code class="docutils literal notranslate"><span class="pre">create()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/populations.html#views-sub-populations">Views (sub-populations)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/populations.html#pyNN.neuron.PopulationView"><code class="docutils literal notranslate"><span class="pre">PopulationView</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/populations.html#assemblies">Assemblies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/populations.html#pyNN.neuron.Assembly"><code class="docutils literal notranslate"><span class="pre">Assembly</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference/connectors.html">Connectors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/connectors.html#base-class">Base class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.Connector"><code class="docutils literal notranslate"><span class="pre">Connector</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/connectors.html#built-in-connectors">Built-in connectors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.AllToAllConnector"><code class="docutils literal notranslate"><span class="pre">AllToAllConnector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.OneToOneConnector"><code class="docutils literal notranslate"><span class="pre">OneToOneConnector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.FixedProbabilityConnector"><code class="docutils literal notranslate"><span class="pre">FixedProbabilityConnector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.FromListConnector"><code class="docutils literal notranslate"><span class="pre">FromListConnector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.FromFileConnector"><code class="docutils literal notranslate"><span class="pre">FromFileConnector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.ArrayConnector"><code class="docutils literal notranslate"><span class="pre">ArrayConnector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.FixedNumberPreConnector"><code class="docutils literal notranslate"><span class="pre">FixedNumberPreConnector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.FixedNumberPostConnector"><code class="docutils literal notranslate"><span class="pre">FixedNumberPostConnector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.FixedTotalNumberConnector"><code class="docutils literal notranslate"><span class="pre">FixedTotalNumberConnector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.DistanceDependentProbabilityConnector"><code class="docutils literal notranslate"><span class="pre">DistanceDependentProbabilityConnector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.IndexBasedProbabilityConnector"><code class="docutils literal notranslate"><span class="pre">IndexBasedProbabilityConnector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.DisplacementDependentProbabilityConnector"><code class="docutils literal notranslate"><span class="pre">DisplacementDependentProbabilityConnector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.SmallWorldConnector"><code class="docutils literal notranslate"><span class="pre">SmallWorldConnector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.CSAConnector"><code class="docutils literal notranslate"><span class="pre">CSAConnector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/connectors.html#pyNN.connectors.CloneConnector"><code class="docutils literal notranslate"><span class="pre">CloneConnector</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference/projections.html">Projections</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection"><code class="docutils literal notranslate"><span class="pre">Projection</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.pre"><code class="docutils literal notranslate"><span class="pre">Projection.pre</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.post"><code class="docutils literal notranslate"><span class="pre">Projection.post</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.source"><code class="docutils literal notranslate"><span class="pre">Projection.source</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.target"><code class="docutils literal notranslate"><span class="pre">Projection.target</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.label"><code class="docutils literal notranslate"><span class="pre">Projection.label</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.rng"><code class="docutils literal notranslate"><span class="pre">Projection.rng</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.synapse_dynamics"><code class="docutils literal notranslate"><span class="pre">Projection.synapse_dynamics</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.__len__"><code class="docutils literal notranslate"><span class="pre">Projection.__len__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.__getitem__"><code class="docutils literal notranslate"><span class="pre">Projection.__getitem__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.__iter__"><code class="docutils literal notranslate"><span class="pre">Projection.__iter__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.connections"><code class="docutils literal notranslate"><span class="pre">Projection.connections</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.MULTI_SYNAPSE_OPERATIONS"><code class="docutils literal notranslate"><span class="pre">Projection.MULTI_SYNAPSE_OPERATIONS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.annotate"><code class="docutils literal notranslate"><span class="pre">Projection.annotate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.describe"><code class="docutils literal notranslate"><span class="pre">Projection.describe()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.get"><code class="docutils literal notranslate"><span class="pre">Projection.get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.getDelays"><code class="docutils literal notranslate"><span class="pre">Projection.getDelays()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.getSynapseDynamics"><code class="docutils literal notranslate"><span class="pre">Projection.getSynapseDynamics()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.getWeights"><code class="docutils literal notranslate"><span class="pre">Projection.getWeights()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.initialize"><code class="docutils literal notranslate"><span class="pre">Projection.initialize()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.printDelays"><code class="docutils literal notranslate"><span class="pre">Projection.printDelays()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.printWeights"><code class="docutils literal notranslate"><span class="pre">Projection.printWeights()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.randomizeDelays"><code class="docutils literal notranslate"><span class="pre">Projection.randomizeDelays()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.randomizeSynapseDynamics"><code class="docutils literal notranslate"><span class="pre">Projection.randomizeSynapseDynamics()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.randomizeWeights"><code class="docutils literal notranslate"><span class="pre">Projection.randomizeWeights()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.save"><code class="docutils literal notranslate"><span class="pre">Projection.save()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.saveConnections"><code class="docutils literal notranslate"><span class="pre">Projection.saveConnections()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.set"><code class="docutils literal notranslate"><span class="pre">Projection.set()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.setDelays"><code class="docutils literal notranslate"><span class="pre">Projection.setDelays()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.setSynapseDynamics"><code class="docutils literal notranslate"><span class="pre">Projection.setSynapseDynamics()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.setWeights"><code class="docutils literal notranslate"><span class="pre">Projection.setWeights()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.shape"><code class="docutils literal notranslate"><span class="pre">Projection.shape</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.size"><code class="docutils literal notranslate"><span class="pre">Projection.size()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/projections.html#pyNN.neuron.Projection.weightHistogram"><code class="docutils literal notranslate"><span class="pre">Projection.weightHistogram()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/projections.html#pyNN.neuron.connect"><code class="docutils literal notranslate"><span class="pre">connect()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference/neuronmodels.html">Neuron models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/neuronmodels.html#standard-cell-types">Standard cell types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/neuronmodels.html#base-class">Base class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/neuronmodels.html#simple-integrate-and-fire-neurons">Simple integrate-and-fire neurons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/neuronmodels.html#integrate-and-fire-neurons-with-adaptation">Integrate-and-fire neurons with adaptation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/neuronmodels.html#spike-sources">Spike sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/neuronmodels.html#composed-models">Composed models</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/neuronmodels.html#native-cell-types">Native cell types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/neuronmodels.html#utility-functions">Utility functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/neuronmodels.html#pyNN.neuron.list_standard_models"><code class="docutils literal notranslate"><span class="pre">list_standard_models()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference/plasticitymodels.html">Synapse models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/plasticitymodels.html#standard-synapse-types">Standard synapse types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/plasticitymodels.html#base-class">Base class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/plasticitymodels.html#static-fixed-synapses">Static/fixed synapses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/plasticitymodels.html#short-term-plasticity-mechanisms">Short-term plasticity mechanisms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/plasticitymodels.html#long-term-plasticity-mechanisms">Long-term plasticity mechanisms</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/plasticitymodels.html#native-plasticity-models">Native plasticity models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/plasticitymodels.html#nineml-plasticity-models">NineML plasticity models</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference/electrodes.html">Current sources</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.DCSource"><code class="docutils literal notranslate"><span class="pre">DCSource</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.DCSource.inject_into"><code class="docutils literal notranslate"><span class="pre">DCSource.inject_into()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.DCSource.get_parameters"><code class="docutils literal notranslate"><span class="pre">DCSource.get_parameters()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.DCSource.set_parameters"><code class="docutils literal notranslate"><span class="pre">DCSource.set_parameters()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.ACSource"><code class="docutils literal notranslate"><span class="pre">ACSource</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.ACSource.inject_into"><code class="docutils literal notranslate"><span class="pre">ACSource.inject_into()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.ACSource.get_parameters"><code class="docutils literal notranslate"><span class="pre">ACSource.get_parameters()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.ACSource.set_parameters"><code class="docutils literal notranslate"><span class="pre">ACSource.set_parameters()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.StepCurrentSource"><code class="docutils literal notranslate"><span class="pre">StepCurrentSource</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.StepCurrentSource.inject_into"><code class="docutils literal notranslate"><span class="pre">StepCurrentSource.inject_into()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.StepCurrentSource.get_parameters"><code class="docutils literal notranslate"><span class="pre">StepCurrentSource.get_parameters()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.StepCurrentSource.set_parameters"><code class="docutils literal notranslate"><span class="pre">StepCurrentSource.set_parameters()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.NoisyCurrentSource"><code class="docutils literal notranslate"><span class="pre">NoisyCurrentSource</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.NoisyCurrentSource.inject_into"><code class="docutils literal notranslate"><span class="pre">NoisyCurrentSource.inject_into()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.NoisyCurrentSource.get_parameters"><code class="docutils literal notranslate"><span class="pre">NoisyCurrentSource.get_parameters()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.NoisyCurrentSource.set_parameters"><code class="docutils literal notranslate"><span class="pre">NoisyCurrentSource.set_parameters()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference/simulationcontrol.html">Simulation control</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/simulationcontrol.html#pyNN.neuron.setup"><code class="docutils literal notranslate"><span class="pre">setup()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/simulationcontrol.html#pyNN.neuron.run"><code class="docutils literal notranslate"><span class="pre">run()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/simulationcontrol.html#pyNN.neuron.run_until"><code class="docutils literal notranslate"><span class="pre">run_until()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/simulationcontrol.html#pyNN.neuron.reset"><code class="docutils literal notranslate"><span class="pre">reset()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/simulationcontrol.html#pyNN.neuron.end"><code class="docutils literal notranslate"><span class="pre">end()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/simulationcontrol.html#pyNN.neuron.get_time_step"><code class="docutils literal notranslate"><span class="pre">get_time_step()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/simulationcontrol.html#pyNN.neuron.get_current_time"><code class="docutils literal notranslate"><span class="pre">get_current_time()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/simulationcontrol.html#pyNN.neuron.get_min_delay"><code class="docutils literal notranslate"><span class="pre">get_min_delay()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/simulationcontrol.html#pyNN.neuron.get_max_delay"><code class="docutils literal notranslate"><span class="pre">get_max_delay()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/simulationcontrol.html#pyNN.neuron.num_processes"><code class="docutils literal notranslate"><span class="pre">num_processes()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/simulationcontrol.html#pyNN.neuron.rank"><code class="docutils literal notranslate"><span class="pre">rank()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/simulationcontrol.html#pyNN.neuron.set"><code class="docutils literal notranslate"><span class="pre">set()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/simulationcontrol.html#pyNN.neuron.initialize"><code class="docutils literal notranslate"><span class="pre">initialize()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/simulationcontrol.html#pyNN.neuron.record"><code class="docutils literal notranslate"><span class="pre">record()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference/random.html">Random numbers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/random.html#pyNN.random.RandomDistribution"><code class="docutils literal notranslate"><span class="pre">RandomDistribution</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/random.html#pyNN.random.RandomDistribution.next"><code class="docutils literal notranslate"><span class="pre">RandomDistribution.next()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/random.html#pyNN.random.RandomDistribution.lazily_evaluate"><code class="docutils literal notranslate"><span class="pre">RandomDistribution.lazily_evaluate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/random.html#pyNN.random.NumpyRNG"><code class="docutils literal notranslate"><span class="pre">NumpyRNG</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/random.html#pyNN.random.NumpyRNG.translations"><code class="docutils literal notranslate"><span class="pre">NumpyRNG.translations</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/random.html#pyNN.random.NumpyRNG.normal_clipped"><code class="docutils literal notranslate"><span class="pre">NumpyRNG.normal_clipped()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/random.html#pyNN.random.NumpyRNG.normal_clipped_to_boundary"><code class="docutils literal notranslate"><span class="pre">NumpyRNG.normal_clipped_to_boundary()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/random.html#pyNN.random.NumpyRNG.describe"><code class="docutils literal notranslate"><span class="pre">NumpyRNG.describe()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/random.html#pyNN.random.NumpyRNG.next"><code class="docutils literal notranslate"><span class="pre">NumpyRNG.next()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/random.html#pyNN.random.GSLRNG"><code class="docutils literal notranslate"><span class="pre">GSLRNG</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/random.html#pyNN.random.GSLRNG.translations"><code class="docutils literal notranslate"><span class="pre">GSLRNG.translations</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/random.html#pyNN.random.GSLRNG.uniform_int"><code class="docutils literal notranslate"><span class="pre">GSLRNG.uniform_int()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/random.html#pyNN.random.GSLRNG.gamma"><code class="docutils literal notranslate"><span class="pre">GSLRNG.gamma()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/random.html#pyNN.random.GSLRNG.normal"><code class="docutils literal notranslate"><span class="pre">GSLRNG.normal()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/random.html#pyNN.random.GSLRNG.normal_clipped"><code class="docutils literal notranslate"><span class="pre">GSLRNG.normal_clipped()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/random.html#pyNN.random.GSLRNG.describe"><code class="docutils literal notranslate"><span class="pre">GSLRNG.describe()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/random.html#pyNN.random.GSLRNG.next"><code class="docutils literal notranslate"><span class="pre">GSLRNG.next()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/random.html#pyNN.random.NativeRNG"><code class="docutils literal notranslate"><span class="pre">NativeRNG</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/random.html#pyNN.random.NativeRNG.next"><code class="docutils literal notranslate"><span class="pre">NativeRNG.next()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/random.html#adapting-a-different-random-number-generator-to-work-with-pynn">Adapting a different random number generator to work with PyNN</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference/parameters.html">Parameter handling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/parameters.html#the-lazyarray-class">The <code class="xref py py-class docutils literal notranslate"><span class="pre">LazyArray</span></code> class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/parameters.html#reference">Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/parameters.html#the-parameterspace-class">The <code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSpace</span></code> class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/parameters.html#id1">Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/parameters.html#the-sequence-class">The <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code> class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/parameters.html#pyNN.parameters.Sequence"><code class="docutils literal notranslate"><span class="pre">Sequence</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference/space.html">Spatial structure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/space.html#structure-classes">Structure classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/space.html#pyNN.space.BaseStructure"><code class="docutils literal notranslate"><span class="pre">BaseStructure</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/space.html#pyNN.space.Line"><code class="docutils literal notranslate"><span class="pre">Line</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/space.html#pyNN.space.Grid2D"><code class="docutils literal notranslate"><span class="pre">Grid2D</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/space.html#pyNN.space.Grid3D"><code class="docutils literal notranslate"><span class="pre">Grid3D</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/space.html#pyNN.space.RandomStructure"><code class="docutils literal notranslate"><span class="pre">RandomStructure</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/space.html#shape-classes">Shape classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/space.html#pyNN.space.Cuboid"><code class="docutils literal notranslate"><span class="pre">Cuboid</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/space.html#pyNN.space.Sphere"><code class="docutils literal notranslate"><span class="pre">Sphere</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/space.html#the-space-class">The Space class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/space.html#pyNN.space.Space"><code class="docutils literal notranslate"><span class="pre">Space</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/space.html#implementing-your-own-shape">Implementing your own Shape</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/space.html#implementing-your-own-structure">Implementing your own Structure</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference/utility.html">Utility classes and functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/utility.html#pyNN.utility.init_logging"><code class="docutils literal notranslate"><span class="pre">init_logging()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/utility.html#pyNN.utility.get_simulator"><code class="docutils literal notranslate"><span class="pre">get_simulator()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/utility.html#pyNN.utility.Timer"><code class="docutils literal notranslate"><span class="pre">Timer</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/utility.html#pyNN.utility.Timer.start"><code class="docutils literal notranslate"><span class="pre">Timer.start()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/utility.html#pyNN.utility.Timer.elapsed_time"><code class="docutils literal notranslate"><span class="pre">Timer.elapsed_time()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/utility.html#pyNN.utility.Timer.elapsedTime"><code class="docutils literal notranslate"><span class="pre">Timer.elapsedTime()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/utility.html#pyNN.utility.Timer.reset"><code class="docutils literal notranslate"><span class="pre">Timer.reset()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/utility.html#pyNN.utility.Timer.diff"><code class="docutils literal notranslate"><span class="pre">Timer.diff()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/utility.html#pyNN.utility.Timer.time_in_words"><code class="docutils literal notranslate"><span class="pre">Timer.time_in_words()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/utility.html#pyNN.utility.Timer.mark"><code class="docutils literal notranslate"><span class="pre">Timer.mark()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/utility.html#pyNN.utility.ProgressBar"><code class="docutils literal notranslate"><span class="pre">ProgressBar</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/utility.html#pyNN.utility.ProgressBar.set_level"><code class="docutils literal notranslate"><span class="pre">ProgressBar.set_level()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/utility.html#pyNN.utility.notify"><code class="docutils literal notranslate"><span class="pre">notify()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/utility.html#pyNN.utility.save_population"><code class="docutils literal notranslate"><span class="pre">save_population()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/utility.html#pyNN.utility.load_population"><code class="docutils literal notranslate"><span class="pre">load_population()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/utility.html#basic-plotting">Basic plotting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/utility.html#pyNN.utility.plotting.Figure"><code class="docutils literal notranslate"><span class="pre">Figure</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/utility.html#pyNN.utility.plotting.Panel"><code class="docutils literal notranslate"><span class="pre">Panel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/utility.html#pyNN.utility.plotting.comparison_plot"><code class="docutils literal notranslate"><span class="pre">comparison_plot()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
+            </a></p>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="developers/governance.html"
+                          title="previous chapter">Governance</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="reference/populations.html"
+                          title="next chapter">Populations, Views and Assemblies</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/api_reference.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="reference/populations.html" title="Populations, Views and Assemblies"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="developers/governance.html" title="Governance"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.11.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">API reference</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2006-2023, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    </div>
+  </body>
+</html>
