@@ -1,21 +1,17 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Simulation control &#8212; PyNN 0.12.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/nature.css" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <title>Simulation control &#8212; PyNN 0.12.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css?v=0f882399" />
+    <script src="_static/documentation_options.js?v=56343b9b"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Model parameters and initial values" href="parameters.html" />
@@ -36,7 +32,7 @@
         <li class="right" >
           <a href="data_handling.html" title="Data handling"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.3 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Simulation control</a></li> 
       </ul>
     </div>  
@@ -47,9 +43,9 @@
           <div class="body" role="main">
             
   <section id="simulation-control">
-<h1>Simulation control<a class="headerlink" href="#simulation-control" title="Permalink to this heading">¶</a></h1>
+<h1>Simulation control<a class="headerlink" href="#simulation-control" title="Link to this heading">¶</a></h1>
 <section id="initialising-the-simulator">
-<h2>Initialising the simulator<a class="headerlink" href="#initialising-the-simulator" title="Permalink to this heading">¶</a></h2>
+<h2>Initialising the simulator<a class="headerlink" href="#initialising-the-simulator" title="Link to this heading">¶</a></h2>
 <p>Before using any other functions or classes from PyNN, the user must call the
 <code class="xref py py-func docutils literal notranslate"><span class="pre">setup()</span></code> function:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">setup</span><span class="p">()</span>
@@ -70,7 +66,7 @@ any network that may have been created in the meantime.</p>
 </div>
 </section>
 <section id="getting-information-about-the-simulation-state">
-<h2>Getting information about the simulation state<a class="headerlink" href="#getting-information-about-the-simulation-state" title="Permalink to this heading">¶</a></h2>
+<h2>Getting information about the simulation state<a class="headerlink" href="#getting-information-about-the-simulation-state" title="Link to this heading">¶</a></h2>
 <p>Several functions are available for obtaining information about the simulation
 state:</p>
 <blockquote>
@@ -85,7 +81,7 @@ state:</p>
 </div></blockquote>
 </section>
 <section id="running-a-simulation">
-<h2>Running a simulation<a class="headerlink" href="#running-a-simulation" title="Permalink to this heading">¶</a></h2>
+<h2>Running a simulation<a class="headerlink" href="#running-a-simulation" title="Link to this heading">¶</a></h2>
 <p>The <code class="xref py py-func docutils literal notranslate"><span class="pre">run()</span></code> function advances the simulation for a given number of milliseconds, e.g.:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">run</span><span class="p">(</span><span class="mf">1000.0</span><span class="p">)</span>
 </pre></div>
@@ -99,7 +95,7 @@ time point, e.g.:</p>
 </pre></div>
 </div>
 <section id="performing-operations-during-a-run">
-<h3>Performing operations during a run<a class="headerlink" href="#performing-operations-during-a-run" title="Permalink to this heading">¶</a></h3>
+<h3>Performing operations during a run<a class="headerlink" href="#performing-operations-during-a-run" title="Link to this heading">¶</a></h3>
 <p>You may wish to perform some calculation, or show some information, during a
 run. One way to do this is to break the simulation into steps, and perform
 the operation at the end of each step, e.g.:</p>
@@ -132,14 +128,14 @@ powerful, especially if you have complex or multiple callbacks.</p>
 </section>
 </section>
 <section id="repeating-a-simulation">
-<h2>Repeating a simulation<a class="headerlink" href="#repeating-a-simulation" title="Permalink to this heading">¶</a></h2>
+<h2>Repeating a simulation<a class="headerlink" href="#repeating-a-simulation" title="Link to this heading">¶</a></h2>
 <p>If you wish to reset network time to zero to run a new simulation with the same
 network (with different parameter values, perhaps), use the <code class="xref py py-func docutils literal notranslate"><span class="pre">reset()</span></code> function.
 Note that this does not change the network structure, nor the choice of which
 neurons to record (from previous <code class="xref py py-meth docutils literal notranslate"><span class="pre">record()</span></code> calls).</p>
 </section>
 <section id="finishing-up">
-<h2>Finishing up<a class="headerlink" href="#finishing-up" title="Permalink to this heading">¶</a></h2>
+<h2>Finishing up<a class="headerlink" href="#finishing-up" title="Link to this heading">¶</a></h2>
 <p>Just as a simulation must be begun with a call to <code class="docutils literal notranslate"><span class="pre">setup()</span></code>, it should be
 ended with a call to <code class="docutils literal notranslate"><span class="pre">end()</span></code>. This is not always necessary, but it is safest
 to always use it.</p>
@@ -190,7 +186,7 @@ to always use it.</p>
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
@@ -198,7 +194,7 @@ to always use it.</p>
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
@@ -219,13 +215,13 @@ to always use it.</p>
         <li class="right" >
           <a href="data_handling.html" title="Data handling"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.3 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Simulation control</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2023, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    &#169; Copyright 2006-2024, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
     </div>
   </body>
 </html>

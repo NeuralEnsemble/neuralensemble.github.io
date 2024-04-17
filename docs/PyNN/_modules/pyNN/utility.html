@@ -1,20 +1,16 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyNN.utility &#8212; PyNN 0.12.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
-    <link rel="shortcut icon" href="../../_static/pyNN_icon.ico"/>
+    <title>pyNN.utility &#8212; PyNN 0.12.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css?v=0f882399" />
+    <script src="../../_static/documentation_options.js?v=56343b9b"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="../../_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
   </head><body>
@@ -27,7 +23,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyNN.utility</a></li> 
       </ul>
@@ -63,7 +59,7 @@
 <span class="sd">    ProgressBar</span>
 <span class="sd">    SimulationProgressBar</span>
 
-<span class="sd">:copyright: Copyright 2006-2023 by the PyNN team, see AUTHORS.</span>
+<span class="sd">:copyright: Copyright 2006-2024 by the PyNN team, see AUTHORS.</span>
 <span class="sd">:license: CeCILL, see LICENSE for details.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
@@ -84,8 +80,10 @@
 <span class="c1"># todo: review whether it is worth keeping the following, little-used functions</span>
 
 
-<div class="viewcode-block" id="save_population"><a class="viewcode-back" href="../../reference/utility.html#pyNN.utility.save_population">[docs]</a><span class="k">def</span> <span class="nf">save_population</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="save_population">
+<a class="viewcode-back" href="../../reference/utility.html#pyNN.utility.save_population">[docs]</a>
+<span class="k">def</span> <span class="nf">save_population</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Saves the spike_times of a  population and the size, structure, labels such</span>
 <span class="sd">    that one can load it back into a SpikeSourceArray population using the</span>
 <span class="sd">    load_population() function.</span>
@@ -105,8 +103,11 @@
     <span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="load_population"><a class="viewcode-back" href="../../reference/utility.html#pyNN.utility.load_population">[docs]</a><span class="k">def</span> <span class="nf">load_population</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">sim</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="load_population">
+<a class="viewcode-back" href="../../reference/utility.html#pyNN.utility.load_population">[docs]</a>
+<span class="k">def</span> <span class="nf">load_population</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">sim</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Loads a population that was saved with the save_population() function into</span>
 <span class="sd">    SpikeSourceArray.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -131,6 +132,7 @@
     <span class="k">return</span> <span class="n">population</span></div>
 
 
+
 <span class="k">def</span> <span class="nf">sort_by_column</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
     <span class="c1"># see stackoverflow.com/questions/2828059/</span>
     <span class="k">return</span> <span class="n">a</span><span class="p">[</span><span class="n">a</span><span class="p">[:,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">argsort</span><span class="p">(),</span> <span class="p">:]</span>
@@ -138,7 +140,7 @@
 
 <span class="c1"># based on http://wiki.python.org/moin/PythonDecoratorLibrary#Memoize</span>
 <span class="k">class</span> <span class="nc">forgetful_memoize</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Decorator that caches the result from the last time a function was called.</span>
 <span class="sd">    If the next call uses the same arguments, the cached value is returned, and</span>
 <span class="sd">    not re-evaluated. If the next call uses different arguments, the cached</span>
@@ -164,7 +166,7 @@
             <span class="k">return</span> <span class="n">value</span>
 
     <span class="k">def</span> <span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">objtype</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Support instance methods.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Support instance methods.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="fm">__call__</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
 </pre></div>
 
@@ -177,7 +179,7 @@
             <p class="logo"><a href="../../index.html">
               <img class="logo" src="../../_static/pyNN_logo.png" alt="Logo"/>
             </a></p>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
@@ -185,7 +187,7 @@
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
@@ -200,14 +202,14 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyNN.utility</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2023, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    &#169; Copyright 2006-2024, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
     </div>
   </body>
 </html>

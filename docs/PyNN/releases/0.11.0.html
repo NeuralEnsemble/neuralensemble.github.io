@@ -1,21 +1,17 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>PyNN 0.11.0 release notes &#8212; PyNN 0.12.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <title>PyNN 0.11.0 release notes &#8212; PyNN 0.12.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css?v=0f882399" />
+    <script src="../_static/documentation_options.js?v=56343b9b"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="../_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="PyNN 0.10.1 release notes" href="0.10.1.html" />
@@ -36,7 +32,7 @@
         <li class="right" >
           <a href="0.12.0.html" title="PyNN 0.12.0 release notes"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../release_notes.html" accesskey="U">Release notes</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">PyNN 0.11.0 release notes</a></li> 
       </ul>
@@ -48,11 +44,11 @@
           <div class="body" role="main">
             
   <section id="pynn-0-11-0-release-notes">
-<h1>PyNN 0.11.0 release notes<a class="headerlink" href="#pynn-0-11-0-release-notes" title="Permalink to this heading">¶</a></h1>
+<h1>PyNN 0.11.0 release notes<a class="headerlink" href="#pynn-0-11-0-release-notes" title="Link to this heading">¶</a></h1>
 <p>May 23rd 2023</p>
 <p>Welcome to PyNN 0.11.0!</p>
 <section id="added-composed-models-allowing-multiple-post-synaptic-receptor-types">
-<h2>Added “composed” models allowing multiple post-synaptic receptor types<a class="headerlink" href="#added-composed-models-allowing-multiple-post-synaptic-receptor-types" title="Permalink to this heading">¶</a></h2>
+<h2>Added “composed” models allowing multiple post-synaptic receptor types<a class="headerlink" href="#added-composed-models-allowing-multiple-post-synaptic-receptor-types" title="Link to this heading">¶</a></h2>
 <p>The existing PyNN “standard” models are defined by both their membrane properties
 (e.g., “leaky integrate-and-fire”, “exponential integrate-and-fire”) and by the
 number of type of their post-synaptic receptor currents (e.g., “alpha-shaped”,
@@ -77,12 +73,12 @@ and of an arbitrary number of post-synaptic response mechanisms:</p>
 </div>
 </section>
 <section id="nest-3-4-support">
-<h2>NEST 3.4 support<a class="headerlink" href="#nest-3-4-support" title="Permalink to this heading">¶</a></h2>
+<h2>NEST 3.4 support<a class="headerlink" href="#nest-3-4-support" title="Link to this heading">¶</a></h2>
 <p>PyNN now supports the latest version of <a class="reference external" href="https://www.nest-simulator.org">NEST</a>. NEST 3.3 should also work.
 For older versions of NEST, you will need an older version of PyNN to match.</p>
 </section>
 <section id="changes-for-developers">
-<h2>Changes for developers<a class="headerlink" href="#changes-for-developers" title="Permalink to this heading">¶</a></h2>
+<h2>Changes for developers<a class="headerlink" href="#changes-for-developers" title="Link to this heading">¶</a></h2>
 <p>Most of the changes in this version of PyNN are not visible to the end user,
 but are intended to improve the developer experience, for both existing and
 new developers, and to bring PyNN up to date with current best practices
@@ -95,7 +91,7 @@ for open-source Python projects:</p>
 </ul>
 </section>
 <section id="bug-fixes">
-<h2>Bug fixes<a class="headerlink" href="#bug-fixes" title="Permalink to this heading">¶</a></h2>
+<h2>Bug fixes<a class="headerlink" href="#bug-fixes" title="Link to this heading">¶</a></h2>
 <p>A <a class="reference external" href="https://github.com/NeuralEnsemble/PyNN/issues?q=milestone%3A0.11.0+is%3Aclosed">small number of bugs</a> have been fixed.</p>
 </section>
 </section>
@@ -140,7 +136,7 @@ for open-source Python projects:</p>
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
@@ -148,7 +144,7 @@ for open-source Python projects:</p>
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
@@ -169,14 +165,14 @@ for open-source Python projects:</p>
         <li class="right" >
           <a href="0.12.0.html" title="PyNN 0.12.0 release notes"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../release_notes.html" >Release notes</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">PyNN 0.11.0 release notes</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2023, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    &#169; Copyright 2006-2024, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
     </div>
   </body>
 </html>

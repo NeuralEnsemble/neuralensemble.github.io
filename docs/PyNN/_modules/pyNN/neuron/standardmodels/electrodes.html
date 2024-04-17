@@ -1,20 +1,16 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyNN.neuron.standardmodels.electrodes &#8212; PyNN 0.12.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/nature.css" />
-    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-    <script src="../../../../_static/jquery.js"></script>
-    <script src="../../../../_static/underscore.js"></script>
-    <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../../../_static/doctools.js"></script>
-    <script src="../../../../_static/sphinx_highlight.js"></script>
-    <link rel="shortcut icon" href="../../../../_static/pyNN_icon.ico"/>
+    <title>pyNN.neuron.standardmodels.electrodes &#8212; PyNN 0.12.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/nature.css?v=0f882399" />
+    <script src="../../../../_static/documentation_options.js?v=56343b9b"></script>
+    <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="../../../../_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
   </head><body>
@@ -27,7 +23,7 @@
         <li class="right" >
           <a href="../../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../../neuron.html" accesskey="U">pyNN.neuron</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyNN.neuron.standardmodels.electrodes</a></li> 
@@ -49,7 +45,7 @@
 <span class="sd">    NoisyCurrentSource -- a Gaussian whitish noise current.</span>
 <span class="sd">    ACSource           -- a sine modulated current.</span>
 
-<span class="sd">:copyright: Copyright 2006-2023 by the PyNN team, see AUTHORS.</span>
+<span class="sd">:copyright: Copyright 2006-2024 by the PyNN team, see AUTHORS.</span>
 <span class="sd">:license: CeCILL, see LICENSE for details.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
@@ -65,7 +61,7 @@
 
 
 <span class="k">class</span> <span class="nc">NeuronCurrentSource</span><span class="p">(</span><span class="n">StandardCurrentSource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Base class for a source of current to be injected into a neuron.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for a source of current to be injected into a neuron.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">parameters</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_devices</span> <span class="o">=</span> <span class="p">[]</span>
@@ -220,7 +216,9 @@
         <span class="k">return</span> <span class="p">(</span><span class="n">t_arr</span><span class="p">,</span> <span class="n">i_arr</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="DCSource"><a class="viewcode-back" href="../../../../reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.DCSource">[docs]</a><span class="k">class</span> <span class="nc">DCSource</span><span class="p">(</span><span class="n">NeuronCurrentSource</span><span class="p">,</span> <span class="n">electrodes</span><span class="o">.</span><span class="n">DCSource</span><span class="p">):</span>
+<div class="viewcode-block" id="DCSource">
+<a class="viewcode-back" href="../../../../reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.DCSource">[docs]</a>
+<span class="k">class</span> <span class="nc">DCSource</span><span class="p">(</span><span class="n">NeuronCurrentSource</span><span class="p">,</span> <span class="n">electrodes</span><span class="o">.</span><span class="n">DCSource</span><span class="p">):</span>
 
     <span class="vm">__doc__</span> <span class="o">=</span> <span class="n">electrodes</span><span class="o">.</span><span class="n">DCSource</span><span class="o">.</span><span class="vm">__doc__</span>
 
@@ -234,7 +232,10 @@
     <span class="n">_is_computed</span> <span class="o">=</span> <span class="kc">False</span></div>
 
 
-<div class="viewcode-block" id="StepCurrentSource"><a class="viewcode-back" href="../../../../reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.StepCurrentSource">[docs]</a><span class="k">class</span> <span class="nc">StepCurrentSource</span><span class="p">(</span><span class="n">NeuronCurrentSource</span><span class="p">,</span> <span class="n">electrodes</span><span class="o">.</span><span class="n">StepCurrentSource</span><span class="p">):</span>
+
+<div class="viewcode-block" id="StepCurrentSource">
+<a class="viewcode-back" href="../../../../reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.StepCurrentSource">[docs]</a>
+<span class="k">class</span> <span class="nc">StepCurrentSource</span><span class="p">(</span><span class="n">NeuronCurrentSource</span><span class="p">,</span> <span class="n">electrodes</span><span class="o">.</span><span class="n">StepCurrentSource</span><span class="p">):</span>
 
     <span class="vm">__doc__</span> <span class="o">=</span> <span class="n">electrodes</span><span class="o">.</span><span class="n">StepCurrentSource</span><span class="o">.</span><span class="vm">__doc__</span>
 
@@ -250,7 +251,10 @@
         <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="ACSource"><a class="viewcode-back" href="../../../../reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.ACSource">[docs]</a><span class="k">class</span> <span class="nc">ACSource</span><span class="p">(</span><span class="n">NeuronCurrentSource</span><span class="p">,</span> <span class="n">electrodes</span><span class="o">.</span><span class="n">ACSource</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ACSource">
+<a class="viewcode-back" href="../../../../reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.ACSource">[docs]</a>
+<span class="k">class</span> <span class="nc">ACSource</span><span class="p">(</span><span class="n">NeuronCurrentSource</span><span class="p">,</span> <span class="n">electrodes</span><span class="o">.</span><span class="n">ACSource</span><span class="p">):</span>
 
     <span class="vm">__doc__</span> <span class="o">=</span> <span class="n">electrodes</span><span class="o">.</span><span class="n">ACSource</span><span class="o">.</span><span class="vm">__doc__</span>
 
@@ -284,7 +288,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">amplitudes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span></div>
 
 
-<div class="viewcode-block" id="NoisyCurrentSource"><a class="viewcode-back" href="../../../../reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.NoisyCurrentSource">[docs]</a><span class="k">class</span> <span class="nc">NoisyCurrentSource</span><span class="p">(</span><span class="n">NeuronCurrentSource</span><span class="p">,</span> <span class="n">electrodes</span><span class="o">.</span><span class="n">NoisyCurrentSource</span><span class="p">):</span>
+
+<div class="viewcode-block" id="NoisyCurrentSource">
+<a class="viewcode-back" href="../../../../reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.NoisyCurrentSource">[docs]</a>
+<span class="k">class</span> <span class="nc">NoisyCurrentSource</span><span class="p">(</span><span class="n">NeuronCurrentSource</span><span class="p">,</span> <span class="n">electrodes</span><span class="o">.</span><span class="n">NoisyCurrentSource</span><span class="p">):</span>
 
     <span class="vm">__doc__</span> <span class="o">=</span> <span class="n">electrodes</span><span class="o">.</span><span class="n">NoisyCurrentSource</span><span class="o">.</span><span class="vm">__doc__</span>
 
@@ -311,6 +318,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">amplitudes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">stdev</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">amplitudes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span></div>
+
 </pre></div>
 
             <div class="clearer"></div>
@@ -322,7 +330,7 @@
             <p class="logo"><a href="../../../../index.html">
               <img class="logo" src="../../../../_static/pyNN_logo.png" alt="Logo"/>
             </a></p>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../../search.html" method="get">
@@ -330,7 +338,7 @@
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
@@ -345,15 +353,15 @@
         <li class="right" >
           <a href="../../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../../neuron.html" >pyNN.neuron</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyNN.neuron.standardmodels.electrodes</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2023, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    &#169; Copyright 2006-2024, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
     </div>
   </body>
 </html>

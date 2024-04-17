@@ -1,21 +1,17 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>PyNN 0.8 beta 2 release notes &#8212; PyNN 0.12.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <title>PyNN 0.8 beta 2 release notes &#8212; PyNN 0.12.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css?v=0f882399" />
+    <script src="../_static/documentation_options.js?v=56343b9b"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="../_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="PyNN 0.8 beta 1 release notes" href="0.8-beta-1.html" />
@@ -36,7 +32,7 @@
         <li class="right" >
           <a href="0.8.0-rc-1.html" title="PyNN 0.8.0 release candidate 1 release notes"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../release_notes.html" accesskey="U">Release notes</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">PyNN 0.8 beta 2 release notes</a></li> 
       </ul>
@@ -48,22 +44,22 @@
           <div class="body" role="main">
             
   <section id="pynn-0-8-beta-2-release-notes">
-<h1>PyNN 0.8 beta 2 release notes<a class="headerlink" href="#pynn-0-8-beta-2-release-notes" title="Permalink to this heading">¶</a></h1>
+<h1>PyNN 0.8 beta 2 release notes<a class="headerlink" href="#pynn-0-8-beta-2-release-notes" title="Link to this heading">¶</a></h1>
 <p>January 6th 2015</p>
 <p>Welcome to the second beta release of PyNN 0.8!</p>
 <p>For full information about what’s new in PyNN 0.8, see the <a class="reference internal" href="0.8-alpha-1.html"><span class="doc">PyNN 0.8 alpha 1 release notes</span></a> and <a class="reference internal" href="0.8-beta-1.html"><span class="doc">PyNN 0.8 beta 1 release notes</span></a>.</p>
 <section id="nest-2-4">
-<h2>NEST 2.4<a class="headerlink" href="#nest-2-4" title="Permalink to this heading">¶</a></h2>
+<h2>NEST 2.4<a class="headerlink" href="#nest-2-4" title="Link to this heading">¶</a></h2>
 <p>The main new feature in this release is support for <a class="reference external" href="http://www.nest-initiative.org/">NEST</a> 2.4. Previous versions of NEST are no longer supported.</p>
 </section>
 <section id="python-3">
-<h2>Python 3<a class="headerlink" href="#python-3" title="Permalink to this heading">¶</a></h2>
+<h2>Python 3<a class="headerlink" href="#python-3" title="Link to this heading">¶</a></h2>
 <p>With the rewrite of PyNEST in NEST 2.4, PyNN now has two backend simulators (<a class="reference external" href="http://www.neuron.yale.edu/neuron/">NEURON</a> being the other) that support
 Python 3. There was really no longer any excuse not to add Python 3 support to PyNN, which turned out to be very
 straightforward.</p>
 </section>
 <section id="standardization-of-random-distributions">
-<h2>Standardization of random distributions<a class="headerlink" href="#standardization-of-random-distributions" title="Permalink to this heading">¶</a></h2>
+<h2>Standardization of random distributions<a class="headerlink" href="#standardization-of-random-distributions" title="Link to this heading">¶</a></h2>
 <p>Since its earliest versions PyNN has supported swapping in and out different random number generators, but until
 now there has been no standardization of these RNGs; for example the <a class="reference external" href="https://www.gnu.org/software/gsl/manual/html_node/Random-Number-Generation.html">GSL</a> random number library uses “gaussian” where
 <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/routines.random.html">NumPy</a> uses “normal”. This limited the usefulness of this feature, especially for the <code class="xref py py-class docutils literal notranslate"><span class="pre">NativeRNG</span></code> class, which
@@ -79,7 +75,7 @@ standardized, based for the most part on the nomenclature used by <a class="refe
 </div>
 </section>
 <section id="api-changes">
-<h2>API changes<a class="headerlink" href="#api-changes" title="Permalink to this heading">¶</a></h2>
+<h2>API changes<a class="headerlink" href="#api-changes" title="Link to this heading">¶</a></h2>
 <blockquote>
 <div><ul class="simple">
 <li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">Population.record()</span></code> now has an optional <cite>sampling_interval</cite> argument, allowing recording at intervals larger
@@ -92,7 +88,7 @@ should calculate the minimal synaptic delay itself. This change can lead to larg
 </div></blockquote>
 </section>
 <section id="other-changes">
-<h2>Other changes<a class="headerlink" href="#other-changes" title="Permalink to this heading">¶</a></h2>
+<h2>Other changes<a class="headerlink" href="#other-changes" title="Link to this heading">¶</a></h2>
 <blockquote>
 <div><ul class="simple">
 <li><p>Reimplemented Izhikevich model for NEURON to allow current injection.</p></li>
@@ -154,7 +150,7 @@ relative refractory period) to <a class="reference external" href="http://http:/
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
@@ -162,7 +158,7 @@ relative refractory period) to <a class="reference external" href="http://http:/
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
@@ -183,14 +179,14 @@ relative refractory period) to <a class="reference external" href="http://http:/
         <li class="right" >
           <a href="0.8.0-rc-1.html" title="PyNN 0.8.0 release candidate 1 release notes"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../release_notes.html" >Release notes</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">PyNN 0.8 beta 2 release notes</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2023, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    &#169; Copyright 2006-2024, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
     </div>
   </body>
 </html>

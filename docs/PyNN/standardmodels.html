@@ -1,21 +1,17 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Standard models &#8212; PyNN 0.12.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/nature.css" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <title>Standard models &#8212; PyNN 0.12.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css?v=0f882399" />
+    <script src="_static/documentation_options.js?v=56343b9b"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Utility classes and functions" href="reference/utility.html" /> 
@@ -32,7 +28,7 @@
         <li class="right" >
           <a href="reference/utility.html" title="Utility classes and functions"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.3 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Standard models</a></li> 
       </ul>
     </div>  
@@ -43,7 +39,7 @@
           <div class="body" role="main">
             
   <section id="standard-models">
-<h1>Standard models<a class="headerlink" href="#standard-models" title="Permalink to this heading">¶</a></h1>
+<h1>Standard models<a class="headerlink" href="#standard-models" title="Link to this heading">¶</a></h1>
 <p>Standard models are neuron models that are available in at least two of the simulation engines supported by PyNN.
 PyNN performs automatic translation of parameter names, types and units.
 Only a handful of models are currently available, but the list will be expanded in future releases.
@@ -57,9 +53,9 @@ To obtain a list of all the standard models available in a given simulator, use 
 </pre></div>
 </div>
 <section id="neurons">
-<h2>Neurons<a class="headerlink" href="#neurons" title="Permalink to this heading">¶</a></h2>
+<h2>Neurons<a class="headerlink" href="#neurons" title="Link to this heading">¶</a></h2>
 <section id="if-curr-alpha">
-<h3>IF_curr_alpha<a class="headerlink" href="#if-curr-alpha" title="Permalink to this heading">¶</a></h3>
+<h3>IF_curr_alpha<a class="headerlink" href="#if-curr-alpha" title="Link to this heading">¶</a></h3>
 <p>Leaky integrate and fire model with fixed threshold and alpha-function-shaped post-synaptic current.</p>
 <p>Availability: NEST, NEURON, Brian</p>
 <table class="docutils align-default">
@@ -120,7 +116,7 @@ To obtain a list of all the standard models available in a given simulator, use 
 </table>
 </section>
 <section id="if-curr-exp">
-<h3>IF_curr_exp<a class="headerlink" href="#if-curr-exp" title="Permalink to this heading">¶</a></h3>
+<h3>IF_curr_exp<a class="headerlink" href="#if-curr-exp" title="Link to this heading">¶</a></h3>
 <p>Leaky integrate and fire model with fixed threshold and decaying-exponential post-synaptic current.
 (Separate synaptic currents for excitatory and inhibitory synapses.</p>
 <p>Availability: NEST, NEURON, Brian</p>
@@ -181,7 +177,7 @@ To obtain a list of all the standard models available in a given simulator, use 
 </tbody>
 </table>
 <section id="if-cond-alpha">
-<h4>IF_cond_alpha<a class="headerlink" href="#if-cond-alpha" title="Permalink to this heading">¶</a></h4>
+<h4>IF_cond_alpha<a class="headerlink" href="#if-cond-alpha" title="Link to this heading">¶</a></h4>
 <p>Leaky integrate and fire model with fixed threshold and alpha-function-shaped post-synaptic conductance.</p>
 <p>Availability: NEST, NEURON, Brian</p>
 <table class="docutils align-default">
@@ -253,7 +249,7 @@ To obtain a list of all the standard models available in a given simulator, use 
 </section>
 </section>
 <section id="if-cond-exp">
-<h3>IF_cond_exp<a class="headerlink" href="#if-cond-exp" title="Permalink to this heading">¶</a></h3>
+<h3>IF_cond_exp<a class="headerlink" href="#if-cond-exp" title="Link to this heading">¶</a></h3>
 <p>Leaky integrate and fire model with fixed threshold and decaying-exponential post-synaptic conductance.</p>
 <p>Availability: NEST, NEURON, Brian</p>
 <table class="docutils align-default">
@@ -324,7 +320,7 @@ To obtain a list of all the standard models available in a given simulator, use 
 </table>
 </section>
 <section id="hh-cond-exp">
-<h3>HH_cond_exp<a class="headerlink" href="#hh-cond-exp" title="Permalink to this heading">¶</a></h3>
+<h3>HH_cond_exp<a class="headerlink" href="#hh-cond-exp" title="Link to this heading">¶</a></h3>
 <p>Single-compartment Hodgkin-Huxley-type neuron with transient sodium and delayed-rectifier potassium currents using the ion channel models from Traub.</p>
 <p>Availability: NEST, NEURON, Brian</p>
 <table class="docutils align-default">
@@ -405,7 +401,7 @@ To obtain a list of all the standard models available in a given simulator, use 
 </table>
 </section>
 <section id="eif-cond-alpha-isfa-ista">
-<h3>EIF_cond_alpha_isfa_ista<a class="headerlink" href="#eif-cond-alpha-isfa-ista" title="Permalink to this heading">¶</a></h3>
+<h3>EIF_cond_alpha_isfa_ista<a class="headerlink" href="#eif-cond-alpha-isfa-ista" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>Adaptive exponential integrate and fire neuron according to</dt><dd><p>Brette R and Gerstner W (2005) Adaptive Exponential Integrate-and-Fire Model as
 an Effective Description of Neuronal Activity. J Neurophysiol 94:3637-3642</p>
@@ -506,7 +502,7 @@ an Effective Description of Neuronal Activity. J Neurophysiol 94:3637-3642</p>
 </section>
 </section>
 <section id="composed-models">
-<h2>Composed models<a class="headerlink" href="#composed-models" title="Permalink to this heading">¶</a></h2>
+<h2>Composed models<a class="headerlink" href="#composed-models" title="Link to this heading">¶</a></h2>
 <p>The models listed above all have two fixed post-synaptic mechanism types, “excitatory” and “inhibitory”.
 If you need more than two mechanisms, e.g. AMPA, NMDA and GABA_A, you can build such models by
 combining a “neuron-only” component with one or more “post-synaptic mechanism” components, for example:</p>
@@ -523,9 +519,9 @@ mix conductance-based and current-based synapses within a single cell type.
 PyNN will emit an error message if this is the case.</p>
 </section>
 <section id="spike-sources">
-<h2>Spike sources<a class="headerlink" href="#spike-sources" title="Permalink to this heading">¶</a></h2>
+<h2>Spike sources<a class="headerlink" href="#spike-sources" title="Link to this heading">¶</a></h2>
 <section id="spikesourcepoisson">
-<h3>SpikeSourcePoisson<a class="headerlink" href="#spikesourcepoisson" title="Permalink to this heading">¶</a></h3>
+<h3>SpikeSourcePoisson<a class="headerlink" href="#spikesourcepoisson" title="Link to this heading">¶</a></h3>
 <p>Spike source, generating spikes according to a Poisson process.</p>
 <p>Availability: NEST, NEURON, Brian</p>
 <table class="docutils align-default">
@@ -556,7 +552,7 @@ PyNN will emit an error message if this is the case.</p>
 </table>
 </section>
 <section id="spikesourcearray">
-<h3>SpikeSourceArray<a class="headerlink" href="#spikesourcearray" title="Permalink to this heading">¶</a></h3>
+<h3>SpikeSourceArray<a class="headerlink" href="#spikesourcearray" title="Link to this heading">¶</a></h3>
 <p>Spike source generating spikes at the times given in the <code class="docutils literal notranslate"><span class="pre">spike_times</span></code> array.</p>
 <p>Availability: NEST, NEURON, Brian</p>
 <table class="docutils align-default">
@@ -627,7 +623,7 @@ PyNN will emit an error message if this is the case.</p>
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
@@ -635,7 +631,7 @@ PyNN will emit an error message if this is the case.</p>
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
@@ -653,13 +649,13 @@ PyNN will emit an error message if this is the case.</p>
         <li class="right" >
           <a href="reference/utility.html" title="Utility classes and functions"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.3 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Standard models</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2023, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    &#169; Copyright 2006-2024, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
     </div>
   </body>
 </html>

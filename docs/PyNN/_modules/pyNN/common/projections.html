@@ -1,20 +1,16 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyNN.common.projections &#8212; PyNN 0.12.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/nature.css" />
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-    <script src="../../../_static/jquery.js"></script>
-    <script src="../../../_static/underscore.js"></script>
-    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/sphinx_highlight.js"></script>
-    <link rel="shortcut icon" href="../../../_static/pyNN_icon.ico"/>
+    <title>pyNN.common.projections &#8212; PyNN 0.12.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/nature.css?v=0f882399" />
+    <script src="../../../_static/documentation_options.js?v=56343b9b"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="../../../_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
   </head><body>
@@ -27,7 +23,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyNN.common.projections</a></li> 
       </ul>
@@ -44,7 +40,7 @@
 <span class="sd">Common implementation of the Projection class, to be sub-classed by</span>
 <span class="sd">backend-specific Projection classes.</span>
 
-<span class="sd">:copyright: Copyright 2006-2023 by the PyNN team, see AUTHORS.</span>
+<span class="sd">:copyright: Copyright 2006-2024 by the PyNN team, see AUTHORS.</span>
 <span class="sd">:license: CeCILL, see LICENSE for details.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -67,7 +63,7 @@
 
 
 <span class="k">class</span> <span class="nc">Projection</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A container for all the connections of a given type (same synapse type and</span>
 <span class="sd">    plasticity mechanisms) between two populations, together with methods to</span>
 <span class="sd">    set the parameters of those connections, including the parameters of</span>
@@ -107,7 +103,7 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">presynaptic_neurons</span><span class="p">,</span> <span class="n">postsynaptic_neurons</span><span class="p">,</span> <span class="n">connector</span><span class="p">,</span>
                  <span class="n">synapse_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">receptor_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">space</span><span class="o">=</span><span class="n">Space</span><span class="p">(),</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a new projection, connecting the pre- and post-synaptic neurons.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_simulator&quot;</span><span class="p">):</span>
@@ -164,7 +160,7 @@
         <span class="n">Projection</span><span class="o">.</span><span class="n">_nProj</span> <span class="o">+=</span> <span class="mi">1</span>
 
     <span class="k">def</span> <span class="nf">_guess_receptor_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        If the receptor_type is not specified, we follow the convention that the first element</span>
 <span class="sd">        in the list of available post-synaptic receptor types is the default for excitatory</span>
 <span class="sd">        synapses and the second element is the default for inhibitory synapses.</span>
@@ -188,11 +184,13 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">receptor_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">receptor_types</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the total number of local connections.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the total number of local connections.&quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Projection.size"><a class="viewcode-back" href="../../../reference/projections.html#pyNN.neuron.Projection.size">[docs]</a>    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gather</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Projection.size">
+<a class="viewcode-back" href="../../../reference/projections.html#pyNN.neuron.Projection.size">[docs]</a>
+    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gather</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the total number of connections.</span>
 <span class="sd">            - only local connections, if gather is False,</span>
 <span class="sd">            - all connections, if gather is True (default)</span>
@@ -203,6 +201,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
@@ -211,18 +210,23 @@
         <span class="k">return</span> <span class="s1">&#39;Projection(&quot;</span><span class="si">%s</span><span class="s1">&quot;)&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span>
 
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the /i/th connection within the Projection.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the /i/th connection within the Projection.&quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Projection.__iter__"><a class="viewcode-back" href="../../../reference/projections.html#pyNN.neuron.Projection.__iter__">[docs]</a>    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return an iterator over all connections on the local MPI node.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Projection.__iter__">
+<a class="viewcode-back" href="../../../reference/projections.html#pyNN.neuron.Projection.__iter__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return an iterator over all connections on the local MPI node.&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)):</span>
             <span class="k">yield</span> <span class="bp">self</span><span class="p">[</span><span class="n">i</span><span class="p">]</span></div>
 
+
     <span class="c1"># --- Methods for setting connection parameters ---------------------------</span>
 
-<div class="viewcode-block" id="Projection.set"><a class="viewcode-back" href="../../../reference/projections.html#pyNN.neuron.Projection.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">attributes</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Projection.set">
+<a class="viewcode-back" href="../../../reference/projections.html#pyNN.neuron.Projection.set">[docs]</a>
+    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">attributes</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set connection attributes for all connections on the local MPI node.</span>
 
 <span class="sd">        Attribute names may be &#39;weight&#39;, &#39;delay&#39;, or the name of any parameter</span>
@@ -258,8 +262,11 @@
             <span class="n">parameter_space</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">synapse_type</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">parameter_space</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_attributes</span><span class="p">(</span><span class="n">parameter_space</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Projection.initialize"><a class="viewcode-back" href="../../../reference/projections.html#pyNN.neuron.Projection.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">initial_values</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Projection.initialize">
+<a class="viewcode-back" href="../../../reference/projections.html#pyNN.neuron.Projection.initialize">[docs]</a>
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">initial_values</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set initial values of state variables of synaptic plasticity models.</span>
 
 <span class="sd">        Values passed to initialize() may be:</span>
@@ -284,8 +291,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_set_initial_value_array</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">initial_value</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">initial_values</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">initial_value</span></div>
 
+
     <span class="k">def</span> <span class="nf">_value_list_to_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributes</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert a list of connection parameters/attributes to a 2D array.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a list of connection parameters/attributes to a 2D array.&quot;&quot;&quot;</span>
         <span class="n">connection_mask</span> <span class="o">=</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;weight&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">,</span> <span class="n">gather</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">and</span> <span class="n">value</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
@@ -297,7 +305,7 @@
     <span class="k">def</span> <span class="nf">_handle_distance_expressions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_space</span><span class="p">):</span>
         <span class="c1"># also index-based expressions</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="nb">map</span> <span class="ow">in</span> <span class="n">parameter_space</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="nb">map</span><span class="o">.</span><span class="n">base_value</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="nb">map</span><span class="o">.</span><span class="n">base_value</span><span class="p">):</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">map</span><span class="o">.</span><span class="n">base_value</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">IndexBasedExpression</span><span class="p">):</span>
                     <span class="nb">map</span><span class="o">.</span><span class="n">base_value</span><span class="o">.</span><span class="n">projection</span> <span class="o">=</span> <span class="bp">self</span>
                     <span class="n">parameter_space</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">map</span>
@@ -336,9 +344,11 @@
 
     <span class="c1"># --- Methods for writing/reading information to/from file. ---------------</span>
 
-<div class="viewcode-block" id="Projection.get"><a class="viewcode-back" href="../../../reference/projections.html#pyNN.neuron.Projection.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute_names</span><span class="p">,</span> <span class="nb">format</span><span class="p">,</span> <span class="n">gather</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_address</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<div class="viewcode-block" id="Projection.get">
+<a class="viewcode-back" href="../../../reference/projections.html#pyNN.neuron.Projection.get">[docs]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute_names</span><span class="p">,</span> <span class="nb">format</span><span class="p">,</span> <span class="n">gather</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_address</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">multiple_synapses</span><span class="o">=</span><span class="s1">&#39;sum&#39;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the values of a given attribute (weight or delay) for all</span>
 <span class="sd">        connections in this Projection.</span>
 
@@ -441,6 +451,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;format must be &#39;list&#39; or &#39;array&#39;&quot;</span><span class="p">)</span></div>
 
+
     <span class="k">def</span> <span class="nf">_get_attributes_as_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">as_tuple</span><span class="p">(</span><span class="o">*</span><span class="n">names</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">connections</span><span class="p">]</span>
 
@@ -473,8 +484,10 @@
     <span class="k">def</span> <span class="nf">getSynapseDynamics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_name</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="n">gather</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">parameter_name</span><span class="p">,</span> <span class="nb">format</span><span class="p">,</span> <span class="n">gather</span><span class="p">,</span> <span class="n">with_address</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Projection.save"><a class="viewcode-back" href="../../../reference/projections.html#pyNN.neuron.Projection.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute_names</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="n">gather</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_address</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Projection.save">
+<a class="viewcode-back" href="../../../reference/projections.html#pyNN.neuron.Projection.save">[docs]</a>
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute_names</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="n">gather</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_address</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Print synaptic attributes (weights, delays, etc.) to file. In the array</span>
 <span class="sd">        format, zeros are printed for non-existent connections.</span>
 
@@ -497,6 +510,7 @@
             <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">all_values</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span>
             <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
+
     <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;save(&#39;all&#39;, file, format=&#39;list&#39;, gather=gather)&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">saveConnections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">gather</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">compatible_output</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="n">gather</span><span class="o">=</span><span class="n">gather</span><span class="p">)</span>
@@ -507,7 +521,7 @@
 
     <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;save(&#39;delay&#39;, file, format, gather)&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">printDelays</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="n">gather</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Print synaptic weights to file. In the array format, zeros are printed</span>
 <span class="sd">        for non-existent connections.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -515,7 +529,7 @@
 
     <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;np.histogram()&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">weightHistogram</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a histogram of synaptic weights.</span>
 <span class="sd">        If min and max are not given, the minimum and maximum weights are</span>
 <span class="sd">        calculated automatically.</span>
@@ -528,11 +542,16 @@
         <span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">,</span> <span class="n">nbins</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">bins</span><span class="p">)</span>  <span class="c1"># returns n, bins</span>
 
-<div class="viewcode-block" id="Projection.annotate"><a class="viewcode-back" href="../../../reference/projections.html#pyNN.neuron.Projection.annotate">[docs]</a>    <span class="k">def</span> <span class="nf">annotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">annotations</span><span class="p">):</span>
+<div class="viewcode-block" id="Projection.annotate">
+<a class="viewcode-back" href="../../../reference/projections.html#pyNN.neuron.Projection.annotate">[docs]</a>
+    <span class="k">def</span> <span class="nf">annotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">annotations</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">annotations</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Projection.describe"><a class="viewcode-back" href="../../../reference/projections.html#pyNN.neuron.Projection.describe">[docs]</a>    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="s1">&#39;projection_default.txt&#39;</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Projection.describe">
+<a class="viewcode-back" href="../../../reference/projections.html#pyNN.neuron.Projection.describe">[docs]</a>
+    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="s1">&#39;projection_default.txt&#39;</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a human-readable description of the projection.</span>
 
 <span class="sd">        The output may be customized by specifying a different template</span>
@@ -557,8 +576,9 @@
         <span class="k">return</span> <span class="n">descriptions</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
 
 
+
 <span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Store an individual plastic connection and information about it. Provide an</span>
 <span class="sd">    interface that allows access to the connection&#39;s weight, delay and other</span>
 <span class="sd">    attributes.</span>
@@ -575,7 +595,7 @@
             <p class="logo"><a href="../../../index.html">
               <img class="logo" src="../../../_static/pyNN_logo.png" alt="Logo"/>
             </a></p>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
@@ -583,7 +603,7 @@
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
@@ -598,14 +618,14 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyNN.common.projections</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2023, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    &#169; Copyright 2006-2024, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
     </div>
   </body>
 </html>

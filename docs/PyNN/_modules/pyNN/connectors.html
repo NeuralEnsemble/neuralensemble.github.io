@@ -1,20 +1,16 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyNN.connectors &#8212; PyNN 0.12.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
-    <link rel="shortcut icon" href="../../_static/pyNN_icon.ico"/>
+    <title>pyNN.connectors &#8212; PyNN 0.12.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css?v=0f882399" />
+    <script src="../../_static/documentation_options.js?v=56343b9b"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="../../_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
   </head><body>
@@ -27,7 +23,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyNN.connectors</a></li> 
       </ul>
@@ -45,7 +41,7 @@
 <span class="sd">Simulator modules may use these directly, or may implement their own versions</span>
 <span class="sd">for improved performance.</span>
 
-<span class="sd">:copyright: Copyright 2006-2023 by the PyNN team, see AUTHORS.</span>
+<span class="sd">:copyright: Copyright 2006-2024 by the PyNN team, see AUTHORS.</span>
 <span class="sd">:license: CeCILL, see LICENSE for details.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -84,8 +80,10 @@
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;rng must be either None, or a subclass of pyNN.random.AbstractRNG&quot;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="Connector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.Connector">[docs]</a><span class="k">class</span> <span class="nc">Connector</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Connector">
+<a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.Connector">[docs]</a>
+<span class="k">class</span> <span class="nc">Connector</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Base class for connectors.</span>
 
 <span class="sd">    All connector sub-classes have the following optional keyword arguments:</span>
@@ -100,23 +98,29 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location_selector</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        docstring needed</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">safe</span> <span class="o">=</span> <span class="n">safe</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="n">callback</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">location_selector</span> <span class="o">=</span> <span class="n">location_selector</span>
         <span class="k">if</span> <span class="n">callback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">assert</span> <span class="n">callable</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="nb">callable</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Connector.connect"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.Connector.connect">[docs]</a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
+<div class="viewcode-block" id="Connector.connect">
+<a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.Connector.connect">[docs]</a>
+    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Connector.get_parameters"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.Connector.get_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">get_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Connector.get_parameters">
+<a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.Connector.get_parameters">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">P</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameter_names</span><span class="p">:</span>
             <span class="n">P</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">P</span></div>
+
 
     <span class="k">def</span> <span class="nf">_generate_distance_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
         <span class="n">position_generators</span> <span class="o">=</span> <span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">position_generator</span><span class="p">,</span>
@@ -125,7 +129,7 @@
                          <span class="n">shape</span><span class="o">=</span><span class="n">projection</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_parameters_from_synapse_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">,</span> <span class="n">distance_map</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Obtain the parameters to be used for the connections from the projection&#39;s `synapse_type`</span>
 <span class="sd">        attribute. Each parameter value is a `LazyArray`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -140,7 +144,7 @@
         <span class="c1">#       then set it after the connections have already been created.</span>
         <span class="n">parameter_space</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="nb">map</span> <span class="ow">in</span> <span class="n">parameter_space</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="nb">map</span><span class="o">.</span><span class="n">base_value</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="nb">map</span><span class="o">.</span><span class="n">base_value</span><span class="p">):</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">map</span><span class="o">.</span><span class="n">base_value</span><span class="p">,</span> <span class="n">IndexBasedExpression</span><span class="p">):</span>
                     <span class="c1"># Assumes map is a function of index and hence requires the projection to</span>
                     <span class="c1"># determine its value. It and its index function are copied so as to be able</span>
@@ -155,8 +159,10 @@
                     <span class="n">parameter_space</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">distance_map</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">parameter_space</span>
 
-<div class="viewcode-block" id="Connector.describe"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.Connector.describe">[docs]</a>    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="s1">&#39;connector_default.txt&#39;</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Connector.describe">
+<a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.Connector.describe">[docs]</a>
+    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="s1">&#39;connector_default.txt&#39;</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a human-readable description of the connection method.</span>
 
 <span class="sd">        The output may be customized by specifying a different template</span>
@@ -167,18 +173,20 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
                    <span class="s1">&#39;parameters&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_parameters</span><span class="p">()}</span>
-        <span class="k">return</span> <span class="n">descriptions</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">descriptions</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+</div>
+
 
 
 <span class="k">class</span> <span class="nc">MapConnector</span><span class="p">(</span><span class="n">Connector</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Abstract base class for Connectors based on connection maps, where a map is a 2D lazy array</span>
 <span class="sd">    containing either the (boolean) connectivity matrix (aka adjacency matrix, connection set</span>
 <span class="sd">    mask, etc.) or the values of a synaptic connection parameter.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">_standard_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">,</span> <span class="n">connection_map_generator</span><span class="p">,</span> <span class="n">distance_map</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">        `connection_map_generator` should be a function or other callable, with one optional</span>
 <span class="sd">        argument `mask`, which returns an iterable.</span>
@@ -283,7 +291,7 @@
                         <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="n">count</span> <span class="o">/</span> <span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">local_size</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_connect_with_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">,</span> <span class="n">connection_map</span><span class="p">,</span> <span class="n">distance_map</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create connections according to a connection map.</span>
 
 <span class="sd">        Arguments:</span>
@@ -326,8 +334,10 @@
         <span class="k">return</span> <span class="n">connection_map</span>
 
 
-<div class="viewcode-block" id="AllToAllConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.AllToAllConnector">[docs]</a><span class="k">class</span> <span class="nc">AllToAllConnector</span><span class="p">(</span><span class="n">MapConnector</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="AllToAllConnector">
+<a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.AllToAllConnector">[docs]</a>
+<span class="k">class</span> <span class="nc">AllToAllConnector</span><span class="p">(</span><span class="n">MapConnector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Connects all cells in the presynaptic population to all cells in the</span>
 <span class="sd">    postsynaptic population.</span>
 
@@ -344,7 +354,7 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">allow_self_connections</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                  <span class="n">location_selector</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a new connector.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">Connector</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location_selector</span><span class="p">,</span> <span class="n">safe</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
@@ -361,8 +371,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_connect_with_map</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">connection_map</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="FixedProbabilityConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.FixedProbabilityConnector">[docs]</a><span class="k">class</span> <span class="nc">FixedProbabilityConnector</span><span class="p">(</span><span class="n">MapConnector</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FixedProbabilityConnector">
+<a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.FixedProbabilityConnector">[docs]</a>
+<span class="k">class</span> <span class="nc">FixedProbabilityConnector</span><span class="p">(</span><span class="n">MapConnector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    For each pair of pre-post cells, the connection probability is constant.</span>
 
 <span class="sd">    Takes any of the standard :class:`Connector` optional arguments and, in</span>
@@ -383,7 +396,7 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p_connect</span><span class="p">,</span> <span class="n">allow_self_connections</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                  <span class="n">location_selector</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">rng</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a new connector.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">Connector</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location_selector</span><span class="p">,</span> <span class="n">safe</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
@@ -406,8 +419,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_connect_with_map</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">connection_map</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="DistanceDependentProbabilityConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.DistanceDependentProbabilityConnector">[docs]</a><span class="k">class</span> <span class="nc">DistanceDependentProbabilityConnector</span><span class="p">(</span><span class="n">MapConnector</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="DistanceDependentProbabilityConnector">
+<a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.DistanceDependentProbabilityConnector">[docs]</a>
+<span class="k">class</span> <span class="nc">DistanceDependentProbabilityConnector</span><span class="p">(</span><span class="n">MapConnector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    For each pair of pre-post cells, the connection probability depends on distance.</span>
 
 <span class="sd">    Takes any of the standard :class:`Connector` optional arguments and, in</span>
@@ -428,11 +444,11 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d_expression</span><span class="p">,</span> <span class="n">allow_self_connections</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                  <span class="n">location_selector</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">rng</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a new connector.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">Connector</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location_selector</span><span class="p">,</span> <span class="n">safe</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d_expression</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="n">callable</span><span class="p">(</span><span class="n">d_expression</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d_expression</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">callable</span><span class="p">(</span><span class="n">d_expression</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">allow_self_connections</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">or</span> <span class="n">allow_self_connections</span> <span class="o">==</span> <span class="s1">&#39;NoMutual&#39;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d_expression</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -463,8 +479,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_connect_with_map</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">connection_map</span><span class="p">,</span> <span class="n">distance_map</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="IndexBasedProbabilityConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.IndexBasedProbabilityConnector">[docs]</a><span class="k">class</span> <span class="nc">IndexBasedProbabilityConnector</span><span class="p">(</span><span class="n">MapConnector</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="IndexBasedProbabilityConnector">
+<a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.IndexBasedProbabilityConnector">[docs]</a>
+<span class="k">class</span> <span class="nc">IndexBasedProbabilityConnector</span><span class="p">(</span><span class="n">MapConnector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    For each pair of pre-post cells, the connection probability depends on an arbitrary functions</span>
 <span class="sd">    that takes the indices of the pre and post populations.</span>
 
@@ -486,11 +505,11 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index_expression</span><span class="p">,</span> <span class="n">allow_self_connections</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                  <span class="n">location_selector</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">rng</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a new connector.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">Connector</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location_selector</span><span class="p">,</span> <span class="n">safe</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="n">callable</span><span class="p">(</span><span class="n">index_expression</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">callable</span><span class="p">(</span><span class="n">index_expression</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index_expression</span><span class="p">,</span> <span class="n">IndexBasedExpression</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">allow_self_connections</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">or</span> <span class="n">allow_self_connections</span> <span class="o">==</span> <span class="s1">&#39;NoMutual&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">index_expression</span> <span class="o">=</span> <span class="n">index_expression</span>
@@ -515,8 +534,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_connect_with_map</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">connection_map</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="DisplacementDependentProbabilityConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.DisplacementDependentProbabilityConnector">[docs]</a><span class="k">class</span> <span class="nc">DisplacementDependentProbabilityConnector</span><span class="p">(</span><span class="n">IndexBasedProbabilityConnector</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="DisplacementDependentProbabilityConnector">
+<a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.DisplacementDependentProbabilityConnector">[docs]</a>
+<span class="k">class</span> <span class="nc">DisplacementDependentProbabilityConnector</span><span class="p">(</span><span class="n">IndexBasedProbabilityConnector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    For each pair of pre-post cells, the connection probability depends on the</span>
 <span class="sd">    displacement of the two neurons, i.e. on the triplet (dx, dy, dz) where</span>
 <span class="sd">    dx is the distance between the x-coordinates of the two neurons, and so on.</span>
@@ -537,13 +559,13 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">class</span> <span class="nc">DisplacementExpression</span><span class="p">(</span><span class="n">IndexBasedExpression</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A displacement based expression function used to determine the connection probability</span>
 <span class="sd">        and the value of variable connection parameters of a projection</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">disp_function</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            `disp_function`: a function that takes a 3xN numpy displacement matrix and maps each</span>
 <span class="sd">                             row (displacement) to a probability between 0 and 1</span>
 <span class="sd">            &quot;&quot;&quot;</span>
@@ -561,8 +583,11 @@
             <span class="n">allow_self_connections</span><span class="o">=</span><span class="n">allow_self_connections</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="FromListConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.FromListConnector">[docs]</a><span class="k">class</span> <span class="nc">FromListConnector</span><span class="p">(</span><span class="n">Connector</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FromListConnector">
+<a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.FromListConnector">[docs]</a>
+<span class="k">class</span> <span class="nc">FromListConnector</span><span class="p">(</span><span class="n">Connector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Make connections according to a list.</span>
 
 <span class="sd">    Arguments:</span>
@@ -587,7 +612,7 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn_list</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">location_selector</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a new connector.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">Connector</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location_selector</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="n">safe</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">)</span>
@@ -604,13 +629,13 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">column_names</span> <span class="o">=</span> <span class="n">column_names</span>
                 <span class="k">if</span> <span class="n">n_columns</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column_names</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;connection list has </span><span class="si">{</span><span class="n">n_columns</span> <span class="o">-</span> <span class="mi">2</span><span class="si">}</span><span class="s2"> parameter columns, &quot;</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;connection list has </span><span class="si">{</span><span class="n">n_columns</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="si">}</span><span class="s2"> parameter columns, &quot;</span>
                                      <span class="sa">f</span><span class="s2">&quot;but </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column_names</span><span class="p">)</span><span class="si">}</span><span class="s2"> column names provided.&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">column_names</span> <span class="o">=</span> <span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Connect-up a Projection.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Connect-up a Projection.&quot;&quot;&quot;</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;conn_list (original) = </span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn_list</span><span class="p">)</span>
         <span class="n">synapse_parameter_names</span> <span class="o">=</span> <span class="n">projection</span><span class="o">.</span><span class="n">synapse_type</span><span class="o">.</span><span class="n">get_parameter_names</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">column_names</span><span class="p">:</span>
@@ -656,8 +681,11 @@
                                            <span class="o">**</span><span class="n">connection_parameters</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="FromFileConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.FromFileConnector">[docs]</a><span class="k">class</span> <span class="nc">FromFileConnector</span><span class="p">(</span><span class="n">FromListConnector</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FromFileConnector">
+<a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.FromFileConnector">[docs]</a>
+<span class="k">class</span> <span class="nc">FromFileConnector</span><span class="p">(</span><span class="n">FromListConnector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Make connections according to a list read from a file.</span>
 
 <span class="sd">    Arguments:</span>
@@ -685,7 +713,7 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">distributed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">location_selector</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a new connector.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">Connector</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location_selector</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="n">safe</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">)</span>
@@ -695,7 +723,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">distributed</span> <span class="o">=</span> <span class="n">distributed</span>
 
     <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Connect-up a Projection.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Connect-up a Projection.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">distributed</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
                                         <span class="n">projection</span><span class="o">.</span><span class="n">_simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">mpi_rank</span><span class="p">))</span>
@@ -707,6 +735,7 @@
         <span class="n">FromListConnector</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">)</span></div>
 
 
+
 <span class="k">class</span> <span class="nc">FixedNumberConnector</span><span class="p">(</span><span class="n">MapConnector</span><span class="p">):</span>
     <span class="c1"># base class - should not be instantiated</span>
     <span class="n">parameter_names</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;allow_self_connections&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">)</span>
@@ -714,7 +743,7 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">allow_self_connections</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_replacement</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">location_selector</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">rng</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a new connector.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">Connector</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location_selector</span><span class="p">,</span> <span class="n">safe</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
@@ -745,8 +774,10 @@
         <span class="k">return</span> <span class="n">res</span>
 
 
-<div class="viewcode-block" id="FixedNumberPostConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.FixedNumberPostConnector">[docs]</a><span class="k">class</span> <span class="nc">FixedNumberPostConnector</span><span class="p">(</span><span class="n">FixedNumberConnector</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="FixedNumberPostConnector">
+<a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.FixedNumberPostConnector">[docs]</a>
+<span class="k">class</span> <span class="nc">FixedNumberPostConnector</span><span class="p">(</span><span class="n">FixedNumberConnector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Each pre-synaptic neuron is connected to exactly `n` post-synaptic neurons</span>
 <span class="sd">    chosen at random.</span>
 
@@ -825,8 +856,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_standard_connect</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">build_source_masks</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="FixedNumberPreConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.FixedNumberPreConnector">[docs]</a><span class="k">class</span> <span class="nc">FixedNumberPreConnector</span><span class="p">(</span><span class="n">FixedNumberConnector</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FixedNumberPreConnector">
+<a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.FixedNumberPreConnector">[docs]</a>
+<span class="k">class</span> <span class="nc">FixedNumberPreConnector</span><span class="p">(</span><span class="n">FixedNumberConnector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Each post-synaptic neuron is connected to exactly `n` pre-synaptic neurons</span>
 <span class="sd">    chosen at random.</span>
 
@@ -948,8 +982,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_standard_connect</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">build_source_masks</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="OneToOneConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.OneToOneConnector">[docs]</a><span class="k">class</span> <span class="nc">OneToOneConnector</span><span class="p">(</span><span class="n">MapConnector</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="OneToOneConnector">
+<a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.OneToOneConnector">[docs]</a>
+<span class="k">class</span> <span class="nc">OneToOneConnector</span><span class="p">(</span><span class="n">MapConnector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Where the pre- and postsynaptic populations have the same size, connect</span>
 <span class="sd">    cell *i* in the presynaptic population to cell *i* in the postsynaptic</span>
 <span class="sd">    population for all *i*.</span>
@@ -959,13 +996,16 @@
     <span class="n">parameter_names</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Connect-up a Projection.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Connect-up a Projection.&quot;&quot;&quot;</span>
         <span class="n">connection_map</span> <span class="o">=</span> <span class="n">LazyArray</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">projection</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_connect_with_map</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">connection_map</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="SmallWorldConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.SmallWorldConnector">[docs]</a><span class="k">class</span> <span class="nc">SmallWorldConnector</span><span class="p">(</span><span class="n">Connector</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SmallWorldConnector">
+<a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.SmallWorldConnector">[docs]</a>
+<span class="k">class</span> <span class="nc">SmallWorldConnector</span><span class="p">(</span><span class="n">Connector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Connect cells so as to create a small-world network.</span>
 
 <span class="sd">    Takes any of the standard :class:`Connector` optional arguments and, in</span>
@@ -990,7 +1030,7 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">rewiring</span><span class="p">,</span> <span class="n">allow_self_connections</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                  <span class="n">n_connections</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">location_selector</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">rng</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a new connector.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">Connector</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location_selector</span><span class="p">,</span> <span class="n">safe</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
@@ -1003,12 +1043,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">rng</span> <span class="o">=</span> <span class="n">_get_rng</span><span class="p">(</span><span class="n">rng</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Connect-up a Projection.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Connect-up a Projection.&quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 
-<div class="viewcode-block" id="CSAConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.CSAConnector">[docs]</a><span class="k">class</span> <span class="nc">CSAConnector</span><span class="p">(</span><span class="n">MapConnector</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CSAConnector">
+<a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.CSAConnector">[docs]</a>
+<span class="k">class</span> <span class="nc">CSAConnector</span><span class="p">(</span><span class="n">MapConnector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Use the Connection Set Algebra (Djurfeldt, 2012) to connect cells.</span>
 
 <span class="sd">    Takes any of the standard :class:`Connector` optional arguments and, in</span>
@@ -1021,7 +1064,7 @@
 
     <span class="k">if</span> <span class="n">haveCSA</span><span class="p">:</span>
         <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cset</span><span class="p">,</span> <span class="n">location_selector</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            &quot;&quot;&quot;</span>
             <span class="n">Connector</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location_selector</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="n">safe</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cset</span> <span class="o">=</span> <span class="n">cset</span>
@@ -1032,7 +1075,7 @@
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;CSAConnector not available---couldn&#39;t import csa module&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Connect-up a Projection.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Connect-up a Projection.&quot;&quot;&quot;</span>
         <span class="c1"># Cut out finite part</span>
         <span class="n">c</span> <span class="o">=</span> <span class="n">csa</span><span class="o">.</span><span class="n">cross</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="n">projection</span><span class="o">.</span><span class="n">pre</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">projection</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> \
             <span class="bp">self</span><span class="o">.</span><span class="n">cset</span>  <span class="c1"># can&#39;t we cut out just the columns we want?</span>
@@ -1053,14 +1096,17 @@
             <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 
-<div class="viewcode-block" id="CloneConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.CloneConnector">[docs]</a><span class="k">class</span> <span class="nc">CloneConnector</span><span class="p">(</span><span class="n">MapConnector</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CloneConnector">
+<a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.CloneConnector">[docs]</a>
+<span class="k">class</span> <span class="nc">CloneConnector</span><span class="p">(</span><span class="n">MapConnector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Connects cells with the same connectivity pattern as a previous projection.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">parameter_names</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;reference_projection&#39;</span><span class="p">,)</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reference_projection</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a new CloneConnector.</span>
 
 <span class="sd">        `reference_projection` -- the projection to clone the connectivity pattern from</span>
@@ -1083,8 +1129,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_connect_with_map</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">connection_map</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="ArrayConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.ArrayConnector">[docs]</a><span class="k">class</span> <span class="nc">ArrayConnector</span><span class="p">(</span><span class="n">MapConnector</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ArrayConnector">
+<a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.ArrayConnector">[docs]</a>
+<span class="k">class</span> <span class="nc">ArrayConnector</span><span class="p">(</span><span class="n">MapConnector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Provide an explicit boolean connection matrix, with shape (m, n) where m is</span>
 <span class="sd">    the size of the presynaptic population and n that of the postsynaptic</span>
 <span class="sd">    population.</span>
@@ -1092,7 +1141,7 @@
     <span class="n">parameter_names</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;array&#39;</span><span class="p">,)</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="n">location_selector</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a new connector.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">Connector</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location_selector</span><span class="p">,</span> <span class="n">safe</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
@@ -1103,13 +1152,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_connect_with_map</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">connection_map</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="FixedTotalNumberConnector"><a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.FixedTotalNumberConnector">[docs]</a><span class="k">class</span> <span class="nc">FixedTotalNumberConnector</span><span class="p">(</span><span class="n">FixedNumberConnector</span><span class="p">):</span>
+
+<div class="viewcode-block" id="FixedTotalNumberConnector">
+<a class="viewcode-back" href="../../reference/connectors.html#pyNN.connectors.FixedTotalNumberConnector">[docs]</a>
+<span class="k">class</span> <span class="nc">FixedTotalNumberConnector</span><span class="p">(</span><span class="n">FixedNumberConnector</span><span class="p">):</span>
     <span class="n">parameter_names</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;allow_self_connections&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">allow_self_connections</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_replacement</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                  <span class="n">location_selector</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">rng</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a new connector.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">Connector</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location_selector</span><span class="p">,</span> <span class="n">safe</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
@@ -1169,6 +1221,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">connections</span><span class="p">)[</span><span class="n">mask</span><span class="p">]]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_standard_connect</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">build_source_masks</span><span class="p">)</span></div>
+
 </pre></div>
 
             <div class="clearer"></div>
@@ -1180,7 +1233,7 @@
             <p class="logo"><a href="../../index.html">
               <img class="logo" src="../../_static/pyNN_logo.png" alt="Logo"/>
             </a></p>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
@@ -1188,7 +1241,7 @@
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
@@ -1203,14 +1256,14 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyNN.connectors</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2023, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    &#169; Copyright 2006-2024, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
     </div>
   </body>
 </html>

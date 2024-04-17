@@ -1,21 +1,17 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>PyNN 0.8 beta 1 release notes &#8212; PyNN 0.12.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <title>PyNN 0.8 beta 1 release notes &#8212; PyNN 0.12.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css?v=0f882399" />
+    <script src="../_static/documentation_options.js?v=56343b9b"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="../_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="PyNN 0.8 alpha 2 release notes" href="0.8-alpha-2.html" />
@@ -36,7 +32,7 @@
         <li class="right" >
           <a href="0.8-beta-2.html" title="PyNN 0.8 beta 2 release notes"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../release_notes.html" accesskey="U">Release notes</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">PyNN 0.8 beta 1 release notes</a></li> 
       </ul>
@@ -48,19 +44,19 @@
           <div class="body" role="main">
             
   <section id="pynn-0-8-beta-1-release-notes">
-<h1>PyNN 0.8 beta 1 release notes<a class="headerlink" href="#pynn-0-8-beta-1-release-notes" title="Permalink to this heading">¶</a></h1>
+<h1>PyNN 0.8 beta 1 release notes<a class="headerlink" href="#pynn-0-8-beta-1-release-notes" title="Link to this heading">¶</a></h1>
 <p>November 15th 2013</p>
 <p>Welcome to the first beta release of PyNN 0.8!</p>
 <p>For full information about what’s new in PyNN 0.8, see the <a class="reference internal" href="0.8-alpha-1.html"><span class="doc">PyNN 0.8 alpha 1 release notes</span></a>.</p>
 <section id="brian-backend">
-<h2>Brian backend<a class="headerlink" href="#brian-backend" title="Permalink to this heading">¶</a></h2>
+<h2>Brian backend<a class="headerlink" href="#brian-backend" title="Link to this heading">¶</a></h2>
 <p>The main new feature in this beta release is the reappearance of the <a class="reference external" href="http://http://briansimulator.org">Brian</a>
 backend, updated to work with the 0.8 API. You will need version 1.4 of Brian.
 There are still some rough edges, but we encourage anyone who has used Brian
 with PyNN 0.7 to try updating your scripts now, and give it a try.</p>
 </section>
 <section id="new-and-improved-connectors">
-<h2>New and improved connectors<a class="headerlink" href="#new-and-improved-connectors" title="Permalink to this heading">¶</a></h2>
+<h2>New and improved connectors<a class="headerlink" href="#new-and-improved-connectors" title="Link to this heading">¶</a></h2>
 <p>The library of <code class="xref py py-class docutils literal notranslate"><span class="pre">Connector</span></code> classes has been extended. The
 <code class="xref py py-class docutils literal notranslate"><span class="pre">DistanceDependentProbabilityConnector</span></code> (DDPC) has been generalized, resulting
 in the <code class="xref py py-class docutils literal notranslate"><span class="pre">IndexBasedProbabilityConnector</span></code>, with which the connection
@@ -77,7 +73,7 @@ specifying any synaptic parameter (e.g. parameters of the synaptic plasticity
 rule), not just weight and delay.</p>
 </section>
 <section id="api-changes">
-<h2>API changes<a class="headerlink" href="#api-changes" title="Permalink to this heading">¶</a></h2>
+<h2>API changes<a class="headerlink" href="#api-changes" title="Link to this heading">¶</a></h2>
 <p>The <code class="xref py py-func docutils literal notranslate"><span class="pre">set()</span></code> function now matches the <code class="xref py py-meth docutils literal notranslate"><span class="pre">Population.set()</span></code> method,
 i.e. it takes one or more parameter name/value pairs as keyword arguments.</p>
 <p>Two new functions for advancing a simulation have been added: <code class="xref py py-func docutils literal notranslate"><span class="pre">run_for()</span></code>
@@ -104,7 +100,7 @@ timing-dependence components, since effectively they describe the shape of the
 STDP curve independently of how the weight change depends on the current weight.</p>
 </section>
 <section id="simple-plotting">
-<h2>Simple plotting<a class="headerlink" href="#simple-plotting" title="Permalink to this heading">¶</a></h2>
+<h2>Simple plotting<a class="headerlink" href="#simple-plotting" title="Link to this heading">¶</a></h2>
 <p>We have added a small library to make it simple to produce simple plots of
 data recorded from a PyNN simulation. This is not intended for
 publication-quality or highly-customized plots, but for basic visualization.</p>
@@ -130,16 +126,17 @@ publication-quality or highly-customized plots, but for basic visualization.</p>
 <span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;simulation_results.png&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../_images/release_0.8b1_example.png"><img alt="Image generated using the Figure and Panel classes from pyNN.utility.plotting" class="align-center" src="../_images/release_0.8b1_example.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../_images/release_0.8b1_example.png"><img alt="Image generated using the Figure and Panel classes from pyNN.utility.plotting" class="align-center" src="../_images/release_0.8b1_example.png" style="width: 600px;" />
+</a>
 </section>
 <section id="gap-junctions">
-<h2>Gap junctions<a class="headerlink" href="#gap-junctions" title="Permalink to this heading">¶</a></h2>
+<h2>Gap junctions<a class="headerlink" href="#gap-junctions" title="Link to this heading">¶</a></h2>
 <p>The NEURON backend now supports gap junctions. This is not yet an official
 part of the PyNN API, since any official feature must be supported by at least
 two backends, but could be very useful to modellers using NEURON.</p>
 </section>
 <section id="other-changes">
-<h2>Other changes<a class="headerlink" href="#other-changes" title="Permalink to this heading">¶</a></h2>
+<h2>Other changes<a class="headerlink" href="#other-changes" title="Link to this heading">¶</a></h2>
 <p>The default precision for the <a class="reference external" href="http://www.nest-initiative.org/">NEST</a> backend has been changed to “off_grid”.
 This reflects the PyNN philosophy that defaults should prioritize accuracy and
 compatibility over performance. (We think performance is very important, it’s
@@ -151,7 +148,7 @@ using the NEURON backend.</p>
 <p>A whole bunch of bugs have been fixed: see the <a class="reference external" href="https://github.com/NeuralEnsemble/PyNN/issues?q=is%3Aclosed+closed%3A2013-05-24..2013-11-15+milestone%3A0.8.0">issue tracker</a>.</p>
 </section>
 <section id="for-developers">
-<h2>For developers<a class="headerlink" href="#for-developers" title="Permalink to this heading">¶</a></h2>
+<h2>For developers<a class="headerlink" href="#for-developers" title="Link to this heading">¶</a></h2>
 <p>We are now taking advantage of the integration of GitHub with <a class="reference external" href="https://travis-ci.org/NeuralEnsemble/PyNN">TravisCI</a>, to
 automatically run the suite of unit tests whenever changes are pushed to
 GitHub. Note that this does not run the system tests or any other tests that
@@ -202,7 +199,7 @@ require installation of a simulator backend.</p>
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
@@ -210,7 +207,7 @@ require installation of a simulator backend.</p>
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
@@ -231,14 +228,14 @@ require installation of a simulator backend.</p>
         <li class="right" >
           <a href="0.8-beta-2.html" title="PyNN 0.8 beta 2 release notes"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../release_notes.html" >Release notes</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">PyNN 0.8 beta 1 release notes</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2023, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    &#169; Copyright 2006-2024, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
     </div>
   </body>
 </html>

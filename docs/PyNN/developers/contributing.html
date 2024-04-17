@@ -1,21 +1,17 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Contributing to PyNN &#8212; PyNN 0.12.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <title>Contributing to PyNN &#8212; PyNN 0.12.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css?v=0f882399" />
+    <script src="../_static/documentation_options.js?v=56343b9b"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="../_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Governance" href="governance.html" />
@@ -36,7 +32,7 @@
         <li class="right" >
           <a href="bug_reports.html" title="Bug reports and feature requests"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../developers_guide.html" accesskey="U">Developers’ guide</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Contributing to PyNN</a></li> 
       </ul>
@@ -48,16 +44,16 @@
           <div class="body" role="main">
             
   <section id="contributing-to-pynn">
-<h1>Contributing to PyNN<a class="headerlink" href="#contributing-to-pynn" title="Permalink to this heading">¶</a></h1>
+<h1>Contributing to PyNN<a class="headerlink" href="#contributing-to-pynn" title="Link to this heading">¶</a></h1>
 <section id="mailing-list">
-<h2>Mailing list<a class="headerlink" href="#mailing-list" title="Permalink to this heading">¶</a></h2>
+<h2>Mailing list<a class="headerlink" href="#mailing-list" title="Link to this heading">¶</a></h2>
 <p>Discussions about PyNN take place in the <a class="reference external" href="http://groups.google.com/group/neuralensemble">NeuralEnsemble Google Group</a>.</p>
 </section>
 <section id="setting-up-a-development-environment">
-<h2>Setting up a development environment<a class="headerlink" href="#setting-up-a-development-environment" title="Permalink to this heading">¶</a></h2>
+<h2>Setting up a development environment<a class="headerlink" href="#setting-up-a-development-environment" title="Link to this heading">¶</a></h2>
 <p>We strongly suggest you work in a virtual environment, e.g. using <a class="reference external" href="http://www.virtualenv.org/">virtualenv</a> or Anaconda.</p>
 <section id="requirements">
-<h3>Requirements<a class="headerlink" href="#requirements" title="Permalink to this heading">¶</a></h3>
+<h3>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">¶</a></h3>
 <p>In addition to the requirements listed in <a class="reference internal" href="../installation.html"><span class="doc">Installation</span></a>, you will need to
 install:</p>
 <blockquote>
@@ -76,7 +72,7 @@ install:</p>
 <p>to build the documentation.</p>
 </section>
 <section id="code-checkout">
-<h3>Code checkout<a class="headerlink" href="#code-checkout" title="Permalink to this heading">¶</a></h3>
+<h3>Code checkout<a class="headerlink" href="#code-checkout" title="Link to this heading">¶</a></h3>
 <p>PyNN development is based around GitHub. Once you have a GitHub account, you
 should <a class="reference external" href="https://github.com/NeuralEnsemble/PyNN/fork">fork</a> the official <a class="reference external" href="https://github.com/NeuralEnsemble/PyNN/">PyNN repository</a>, and then clone your fork to your
 local machine:</p>
@@ -108,7 +104,7 @@ to the <code class="file docutils literal notranslate"><span class="pre">pyNN_de
 </section>
 </section>
 <section id="coding-style">
-<h2>Coding style<a class="headerlink" href="#coding-style" title="Permalink to this heading">¶</a></h2>
+<h2>Coding style<a class="headerlink" href="#coding-style" title="Link to this heading">¶</a></h2>
 <p>We try to stay fairly close to <a class="reference external" href="http://www.python.org/dev/peps/pep-0008/">PEP8</a>. Please note in particular:</p>
 <blockquote>
 <div><ul class="simple">
@@ -123,7 +119,7 @@ Any new functions or methods should use the latter.</p></li>
 </div></blockquote>
 </section>
 <section id="testing">
-<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this heading">¶</a></h2>
+<h2>Testing<a class="headerlink" href="#testing" title="Link to this heading">¶</a></h2>
 <p>Running the PyNN test suite requires the <em>pytest_</em> package,
 and optionally the <em>pytest-cov</em> package. To run the entire test suite:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pytest
@@ -162,7 +158,7 @@ some file (and added to registry) inside system/scenarios, use:</p>
 </div>
 </section>
 <section id="submitting-code">
-<h2>Submitting code<a class="headerlink" href="#submitting-code" title="Permalink to this heading">¶</a></h2>
+<h2>Submitting code<a class="headerlink" href="#submitting-code" title="Link to this heading">¶</a></h2>
 <p>The best way to get started with contributing code to PyNN is to fix a small
 bug (<a class="reference external" href="https://github.com/NeuralEnsemble/PyNN/issues?labels=minor&amp;state=open">bugs marked “minor” in the bug tracker</a>) in your checkout of
 the code. Once you are happy with your changes, <strong>run the test suite again to check
@@ -183,7 +179,7 @@ to the project, please add your name and affiliation/employer to <code class="fi
 <p>Now, via the GitHub web interface, open a pull request.</p>
 </section>
 <section id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading">¶</a></h2>
+<h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">¶</a></h2>
 <p>PyNN documentation is generated using <a class="reference external" href="http://sphinx-doc.org/">Sphinx</a>.</p>
 <p>To build the documentation in HTML format, run:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ make html
@@ -198,7 +194,7 @@ by running:</p>
 <p>PyNN documentation is hosted at <a class="reference external" href="http://neuralensemble.org/docs/PyNN">http://neuralensemble.org/docs/PyNN</a></p>
 </section>
 <section id="making-a-release">
-<h2>Making a release<a class="headerlink" href="#making-a-release" title="Permalink to this heading">¶</a></h2>
+<h2>Making a release<a class="headerlink" href="#making-a-release" title="Link to this heading">¶</a></h2>
 <p>To make a release of PyNN requires you to have permissions to upload PyNN
 packages to the <a class="reference external" href="http://pypi.python.org/">Python Package Index</a>, and to
 upload documentation to the neuralensemble.org server. If you are interested
@@ -307,7 +303,7 @@ new features and major changes</p></li>
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
@@ -315,7 +311,7 @@ new features and major changes</p></li>
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
@@ -336,14 +332,14 @@ new features and major changes</p></li>
         <li class="right" >
           <a href="bug_reports.html" title="Bug reports and feature requests"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../developers_guide.html" >Developers’ guide</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Contributing to PyNN</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2023, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    &#169; Copyright 2006-2024, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
     </div>
   </body>
 </html>

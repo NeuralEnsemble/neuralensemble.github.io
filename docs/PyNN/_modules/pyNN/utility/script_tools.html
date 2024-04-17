@@ -1,20 +1,16 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyNN.utility.script_tools &#8212; PyNN 0.12.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/nature.css" />
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-    <script src="../../../_static/jquery.js"></script>
-    <script src="../../../_static/underscore.js"></script>
-    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/sphinx_highlight.js"></script>
-    <link rel="shortcut icon" href="../../../_static/pyNN_icon.ico"/>
+    <title>pyNN.utility.script_tools &#8212; PyNN 0.12.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/nature.css?v=0f882399" />
+    <script src="../../../_static/documentation_options.js?v=56343b9b"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="../../../_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
   </head><body>
@@ -27,7 +23,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../utility.html" accesskey="U">pyNN.utility</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyNN.utility.script_tools</a></li> 
@@ -43,7 +39,7 @@
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">A collection of functions to help writing simualtion scripts.</span>
 
-<span class="sd">:copyright: Copyright 2006-2023 by the PyNN team, see AUTHORS.</span>
+<span class="sd">:copyright: Copyright 2006-2024 by the PyNN team, see AUTHORS.</span>
 <span class="sd">:license: CeCILL, see LICENSE for details.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -63,7 +59,7 @@
 
 
 <span class="k">def</span> <span class="nf">get_script_args</span><span class="p">(</span><span class="n">n_args</span><span class="p">,</span> <span class="n">usage</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get command line arguments.</span>
 
 <span class="sd">    This works by finding the name of the main script and assuming any</span>
@@ -90,8 +86,10 @@
     <span class="k">return</span> <span class="n">args</span>
 
 
-<div class="viewcode-block" id="get_simulator"><a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.get_simulator">[docs]</a><span class="k">def</span> <span class="nf">get_simulator</span><span class="p">(</span><span class="o">*</span><span class="n">arguments</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="get_simulator">
+<a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.get_simulator">[docs]</a>
+<span class="k">def</span> <span class="nf">get_simulator</span><span class="p">(</span><span class="o">*</span><span class="n">arguments</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Import and return a PyNN simulator backend module based on command-line</span>
 <span class="sd">    arguments.</span>
 
@@ -117,8 +115,11 @@
     <span class="k">return</span> <span class="n">sim</span><span class="p">,</span> <span class="n">args</span></div>
 
 
-<div class="viewcode-block" id="init_logging"><a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.init_logging">[docs]</a><span class="k">def</span> <span class="nf">init_logging</span><span class="p">(</span><span class="n">logfile</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">num_processes</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="init_logging">
+<a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.init_logging">[docs]</a>
+<span class="k">def</span> <span class="nf">init_logging</span><span class="p">(</span><span class="n">logfile</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">num_processes</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Simple configuration of logging.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># allow logfile == None</span>
@@ -151,9 +152,10 @@
     <span class="k">return</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;PyNN&quot;</span><span class="p">)</span></div>
 
 
+
 <span class="k">def</span> <span class="nf">normalized_filename</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span> <span class="n">extension</span><span class="p">,</span> <span class="n">simulator</span><span class="p">,</span>
                         <span class="n">num_processes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_iso8601</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a file path containing a timestamp and information about the</span>
 <span class="sd">    simulator used and the number of MPI processes.</span>
 
@@ -182,13 +184,15 @@
                                            <span class="n">extension</span><span class="p">))</span>
 
 
-<div class="viewcode-block" id="notify"><a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.notify">[docs]</a><span class="k">def</span> <span class="nf">notify</span><span class="p">(</span>
+<div class="viewcode-block" id="notify">
+<a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.notify">[docs]</a>
+<span class="k">def</span> <span class="nf">notify</span><span class="p">(</span>
     <span class="n">msg</span><span class="o">=</span><span class="s2">&quot;Simulation finished.&quot;</span><span class="p">,</span>
     <span class="n">subject</span><span class="o">=</span><span class="s2">&quot;Simulation finished.&quot;</span><span class="p">,</span>
     <span class="n">smtphost</span><span class="o">=</span><span class="n">SMTPHOST</span><span class="p">,</span>
     <span class="n">address</span><span class="o">=</span><span class="n">EMAIL</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Send an e-mail stating that the simulation has finished.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Send an e-mail stating that the simulation has finished.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">smtphost</span> <span class="ow">and</span> <span class="n">address</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span>
             <span class="s2">&quot;SMTP host and/or e-mail address not specified.</span><span class="se">\n</span><span class="s2">&quot;</span>
@@ -206,6 +210,7 @@
         <span class="n">server</span> <span class="o">=</span> <span class="n">smtplib</span><span class="o">.</span><span class="n">SMTP</span><span class="p">(</span><span class="n">smtphost</span><span class="p">)</span>
         <span class="n">server</span><span class="o">.</span><span class="n">sendmail</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
         <span class="n">server</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span></div>
+
 </pre></div>
 
             <div class="clearer"></div>
@@ -217,7 +222,7 @@
             <p class="logo"><a href="../../../index.html">
               <img class="logo" src="../../../_static/pyNN_logo.png" alt="Logo"/>
             </a></p>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
@@ -225,7 +230,7 @@
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
@@ -240,15 +245,15 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../utility.html" >pyNN.utility</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyNN.utility.script_tools</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2023, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    &#169; Copyright 2006-2024, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
     </div>
   </body>
 </html>

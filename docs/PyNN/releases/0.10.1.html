@@ -1,21 +1,17 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>PyNN 0.10.1 release notes &#8212; PyNN 0.12.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <title>PyNN 0.10.1 release notes &#8212; PyNN 0.12.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css?v=0f882399" />
+    <script src="../_static/documentation_options.js?v=56343b9b"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="../_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="PyNN 0.10.0 release notes" href="0.10.0.html" />
@@ -36,7 +32,7 @@
         <li class="right" >
           <a href="0.11.0.html" title="PyNN 0.11.0 release notes"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../release_notes.html" accesskey="U">Release notes</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">PyNN 0.10.1 release notes</a></li> 
       </ul>
@@ -48,25 +44,25 @@
           <div class="body" role="main">
             
   <section id="pynn-0-10-1-release-notes">
-<h1>PyNN 0.10.1 release notes<a class="headerlink" href="#pynn-0-10-1-release-notes" title="Permalink to this heading">¶</a></h1>
+<h1>PyNN 0.10.1 release notes<a class="headerlink" href="#pynn-0-10-1-release-notes" title="Link to this heading">¶</a></h1>
 <p>October 13th 2022</p>
 <p>Welcome to PyNN 0.10.1!</p>
 <section id="nest-3-3-neuron-8-1">
-<h2>NEST 3.3, NEURON 8.1<a class="headerlink" href="#nest-3-3-neuron-8-1" title="Permalink to this heading">¶</a></h2>
+<h2>NEST 3.3, NEURON 8.1<a class="headerlink" href="#nest-3-3-neuron-8-1" title="Link to this heading">¶</a></h2>
 <p>PyNN now supports the latest version of <a class="reference external" href="https://www.nest-simulator.org">NEST</a>, and <a class="reference external" href="https://neuron.yale.edu/neuron/">NEURON</a> v8.1.</p>
 </section>
 <section id="new-neuron-model">
-<h2>New neuron model<a class="headerlink" href="#new-neuron-model" title="Permalink to this heading">¶</a></h2>
+<h2>New neuron model<a class="headerlink" href="#new-neuron-model" title="Link to this heading">¶</a></h2>
 <p>We have added a new standard neuron model, <code class="xref py py-class docutils literal notranslate"><span class="pre">IF_curr_delta</span></code>, for which the synaptic response is
 a step change in the membrane voltage.</p>
 </section>
 <section id="recording-with-irregular-sampling-intervals">
-<h2>Recording with irregular sampling intervals<a class="headerlink" href="#recording-with-irregular-sampling-intervals" title="Permalink to this heading">¶</a></h2>
+<h2>Recording with irregular sampling intervals<a class="headerlink" href="#recording-with-irregular-sampling-intervals" title="Link to this heading">¶</a></h2>
 <p>Where a simulator supports recording with varying sampling intervals (e.g. BrainScaleS, NEURON with CVode),
 PyNN can now handle such data, using the <code class="xref py py-class docutils literal notranslate"><span class="pre">IrregularlySampledSignal</span></code> class from Neo.</p>
 </section>
 <section id="more-efficient-handling-of-spike-trains">
-<h2>More efficient handling of spike trains<a class="headerlink" href="#more-efficient-handling-of-spike-trains" title="Permalink to this heading">¶</a></h2>
+<h2>More efficient handling of spike trains<a class="headerlink" href="#more-efficient-handling-of-spike-trains" title="Link to this heading">¶</a></h2>
 <p>Some simulators record spike trains as a pair of arrays, one containing neuron identifiers,
 the other spike times.
 PyNN can now retain this representation for internal data handling or for export,
@@ -74,11 +70,11 @@ using the <code class="xref py py-class docutils literal notranslate"><span clas
 which avoids the overhead of always converting to a list of <code class="xref py py-class docutils literal notranslate"><span class="pre">SpikeTrains</span></code>, one per neuron.</p>
 </section>
 <section id="dependencies">
-<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this heading">¶</a></h2>
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading">¶</a></h2>
 <p>PyNN now requires NumPy &gt; 1.18.5, Neo &gt; 0.11.0 or later.</p>
 </section>
 <section id="bug-fixes">
-<h2>Bug fixes<a class="headerlink" href="#bug-fixes" title="Permalink to this heading">¶</a></h2>
+<h2>Bug fixes<a class="headerlink" href="#bug-fixes" title="Link to this heading">¶</a></h2>
 <p>A <a class="reference external" href="https://github.com/NeuralEnsemble/PyNN/issues?q=milestone%3A0.10.1+is%3Aclosed">small number of bugs</a> have been fixed.</p>
 </section>
 </section>
@@ -125,7 +121,7 @@ which avoids the overhead of always converting to a list of <code class="xref py
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
@@ -133,7 +129,7 @@ which avoids the overhead of always converting to a list of <code class="xref py
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
@@ -154,14 +150,14 @@ which avoids the overhead of always converting to a list of <code class="xref py
         <li class="right" >
           <a href="0.11.0.html" title="PyNN 0.11.0 release notes"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../release_notes.html" >Release notes</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">PyNN 0.10.1 release notes</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2023, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    &#169; Copyright 2006-2024, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
     </div>
   </body>
 </html>

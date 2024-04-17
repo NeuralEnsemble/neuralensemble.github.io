@@ -1,21 +1,17 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>NEST &#8212; PyNN 0.12.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <title>NEST &#8212; PyNN 0.12.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css?v=0f882399" />
+    <script src="../_static/documentation_options.js?v=56343b9b"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="../_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Brian" href="Brian.html" />
@@ -36,7 +32,7 @@
         <li class="right" >
           <a href="NEURON.html" title="NEURON"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../backends.html" accesskey="U">Backends</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">NEST</a></li> 
       </ul>
@@ -48,11 +44,11 @@
           <div class="body" role="main">
             
   <section id="nest">
-<h1>NEST<a class="headerlink" href="#nest" title="Permalink to this heading">¶</a></h1>
+<h1>NEST<a class="headerlink" href="#nest" title="Link to this heading">¶</a></h1>
 <section id="configuration-options">
-<h2>Configuration options<a class="headerlink" href="#configuration-options" title="Permalink to this heading">¶</a></h2>
+<h2>Configuration options<a class="headerlink" href="#configuration-options" title="Link to this heading">¶</a></h2>
 <section id="continuous-time-spiking">
-<h3>Continuous time spiking<a class="headerlink" href="#continuous-time-spiking" title="Permalink to this heading">¶</a></h3>
+<h3>Continuous time spiking<a class="headerlink" href="#continuous-time-spiking" title="Link to this heading">¶</a></h3>
 <p>In traditional simulation schemes spikes are constrained to an equidistant time
 grid. However, for some neuron models, NEST has the capability to represent
 spikes in continuous time.</p>
@@ -143,7 +139,7 @@ simulations. <em>Front. Neuroinform.</em> <strong>4</strong>:113.
 <a class="reference external" href="http://dx.doi.org/10.3389/fninf.2010.00113">doi:10.3389/fninf.2010.00113</a></p>
 </section>
 <section id="random-number-generator">
-<h3>Random number generator<a class="headerlink" href="#random-number-generator" title="Permalink to this heading">¶</a></h3>
+<h3>Random number generator<a class="headerlink" href="#random-number-generator" title="Link to this heading">¶</a></h3>
 <p>To set the seed for the <a class="reference external" href="https://nest-simulator.readthedocs.io/en/stable/guides/random_numbers.html#select-the-type-of-random-number-generator">NEST random number generator</a>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">setup</span><span class="p">(</span><span class="n">rng_seed</span><span class="o">=</span><span class="mi">12345</span><span class="p">)</span>
 </pre></div>
@@ -155,7 +151,7 @@ simulations. <em>Front. Neuroinform.</em> <strong>4</strong>:113.
 </section>
 </section>
 <section id="using-native-cell-models">
-<h2>Using native cell models<a class="headerlink" href="#using-native-cell-models" title="Permalink to this heading">¶</a></h2>
+<h2>Using native cell models<a class="headerlink" href="#using-native-cell-models" title="Link to this heading">¶</a></h2>
 <p>To use a NEST neuron model with PyNN, we wrap the NEST model with a PyNN
 <code class="docutils literal notranslate"><span class="pre">NativeCellType</span></code> class, e.g.:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyNN.nest</span> <span class="kn">import</span> <span class="n">native_cell_type</span><span class="p">,</span> <span class="n">Population</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">setup</span>
@@ -177,12 +173,12 @@ these neurons as from standard cells:</p>
 <span class="gt">Traceback (most recent call last):</span>
 <span class="c">...</span>
 <span class="gr">NonExistentParameterError</span>: <span class="n">C_m (valid parameters for ht_neuron are:</span>
-<span class="go">  AMPA_E_rev, AMPA_Tau_1, AMPA_Tau_2, AMPA_g_peak, E_K, E_Na, GABA_A_E_rev,</span>
-<span class="go">  GABA_A_Tau_1, GABA_A_Tau_2, GABA_A_g_peak, GABA_B_E_rev, GABA_B_Tau_1,</span>
-<span class="go">  GABA_B_Tau_2, GABA_B_g_peak, KNa_E_rev, KNa_g_peak, NMDA_E_rev, NMDA_Sact,</span>
-<span class="go">  NMDA_Tau_1, NMDA_Tau_2, NMDA_Vact, NMDA_g_peak, NaP_E_rev, NaP_g_peak,</span>
-<span class="go">  T_E_rev, T_g_peak, Tau_m, Tau_spike, Tau_theta, Theta_eq, g_KL, g_NaL,</span>
-<span class="go">  h_E_rev, h_g_peak, spike_duration)</span>
+<span class="x">  AMPA_E_rev, AMPA_Tau_1, AMPA_Tau_2, AMPA_g_peak, E_K, E_Na, GABA_A_E_rev,</span>
+<span class="x">  GABA_A_Tau_1, GABA_A_Tau_2, GABA_A_g_peak, GABA_B_E_rev, GABA_B_Tau_1,</span>
+<span class="x">  GABA_B_Tau_2, GABA_B_g_peak, KNa_E_rev, KNa_g_peak, NMDA_E_rev, NMDA_Sact,</span>
+<span class="x">  NMDA_Tau_1, NMDA_Tau_2, NMDA_Vact, NMDA_g_peak, NaP_E_rev, NaP_g_peak,</span>
+<span class="x">  T_E_rev, T_g_peak, Tau_m, Tau_spike, Tau_theta, Theta_eq, g_KL, g_NaL,</span>
+<span class="x">  h_E_rev, h_g_peak, spike_duration)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">V_m</span><span class="o">=-</span><span class="mf">70.0</span><span class="p">,</span> <span class="n">Theta</span><span class="o">=-</span><span class="mf">50.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s1">&#39;V_m&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">run</span><span class="p">(</span><span class="mf">250.0</span><span class="p">)</span>
@@ -202,7 +198,7 @@ synaptic receptor types:</p>
 </div>
 </section>
 <section id="using-native-synaptic-plasticity-models">
-<h2>Using native synaptic plasticity models<a class="headerlink" href="#using-native-synaptic-plasticity-models" title="Permalink to this heading">¶</a></h2>
+<h2>Using native synaptic plasticity models<a class="headerlink" href="#using-native-synaptic-plasticity-models" title="Link to this heading">¶</a></h2>
 <p>To use a NEST STDP model with PyNN, we use the <code class="xref py py-func docutils literal notranslate"><span class="pre">native_synapse_type()</span></code>
 function:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyNN.nest</span> <span class="kn">import</span> <span class="n">native_synapse_type</span>
@@ -211,7 +207,7 @@ function:</p>
 </pre></div>
 </div>
 <section id="common-synapse-properties">
-<h3>Common synapse properties<a class="headerlink" href="#common-synapse-properties" title="Permalink to this heading">¶</a></h3>
+<h3>Common synapse properties<a class="headerlink" href="#common-synapse-properties" title="Link to this heading">¶</a></h3>
 <p>Some NEST synapse models (e.g. <code class="docutils literal notranslate"><span class="pre">stdp_facetshw_synapse_hom</span></code>) make use of
 common synapse properties to conserve memory. This has the following
 implications for their usage in PyNN:</p>
@@ -271,7 +267,7 @@ However, they will only deviate from the default when changed manually.</p></li>
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
@@ -279,7 +275,7 @@ However, they will only deviate from the default when changed manually.</p></li>
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
@@ -300,14 +296,14 @@ However, they will only deviate from the default when changed manually.</p></li>
         <li class="right" >
           <a href="NEURON.html" title="NEURON"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../backends.html" >Backends</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">NEST</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2023, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    &#169; Copyright 2006-2024, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
     </div>
   </body>
 </html>

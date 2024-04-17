@@ -1,21 +1,17 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Multicompartmental modelling &#8212; PyNN 0.12.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/nature.css" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <title>Multicompartmental modelling &#8212; PyNN 0.12.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css?v=0f882399" />
+    <script src="_static/documentation_options.js?v=56343b9b"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Injecting current" href="injecting_current.html" />
@@ -36,7 +32,7 @@
         <li class="right" >
           <a href="space.html" title="Representing spatial structure and calculating distances"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="building_networks.html" accesskey="U">Building networks</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Multicompartmental modelling</a></li> 
       </ul>
@@ -48,7 +44,7 @@
           <div class="body" role="main">
             
   <section id="multicompartmental-modelling">
-<h1>Multicompartmental modelling<a class="headerlink" href="#multicompartmental-modelling" title="Permalink to this heading">¶</a></h1>
+<h1>Multicompartmental modelling<a class="headerlink" href="#multicompartmental-modelling" title="Link to this heading">¶</a></h1>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>The extensions to the API for multicompartmental models are an experimental feature.
@@ -56,7 +52,7 @@ We encourage users to try them out, but at this stage we do not recommend publis
 work using these extensions without very thorough checking and validation of results.</p>
 </div>
 <section id="cell-types">
-<h2>Cell types<a class="headerlink" href="#cell-types" title="Permalink to this heading">¶</a></h2>
+<h2>Cell types<a class="headerlink" href="#cell-types" title="Link to this heading">¶</a></h2>
 <p>As noted in <a class="reference internal" href="neurons.html"><span class="doc">Building networks: neurons</span></a>, the “standard library” approach described above needs to be modified for morphologically and biophysically-detailed neuron models,
 as the number of possible combinations of morphologies, ion-channel models and synapse models is infinite.</p>
 <p>Rather than a library of standard neuron models, we have a library of standard components (ion-channel models, synapse models)
@@ -80,7 +76,7 @@ LEMS (NeuroML) and NineML model specifications for this.</p>
 </div>
 </section>
 <section id="parameterization">
-<h2>Parameterization<a class="headerlink" href="#parameterization" title="Permalink to this heading">¶</a></h2>
+<h2>Parameterization<a class="headerlink" href="#parameterization" title="Link to this heading">¶</a></h2>
 <p>When it come to instantiating such a cell type in order to create a population, three extensions are needed when compared
 to the point-neuron case:</p>
 <dl class="simple">
@@ -97,7 +93,7 @@ Neurons with axons and dendrites may have parameters whose value depends on loca
 <p>Handling of morphologies and spatial parameterization are described in the next section.</p>
 </section>
 <section id="morphologies">
-<h2>Morphologies<a class="headerlink" href="#morphologies" title="Permalink to this heading">¶</a></h2>
+<h2>Morphologies<a class="headerlink" href="#morphologies" title="Link to this heading">¶</a></h2>
 <p>A number of existing Python tools for handling neuronal morphologies already exist
 (e.g. <a class="reference external" href="https://libneuroml.readthedocs.io/en/latest/">libNeuroML</a>, <a class="reference external" href="http://briansimulator.org">Brian 2</a>, <a class="reference external" href="https://morphio.readthedocs.io/en/latest/">MorphIO</a>, <a class="reference external" href="https://github.com/btorb/btmorph_v2">btmorph</a>)
 In the interest of integrating with other open-source simulation tools and standards wherever possible,
@@ -112,7 +108,7 @@ and, more generally, for specifying points and regions within the neurites, in a
 tree structure, and hides details of the spatial discretization, while mapping points and regions defined by the user
 to the particular section/segment used internally by the simulator.</p>
 <section id="selecting-points-and-regions">
-<h3>Selecting points and regions<a class="headerlink" href="#selecting-points-and-regions" title="Permalink to this heading">¶</a></h3>
+<h3>Selecting points and regions<a class="headerlink" href="#selecting-points-and-regions" title="Link to this heading">¶</a></h3>
 <p>For simple morphologies, each section/segment/compartment of the neuron can be given an explicit label.
 Where we wish to distinguish a point <em>within</em> a section, we can add a <cite>fraction_along</cite> parameter.
 By default, a label is taken to refer to the centre of a section.</p>
@@ -191,7 +187,7 @@ Further location generator methods are planned.</p>
 </section>
 </section>
 <section id="projections">
-<h2>Projections<a class="headerlink" href="#projections" title="Permalink to this heading">¶</a></h2>
+<h2>Projections<a class="headerlink" href="#projections" title="Link to this heading">¶</a></h2>
 <p>In making synaptic connections onto neurons with detailed morphologies,
 we have to consider not only which post-synaptic neuron to connect to and which synapse <em>type</em> to use,
 but also in which location within the morphology the synapse should be.</p>
@@ -217,7 +213,7 @@ as-the-crow-flies, or the path length along the original axon (before truncation
 In both cases, this is specified using the <cite>source</cite> argument of the <code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code> constructor.</p>
 </section>
 <section id="connectors">
-<h2>Connectors<a class="headerlink" href="#connectors" title="Permalink to this heading">¶</a></h2>
+<h2>Connectors<a class="headerlink" href="#connectors" title="Link to this heading">¶</a></h2>
 <p>As noted above, for a given type of synapse, we have to consider both which post-synaptic neuron to connect to
 and in which location within the morphology the synapse should be.</p>
 <p>In principle, these two choices could be independent, or the choice of location could depend on which post-synaptic
@@ -292,7 +288,7 @@ In this scenario, it should be possible to set post-synaptic model and parameter
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
@@ -300,7 +296,7 @@ In this scenario, it should be possible to set post-synaptic model and parameter
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
@@ -321,14 +317,14 @@ In this scenario, it should be possible to set post-synaptic model and parameter
         <li class="right" >
           <a href="space.html" title="Representing spatial structure and calculating distances"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="building_networks.html" >Building networks</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Multicompartmental modelling</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2023, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    &#169; Copyright 2006-2024, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
     </div>
   </body>
 </html>

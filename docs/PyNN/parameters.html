@@ -1,21 +1,17 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Model parameters and initial values &#8212; PyNN 0.12.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/nature.css" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <title>Model parameters and initial values &#8212; PyNN 0.12.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css?v=0f882399" />
+    <script src="_static/documentation_options.js?v=56343b9b"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Random numbers" href="random_numbers.html" />
@@ -36,7 +32,7 @@
         <li class="right" >
           <a href="simulation_control.html" title="Simulation control"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.3 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Model parameters and initial values</a></li> 
       </ul>
     </div>  
@@ -47,7 +43,7 @@
           <div class="body" role="main">
             
   <section id="model-parameters-and-initial-values">
-<h1>Model parameters and initial values<a class="headerlink" href="#model-parameters-and-initial-values" title="Permalink to this heading">¶</a></h1>
+<h1>Model parameters and initial values<a class="headerlink" href="#model-parameters-and-initial-values" title="Link to this heading">¶</a></h1>
 <p>As was discussed in <a class="reference internal" href="building_networks.html"><span class="doc">Building networks</span></a>, PyNN deals with neurons, and with
 the synaptic connections between them, principally at the level of groups:
 with <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">Assembly</span></code> for neurons and
@@ -75,9 +71,9 @@ arguments, and for every connection will be called with the indices of the
 pre- and post-synaptic neurons.</p></li>
 </ul>
 <section id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h2>
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
 <section id="setting-the-same-value-for-all-neurons-in-a-population">
-<h3>Setting the same value for all neurons in a population<a class="headerlink" href="#setting-the-same-value-for-all-neurons-in-a-population" title="Permalink to this heading">¶</a></h3>
+<h3>Setting the same value for all neurons in a population<a class="headerlink" href="#setting-the-same-value-for-all-neurons-in-a-population" title="Link to this heading">¶</a></h3>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">Population</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">IF_cond_exp</span><span class="p">(</span><span class="n">tau_m</span><span class="o">=</span><span class="mf">15.0</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -94,7 +90,7 @@ pre- and post-synaptic neurons.</p></li>
 </div>
 </section>
 <section id="setting-parameters-to-random-values">
-<h3>Setting parameters to random values<a class="headerlink" href="#setting-parameters-to-random-values" title="Permalink to this heading">¶</a></h3>
+<h3>Setting parameters to random values<a class="headerlink" href="#setting-parameters-to-random-values" title="Link to this heading">¶</a></h3>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyNN.random</span> <span class="kn">import</span> <span class="n">RandomDistribution</span><span class="p">,</span> <span class="n">NumpyRNG</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">gbar_na_distr</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;normal&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">),</span> <span class="n">rng</span><span class="o">=</span><span class="n">NumpyRNG</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">85524</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">Population</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="n">HH_cond_exp</span><span class="p">(</span><span class="n">gbar_Na</span><span class="o">=</span><span class="n">gbar_na_distr</span><span class="p">))</span>
@@ -107,7 +103,7 @@ pre- and post-synaptic neurons.</p></li>
 </div>
 </section>
 <section id="setting-parameters-from-an-array">
-<h3>Setting parameters from an array<a class="headerlink" href="#setting-parameters-from-an-array" title="Permalink to this heading">¶</a></h3>
+<h3>Setting parameters from an array<a class="headerlink" href="#setting-parameters-from-an-array" title="Link to this heading">¶</a></h3>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">Population</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">SpikeSourcePoisson</span><span class="p">(</span><span class="n">rate</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">6</span><span class="p">)))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;rate&#39;</span><span class="p">)</span>
@@ -121,7 +117,7 @@ pre- and post-synaptic neurons.</p></li>
 </div>
 </section>
 <section id="using-a-function-to-calculate-parameter-values">
-<h3>Using a function to calculate parameter values<a class="headerlink" href="#using-a-function-to-calculate-parameter-values" title="Permalink to this heading">¶</a></h3>
+<h3>Using a function to calculate parameter values<a class="headerlink" href="#using-a-function-to-calculate-parameter-values" title="Link to this heading">¶</a></h3>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">sin</span><span class="p">,</span> <span class="n">pi</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">Population</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">IF_cond_exp</span><span class="p">(</span><span class="n">i_offset</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">sin</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="n">pi</span><span class="o">/</span><span class="mi">8</span><span class="p">)))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;i_offset&#39;</span><span class="p">)</span>
@@ -131,7 +127,7 @@ pre- and post-synaptic neurons.</p></li>
 </div>
 </section>
 <section id="setting-parameters-as-a-function-of-spatial-position">
-<h3>Setting parameters as a function of spatial position<a class="headerlink" href="#setting-parameters-as-a-function-of-spatial-position" title="Permalink to this heading">¶</a></h3>
+<h3>Setting parameters as a function of spatial position<a class="headerlink" href="#setting-parameters-as-a-function-of-spatial-position" title="Link to this heading">¶</a></h3>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyNN.space</span> <span class="kn">import</span> <span class="n">Grid2D</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span> <span class="o">=</span> <span class="n">Grid2D</span><span class="p">(</span><span class="n">dx</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">dy</span><span class="o">=</span><span class="mf">10.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">Population</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="n">IF_cond_alpha</span><span class="p">(),</span> <span class="n">structure</span><span class="o">=</span><span class="n">grid</span><span class="p">)</span>
@@ -149,7 +145,7 @@ pre- and post-synaptic neurons.</p></li>
 <p>For more on spatial structure, see <a class="reference internal" href="space.html"><span class="doc">Representing spatial structure and calculating distances</span></a>.</p>
 </section>
 <section id="using-multiple-parameter-types">
-<h3>Using multiple parameter types<a class="headerlink" href="#using-multiple-parameter-types" title="Permalink to this heading">¶</a></h3>
+<h3>Using multiple parameter types<a class="headerlink" href="#using-multiple-parameter-types" title="Link to this heading">¶</a></h3>
 <p>It is perfectly possible to use multiple different types of parameter value at
 the same time:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">n</span> <span class="o">=</span> <span class="mi">1000</span>
@@ -169,7 +165,7 @@ the same time:</p>
 </section>
 </section>
 <section id="time-series-and-array-valued-parameters">
-<h2>Time series and array-valued parameters<a class="headerlink" href="#time-series-and-array-valued-parameters" title="Permalink to this heading">¶</a></h2>
+<h2>Time series and array-valued parameters<a class="headerlink" href="#time-series-and-array-valued-parameters" title="Link to this heading">¶</a></h2>
 <p>For certain neuron models (<code class="xref py py-class docutils literal notranslate"><span class="pre">SpikeSourceArray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">GIF_cond_exp</span></code>)
 and current sources, the individual parameter values are not single numbers
 (with physical units), but arrays, e.g.:</p>
@@ -222,7 +218,7 @@ or an array of parameter values (e.g. one number per cell)?”.</p>
 </div>
 </section>
 <section id="setting-initial-values">
-<h2>Setting initial values<a class="headerlink" href="#setting-initial-values" title="Permalink to this heading">¶</a></h2>
+<h2>Setting initial values<a class="headerlink" href="#setting-initial-values" title="Link to this heading">¶</a></h2>
 <div class="admonition-todo admonition" id="id2">
 <p class="admonition-title">Todo</p>
 <p>complete</p>
@@ -285,7 +281,7 @@ potential will <em>not</em> automatically change the initial value.</p>
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
@@ -293,7 +289,7 @@ potential will <em>not</em> automatically change the initial value.</p>
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
@@ -314,13 +310,13 @@ potential will <em>not</em> automatically change the initial value.</p>
         <li class="right" >
           <a href="simulation_control.html" title="Simulation control"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.3 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Model parameters and initial values</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2023, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    &#169; Copyright 2006-2024, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
     </div>
   </body>
 </html>

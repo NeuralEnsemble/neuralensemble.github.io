@@ -1,20 +1,16 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyNN.standardmodels.cells &#8212; PyNN 0.12.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/nature.css" />
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-    <script src="../../../_static/jquery.js"></script>
-    <script src="../../../_static/underscore.js"></script>
-    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/sphinx_highlight.js"></script>
-    <link rel="shortcut icon" href="../../../_static/pyNN_icon.ico"/>
+    <title>pyNN.standardmodels.cells &#8212; PyNN 0.12.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/nature.css?v=0f882399" />
+    <script src="../../../_static/documentation_options.js?v=56343b9b"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="../../../_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
   </head><body>
@@ -27,7 +23,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyNN.standardmodels.cells</a></li> 
       </ul>
@@ -65,7 +61,7 @@
 <span class="sd">    SpikeSourceArray</span>
 <span class="sd">    SpikeSourceInhGamma</span>
 
-<span class="sd">:copyright: Copyright 2006-2023 by the PyNN team, see AUTHORS.</span>
+<span class="sd">:copyright: Copyright 2006-2024 by the PyNN team, see AUTHORS.</span>
 <span class="sd">:license: CeCILL, see LICENSE for details.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -80,8 +76,10 @@
 <span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">StandardCellType</span><span class="p">,</span> <span class="n">StandardCellTypeComponent</span>
 
 
-<div class="viewcode-block" id="IF_curr_alpha"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.IF_curr_alpha">[docs]</a><span class="k">class</span> <span class="nc">IF_curr_alpha</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="IF_curr_alpha">
+<a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.IF_curr_alpha">[docs]</a>
+<span class="k">class</span> <span class="nc">IF_curr_alpha</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Leaky integrate and fire model with fixed threshold and alpha-function-</span>
 <span class="sd">    shaped post-synaptic current.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -120,8 +118,11 @@
     <span class="p">}</span></div>
 
 
-<div class="viewcode-block" id="IF_curr_exp"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.IF_curr_exp">[docs]</a><span class="k">class</span> <span class="nc">IF_curr_exp</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="IF_curr_exp">
+<a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.IF_curr_exp">[docs]</a>
+<span class="k">class</span> <span class="nc">IF_curr_exp</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Leaky integrate and fire model with fixed threshold and</span>
 <span class="sd">    decaying-exponential post-synaptic current. (Separate synaptic currents for</span>
 <span class="sd">    excitatory and inhibitory synapses.</span>
@@ -161,8 +162,9 @@
     <span class="p">}</span></div>
 
 
+
 <span class="k">class</span> <span class="nc">IF_curr_delta</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Leaky integrate and fire model with fixed threshold.</span>
 <span class="sd">    Synaptic inputs produce step changes in membrane potential.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -194,8 +196,10 @@
     <span class="p">}</span>
 
 
-<div class="viewcode-block" id="IF_cond_alpha"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.IF_cond_alpha">[docs]</a><span class="k">class</span> <span class="nc">IF_cond_alpha</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="IF_cond_alpha">
+<a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.IF_cond_alpha">[docs]</a>
+<span class="k">class</span> <span class="nc">IF_cond_alpha</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Leaky integrate and fire model with fixed threshold and alpha-function-</span>
 <span class="sd">    shaped post-synaptic conductance.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -237,8 +241,11 @@
     <span class="p">}</span></div>
 
 
-<div class="viewcode-block" id="IF_cond_exp"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.IF_cond_exp">[docs]</a><span class="k">class</span> <span class="nc">IF_cond_exp</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="IF_cond_exp">
+<a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.IF_cond_exp">[docs]</a>
+<span class="k">class</span> <span class="nc">IF_cond_exp</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Leaky integrate and fire model with fixed threshold and</span>
 <span class="sd">    exponentially-decaying post-synaptic conductance.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -280,8 +287,11 @@
     <span class="p">}</span></div>
 
 
-<div class="viewcode-block" id="IF_cond_exp_gsfa_grr"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.IF_cond_exp_gsfa_grr">[docs]</a><span class="k">class</span> <span class="nc">IF_cond_exp_gsfa_grr</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="IF_cond_exp_gsfa_grr">
+<a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.IF_cond_exp_gsfa_grr">[docs]</a>
+<span class="k">class</span> <span class="nc">IF_cond_exp_gsfa_grr</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Linear leaky integrate and fire model with fixed threshold,</span>
 <span class="sd">    decaying-exponential post-synaptic conductance, conductance based</span>
 <span class="sd">    spike-frequency adaptation, and a conductance-based relative refractory</span>
@@ -346,8 +356,9 @@
     <span class="p">}</span></div>
 
 
+
 <span class="k">class</span> <span class="nc">IF_facets_hardware1</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Leaky integrate and fire model with conductance-based synapses and fixed</span>
 <span class="sd">    threshold as it is resembled by the FACETS Hardware Stage 1.</span>
 
@@ -387,7 +398,7 @@
 
 
 <span class="k">class</span> <span class="nc">HH_cond_exp</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Single-compartment Hodgkin-Huxley model.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Single-compartment Hodgkin-Huxley model.</span>
 <span class="sd">    Reference:</span>
 <span class="sd">    Traub &amp; Miles, Neuronal Networks of the Hippocampus, Cambridge, 1991.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -441,8 +452,10 @@
     <span class="p">}</span>
 
 
-<div class="viewcode-block" id="EIF_cond_alpha_isfa_ista"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.EIF_cond_alpha_isfa_ista">[docs]</a><span class="k">class</span> <span class="nc">EIF_cond_alpha_isfa_ista</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="EIF_cond_alpha_isfa_ista">
+<a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.EIF_cond_alpha_isfa_ista">[docs]</a>
+<span class="k">class</span> <span class="nc">EIF_cond_alpha_isfa_ista</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Exponential integrate and fire neuron with spike triggered and</span>
 <span class="sd">    sub-threshold adaptation currents (isfa, ista reps.) according to:</span>
 
@@ -501,8 +514,11 @@
     <span class="p">}</span></div>
 
 
-<div class="viewcode-block" id="EIF_cond_exp_isfa_ista"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.EIF_cond_exp_isfa_ista">[docs]</a><span class="k">class</span> <span class="nc">EIF_cond_exp_isfa_ista</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="EIF_cond_exp_isfa_ista">
+<a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.EIF_cond_exp_isfa_ista">[docs]</a>
+<span class="k">class</span> <span class="nc">EIF_cond_exp_isfa_ista</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Exponential integrate and fire neuron with spike triggered and</span>
 <span class="sd">    sub-threshold adaptation currents (isfa, ista reps.) according to:</span>
 
@@ -561,8 +577,11 @@
     <span class="p">}</span></div>
 
 
-<div class="viewcode-block" id="LIF"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.LIF">[docs]</a><span class="k">class</span> <span class="nc">LIF</span><span class="p">(</span><span class="n">StandardCellTypeComponent</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="LIF">
+<a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.LIF">[docs]</a>
+<span class="k">class</span> <span class="nc">LIF</span><span class="p">(</span><span class="n">StandardCellTypeComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Leaky integrate and fire neuron</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -593,8 +612,11 @@
     <span class="p">}</span></div>
 
 
-<div class="viewcode-block" id="AdExp"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.AdExp">[docs]</a><span class="k">class</span> <span class="nc">AdExp</span><span class="p">(</span><span class="n">StandardCellTypeComponent</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="AdExp">
+<a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.AdExp">[docs]</a>
+<span class="k">class</span> <span class="nc">AdExp</span><span class="p">(</span><span class="n">StandardCellTypeComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Exponential integrate and fire neuron with spike triggered and</span>
 <span class="sd">    sub-threshold adaptation currents according to:</span>
 
@@ -640,7 +662,10 @@
     <span class="p">}</span></div>
 
 
-<div class="viewcode-block" id="PointNeuron"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.PointNeuron">[docs]</a><span class="k">class</span> <span class="nc">PointNeuron</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
+
+<div class="viewcode-block" id="PointNeuron">
+<a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.PointNeuron">[docs]</a>
+<span class="k">class</span> <span class="nc">PointNeuron</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">neuron</span><span class="p">,</span> <span class="o">**</span><span class="n">post_synaptic_receptors</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">neuron</span> <span class="o">=</span> <span class="n">neuron</span>
@@ -696,38 +721,53 @@
                 <span class="n">divs</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">variable</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">div</span>
         <span class="k">return</span> <span class="n">divs</span>
 
-<div class="viewcode-block" id="PointNeuron.simple_parameters"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.PointNeuron.simple_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">simple_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a list of parameters for which there is a one-to-one</span>
+<div class="viewcode-block" id="PointNeuron.simple_parameters">
+<a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.PointNeuron.simple_parameters">[docs]</a>
+    <span class="k">def</span> <span class="nf">simple_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a list of parameters for which there is a one-to-one</span>
 <span class="sd">        correspondance between standard and native parameter values.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">neuron</span><span class="o">.</span><span class="n">simple_parameters</span><span class="p">()</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span>
             <span class="nb">set</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="nb">set</span><span class="p">(</span><span class="n">psr</span><span class="o">.</span><span class="n">simple_parameters</span><span class="p">())</span>
                         <span class="k">for</span> <span class="n">psr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_synaptic_receptors</span><span class="o">.</span><span class="n">values</span><span class="p">()]))</span></div>
 
-<div class="viewcode-block" id="PointNeuron.scaled_parameters"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.PointNeuron.scaled_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">scaled_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a list of parameters for which there is a unit change between</span>
+
+<div class="viewcode-block" id="PointNeuron.scaled_parameters">
+<a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.PointNeuron.scaled_parameters">[docs]</a>
+    <span class="k">def</span> <span class="nf">scaled_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a list of parameters for which there is a unit change between</span>
 <span class="sd">        standard and native parameter values.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">neuron</span><span class="o">.</span><span class="n">scaled_parameters</span><span class="p">()</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span>
             <span class="nb">set</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="nb">set</span><span class="p">(</span><span class="n">psr</span><span class="o">.</span><span class="n">scaled_parameters</span><span class="p">())</span>
                         <span class="k">for</span> <span class="n">psr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_synaptic_receptors</span><span class="o">.</span><span class="n">values</span><span class="p">()]))</span></div>
 
-<div class="viewcode-block" id="PointNeuron.computed_parameters"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.PointNeuron.computed_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">computed_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a list of parameters whose values must be computed from</span>
+
+<div class="viewcode-block" id="PointNeuron.computed_parameters">
+<a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.PointNeuron.computed_parameters">[docs]</a>
+    <span class="k">def</span> <span class="nf">computed_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a list of parameters whose values must be computed from</span>
 <span class="sd">        more than one other parameter.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">neuron</span><span class="o">.</span><span class="n">computed_parameters</span><span class="p">()</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span>
             <span class="nb">set</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="nb">set</span><span class="p">(</span><span class="n">psr</span><span class="o">.</span><span class="n">computed_parameters</span><span class="p">())</span>
                         <span class="k">for</span> <span class="n">psr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_synaptic_receptors</span><span class="o">.</span><span class="n">values</span><span class="p">()]))</span></div>
 
-<div class="viewcode-block" id="PointNeuron.computed_parameters_include"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.PointNeuron.computed_parameters_include">[docs]</a>    <span class="k">def</span> <span class="nf">computed_parameters_include</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_names</span><span class="p">):</span>
+
+<div class="viewcode-block" id="PointNeuron.computed_parameters_include">
+<a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.PointNeuron.computed_parameters_include">[docs]</a>
+    <span class="k">def</span> <span class="nf">computed_parameters_include</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_names</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">neuron</span><span class="o">.</span><span class="n">computed_parameters_include</span><span class="p">(</span><span class="n">parameter_names</span><span class="p">)</span>
             <span class="ow">or</span> <span class="n">reduce</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">or_</span><span class="p">,</span>                                         <span class="c1"># noqa: W503</span>
                       <span class="p">[</span><span class="n">psr</span><span class="o">.</span><span class="n">computed_parameters_include</span><span class="p">(</span><span class="n">parameter_names</span><span class="p">)</span>
                        <span class="k">for</span> <span class="n">psr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_synaptic_receptors</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span>
-        <span class="p">)</span></div></div>
+        <span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="Izhikevich"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.Izhikevich">[docs]</a><span class="k">class</span> <span class="nc">Izhikevich</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Izhikevich">
+<a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.Izhikevich">[docs]</a>
+<span class="k">class</span> <span class="nc">Izhikevich</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Izhikevich spiking model with a quadratic non-linearity according to:</span>
 
 <span class="sd">    E. Izhikevich (2003), IEEE transactions on neural networks, 14(6)</span>
@@ -767,8 +807,9 @@
     <span class="p">}</span></div>
 
 
+
 <span class="k">class</span> <span class="nc">GIF_cond_exp</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The GIF model is a leaky integrate-and-fire model including a spike-triggered current eta(t),</span>
 <span class="sd">    a moving threshold gamma(t) and stochastic spike emission.</span>
 
@@ -836,8 +877,10 @@
     <span class="p">}</span>
 
 
-<div class="viewcode-block" id="SpikeSourcePoisson"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.SpikeSourcePoisson">[docs]</a><span class="k">class</span> <span class="nc">SpikeSourcePoisson</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Spike source, generating spikes according to a Poisson process.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="SpikeSourcePoisson">
+<a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.SpikeSourcePoisson">[docs]</a>
+<span class="k">class</span> <span class="nc">SpikeSourcePoisson</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Spike source, generating spikes according to a Poisson process.&quot;&quot;&quot;</span>
 
     <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;rate&#39;</span><span class="p">:</span>     <span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># Mean spike frequency (Hz)</span>
@@ -854,8 +897,9 @@
     <span class="p">}</span></div>
 
 
+
 <span class="k">class</span> <span class="nc">SpikeSourcePoissonRefractory</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Spike source, generating spikes according to a Poisson process with dead time&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Spike source, generating spikes according to a Poisson process with dead time&quot;&quot;&quot;</span>
 
     <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;rate&#39;</span><span class="p">:</span>       <span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># Mean spike frequency (Hz)</span>
@@ -875,7 +919,7 @@
 
 
 <span class="k">class</span> <span class="nc">SpikeSourceGamma</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Spike source, generating spikes according to a gamma process.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Spike source, generating spikes according to a gamma process.</span>
 
 <span class="sd">    The mean inter-spike interval is given by alpha/beta</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -897,8 +941,10 @@
     <span class="p">}</span>
 
 
-<div class="viewcode-block" id="SpikeSourceInhGamma"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.SpikeSourceInhGamma">[docs]</a><span class="k">class</span> <span class="nc">SpikeSourceInhGamma</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="SpikeSourceInhGamma">
+<a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.SpikeSourceInhGamma">[docs]</a>
+<span class="k">class</span> <span class="nc">SpikeSourceInhGamma</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Spike source, generating realizations of an inhomogeneous gamma process,</span>
 <span class="sd">    employing the thinning method.</span>
 
@@ -925,8 +971,11 @@
     <span class="p">}</span></div>
 
 
-<div class="viewcode-block" id="SpikeSourceArray"><a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.SpikeSourceArray">[docs]</a><span class="k">class</span> <span class="nc">SpikeSourceArray</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Spike source generating spikes at the times given in the spike_times array.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SpikeSourceArray">
+<a class="viewcode-back" href="../../../reference/neuronmodels.html#pyNN.standardmodels.cells.SpikeSourceArray">[docs]</a>
+<span class="k">class</span> <span class="nc">SpikeSourceArray</span><span class="p">(</span><span class="n">StandardCellType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Spike source generating spikes at the times given in the spike_times array.&quot;&quot;&quot;</span>
 
     <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;spike_times&#39;</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">([])}</span>  <span class="c1"># list or numpy array containing spike times in milliseconds.  # noqa: E501</span>
     <span class="n">recordable</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;spikes&#39;</span><span class="p">]</span>
@@ -937,10 +986,11 @@
     <span class="p">}</span></div>
 
 
+
 <span class="c1"># === Multi-compartment neurons =====</span>
 
 <span class="k">class</span> <span class="nc">Section</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -1023,7 +1073,7 @@
             <p class="logo"><a href="../../../index.html">
               <img class="logo" src="../../../_static/pyNN_logo.png" alt="Logo"/>
             </a></p>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
@@ -1031,7 +1081,7 @@
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
@@ -1046,14 +1096,14 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyNN.standardmodels.cells</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2023, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    &#169; Copyright 2006-2024, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
     </div>
   </body>
 </html>

@@ -1,20 +1,16 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyNN.neuron.control &#8212; PyNN 0.12.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/nature.css" />
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-    <script src="../../../_static/jquery.js"></script>
-    <script src="../../../_static/underscore.js"></script>
-    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/sphinx_highlight.js"></script>
-    <link rel="shortcut icon" href="../../../_static/pyNN_icon.ico"/>
+    <title>pyNN.neuron.control &#8212; PyNN 0.12.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/nature.css?v=0f882399" />
+    <script src="../../../_static/documentation_options.js?v=56343b9b"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="../../../_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
   </head><body>
@@ -27,7 +23,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../neuron.html" accesskey="U">pyNN.neuron</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyNN.neuron.control</a></li> 
@@ -43,7 +39,7 @@
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">NEURON implementation of functions for simulation set-up and control</span>
 
-<span class="sd">:copyright: Copyright 2006-2023 by the PyNN team, see AUTHORS.</span>
+<span class="sd">:copyright: Copyright 2006-2024 by the PyNN team, see AUTHORS.</span>
 <span class="sd">:license: CeCILL, see LICENSE for details.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -61,8 +57,10 @@
 <span class="c1"># ==============================================================================</span>
 
 
-<div class="viewcode-block" id="setup"><a class="viewcode-back" href="../../../reference/simulationcontrol.html#pyNN.neuron.setup">[docs]</a><span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="n">DEFAULT_TIMESTEP</span><span class="p">,</span> <span class="n">min_delay</span><span class="o">=</span><span class="n">DEFAULT_MIN_DELAY</span><span class="p">,</span> <span class="o">**</span><span class="n">extra_params</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="setup">
+<a class="viewcode-back" href="../../../reference/simulationcontrol.html#pyNN.neuron.setup">[docs]</a>
+<span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="n">DEFAULT_TIMESTEP</span><span class="p">,</span> <span class="n">min_delay</span><span class="o">=</span><span class="n">DEFAULT_MIN_DELAY</span><span class="p">,</span> <span class="o">**</span><span class="n">extra_params</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Should be called at the very beginning of a script.</span>
 
 <span class="sd">    `extra_params` contains any keyword arguments that are required by a given</span>
@@ -101,12 +99,16 @@
     <span class="k">return</span> <span class="n">rank</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="end"><a class="viewcode-back" href="../../../reference/simulationcontrol.html#pyNN.neuron.end">[docs]</a><span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="n">compatible_output</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Do any necessary cleaning up before exiting.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="end">
+<a class="viewcode-back" href="../../../reference/simulationcontrol.html#pyNN.neuron.end">[docs]</a>
+<span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="n">compatible_output</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Do any necessary cleaning up before exiting.&quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span> <span class="ow">in</span> <span class="n">simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">write_on_end</span><span class="p">:</span>
         <span class="n">io</span> <span class="o">=</span> <span class="n">get_io</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="n">population</span><span class="o">.</span><span class="n">write_data</span><span class="p">(</span><span class="n">io</span><span class="p">,</span> <span class="n">variables</span><span class="p">)</span>
     <span class="n">simulator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">write_on_end</span> <span class="o">=</span> <span class="p">[]</span></div>
+
     <span class="c1"># simulator.state.finalize()</span>
 
 
@@ -134,7 +136,7 @@
             <p class="logo"><a href="../../../index.html">
               <img class="logo" src="../../../_static/pyNN_logo.png" alt="Logo"/>
             </a></p>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
@@ -142,7 +144,7 @@
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
@@ -157,15 +159,15 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../neuron.html" >pyNN.neuron</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyNN.neuron.control</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2023, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    &#169; Copyright 2006-2024, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
     </div>
   </body>
 </html>

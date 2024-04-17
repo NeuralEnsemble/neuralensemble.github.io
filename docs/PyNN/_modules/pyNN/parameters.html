@@ -1,20 +1,16 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyNN.parameters &#8212; PyNN 0.12.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
-    <link rel="shortcut icon" href="../../_static/pyNN_icon.ico"/>
+    <title>pyNN.parameters &#8212; PyNN 0.12.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css?v=0f882399" />
+    <script src="../../_static/documentation_options.js?v=56343b9b"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="../../_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
   </head><body>
@@ -27,7 +23,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyNN.parameters</a></li> 
       </ul>
@@ -42,7 +38,7 @@
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Parameter set handling</span>
 
-<span class="sd">:copyright: Copyright 2006-2023 by the PyNN team, see AUTHORS.</span>
+<span class="sd">:copyright: Copyright 2006-2024 by the PyNN team, see AUTHORS.</span>
 <span class="sd">:license: CeCILL, see LICENSE for details.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -54,8 +50,10 @@
 <span class="kn">from</span> <span class="nn">.random</span> <span class="kn">import</span> <span class="n">RandomDistribution</span><span class="p">,</span> <span class="n">NativeRNG</span>
 
 
-<div class="viewcode-block" id="LazyArray"><a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.LazyArray">[docs]</a><span class="k">class</span> <span class="nc">LazyArray</span><span class="p">(</span><span class="n">larray</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="LazyArray">
+<a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.LazyArray">[docs]</a>
+<span class="k">class</span> <span class="nc">LazyArray</span><span class="p">(</span><span class="n">larray</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Optimises storage of arrays in various ways:</span>
 <span class="sd">      - stores only a single value if all the values in the array are the same</span>
 <span class="sd">      - if the array is created from a :class:`~pyNN.random.RandomDistribution`</span>
@@ -109,8 +107,10 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">base_value</span><span class="p">[</span><span class="n">addr</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_value</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">operations</span> <span class="o">=</span> <span class="p">[]</span>
 
-<div class="viewcode-block" id="LazyArray.by_column"><a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.LazyArray.by_column">[docs]</a>    <span class="k">def</span> <span class="nf">by_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="LazyArray.by_column">
+<a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.LazyArray.by_column">[docs]</a>
+    <span class="k">def</span> <span class="nf">by_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Iterate over the columns of the array. Columns will be yielded either</span>
 <span class="sd">        as a 1D array or as a single value (for a flat array).</span>
 
@@ -135,6 +135,7 @@
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">column_indices</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">_partially_evaluate</span><span class="p">((</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">j</span><span class="p">),</span> <span class="n">simplify</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
+
     <span class="k">def</span> <span class="nf">_apply_operations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">addr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">simplify</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="c1"># todo: move this modified version back into lazyarray</span>
         <span class="k">for</span> <span class="n">f</span><span class="p">,</span> <span class="n">arg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
@@ -158,8 +159,9 @@
         <span class="k">return</span> <span class="n">x</span></div>
 
 
+
 <span class="k">class</span> <span class="nc">ArrayParameter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represents a parameter whose value consists of multiple values, e.g. a tuple or array.</span>
 
 <span class="sd">    The reason for defining this class rather than just using a NumPy array is</span>
@@ -187,14 +189,14 @@
     <span class="c1">#     from NumPy array</span>
 
     <span class="k">def</span> <span class="nf">max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the maximum value.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the maximum value.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a new :class:`ArrayParameter` in which all values in the original</span>
 <span class="sd">        :class:`ArrayParameter` have `val` added to them.</span>
 
@@ -209,7 +211,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="n">val</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a new :class:`ArrayParameter` in which all values in the original</span>
 <span class="sd">        :class:`ArrayParameter` have `val` subtracted from them.</span>
 
@@ -224,7 +226,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="n">val</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a new :class:`ArrayParameter` in which all values in the original</span>
 <span class="sd">        :class:`ArrayParameter` have been multiplied by `val`.</span>
 
@@ -242,7 +244,7 @@
     <span class="fm">__rmul__</span> <span class="o">=</span> <span class="fm">__mul__</span>
 
     <span class="k">def</span> <span class="nf">__div__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a new :class:`ArrayParameter` in which all values in the original</span>
 <span class="sd">        :class:`ArrayParameter` have been divided by `val`.</span>
 
@@ -274,8 +276,10 @@
         <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="Sequence"><a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.Sequence">[docs]</a><span class="k">class</span> <span class="nc">Sequence</span><span class="p">(</span><span class="n">ArrayParameter</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Sequence">
+<a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.Sequence">[docs]</a>
+<span class="k">class</span> <span class="nc">Sequence</span><span class="p">(</span><span class="n">ArrayParameter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Represents a sequence of numerical values.</span>
 
 <span class="sd">        Arguments:</span>
@@ -287,8 +291,11 @@
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="ParameterSpace"><a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.ParameterSpace">[docs]</a><span class="k">class</span> <span class="nc">ParameterSpace</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ParameterSpace">
+<a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.ParameterSpace">[docs]</a>
+<span class="k">class</span> <span class="nc">ParameterSpace</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Representation of one or more points in a parameter space.</span>
 
 <span class="sd">    i.e. represents one or more parameter sets, where each parameter set has</span>
@@ -314,7 +321,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">component</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parameters</span> <span class="o">=</span> <span class="p">{}</span>
@@ -331,25 +338,33 @@
     <span class="n">shape</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">fget</span><span class="o">=</span><span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">fset</span><span class="o">=</span><span class="n">_set_shape</span><span class="p">,</span>
                      <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Size of the lazy arrays contained within the parameter space&quot;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ParameterSpace.keys"><a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.ParameterSpace.keys">[docs]</a>    <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ParameterSpace.keys">
+<a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.ParameterSpace.keys">[docs]</a>
+    <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PS.keys() -&gt; list of PS&#39;s keys.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="ParameterSpace.items"><a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.ParameterSpace.items">[docs]</a>    <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ParameterSpace.items">
+<a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.ParameterSpace.items">[docs]</a>
+    <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PS.items() -&gt;  an iterator over the (key, value) items of PS.</span>
 
 <span class="sd">        Note that the values will all be :class:`LazyArray` objects.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameters</span><span class="o">.</span><span class="n">items</span><span class="p">()</span></div>
 
+
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;&lt;ParameterSpace </span><span class="si">%s</span><span class="s2">, shape=</span><span class="si">%s</span><span class="s2">&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ParameterSpace.update"><a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.ParameterSpace.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">parameters</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ParameterSpace.update">
+<a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.ParameterSpace.update">[docs]</a>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">parameters</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Update the contents of the parameter space according to the</span>
 <span class="sd">        `(key, value)` pairs in ``**parameters``. All values will be turned into</span>
 <span class="sd">        lazy arrays.</span>
@@ -360,9 +375,13 @@
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ParameterSpace.__getitem__"><a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.ParameterSpace.__getitem__">[docs]</a>    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;x.__getitem__(y) &lt;==&gt; x[y]&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ParameterSpace.__getitem__">
+<a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.ParameterSpace.__getitem__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;x.__getitem__(y) &lt;==&gt; x[y]&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameters</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
+
 
     <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">:</span>
@@ -422,8 +441,10 @@
              <span class="c1"># todo: check and/or pass on schema to child</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_parameters</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
-<div class="viewcode-block" id="ParameterSpace.pop"><a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.ParameterSpace.pop">[docs]</a>    <span class="k">def</span> <span class="nf">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ParameterSpace.pop">
+<a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.ParameterSpace.pop">[docs]</a>
+    <span class="k">def</span> <span class="nf">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Remove the given parameter from the parameter set and from its schema,</span>
 <span class="sd">        and return its value.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -432,15 +453,18 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">value</span></div>
 
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_homogeneous</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        True if all of the lazy arrays within are homogeneous.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">is_homogeneous</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameters</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 
-<div class="viewcode-block" id="ParameterSpace.evaluate"><a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.ParameterSpace.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">simplify</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ParameterSpace.evaluate">
+<a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.ParameterSpace.evaluate">[docs]</a>
+    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">simplify</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evaluate all lazy arrays contained in the parameter space, using the</span>
 <span class="sd">        given mask.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -475,8 +499,11 @@
         <span class="c1"># should possibly update self.shape according to mask?</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="ParameterSpace.as_dict"><a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.ParameterSpace.as_dict">[docs]</a>    <span class="k">def</span> <span class="nf">as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ParameterSpace.as_dict">
+<a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.ParameterSpace.as_dict">[docs]</a>
+    <span class="k">def</span> <span class="nf">as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a plain dict containing the same keys and values as the</span>
 <span class="sd">        parameter space. The values must first have been evaluated.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -491,8 +518,11 @@
                 <span class="k">assert</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">D</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">LazyArray</span><span class="p">)</span>  <span class="c1"># should all have been evaluated by now</span>
         <span class="k">return</span> <span class="n">D</span></div>
 
-<div class="viewcode-block" id="ParameterSpace.__iter__"><a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.ParameterSpace.__iter__">[docs]</a>    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ParameterSpace.__iter__">
+<a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.ParameterSpace.__iter__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return an array-element-wise iterator over the parameter space.</span>
 
 <span class="sd">        Each item in the iterator is a dict, containing the same keys as the</span>
@@ -532,8 +562,11 @@
                     <span class="k">assert</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">D</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">LazyArray</span><span class="p">)</span>  <span class="c1"># should all have been evaluated by now</span>
             <span class="k">yield</span> <span class="n">D</span></div>
 
-<div class="viewcode-block" id="ParameterSpace.columns"><a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.ParameterSpace.columns">[docs]</a>    <span class="k">def</span> <span class="nf">columns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ParameterSpace.columns">
+<a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.ParameterSpace.columns">[docs]</a>
+    <span class="k">def</span> <span class="nf">columns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        For a 2D space, return a column-wise iterator over the parameter space.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_evaluated</span><span class="p">:</span>
@@ -553,6 +586,7 @@
                     <span class="k">assert</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">D</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">LazyArray</span><span class="p">)</span>
                 <span class="k">yield</span> <span class="n">D</span></div>
 
+
     <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="nb">all</span><span class="p">(</span><span class="n">a</span> <span class="o">==</span> <span class="n">b</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameters</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">other</span><span class="o">.</span><span class="n">_parameters</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
                 <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">schema</span>
@@ -567,22 +601,24 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">has_native_rngs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return True if the parameter set contains any NativeRNGs</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">rd</span><span class="o">.</span><span class="n">base_value</span><span class="o">.</span><span class="n">rng</span><span class="p">,</span> <span class="n">NativeRNG</span><span class="p">)</span>
                    <span class="k">for</span> <span class="n">rd</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_random_distributions</span><span class="p">())</span>
 
     <span class="k">def</span> <span class="nf">_random_distributions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        An iterator over those values contained in the PS that are</span>
 <span class="sd">        derived from random distributions.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">value</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">base_value</span><span class="p">,</span> <span class="n">RandomDistribution</span><span class="p">))</span>
 
-<div class="viewcode-block" id="ParameterSpace.expand"><a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.ParameterSpace.expand">[docs]</a>    <span class="k">def</span> <span class="nf">expand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">,</span> <span class="n">mask</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ParameterSpace.expand">
+<a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.ParameterSpace.expand">[docs]</a>
+    <span class="k">def</span> <span class="nf">expand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">,</span> <span class="n">mask</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Increase the size of the ParameterSpace.</span>
 
 <span class="sd">        Existing array values are mapped to the indices given in mask.</span>
@@ -597,18 +633,23 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_parameters</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">base_value</span> <span class="o">=</span> <span class="n">new_base_value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="n">new_shape</span></div>
 
-<div class="viewcode-block" id="ParameterSpace.flatten"><a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.ParameterSpace.flatten">[docs]</a>    <span class="k">def</span> <span class="nf">flatten</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">with_prefix</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ParameterSpace.flatten">
+<a class="viewcode-back" href="../../reference/parameters.html#pyNN.parameters.ParameterSpace.flatten">[docs]</a>
+    <span class="k">def</span> <span class="nf">flatten</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">with_prefix</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameters</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">ParameterSpace</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">cname</span><span class="p">,</span> <span class="n">cvalue</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                     <span class="k">if</span> <span class="n">with_prefix</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">_parameters</span><span class="p">[</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">cname</span><span class="p">)]</span> <span class="o">=</span> <span class="n">cvalue</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_parameters</span><span class="p">[</span><span class="n">cname</span><span class="p">]</span> <span class="o">=</span> <span class="n">cvalue</span></div></div>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_parameters</span><span class="p">[</span><span class="n">cname</span><span class="p">]</span> <span class="o">=</span> <span class="n">cvalue</span></div>
+</div>
+
 
 
 <span class="k">def</span> <span class="nf">simplify</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    If `value` is a homogeneous array, return the single value that all elements</span>
 <span class="sd">    share. Otherwise, pass the value through.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -628,7 +669,7 @@
 
 
 <span class="k">class</span> <span class="nc">IonicSpecies</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Encapsulation of parameters for an ionic species&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Encapsulation of parameters for an ionic species&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">ion_name</span><span class="p">,</span>
@@ -650,7 +691,7 @@
             <p class="logo"><a href="../../index.html">
               <img class="logo" src="../../_static/pyNN_logo.png" alt="Logo"/>
             </a></p>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
@@ -658,7 +699,7 @@
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
@@ -673,14 +714,14 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyNN.parameters</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2023, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    &#169; Copyright 2006-2024, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
     </div>
   </body>
 </html>

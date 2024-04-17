@@ -1,20 +1,16 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>pyNN.utility.plotting &#8212; PyNN 0.12.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/nature.css" />
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-    <script src="../../../_static/jquery.js"></script>
-    <script src="../../../_static/underscore.js"></script>
-    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/sphinx_highlight.js"></script>
-    <link rel="shortcut icon" href="../../../_static/pyNN_icon.ico"/>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/nature.css?v=601dbdee" />
+    <script src="../../../_static/documentation_options.js?v=c5b435e8"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="../../../_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
   </head><body>
@@ -91,7 +87,7 @@
 
 
 <span class="k">def</span> <span class="nf">plot_signal</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plot a single channel from an AnalogSignal.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="s2">&quot;ylabel&quot;</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
@@ -109,7 +105,7 @@
 
 
 <span class="k">def</span> <span class="nf">plot_signals</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">signal_array</span><span class="p">,</span> <span class="n">label_prefix</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plot all channels in an AnalogSignal in a single panel.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="s2">&quot;ylabel&quot;</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
@@ -143,7 +139,7 @@
 
 
 <span class="k">def</span> <span class="nf">plot_spiketrains</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">spiketrains</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plot all spike trains in a Segment in a raster plot.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">spiketrains</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">t_start</span><span class="p">,</span> <span class="n">spiketrains</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">t_stop</span><span class="p">)</span>
@@ -165,7 +161,7 @@
 
 
 <span class="k">def</span> <span class="nf">plot_spiketrainlist</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">spiketrains</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plot all spike trains in a Segment in a raster plot.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">spiketrains</span><span class="o">.</span><span class="n">t_start</span><span class="p">,</span> <span class="n">spiketrains</span><span class="o">.</span><span class="n">t_stop</span><span class="p">)</span>
@@ -183,7 +179,7 @@
 
 
 <span class="k">def</span> <span class="nf">plot_array_as_image</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plots a numpy array as an image.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">handle_options</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
@@ -220,15 +216,17 @@
 
 
 <span class="k">def</span> <span class="nf">variable_names</span><span class="p">(</span><span class="n">segment</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    List the names of all the AnalogSignals (used for the variable name by</span>
 <span class="sd">    PyNN) in the given segment.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">signal</span> <span class="ow">in</span> <span class="n">segment</span><span class="o">.</span><span class="n">analogsignals</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="Figure"><a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.plotting.Figure">[docs]</a><span class="k">class</span> <span class="nc">Figure</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Figure">
+<a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.plotting.Figure">[docs]</a>
+<span class="k">class</span> <span class="nc">Figure</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Provide simple, declarative specification of multi-panel figures.</span>
 
 <span class="sd">    Example::</span>
@@ -272,8 +270,10 @@
         <span class="k">if</span> <span class="s2">&quot;annotations&quot;</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">figtext</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;annotations&quot;</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Figure.save"><a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.plotting.Figure.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Figure.save">
+<a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.plotting.Figure.save">[docs]</a>
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Save the figure to file. The format is taken from the file extension.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">dirname</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
@@ -281,12 +281,19 @@
             <span class="n">makedirs</span><span class="p">(</span><span class="n">dirname</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Figure.show"><a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.plotting.Figure.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div></div>
+
+<div class="viewcode-block" id="Figure.show">
+<a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.plotting.Figure.show">[docs]</a>
+    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+</div>
 
 
-<div class="viewcode-block" id="Panel"><a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.plotting.Panel">[docs]</a><span class="k">class</span> <span class="nc">Panel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Panel">
+<a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.plotting.Panel">[docs]</a>
+<span class="k">class</span> <span class="nc">Panel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represents a single panel in a multi-panel figure.</span>
 
 <span class="sd">    A panel is a Matplotlib Axes or Subplot instance. A data item may be an</span>
@@ -311,8 +318,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">data_labels</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;data_labels&quot;</span><span class="p">,</span> <span class="n">repeat</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">line_properties</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;line_properties&quot;</span><span class="p">,</span> <span class="n">repeat</span><span class="p">({}))</span>
 
-<div class="viewcode-block" id="Panel.plot"><a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.plotting.Panel.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axes</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Panel.plot">
+<a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.plotting.Panel.plot">[docs]</a>
+    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axes</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Plot the Panel&#39;s data in the provided Axes/Subplot instance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">datum</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">properties</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_labels</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">line_properties</span><span class="p">):</span>
@@ -333,12 +342,16 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Can&#39;t handle arrays with </span><span class="si">%s</span><span class="s2"> dimensions&quot;</span> <span class="o">%</span> <span class="n">datum</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Can&#39;t handle type </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">datum</span><span class="p">))</span></div></div>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Can&#39;t handle type </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">datum</span><span class="p">))</span></div>
+</div>
 
 
-<div class="viewcode-block" id="comparison_plot"><a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.plotting.comparison_plot">[docs]</a><span class="k">def</span> <span class="nf">comparison_plot</span><span class="p">(</span><span class="n">segments</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">annotations</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+
+<div class="viewcode-block" id="comparison_plot">
+<a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.plotting.comparison_plot">[docs]</a>
+<span class="k">def</span> <span class="nf">comparison_plot</span><span class="p">(</span><span class="n">segments</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">annotations</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                     <span class="n">fig_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">with_spikes</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Given a list of segments, plot all the data they contain so as to be able</span>
 <span class="sd">    to compare them.</span>
 
@@ -391,8 +404,9 @@
     <span class="k">return</span> <span class="n">fig</span></div>
 
 
+
 <span class="k">class</span> <span class="nc">DataTable</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A lightweight encapsulation of x, y data for scatterplots.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A lightweight encapsulation of x, y data for scatterplots.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
@@ -411,7 +425,7 @@
 
 
 <span class="k">class</span> <span class="nc">Histogram</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A lightweight encapsulation of histogram data.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A lightweight encapsulation of histogram data.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
@@ -425,7 +439,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">evaluated</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Iterate over the bars of the histogram&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterate over the bars of the histogram&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">):</span>
             <span class="k">yield</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
@@ -437,7 +451,7 @@
 
 
 <span class="k">def</span> <span class="nf">connection_plot</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="s2">&quot;O&quot;</span><span class="p">,</span> <span class="n">zero</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">empty</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">spacer</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Produce a simple text-based representation of a connectivity matrix&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Produce a simple text-based representation of a connectivity matrix&quot;&quot;&quot;</span>
     <span class="n">connection_array</span> <span class="o">=</span> <span class="n">projection</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;weight&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;array&quot;</span><span class="p">)</span>
     <span class="n">image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">connection_array</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
     <span class="c1"># ignore the complaint that x &gt; 0 is invalid for NaN</span>
@@ -488,8 +502,8 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2023, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    &#169; Copyright 2006-2023, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
   </body>
 </html>

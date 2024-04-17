@@ -1,21 +1,17 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Roadmap &#8212; PyNN 0.12.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/nature.css" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <title>Roadmap &#8212; PyNN 0.12.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css?v=0f882399" />
+    <script src="_static/documentation_options.js?v=56343b9b"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
   </head><body>
@@ -28,7 +24,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.3 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Roadmap</a></li> 
       </ul>
     </div>  
@@ -39,41 +35,41 @@
           <div class="body" role="main">
             
   <section id="roadmap">
-<h1>Roadmap<a class="headerlink" href="#roadmap" title="Permalink to this heading">¶</a></h1>
+<h1>Roadmap<a class="headerlink" href="#roadmap" title="Link to this heading">¶</a></h1>
 <section id="nineml-neuroml-model-definitions">
-<h2>NineML/NeuroML model definitions<a class="headerlink" href="#nineml-neuroml-model-definitions" title="Permalink to this heading">¶</a></h2>
+<h2>NineML/NeuroML model definitions<a class="headerlink" href="#nineml-neuroml-model-definitions" title="Link to this heading">¶</a></h2>
 </section>
 <section id="multi-compartmental-models">
-<h2>Multi-compartmental models<a class="headerlink" href="#multi-compartmental-models" title="Permalink to this heading">¶</a></h2>
+<h2>Multi-compartmental models<a class="headerlink" href="#multi-compartmental-models" title="Link to this heading">¶</a></h2>
 </section>
 <section id="nineml-neuroml-export">
-<h2>NineML/NeuroML export<a class="headerlink" href="#nineml-neuroml-export" title="Permalink to this heading">¶</a></h2>
+<h2>NineML/NeuroML export<a class="headerlink" href="#nineml-neuroml-export" title="Link to this heading">¶</a></h2>
 </section>
 <section id="api-simplification">
-<h2>API simplification<a class="headerlink" href="#api-simplification" title="Permalink to this heading">¶</a></h2>
+<h2>API simplification<a class="headerlink" href="#api-simplification" title="Link to this heading">¶</a></h2>
 </section>
 <section id="multi-simulator-models-with-music">
-<h2>Multi-simulator models with MUSIC<a class="headerlink" href="#multi-simulator-models-with-music" title="Permalink to this heading">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>from pyNN import music
-music.setup({“neuron”: 10, “nest”: 20})
-sim1, sim2 = music.get_simulators()
-sim1.setup(timestep=0.025)
-sim2.setup(timestep=0.1)
-cell_parameters = {”tau_m”: 12.0, ”cm”: 0.8, ”v_thresh”: -50.0,
-                   ”v_reset”: -65.0}
-pE = sim1.Population((100,100), sim.IF_cond_exp, cell_parameters,
-                     label=”excitatory neurons”)
-pI = sim2.Population((50,50), sim.IF_cond_exp, cell_parameters,
-                     label=”inhibitory neurons”)
-all = pE + pI
-DDPC = sim.DistanceDependentProbabilityConnector
-connector = DDPC(”exp(-d**2/400.0)”, weights=0.05,
-                 delays=”0.5+0.01d”)
-e2e = sim1.Projection(pE, pE, connector, target=”excitatory”)
-e2i = music.Projection(pE, pI, connector, target=”excitatory”)
-i2i = sim2.Projection(pI, pI, connector, target=”inhibitory”)
+<h2>Multi-simulator models with MUSIC<a class="headerlink" href="#multi-simulator-models-with-music" title="Link to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyNN</span> <span class="kn">import</span> <span class="n">music</span>
+<span class="n">music</span><span class="o">.</span><span class="n">setup</span><span class="p">({</span><span class="err">“</span><span class="n">neuron</span><span class="err">”</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="err">“</span><span class="n">nest</span><span class="err">”</span><span class="p">:</span> <span class="mi">20</span><span class="p">})</span>
+<span class="n">sim1</span><span class="p">,</span> <span class="n">sim2</span> <span class="o">=</span> <span class="n">music</span><span class="o">.</span><span class="n">get_simulators</span><span class="p">()</span>
+<span class="n">sim1</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="mf">0.025</span><span class="p">)</span>
+<span class="n">sim2</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">cell_parameters</span> <span class="o">=</span> <span class="p">{</span><span class="err">”</span><span class="n">tau_m</span><span class="err">”</span><span class="p">:</span> <span class="mf">12.0</span><span class="p">,</span> <span class="err">”</span><span class="n">cm</span><span class="err">”</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="err">”</span><span class="n">v_thresh</span><span class="err">”</span><span class="p">:</span> <span class="o">-</span><span class="mf">50.0</span><span class="p">,</span>
+                   <span class="err">”</span><span class="n">v_reset</span><span class="err">”</span><span class="p">:</span> <span class="o">-</span><span class="mf">65.0</span><span class="p">}</span>
+<span class="n">pE</span> <span class="o">=</span> <span class="n">sim1</span><span class="o">.</span><span class="n">Population</span><span class="p">((</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">),</span> <span class="n">sim</span><span class="o">.</span><span class="n">IF_cond_exp</span><span class="p">,</span> <span class="n">cell_parameters</span><span class="p">,</span>
+                     <span class="n">label</span><span class="o">=</span><span class="err">”</span><span class="n">excitatory</span> <span class="n">neurons</span><span class="err">”</span><span class="p">)</span>
+<span class="n">pI</span> <span class="o">=</span> <span class="n">sim2</span><span class="o">.</span><span class="n">Population</span><span class="p">((</span><span class="mi">50</span><span class="p">,</span><span class="mi">50</span><span class="p">),</span> <span class="n">sim</span><span class="o">.</span><span class="n">IF_cond_exp</span><span class="p">,</span> <span class="n">cell_parameters</span><span class="p">,</span>
+                     <span class="n">label</span><span class="o">=</span><span class="err">”</span><span class="n">inhibitory</span> <span class="n">neurons</span><span class="err">”</span><span class="p">)</span>
+<span class="nb">all</span> <span class="o">=</span> <span class="n">pE</span> <span class="o">+</span> <span class="n">pI</span>
+<span class="n">DDPC</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">DistanceDependentProbabilityConnector</span>
+<span class="n">connector</span> <span class="o">=</span> <span class="n">DDPC</span><span class="p">(</span><span class="err">”</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">d</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="mf">400.0</span><span class="p">)</span><span class="err">”</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+                 <span class="n">delays</span><span class="o">=</span><span class="err">”</span><span class="mf">0.5</span><span class="o">+</span><span class="mf">0.01</span><span class="n">d</span><span class="err">”</span><span class="p">)</span>
+<span class="n">e2e</span> <span class="o">=</span> <span class="n">sim1</span><span class="o">.</span><span class="n">Projection</span><span class="p">(</span><span class="n">pE</span><span class="p">,</span> <span class="n">pE</span><span class="p">,</span> <span class="n">connector</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="err">”</span><span class="n">excitatory</span><span class="err">”</span><span class="p">)</span>
+<span class="n">e2i</span> <span class="o">=</span> <span class="n">music</span><span class="o">.</span><span class="n">Projection</span><span class="p">(</span><span class="n">pE</span><span class="p">,</span> <span class="n">pI</span><span class="p">,</span> <span class="n">connector</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="err">”</span><span class="n">excitatory</span><span class="err">”</span><span class="p">)</span>
+<span class="n">i2i</span> <span class="o">=</span> <span class="n">sim2</span><span class="o">.</span><span class="n">Projection</span><span class="p">(</span><span class="n">pI</span><span class="p">,</span> <span class="n">pI</span><span class="p">,</span> <span class="n">connector</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="err">”</span><span class="n">inhibitory</span><span class="err">”</span><span class="p">)</span>
 
-music.run(1000.0)
+<span class="n">music</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mf">1000.0</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The concept here is that PyNN takes over the rôle of the <em>music</em> executable,
@@ -117,7 +113,7 @@ needed, which takes care of defining the MUSIC ports.</p>
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
@@ -125,7 +121,7 @@ needed, which takes care of defining the MUSIC ports.</p>
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
@@ -140,13 +136,13 @@ needed, which takes care of defining the MUSIC ports.</p>
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.3 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Roadmap</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2023, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    &#169; Copyright 2006-2024, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
     </div>
   </body>
 </html>

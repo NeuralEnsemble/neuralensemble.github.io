@@ -1,21 +1,17 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>PyNN 0.8.0 release notes &#8212; PyNN 0.12.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <title>PyNN 0.8.0 release notes &#8212; PyNN 0.12.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css?v=0f882399" />
+    <script src="../_static/documentation_options.js?v=56343b9b"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="../_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="PyNN 0.8.0 release candidate 1 release notes" href="0.8.0-rc-1.html" />
@@ -36,7 +32,7 @@
         <li class="right" >
           <a href="0.8.1.html" title="PyNN 0.8.1 release notes"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../release_notes.html" accesskey="U">Release notes</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">PyNN 0.8.0 release notes</a></li> 
       </ul>
@@ -48,7 +44,7 @@
           <div class="body" role="main">
             
   <section id="pynn-0-8-0-release-notes">
-<h1>PyNN 0.8.0 release notes<a class="headerlink" href="#pynn-0-8-0-release-notes" title="Permalink to this heading">¶</a></h1>
+<h1>PyNN 0.8.0 release notes<a class="headerlink" href="#pynn-0-8-0-release-notes" title="Link to this heading">¶</a></h1>
 <p>October 5th 2015</p>
 <p>Welcome to the final release of PyNN 0.8.0!</p>
 <p>For PyNN 0.8 we have taken the opportunity to make significant, backward-incompatible
@@ -63,7 +59,7 @@ changes to the API. The aim was fourfold:</p>
 </div></blockquote>
 <p>We summarize here the main changes between versions 0.7 and 0.8 of the API.</p>
 <section id="creating-populations">
-<h2>Creating populations<a class="headerlink" href="#creating-populations" title="Permalink to this heading">¶</a></h2>
+<h2>Creating populations<a class="headerlink" href="#creating-populations" title="Link to this heading">¶</a></h2>
 <p>In previous versions of PyNN, the <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code> constructor was called
 with the population size, a <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseCellType</span></code> sub-class such as
 <code class="xref py py-class docutils literal notranslate"><span class="pre">IF_cond_exp</span></code> and a dictionary of parameter values. For example:</p>
@@ -100,7 +96,7 @@ which already use keyword arguments.</p>
 the time being, but is deprecated and may be removed in future versions.</p>
 </section>
 <section id="specifying-heterogeneous-parameter-values">
-<h2>Specifying heterogeneous parameter values<a class="headerlink" href="#specifying-heterogeneous-parameter-values" title="Permalink to this heading">¶</a></h2>
+<h2>Specifying heterogeneous parameter values<a class="headerlink" href="#specifying-heterogeneous-parameter-values" title="Link to this heading">¶</a></h2>
 <p>In previous versions of PyNN, the <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code> constructor supported
 setting parameters to either homogeneous values (all cells in the population
 have the same value) or random values. After construction, it was possible to
@@ -153,7 +149,7 @@ be removed in the next version of PyNN. Their use can be replaced as follows:</p
 </pre></div>
 </div>
 <section id="setting-spike-times">
-<h3>Setting spike times<a class="headerlink" href="#setting-spike-times" title="Permalink to this heading">¶</a></h3>
+<h3>Setting spike times<a class="headerlink" href="#setting-spike-times" title="Link to this heading">¶</a></h3>
 <p>Where a single parameter value is already an array, e.g. spike times, this
 should be wrapped by a <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code> object. For example, to generate
 a different Poisson spike train for every neuron in a population of
@@ -166,7 +162,7 @@ a different Poisson spike train for every neuron in a population of
 </div>
 </section>
 <section id="standardization-of-random-distributions">
-<h3>Standardization of random distributions<a class="headerlink" href="#standardization-of-random-distributions" title="Permalink to this heading">¶</a></h3>
+<h3>Standardization of random distributions<a class="headerlink" href="#standardization-of-random-distributions" title="Link to this heading">¶</a></h3>
 <p>Since its earliest versions PyNN has supported swapping in and out different random number
 generators, but until now there has been no standardization of these RNGs;
 for example the <a class="reference external" href="https://www.gnu.org/software/gsl/manual/html_node/Random-Number-Generation.html">GSL</a> random number library uses “gaussian” where <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/routines.random.html">NumPy</a> uses “normal”.
@@ -185,7 +181,7 @@ A quick example:</p>
 </section>
 </section>
 <section id="recording">
-<h2>Recording<a class="headerlink" href="#recording" title="Permalink to this heading">¶</a></h2>
+<h2>Recording<a class="headerlink" href="#recording" title="Link to this heading">¶</a></h2>
 <p>Previous versions of PyNN had three methods for recording from populations of
 neurons: <code class="xref py py-meth docutils literal notranslate"><span class="pre">record()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">record_v()</span></code> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">record_gsyn()</span></code>, for
 recording spikes, membrane potentials, and synaptic conductances, respectively.
@@ -220,7 +216,7 @@ allowing recording at intervals larger than the integration time step.</p>
 <p>See <a class="reference internal" href="../recording.html"><span class="doc">Recording spikes and state variables</span></a> for more details.</p>
 </section>
 <section id="retrieving-recorded-data">
-<h2>Retrieving recorded data<a class="headerlink" href="#retrieving-recorded-data" title="Permalink to this heading">¶</a></h2>
+<h2>Retrieving recorded data<a class="headerlink" href="#retrieving-recorded-data" title="Link to this heading">¶</a></h2>
 <p>Perhaps the biggest change in PyNN 0.8 is that handling of recorded data,
 whether retrieval as Python objects or saving to file, now uses the <a class="reference external" href="http://neuralensemble.org/neo">Neo</a>
 package, which provides a common Python object model for neurophysiology data
@@ -241,7 +237,7 @@ the same as before.</p>
 <p>See <a class="reference internal" href="../data_handling.html"><span class="doc">Data handling</span></a> for more details.</p>
 </section>
 <section id="creating-connections">
-<h2>Creating connections<a class="headerlink" href="#creating-connections" title="Permalink to this heading">¶</a></h2>
+<h2>Creating connections<a class="headerlink" href="#creating-connections" title="Link to this heading">¶</a></h2>
 <p>In previous versions of PyNN, synaptic weights and delays were specified on
 creation of the <code class="xref py py-class docutils literal notranslate"><span class="pre">Connector</span></code> object. If the synaptic weight had its own
 dynamics (whether short-term or spike-timing-dependent plasticity), the
@@ -293,7 +289,7 @@ timing-dependence components, since effectively they describe the shape of the
 STDP curve independently of how the weight change depends on the current weight.</p>
 </section>
 <section id="specifying-heterogeneous-synapse-parameters">
-<h2>Specifying heterogeneous synapse parameters<a class="headerlink" href="#specifying-heterogeneous-synapse-parameters" title="Permalink to this heading">¶</a></h2>
+<h2>Specifying heterogeneous synapse parameters<a class="headerlink" href="#specifying-heterogeneous-synapse-parameters" title="Link to this heading">¶</a></h2>
 <p>As for neuron parameters, synapse parameter values can now be any of the
 following:</p>
 <blockquote>
@@ -311,7 +307,7 @@ the parameter value for that cell.</p></li>
 </div></blockquote>
 </section>
 <section id="accessing-setting-and-saving-properties-of-synaptic-connections">
-<h2>Accessing, setting and saving properties of synaptic connections<a class="headerlink" href="#accessing-setting-and-saving-properties-of-synaptic-connections" title="Permalink to this heading">¶</a></h2>
+<h2>Accessing, setting and saving properties of synaptic connections<a class="headerlink" href="#accessing-setting-and-saving-properties-of-synaptic-connections" title="Link to this heading">¶</a></h2>
 <p>In older versions of PyNN, the <code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code> class had a bunch of methods
 for working with synaptic parameters: <code class="xref py py-meth docutils literal notranslate"><span class="pre">getWeights()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">setWeights()</span></code>,
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">randomizeWeights()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">printWeights()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">getDelays()</span></code>,
@@ -348,7 +344,7 @@ as follows:</p>
 </div>
 </section>
 <section id="new-and-improved-connectors">
-<h2>New and improved connectors<a class="headerlink" href="#new-and-improved-connectors" title="Permalink to this heading">¶</a></h2>
+<h2>New and improved connectors<a class="headerlink" href="#new-and-improved-connectors" title="Link to this heading">¶</a></h2>
 <p>The library of <code class="xref py py-class docutils literal notranslate"><span class="pre">Connector</span></code> classes has been extended. The
 <code class="xref py py-class docutils literal notranslate"><span class="pre">DistanceDependentProbabilityConnector</span></code> (DDPC) has been generalized, resulting
 in the <code class="xref py py-class docutils literal notranslate"><span class="pre">IndexBasedProbabilityConnector</span></code>, with which the connection
@@ -373,7 +369,7 @@ object to PyNEST’s <code class="xref py py-func docutils literal notranslate">
 This greatly speeds up <code class="xref py py-class docutils literal notranslate"><span class="pre">CSAConnector</span></code> with NEST.</p>
 </section>
 <section id="simulation-control">
-<h2>Simulation control<a class="headerlink" href="#simulation-control" title="Permalink to this heading">¶</a></h2>
+<h2>Simulation control<a class="headerlink" href="#simulation-control" title="Link to this heading">¶</a></h2>
 <p>Two new functions for advancing a simulation have been added: <code class="xref py py-func docutils literal notranslate"><span class="pre">run_for()</span></code>
 and <code class="xref py py-func docutils literal notranslate"><span class="pre">run_until()</span></code>. <code class="xref py py-func docutils literal notranslate"><span class="pre">run_for()</span></code> is just an alias for <code class="xref py py-func docutils literal notranslate"><span class="pre">run()</span></code>.
 <code class="xref py py-func docutils literal notranslate"><span class="pre">run_until()</span></code> allows you to specify the absolute time at which a
@@ -397,7 +393,7 @@ which means that the simulator should calculate the minimal synaptic delay itsel
 This change can lead to large speedups for NEST and NEURON code.</p>
 </section>
 <section id="simple-plotting">
-<h2>Simple plotting<a class="headerlink" href="#simple-plotting" title="Permalink to this heading">¶</a></h2>
+<h2>Simple plotting<a class="headerlink" href="#simple-plotting" title="Link to this heading">¶</a></h2>
 <p>We have added a small library to make it simple to produce simple plots of
 data recorded from a PyNN simulation. This is not intended for
 publication-quality or highly-customized plots, but for basic visualization.</p>
@@ -423,10 +419,11 @@ publication-quality or highly-customized plots, but for basic visualization.</p>
 <span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;simulation_results.png&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../_images/release_0.8b1_example.png"><img alt="Image generated using the Figure and Panel classes from pyNN.utility.plotting" class="align-center" src="../_images/release_0.8b1_example.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../_images/release_0.8b1_example.png"><img alt="Image generated using the Figure and Panel classes from pyNN.utility.plotting" class="align-center" src="../_images/release_0.8b1_example.png" style="width: 600px;" />
+</a>
 </section>
 <section id="supported-backends">
-<h2>Supported backends<a class="headerlink" href="#supported-backends" title="Permalink to this heading">¶</a></h2>
+<h2>Supported backends<a class="headerlink" href="#supported-backends" title="Link to this heading">¶</a></h2>
 <p>PyNN 0.8.0 is compatible with NEST versions 2.6 to 2.8, NEURON versions 7.3 to 7.4,
 and Brian 1.4. Support for Brian 2 is planned for a future release.</p>
 <p>Support for the PCSIM simulator has been dropped since the simulator appears to be
@@ -439,12 +436,12 @@ be made deliberately by the end user.)</p>
 <p>The Izhikevich neuron model is now available for all backends.</p>
 </section>
 <section id="python-compatibility">
-<h2>Python compatibility<a class="headerlink" href="#python-compatibility" title="Permalink to this heading">¶</a></h2>
+<h2>Python compatibility<a class="headerlink" href="#python-compatibility" title="Link to this heading">¶</a></h2>
 <p>Support for Python 3 has been added (versions 3.3+). Support for Python versions 2.5 and earlier
 has been dropped.</p>
 </section>
 <section id="changes-for-developers">
-<h2>Changes for developers<a class="headerlink" href="#changes-for-developers" title="Permalink to this heading">¶</a></h2>
+<h2>Changes for developers<a class="headerlink" href="#changes-for-developers" title="Link to this heading">¶</a></h2>
 <p>Other than the internal refactoring, the main change for developers is that we have
 switched from Subversion to Git.
 PyNN development now takes place at <a class="reference external" href="https://github.com/NeuralEnsemble/PyNN/">https://github.com/NeuralEnsemble/PyNN/</a>
@@ -506,7 +503,7 @@ automatically run the test suite whenever changes are pushed to GitHub.</p>
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
@@ -514,7 +511,7 @@ automatically run the test suite whenever changes are pushed to GitHub.</p>
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
@@ -535,14 +532,14 @@ automatically run the test suite whenever changes are pushed to GitHub.</p>
         <li class="right" >
           <a href="0.8.1.html" title="PyNN 0.8.1 release notes"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../release_notes.html" >Release notes</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">PyNN 0.8.0 release notes</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2023, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    &#169; Copyright 2006-2024, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
     </div>
   </body>
 </html>

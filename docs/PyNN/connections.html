@@ -1,21 +1,17 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Building networks: connections &#8212; PyNN 0.12.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/nature.css" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <title>Building networks: connections &#8212; PyNN 0.12.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css?v=0f882399" />
+    <script src="_static/documentation_options.js?v=56343b9b"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Representing spatial structure and calculating distances" href="space.html" />
@@ -36,7 +32,7 @@
         <li class="right" >
           <a href="neurons.html" title="Building networks: neurons"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="building_networks.html" accesskey="U">Building networks</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Building networks: connections</a></li> 
       </ul>
@@ -48,7 +44,7 @@
           <div class="body" role="main">
             
   <section id="building-networks-connections">
-<h1>Building networks: connections<a class="headerlink" href="#building-networks-connections" title="Permalink to this heading">¶</a></h1>
+<h1>Building networks: connections<a class="headerlink" href="#building-networks-connections" title="Link to this heading">¶</a></h1>
 <p>Conceptually, a synapse consists of a pre-synaptic structure, the synaptic
 cleft, and a post-synaptic structure. In PyNN, the temporal dynamics of the
 post-synaptic response are handled by the post-synaptic neuron model
@@ -80,13 +76,13 @@ like to have support for this, or any other feature, please
 <a class="reference external" href="https://github.com/NeuralEnsemble/PyNN/issues/new">make a feature request</a>.</p>
 </div>
 <section id="synapse-types">
-<h2>Synapse types<a class="headerlink" href="#synapse-types" title="Permalink to this heading">¶</a></h2>
+<h2>Synapse types<a class="headerlink" href="#synapse-types" title="Link to this heading">¶</a></h2>
 <p>Analogously to neuron models, the system of equations that defines a synapse
 model is encapsulated in a <code class="xref py py-class docutils literal notranslate"><span class="pre">SynapseType</span></code> class. PyNN provides a library
 of “standard” synapse types (see <a class="reference internal" href="standardmodels.html"><span class="doc">Standard models</span></a>) which work the same
 across all backend simulators.</p>
 <section id="fixed-synaptic-weight">
-<h3>Fixed synaptic weight<a class="headerlink" href="#fixed-synaptic-weight" title="Permalink to this heading">¶</a></h3>
+<h3>Fixed synaptic weight<a class="headerlink" href="#fixed-synaptic-weight" title="Link to this heading">¶</a></h3>
 <p>The simplest, and default synapse type in PyNN has constant synaptic weight:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">syn</span> <span class="o">=</span> <span class="n">StaticSynapse</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 </pre></div>
@@ -115,7 +111,7 @@ between pre- and post-synaptic neurons:</p>
 </div>
 </section>
 <section id="short-term-synaptic-plasticity">
-<h3>Short-term synaptic plasticity<a class="headerlink" href="#short-term-synaptic-plasticity" title="Permalink to this heading">¶</a></h3>
+<h3>Short-term synaptic plasticity<a class="headerlink" href="#short-term-synaptic-plasticity" title="Link to this heading">¶</a></h3>
 <p>PyNN currently provides one standard model for short-term synaptic plasticity
 (facilitation and depression):</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">depressing_synapse</span> <span class="o">=</span> <span class="n">TsodyksMarkramSynapse</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">U</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
@@ -127,7 +123,7 @@ between pre- and post-synaptic neurons:</p>
 </div>
 </section>
 <section id="spike-timing-dependent-plasticity">
-<h3>Spike-timing-dependent plasticity<a class="headerlink" href="#spike-timing-dependent-plasticity" title="Permalink to this heading">¶</a></h3>
+<h3>Spike-timing-dependent plasticity<a class="headerlink" href="#spike-timing-dependent-plasticity" title="Link to this heading">¶</a></h3>
 <p>STDP models are specified in a slightly different way than other standard models:
 an STDP synapse type is constructed from separate weight-dependence and
 timing-dependence components, e.g.:</p>
@@ -144,7 +140,7 @@ plasticity components.</p>
 </section>
 </section>
 <section id="connection-algorithms">
-<h2>Connection algorithms<a class="headerlink" href="#connection-algorithms" title="Permalink to this heading">¶</a></h2>
+<h2>Connection algorithms<a class="headerlink" href="#connection-algorithms" title="Link to this heading">¶</a></h2>
 <p>In PyNN, each different algorithm that can be used to determine which
 pre-synaptic neurons are connected to which post-synaptic neurons (also called
 a “connection method” or “wiring method”) is encapsulated in a separate class.</p>
@@ -158,7 +154,7 @@ implement a <code class="xref py py-meth docutils literal notranslate"><span cla
 (see below) as its single argument.</p>
 <p>PyNN’s library of connection algorithms currently contains the following classes:</p>
 <section id="all-to-all-connections">
-<h3>All-to-all connections<a class="headerlink" href="#all-to-all-connections" title="Permalink to this heading">¶</a></h3>
+<h3>All-to-all connections<a class="headerlink" href="#all-to-all-connections" title="Link to this heading">¶</a></h3>
 <p>Each neuron in the pre-synaptic population is connected to every neuron in the
 post-synaptic population. (In this section, the term “population” should be
 understood as referring to any of the following: a <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>,
@@ -172,7 +168,7 @@ not connect to itself, set it to <code class="docutils literal notranslate"><spa
 </div>
 </section>
 <section id="one-to-one-connections">
-<h3>One-to-one connections<a class="headerlink" href="#one-to-one-connections" title="Permalink to this heading">¶</a></h3>
+<h3>One-to-one connections<a class="headerlink" href="#one-to-one-connections" title="Link to this heading">¶</a></h3>
 <p>Use of the <a class="reference internal" href="reference/connectors.html#pyNN.connectors.OneToOneConnector" title="pyNN.connectors.OneToOneConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">OneToOneConnector</span></code></a> requires that the pre- and post-synaptic
 populations have the same size. The neuron with index <em>i</em> in the pre-synaptic
 population is then connected to the neuron with index <em>i</em> in the post-synaptic
@@ -183,7 +179,7 @@ population.</p>
 <p>Trying to connect two populations with different sizes will raise an Exception.</p>
 </section>
 <section id="connecting-neurons-with-a-fixed-probability">
-<h3>Connecting neurons with a fixed probability<a class="headerlink" href="#connecting-neurons-with-a-fixed-probability" title="Permalink to this heading">¶</a></h3>
+<h3>Connecting neurons with a fixed probability<a class="headerlink" href="#connecting-neurons-with-a-fixed-probability" title="Link to this heading">¶</a></h3>
 <p>With the <a class="reference internal" href="reference/connectors.html#pyNN.connectors.FixedProbabilityConnector" title="pyNN.connectors.FixedProbabilityConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">FixedProbabilityConnector</span></code></a> method, each possible connection
 between all pre-synaptic neurons and all post-synaptic neurons is created with
 probability <code class="docutils literal notranslate"><span class="pre">p_connect</span></code>:</p>
@@ -192,7 +188,7 @@ probability <code class="docutils literal notranslate"><span class="pre">p_conne
 </div>
 </section>
 <section id="connecting-neurons-with-a-position-dependent-probability">
-<h3>Connecting neurons with a position-dependent probability<a class="headerlink" href="#connecting-neurons-with-a-position-dependent-probability" title="Permalink to this heading">¶</a></h3>
+<h3>Connecting neurons with a position-dependent probability<a class="headerlink" href="#connecting-neurons-with-a-position-dependent-probability" title="Link to this heading">¶</a></h3>
 <p>The connection probability can also depend on the positions of the pre- and
 post-synaptic neurons.</p>
 <p>With the <a class="reference internal" href="reference/connectors.html#pyNN.connectors.DistanceDependentProbabilityConnector" title="pyNN.connectors.DistanceDependentProbabilityConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">DistanceDependentProbabilityConnector</span></code></a>, the connection
@@ -218,7 +214,7 @@ passed to the <code class="xref py py-class docutils literal notranslate"><span 
 return the probability of creating that connection.</p>
 </section>
 <section id="divergent-fan-out-connections">
-<h3>Divergent/fan-out connections<a class="headerlink" href="#divergent-fan-out-connections" title="Permalink to this heading">¶</a></h3>
+<h3>Divergent/fan-out connections<a class="headerlink" href="#divergent-fan-out-connections" title="Link to this heading">¶</a></h3>
 <p>The <a class="reference internal" href="reference/connectors.html#pyNN.connectors.FixedNumberPostConnector" title="pyNN.connectors.FixedNumberPostConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">FixedNumberPostConnector</span></code></a> connects each pre-synaptic neuron to
 exactly <code class="docutils literal notranslate"><span class="pre">n</span></code> post-synaptic neurons chosen at random:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">connector</span> <span class="o">=</span> <span class="n">FixedNumberPostConnector</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
@@ -237,7 +233,7 @@ random from a <code class="xref py py-class docutils literal notranslate"><span 
 </div>
 </section>
 <section id="convergent-fan-in-connections">
-<h3>Convergent/fan-in connections<a class="headerlink" href="#convergent-fan-in-connections" title="Permalink to this heading">¶</a></h3>
+<h3>Convergent/fan-in connections<a class="headerlink" href="#convergent-fan-in-connections" title="Link to this heading">¶</a></h3>
 <p>The <a class="reference internal" href="reference/connectors.html#pyNN.connectors.FixedNumberPreConnector" title="pyNN.connectors.FixedNumberPreConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">FixedNumberPreConnector</span></code></a> has the same arguments as
 <a class="reference internal" href="reference/connectors.html#pyNN.connectors.FixedNumberPostConnector" title="pyNN.connectors.FixedNumberPostConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">FixedNumberPostConnector</span></code></a>, but of course it connects each
 <em>post</em>-synaptic neuron to <code class="docutils literal notranslate"><span class="pre">n</span></code> <em>pre</em>-synaptic neurons, e.g.:</p>
@@ -248,14 +244,14 @@ random from a <code class="xref py py-class docutils literal notranslate"><span 
 </div>
 </section>
 <section id="creating-a-small-world-network">
-<h3>Creating a small-world network<a class="headerlink" href="#creating-a-small-world-network" title="Permalink to this heading">¶</a></h3>
+<h3>Creating a small-world network<a class="headerlink" href="#creating-a-small-world-network" title="Link to this heading">¶</a></h3>
 <div class="admonition-todo admonition" id="id1">
 <p class="admonition-title">Todo</p>
 <p>Pierre to write this bit?</p>
 </div>
 </section>
 <section id="using-the-connection-set-algebra">
-<h3>Using the Connection Set Algebra<a class="headerlink" href="#using-the-connection-set-algebra" title="Permalink to this heading">¶</a></h3>
+<h3>Using the Connection Set Algebra<a class="headerlink" href="#using-the-connection-set-algebra" title="Link to this heading">¶</a></h3>
 <p>The Connection Set Algebra (<a class="reference external" href="http://software.incf.org/software/csa/">Djurfeldt, 2012</a>) is a sophisticated system that
 allows elaborate connectivity patterns to be constructed using a concise syntax.
 Using the CSA requires the Python <code class="xref py py-mod docutils literal notranslate"><span class="pre">csa</span></code> module to be installed
@@ -280,7 +276,7 @@ connection set or within the synapse type.</p>
 </div>
 </section>
 <section id="specifying-a-list-of-connections">
-<h3>Specifying a list of connections<a class="headerlink" href="#specifying-a-list-of-connections" title="Permalink to this heading">¶</a></h3>
+<h3>Specifying a list of connections<a class="headerlink" href="#specifying-a-list-of-connections" title="Link to this heading">¶</a></h3>
 <p>Specific connection patterns not covered by the methods above can be obtained by
 specifying an explicit list of pre-synaptic and post-synaptic neuron indices.
 Optionally, the list can contain synaptic properties such as weights, delays,
@@ -299,7 +295,7 @@ type. Parameters given in the list always override the values from the synapse
 type.</p>
 </section>
 <section id="reading-connection-patterns-to-from-a-file">
-<h3>Reading connection patterns to/from a file<a class="headerlink" href="#reading-connection-patterns-to-from-a-file" title="Permalink to this heading">¶</a></h3>
+<h3>Reading connection patterns to/from a file<a class="headerlink" href="#reading-connection-patterns-to-from-a-file" title="Link to this heading">¶</a></h3>
 <p>Connection patterns can be read in from a text file. The file should contain
 a header specifying which parameter is in which column, e.g.:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># columns = [&quot;i&quot;, &quot;j&quot;, &quot;weight&quot;, &quot;delay&quot;, &quot;U&quot;, &quot;tau_rec&quot;]</span>
@@ -312,7 +308,7 @@ connections are read using:</p>
 </div>
 </section>
 <section id="specifying-an-explicit-connection-matrix">
-<h3>Specifying an explicit connection matrix<a class="headerlink" href="#specifying-an-explicit-connection-matrix" title="Permalink to this heading">¶</a></h3>
+<h3>Specifying an explicit connection matrix<a class="headerlink" href="#specifying-an-explicit-connection-matrix" title="Link to this heading">¶</a></h3>
 <p>The connectivity can be specified as a boolean array, where each row represents
 the existence of connections from a given pre-synaptic neuron to the
 post-synaptic neurons. For example:</p>
@@ -325,7 +321,7 @@ post-synaptic neurons. For example:</p>
 </div>
 </section>
 <section id="user-defined-connection-algorithms">
-<h3>User-defined connection algorithms<a class="headerlink" href="#user-defined-connection-algorithms" title="Permalink to this heading">¶</a></h3>
+<h3>User-defined connection algorithms<a class="headerlink" href="#user-defined-connection-algorithms" title="Link to this heading">¶</a></h3>
 <p>If you wish to use a specific connection/wiring algorithm not covered by the
 PyNN built-in ones, the options include:</p>
 <blockquote>
@@ -340,7 +336,7 @@ PyNN built-in ones, the options include:</p>
 </section>
 </section>
 <section id="projections">
-<h2>Projections<a class="headerlink" href="#projections" title="Permalink to this heading">¶</a></h2>
+<h2>Projections<a class="headerlink" href="#projections" title="Link to this heading">¶</a></h2>
 <p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code> is a container for a set of connections between two
 populations of neurons, where by population we mean one of:</p>
 <blockquote>
@@ -424,7 +420,7 @@ specifying periodic boundary conditions, e.g.:</p>
 (wrap-around in the x- and y-dimensions but not z). For more information, see
 <a class="reference internal" href="space.html"><span class="doc">Representing spatial structure and calculating distances</span></a>.</p>
 <section id="accessing-weights-and-delays">
-<h3>Accessing weights and delays<a class="headerlink" href="#accessing-weights-and-delays" title="Permalink to this heading">¶</a></h3>
+<h3>Accessing weights and delays<a class="headerlink" href="#accessing-weights-and-delays" title="Link to this heading">¶</a></h3>
 <p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">Projection.get()</span></code> method allows the retrieval of connection attributes,
 such as weights and delays. Two formats are available. <code class="docutils literal notranslate"><span class="pre">'list'</span></code> returns a list
 of length equal to the number of connections in the projection, <code class="docutils literal notranslate"><span class="pre">'array'</span></code>
@@ -488,7 +484,7 @@ need to think about formats. Text, HDF5, …</p>
 </div>
 </section>
 <section id="modifying-weights-and-delays">
-<h3>Modifying weights and delays<a class="headerlink" href="#modifying-weights-and-delays" title="Permalink to this heading">¶</a></h3>
+<h3>Modifying weights and delays<a class="headerlink" href="#modifying-weights-and-delays" title="Link to this heading">¶</a></h3>
 <p>As noted above, weights, delays and other connection attributes can be
 specified on creation of a <code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code>, and this is generally the most
 efficient time to specify them. It is also possible, however, to modify these
@@ -597,7 +593,7 @@ number of connections.</p>
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
@@ -605,7 +601,7 @@ number of connections.</p>
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
@@ -626,14 +622,14 @@ number of connections.</p>
         <li class="right" >
           <a href="neurons.html" title="Building networks: neurons"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="building_networks.html" >Building networks</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Building networks: connections</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2023, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    &#169; Copyright 2006-2024, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
     </div>
   </body>
 </html>

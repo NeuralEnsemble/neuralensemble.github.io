@@ -1,20 +1,16 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyNN.utility.timer &#8212; PyNN 0.12.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/nature.css" />
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-    <script src="../../../_static/jquery.js"></script>
-    <script src="../../../_static/underscore.js"></script>
-    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/sphinx_highlight.js"></script>
-    <link rel="shortcut icon" href="../../../_static/pyNN_icon.ico"/>
+    <title>pyNN.utility.timer &#8212; PyNN 0.12.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/nature.css?v=0f882399" />
+    <script src="../../../_static/documentation_options.js?v=56343b9b"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="../../../_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
   </head><body>
@@ -27,7 +23,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../utility.html" accesskey="U">pyNN.utility</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyNN.utility.timer</a></li> 
@@ -43,7 +39,7 @@
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">A Timer class for timing script execution.</span>
 
-<span class="sd">:copyright: Copyright 2006-2023 by the PyNN team, see AUTHORS.</span>
+<span class="sd">:copyright: Copyright 2006-2024 by the PyNN team, see AUTHORS.</span>
 <span class="sd">:license: CeCILL, see LICENSE for details.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -51,8 +47,10 @@
 <span class="kn">from</span> <span class="nn">..core</span> <span class="kn">import</span> <span class="n">deprecated</span>
 
 
-<div class="viewcode-block" id="Timer"><a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.Timer">[docs]</a><span class="k">class</span> <span class="nc">Timer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Timer">
+<a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.Timer">[docs]</a>
+<span class="k">class</span> <span class="nc">Timer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    For timing script execution.</span>
 
 <span class="sd">    Timing starts on creation of the timer.</span>
@@ -62,13 +60,18 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">marks</span> <span class="o">=</span> <span class="p">[]</span>
 
-<div class="viewcode-block" id="Timer.start"><a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.Timer.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Start/restart timing.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Timer.start">
+<a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.Timer.start">[docs]</a>
+    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start/restart timing.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_last_check</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span></div>
 
-<div class="viewcode-block" id="Timer.elapsed_time"><a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.Timer.elapsed_time">[docs]</a>    <span class="k">def</span> <span class="nf">elapsed_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Timer.elapsed_time">
+<a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.Timer.elapsed_time">[docs]</a>
+    <span class="k">def</span> <span class="nf">elapsed_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the elapsed time in seconds but keep the clock running.</span>
 
 <span class="sd">        If called with ``format=&quot;long&quot;``, return a text representation of the</span>
@@ -86,18 +89,24 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_last_check</span> <span class="o">=</span> <span class="n">current_time</span>
         <span class="k">return</span> <span class="n">elapsed_time</span></div>
 
+
     <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;elapsed_time()&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">elapsedTime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">elapsed_time</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Timer.reset"><a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.Timer.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Reset the time to zero, and start the clock.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Timer.reset">
+<a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.Timer.reset">[docs]</a>
+    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset the time to zero, and start the clock.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Timer.diff"><a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.Timer.diff">[docs]</a>    <span class="k">def</span> <span class="nf">diff</span><span class="p">(</span>
+
+<div class="viewcode-block" id="Timer.diff">
+<a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.Timer.diff">[docs]</a>
+    <span class="k">def</span> <span class="nf">diff</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>  <span class="c1"># I think delta() would be a better name for this method.</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the time since the last time :meth:`elapsed_time()` or</span>
 <span class="sd">        :meth:`diff()` was called.</span>
 
@@ -111,9 +120,12 @@
             <span class="n">time_since_last_check</span> <span class="o">=</span> <span class="n">Timer</span><span class="o">.</span><span class="n">time_in_words</span><span class="p">(</span><span class="n">time_since_last_check</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">time_since_last_check</span></div>
 
-<div class="viewcode-block" id="Timer.time_in_words"><a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.Timer.time_in_words">[docs]</a>    <span class="nd">@staticmethod</span>
+
+<div class="viewcode-block" id="Timer.time_in_words">
+<a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.Timer.time_in_words">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">time_in_words</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Formats a time in seconds as a string containing the time in days,</span>
 <span class="sd">        hours, minutes, seconds. Examples::</span>
 
@@ -142,13 +154,18 @@
             <span class="p">]</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="Timer.mark"><a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.Timer.mark">[docs]</a>    <span class="k">def</span> <span class="nf">mark</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Timer.mark">
+<a class="viewcode-back" href="../../../reference/utility.html#pyNN.utility.Timer.mark">[docs]</a>
+    <span class="k">def</span> <span class="nf">mark</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Store the time since the last time since the last time</span>
 <span class="sd">        :meth:`elapsed_time()`, :meth:`diff()` or :meth:`mark()` was called,</span>
 <span class="sd">        together with the provided label, in the attribute &#39;marks&#39;.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">marks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">diff</span><span class="p">()))</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">marks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">diff</span><span class="p">()))</span></div>
+</div>
+
 </pre></div>
 
             <div class="clearer"></div>
@@ -160,7 +177,7 @@
             <p class="logo"><a href="../../../index.html">
               <img class="logo" src="../../../_static/pyNN_logo.png" alt="Logo"/>
             </a></p>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
@@ -168,7 +185,7 @@
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
@@ -183,15 +200,15 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../utility.html" >pyNN.utility</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyNN.utility.timer</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2023, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    &#169; Copyright 2006-2024, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
     </div>
   </body>
 </html>

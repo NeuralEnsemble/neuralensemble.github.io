@@ -1,21 +1,17 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Installation &#8212; PyNN 0.12.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/nature.css" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <title>Installation &#8212; PyNN 0.12.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css?v=0f882399" />
+    <script src="_static/documentation_options.js?v=56343b9b"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Building networks" href="building_networks.html" />
@@ -36,7 +32,7 @@
         <li class="right" >
           <a href="introduction.html" title="Introduction"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.3 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Installation</a></li> 
       </ul>
     </div>  
@@ -47,7 +43,7 @@
           <div class="body" role="main">
             
   <section id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">¶</a></h1>
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h1>
 <p>The following instructions are for Linux and Mac OS X. It should be possible to
 install and run PyNN on Windows, but this has not been tested.</p>
 <p>Installing PyNN requires:</p>
@@ -70,15 +66,15 @@ install and run PyNN on Windows, but this has not been tested.</p>
 </ul>
 </div></blockquote>
 <section id="installing-pynn">
-<h2>Installing PyNN<a class="headerlink" href="#installing-pynn" title="Permalink to this heading">¶</a></h2>
+<h2>Installing PyNN<a class="headerlink" href="#installing-pynn" title="Link to this heading">¶</a></h2>
 <p>The easiest way to get PyNN is to use <a class="reference external" href="http://www.pip-installer.org/">pip</a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install PyNN
 </pre></div>
 </div>
 <p>If you would prefer to install manually, <a class="reference internal" href="download.html"><span class="doc">download the latest
 source distribution</span></a>, then run the setup script, e.g.:</p>
-<pre class="literal-block">$ tar xzf PyNN-0.12.1.tar.gz
-$ pip install ./PyNN-0.12.1</pre>
+<pre class="literal-block">$ tar xzf PyNN-0.12.3.tar.gz
+$ pip install ./PyNN-0.12.3</pre>
 <p>This will install it to your Python <code class="file docutils literal notranslate"><span class="pre">site-packages</span></code> directory, and may
 require root privileges. We strongly recommend, however, that you use a
 <a class="reference external" href="https://virtualenv.readthedocs.org/">virtualenv</a> or a <a class="reference external" href="http://conda.pydata.org">Conda</a> environment. We assume you have already installed the
@@ -86,7 +82,7 @@ simulator(s) you wish to use it with. If this is not the case, see below for
 installation instructions.</p>
 </section>
 <section id="installing-neuron">
-<h2>Installing NEURON<a class="headerlink" href="#installing-neuron" title="Permalink to this heading">¶</a></h2>
+<h2>Installing NEURON<a class="headerlink" href="#installing-neuron" title="Link to this heading">¶</a></h2>
 <p>For recent versions of NEURON,</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install neuron
 </pre></div>
@@ -130,8 +126,8 @@ $ python setup.py install
 <p>(The first time you do this, PyNN will compile some PyNN-specific membrane mechanisms).</p>
 </section>
 <section id="installing-nest-and-pynest">
-<h2>Installing NEST and PyNEST<a class="headerlink" href="#installing-nest-and-pynest" title="Permalink to this heading">¶</a></h2>
-<p>NEST 3.4-3.6 can be downloaded from <a class="reference external" href="http://www.nest-simulator.org/download/">http://www.nest-simulator.org/download/</a>.
+<h2>Installing NEST and PyNEST<a class="headerlink" href="#installing-nest-and-pynest" title="Link to this heading">¶</a></h2>
+<p>NEST 3.4-3.7 can be downloaded from <a class="reference external" href="http://www.nest-simulator.org/download/">http://www.nest-simulator.org/download/</a>.
 Earlier versions of NEST may not work with this version of PyNN.
 The full installation instructions are available at <a class="reference external" href="https://nest-simulator.readthedocs.io/en/v3.4/installation/index.html/">https://nest-simulator.readthedocs.io/en/v3.4/installation/index.html/</a>.</p>
 <p>Now try it out:</p>
@@ -165,12 +161,12 @@ then you will still be able to use pyNN.nest, just a small number of models will
 </div>
 </section>
 <section id="installing-brian2">
-<h2>Installing Brian2<a class="headerlink" href="#installing-brian2" title="Permalink to this heading">¶</a></h2>
+<h2>Installing Brian2<a class="headerlink" href="#installing-brian2" title="Link to this heading">¶</a></h2>
 <p>Instructions for downloading and installing <a class="reference external" href="http://briansimulator.org/">Brian 2</a> are available from <a class="reference external" href="https://briansimulator.org/install/">https://briansimulator.org/install/</a>.
 Note that this version of PyNN works with Brian 2. If you need to use Brian 1, try PyNN 0.9.6.</p>
 </section>
 <section id="installing-arbor">
-<h2>Installing Arbor<a class="headerlink" href="#installing-arbor" title="Permalink to this heading">¶</a></h2>
+<h2>Installing Arbor<a class="headerlink" href="#installing-arbor" title="Link to this heading">¶</a></h2>
 <p>Instructions for installing <a class="reference external" href="https://arbor-sim.org">Arbor</a> are available from <a class="reference external" href="https://docs.arbor-sim.org/en/latest/install">https://docs.arbor-sim.org/en/latest/install</a>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -221,7 +217,7 @@ support for point neuron models is planned for the next release.</p>
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
@@ -229,7 +225,7 @@ support for point neuron models is planned for the next release.</p>
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
@@ -250,13 +246,13 @@ support for point neuron models is planned for the next release.</p>
         <li class="right" >
           <a href="introduction.html" title="Introduction"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.3 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Installation</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2023, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    &#169; Copyright 2006-2024, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
     </div>
   </body>
 </html>

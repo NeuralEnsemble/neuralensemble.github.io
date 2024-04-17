@@ -1,21 +1,17 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Building networks: neurons &#8212; PyNN 0.12.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/nature.css" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <link rel="shortcut icon" href="_static/pyNN_icon.ico"/>
+    <title>Building networks: neurons &#8212; PyNN 0.12.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css?v=0f882399" />
+    <script src="_static/documentation_options.js?v=56343b9b"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Building networks: connections" href="connections.html" />
@@ -36,7 +32,7 @@
         <li class="right" >
           <a href="building_networks.html" title="Building networks"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="building_networks.html" accesskey="U">Building networks</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Building networks: neurons</a></li> 
       </ul>
@@ -48,9 +44,9 @@
           <div class="body" role="main">
             
   <section id="building-networks-neurons">
-<h1>Building networks: neurons<a class="headerlink" href="#building-networks-neurons" title="Permalink to this heading">¶</a></h1>
+<h1>Building networks: neurons<a class="headerlink" href="#building-networks-neurons" title="Link to this heading">¶</a></h1>
 <section id="cell-types">
-<span id="section-cell-types"></span><h2>Cell types<a class="headerlink" href="#cell-types" title="Permalink to this heading">¶</a></h2>
+<span id="section-cell-types"></span><h2>Cell types<a class="headerlink" href="#cell-types" title="Link to this heading">¶</a></h2>
 <p>In PyNN, the system of equations that defines a neuronal model is encapsulated
 in a <code class="xref py py-class docutils literal notranslate"><span class="pre">CellType</span></code> class. PyNN provides a library of “standard” cell types
 (see <a class="reference internal" href="standardmodels.html"><span class="doc">Standard models</span></a>) which work the same across all backend simulators -
@@ -94,7 +90,7 @@ attribute:</p>
 regarded as templates, from which we will construct the actual neurons in our
 network.</p>
 <section id="multi-compartment-neurons">
-<h3>Multi-compartment neurons<a class="headerlink" href="#multi-compartment-neurons" title="Permalink to this heading">¶</a></h3>
+<h3>Multi-compartment neurons<a class="headerlink" href="#multi-compartment-neurons" title="Link to this heading">¶</a></h3>
 <p>This version of PyNN has <em>experimental</em> support for multi-compartment neuron models, implemented for the NEURON and Arbor simulators.</p>
 <p>The “standard library” approach described above needs to be modified for morphologically and biophysically-detailed neuron models,
 as the number of possible combinations of morphologies, ion-channel models and synapse models is infinite.</p>
@@ -118,7 +114,7 @@ along with the distribution and parameters of ion channels and synapses.</p>
 </section>
 </section>
 <section id="populations">
-<h2>Populations<a class="headerlink" href="#populations" title="Permalink to this heading">¶</a></h2>
+<h2>Populations<a class="headerlink" href="#populations" title="Link to this heading">¶</a></h2>
 <p>Since PyNN is designed for modelling networks containing many neurons,
 the default level of abstraction in PyNN is not the single neuron but a
 population of neurons of a given type, represented by the <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>
@@ -162,7 +158,7 @@ languages, the <code class="xref py py-func docutils literal notranslate"><span 
 <p>(Note the different argument order).</p>
 </section>
 <section id="views">
-<h2>Views<a class="headerlink" href="#views" title="Permalink to this heading">¶</a></h2>
+<h2>Views<a class="headerlink" href="#views" title="Link to this heading">¶</a></h2>
 <p>It is common to work with only a subset of the neurons in a <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>
 - to modify their parameters, make connections or record from them. Any subset
 of neurons in a population may be addressed using the usual Python indexing
@@ -202,7 +198,7 @@ contains the indices of the neurons that are in the view.</p>
 </div>
 </section>
 <section id="assemblies">
-<h2>Assemblies<a class="headerlink" href="#assemblies" title="Permalink to this heading">¶</a></h2>
+<h2>Assemblies<a class="headerlink" href="#assemblies" title="Link to this heading">¶</a></h2>
 <p>As discussed above, a <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code> is a homogeneous collection of
 neurons, in the sense that all neurons have the same cell type. An
 <code class="xref py py-class docutils literal notranslate"><span class="pre">Assembly</span></code> is an aggregate of <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code> and
@@ -243,7 +239,7 @@ number of neurons it contains. To iterate over or count populations, use the
 </div>
 </section>
 <section id="inspecting-and-modifying-parameter-values-and-initial-conditions">
-<h2>Inspecting and modifying parameter values and initial conditions<a class="headerlink" href="#inspecting-and-modifying-parameter-values-and-initial-conditions" title="Permalink to this heading">¶</a></h2>
+<h2>Inspecting and modifying parameter values and initial conditions<a class="headerlink" href="#inspecting-and-modifying-parameter-values-and-initial-conditions" title="Link to this heading">¶</a></h2>
 <p>Although both parameter values and initial conditions may be specified when
 creating a <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code> (and this is generally the most efficient place
 to do it), it is also possible to modify them later.</p>
@@ -292,7 +288,7 @@ method:</p>
 </div>
 </section>
 <section id="injecting-current-into-neurons">
-<h2>Injecting current into neurons<a class="headerlink" href="#injecting-current-into-neurons" title="Permalink to this heading">¶</a></h2>
+<h2>Injecting current into neurons<a class="headerlink" href="#injecting-current-into-neurons" title="Link to this heading">¶</a></h2>
 <p>Static or time-varying currents may be injected into neurons using either the
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">inject_into()</span></code> method of the <code class="xref py py-class docutils literal notranslate"><span class="pre">CurrentSource</span></code>:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">DCSource</span><span class="p">(</span><span class="n">amplitude</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mf">80.0</span><span class="p">)</span>
@@ -311,7 +307,7 @@ method:</p>
 <p>See <a class="reference internal" href="injecting_current.html"><span class="doc">Injecting current</span></a> for more about injecting currents.</p>
 </section>
 <section id="recording-variables-and-retrieving-recorded-data">
-<h2>Recording variables and retrieving recorded data<a class="headerlink" href="#recording-variables-and-retrieving-recorded-data" title="Permalink to this heading">¶</a></h2>
+<h2>Recording variables and retrieving recorded data<a class="headerlink" href="#recording-variables-and-retrieving-recorded-data" title="Link to this heading">¶</a></h2>
 <p>Just as each cell type has a well-defined set of parameters (whose values are
 constant over time), so it has a well-defined set of state variables, such as
 the membrane potential, whose values change over the course of a simulation. The
@@ -365,7 +361,7 @@ etc.) if possible, otherwise the default file format (determined by the value of
 <p>For more details, see <a class="reference internal" href="data_handling.html"><span class="doc">Data handling</span></a>.</p>
 </section>
 <section id="working-with-individual-neurons">
-<h2>Working with individual neurons<a class="headerlink" href="#working-with-individual-neurons" title="Permalink to this heading">¶</a></h2>
+<h2>Working with individual neurons<a class="headerlink" href="#working-with-individual-neurons" title="Link to this heading">¶</a></h2>
 <p>Although it is usually more convenient and more efficient to work with
 populations of neurons, it is occasionally convienient to work with individual
 neurons, represented as an <code class="xref py py-class docutils literal notranslate"><span class="pre">ID</span></code> object:</p>
@@ -455,7 +451,7 @@ simulators.</p>
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
@@ -463,7 +459,7 @@ simulators.</p>
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
@@ -484,14 +480,14 @@ simulators.</p>
         <li class="right" >
           <a href="building_networks.html" title="Building networks"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="building_networks.html" >Building networks</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Building networks: neurons</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2023, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    &#169; Copyright 2006-2024, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
     </div>
   </body>
 </html>

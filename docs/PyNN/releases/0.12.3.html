@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>PyNN 0.8.1 release notes &#8212; PyNN 0.12.3 documentation</title>
+    <title>PyNN 0.12.3 release notes &#8212; PyNN 0.12.3 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/nature.css?v=0f882399" />
     <script src="../_static/documentation_options.js?v=56343b9b"></script>
@@ -14,8 +14,8 @@
     <link rel="icon" href="../_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="PyNN 0.8.0 release notes" href="0.8.0.html" />
-    <link rel="prev" title="PyNN 0.8.2 release notes" href="0.8.2.html" /> 
+    <link rel="next" title="PyNN 0.12.2 release notes" href="0.12.2.html" />
+    <link rel="prev" title="Release notes" href="../release_notes.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -27,14 +27,14 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="0.8.0.html" title="PyNN 0.8.0 release notes"
+          <a href="0.12.2.html" title="PyNN 0.12.2 release notes"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="0.8.2.html" title="PyNN 0.8.2 release notes"
+          <a href="../release_notes.html" title="Release notes"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../release_notes.html" accesskey="U">Release notes</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">PyNN 0.8.1 release notes</a></li> 
+        <li class="nav-item nav-item-this"><a href="">PyNN 0.12.3 release notes</a></li> 
       </ul>
     </div>  
 
@@ -43,21 +43,20 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="pynn-0-8-1-release-notes">
-<h1>PyNN 0.8.1 release notes<a class="headerlink" href="#pynn-0-8-1-release-notes" title="Link to this heading">¶</a></h1>
-<p>25th May 2016</p>
-<p>Welcome to PyNN 0.8.1!</p>
-<section id="nest-2-10">
-<h2>NEST 2.10<a class="headerlink" href="#nest-2-10" title="Link to this heading">¶</a></h2>
-<p>This release introduces support for <a class="reference external" href="http://www.nest-simulator.org/">NEST</a> 2.10. Previous versions of NEST are no longer supported.</p>
+  <section id="pynn-0-12-3-release-notes">
+<h1>PyNN 0.12.3 release notes<a class="headerlink" href="#pynn-0-12-3-release-notes" title="Link to this heading">¶</a></h1>
+<p>April 17th 2024</p>
+<p>Welcome to PyNN 0.12.3!</p>
+<section id="nest-3-7-support">
+<h2>NEST 3.7 support<a class="headerlink" href="#nest-3-7-support" title="Link to this heading">¶</a></h2>
+<p>PyNN now supports the latest version of <a class="reference external" href="https://www.nest-simulator.org">NEST</a>.
+NEST 3.4-3.6 should also work for most neuron models, but since the extension module interface
+has changed in NEST 3.7, those models that require NEST extensions will not work with older versions.
+For older versions of NEST, you will need an older version of PyNN to match.</p>
 </section>
-<section id="other-changes">
-<h2>Other changes<a class="headerlink" href="#other-changes" title="Link to this heading">¶</a></h2>
-<blockquote>
-<div><ul class="simple">
-<li><p><a class="reference external" href="https://github.com/NeuralEnsemble/PyNN/issues?q=is%3Aclosed+milestone%3A0.8.1">Assorted bug fixes</a></p></li>
-</ul>
-</div></blockquote>
+<section id="beta-api-extensions-for-multicompartment-neurons">
+<h2>Beta: API extensions for multicompartment neurons<a class="headerlink" href="#beta-api-extensions-for-multicompartment-neurons" title="Link to this heading">¶</a></h2>
+<p>The beta API for multicompartment neurons has been updated to work with <a class="reference external" href="https://arbor-sim.org">Arbor</a> 0.9.0.</p>
 </section>
 </section>
 
@@ -74,9 +73,9 @@
   <div>
     <h3><a href="../index.html">Table of Contents</a></h3>
     <ul>
-<li><a class="reference internal" href="#">PyNN 0.8.1 release notes</a><ul>
-<li><a class="reference internal" href="#nest-2-10">NEST 2.10</a></li>
-<li><a class="reference internal" href="#other-changes">Other changes</a></li>
+<li><a class="reference internal" href="#">PyNN 0.12.3 release notes</a><ul>
+<li><a class="reference internal" href="#nest-3-7-support">NEST 3.7 support</a></li>
+<li><a class="reference internal" href="#beta-api-extensions-for-multicompartment-neurons">Beta: API extensions for multicompartment neurons</a></li>
 </ul>
 </li>
 </ul>
@@ -84,18 +83,18 @@
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="0.8.2.html"
-                          title="previous chapter">PyNN 0.8.2 release notes</a></p>
+    <p class="topless"><a href="../release_notes.html"
+                          title="previous chapter">Release notes</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="0.8.0.html"
-                          title="next chapter">PyNN 0.8.0 release notes</a></p>
+    <p class="topless"><a href="0.12.2.html"
+                          title="next chapter">PyNN 0.12.2 release notes</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/releases/0.8.1.txt"
+      <li><a href="../_sources/releases/0.12.3.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -123,14 +122,14 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="0.8.0.html" title="PyNN 0.8.0 release notes"
+          <a href="0.12.2.html" title="PyNN 0.12.2 release notes"
              >next</a> |</li>
         <li class="right" >
-          <a href="0.8.2.html" title="PyNN 0.8.2 release notes"
+          <a href="../release_notes.html" title="Release notes"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../release_notes.html" >Release notes</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">PyNN 0.8.1 release notes</a></li> 
+        <li class="nav-item nav-item-this"><a href="">PyNN 0.12.3 release notes</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

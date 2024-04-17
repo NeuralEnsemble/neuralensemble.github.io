@@ -1,21 +1,17 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>A very simple example of using STDP &#8212; PyNN 0.12.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <link rel="shortcut icon" href="../_static/pyNN_icon.ico"/>
+    <title>A very simple example of using STDP &#8212; PyNN 0.12.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css?v=0f882399" />
+    <script src="../_static/documentation_options.js?v=56343b9b"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="../_static/pyNN_icon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Small network created with the Population and Projection classes" href="small_network.html" />
@@ -36,7 +32,7 @@
         <li class="right" >
           <a href="random_distributions.html" title="Illustration of the different standard random distributions and different random number generators"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../examples.html" accesskey="U">Examples</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">A very simple example of using STDP</a></li> 
       </ul>
@@ -48,7 +44,7 @@
           <div class="body" role="main">
             
   <section id="a-very-simple-example-of-using-stdp">
-<h1>A very simple example of using STDP<a class="headerlink" href="#a-very-simple-example-of-using-stdp" title="Permalink to this heading">¶</a></h1>
+<h1>A very simple example of using STDP<a class="headerlink" href="#a-very-simple-example-of-using-stdp" title="Link to this heading">¶</a></h1>
 <img alt="../_images/simple_stdp_neuron_20170505-150331.png" src="../_images/simple_stdp_neuron_20170505-150331.png" />
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># encoding: utf8</span>
 <span class="sd">&quot;&quot;&quot;</span>
@@ -120,13 +116,13 @@
 <span class="c1"># === Build the network =====================================================</span>
 
 <span class="k">def</span> <span class="nf">build_spike_sequences</span><span class="p">(</span><span class="n">period</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">delta_t</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return a spike time generator for `n` neurons (spike sources), where</span>
 <span class="sd">    all neurons fire with the same period, but neighbouring neurons have a relative</span>
 <span class="sd">    firing time difference of `delta_t`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">spike_time_gen</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Spike time generator. `i` should be an array of indices.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Spike time generator. `i` should be an array of indices.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">Sequence</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">period</span> <span class="o">+</span> <span class="n">j</span> <span class="o">*</span> <span class="n">delta_t</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">period</span><span class="p">))</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="n">n</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)]</span>
     <span class="k">return</span> <span class="n">spike_time_gen</span>
 
@@ -165,7 +161,7 @@
 
 
 <span class="k">class</span> <span class="nc">WeightRecorder</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Recording of weights is not yet built in to PyNN, so therefore we need</span>
 <span class="sd">    to construct a callback object, which reads the current weights from</span>
 <span class="sd">    the projection at regular intervals.</span>
@@ -278,7 +274,7 @@
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
@@ -286,7 +282,7 @@
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
@@ -307,14 +303,14 @@
         <li class="right" >
           <a href="random_distributions.html" title="Illustration of the different standard random distributions and different random number generators"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../examples.html" >Examples</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">A very simple example of using STDP</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2006-2023, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+    &#169; Copyright 2006-2024, the PyNN community.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
     </div>
   </body>
 </html>
