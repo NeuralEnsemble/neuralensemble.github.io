@@ -1,53 +1,151 @@
 <!DOCTYPE html>
 
-<html lang="en" data-content_root="../">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <title>Projections &#8212; PyNN 0.12.3 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../_static/nature.css?v=0f882399" />
-    <script src="../_static/documentation_options.js?v=56343b9b"></script>
-    <script src="../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <link rel="icon" href="../_static/pyNN_icon.ico"/>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Neuron models" href="neuronmodels.html" />
-    <link rel="prev" title="Connectors" href="connectors.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="neuronmodels.html" title="Neuron models"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="connectors.html" title="Connectors"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API reference</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Projections</a></li> 
-      </ul>
-    </div>  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <section id="projections">
-<h1>Projections<a class="headerlink" href="#projections" title="Link to this heading">¶</a></h1>
+<html :class="{'dark': darkMode === 'dark' || (darkMode === 'system' &amp;&amp; window.matchMedia('(prefers-color-scheme: dark)').matches)}" class="scroll-smooth" data-content_root="../" lang="en" x-data="{ darkMode: localStorage.getItem('darkMode') || localStorage.setItem('darkMode', 'system'), activeSection: '' }" x-init="$watch('darkMode', val =&gt; localStorage.setItem('darkMode', val))">
+<head>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="white" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="black" media="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Projections | PyNN 0.12.3 documentation</title>
+<meta content="Projections | PyNN 0.12.3 documentation" property="og:title"/>
+<meta content="Projections | PyNN 0.12.3 documentation" name="twitter:title"/>
+<link href="../_static/pygments.css?v=fa44fd50" rel="stylesheet" type="text/css"/>
+<link href="../_static/theme.css?v=42baaae4" rel="stylesheet" type="text/css"/>
+<link href="../_static/custom.css?v=14d0ad6c" rel="stylesheet" type="text/css"/>
+<link href="../_static/pyNN_icon.ico" rel="icon"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="neuronmodels.html" rel="next" title="Neuron models"/>
+<link href="connectors.html" rel="prev" title="Connectors"/>
+<script>
+    <!-- Prevent Flash of wrong theme -->
+      const userPreference = localStorage.getItem('darkMode');
+      let mode;
+      if (userPreference === 'dark' || window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        mode = 'dark';
+        document.documentElement.classList.add('dark');
+      } else {
+        mode = 'light';
+      }
+      if (!userPreference) {localStorage.setItem('darkMode', mode)}
+    </script>
+</head>
+<body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false, showScrollTop: false }">
+<div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-sm border-border supports-backdrop-blur:bg-background/60 bg-background/95 backdrop-blur"><div class="container flex items-center h-14">
+<div class="hidden mr-4 md:flex">
+<a class="flex items-center mr-6" href="../index.html">
+<img alt="Logo" class="mr-2 dark:invert" height="24" src="../_static/pyNN_logo.png" width="24"/><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">PyNN 0.12.3 documentation</span>
+</a></div><button @click="showSidebar = true" class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden" type="button">
+<svg aria-hidden="true" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z"></path>
+</svg>
+<span class="sr-only">Toggle navigation menu</span>
+</button>
+<div class="flex items-center justify-between flex-1 space-x-2 sm:space-x-4 md:justify-end">
+<div class="flex-1 w-full md:w-auto md:flex-none"><form @keydown.k.window.meta="$refs.search.focus()" action="../search.html" class="relative flex items-center group" id="searchbox" method="get">
+<input aria-label="Search the docs" class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" id="search-input" name="q" placeholder="Search ..." type="search" x-ref="search"/>
+<kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+<span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+</div>
+<nav class="flex items-center space-x-1">
+<button @click="darkMode = darkMode === 'light' ? 'dark' : 'light'" aria-label="Color theme switcher" class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9" type="button">
+<svg class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z"></path>
+</svg>
+<svg class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z"></path>
+</svg>
+</button>
+</nav>
+</div>
+</div>
+</header>
+<div class="flex-1"><div class="container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }" class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full shrink-0 overflow-y-auto border-r border-border md:sticky" id="left-sidebar">
+<a class="!justify-start text-sm md:!hidden bg-background" href="../index.html">
+<img alt="Logo" class="mr-2 dark:invert" height="16" src="../_static/pyNN_logo.png" width="16"/><span class="font-bold text-clip whitespace-nowrap">PyNN 0.12.3 documentation</span>
+</a>
+<div class="relative overflow-hidden md:overflow-auto my-4 md:my-0 h-[calc(100vh-8rem)] md:h-auto">
+<div class="overflow-y-auto h-full w-full relative pr-6"><nav class="table w-full min-w-full my-6 lg:my-8">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../building_networks.html">Building networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../injecting_current.html">Injecting current</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../recording.html">Recording spikes and state variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_handling.html">Data handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation_control.html">Simulation control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parameters.html">Model parameters and initial values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../random_numbers.html">Random numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mc_api.html">Multicompartmental modelling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backends.html">Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parallel.html">Running parallel simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../units.html">Units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../import_export.html">Importing from and exporting to other formats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications about, relating to or using PyNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors, licence and funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release notes</a></li>
+</ul>
+<ul>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../developers_guide.html">Developers’ guide<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="../developers/bug_reports.html">Bug reports and feature requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developers/contributing.html">Contributing to PyNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developers/governance.html">Governance</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../api_reference.html">API reference<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="populations.html">Populations, Views and Assemblies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="connectors.html">Connectors</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Projections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuronmodels.html">Neuron models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plasticitymodels.html">Synapse models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="electrodes.html">Current sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulationcontrol.html">Simulation control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="random.html">Random numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parameters.html">Parameter handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="space.html">Spatial structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utility.html">Utility classes and functions</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../standardmodels.html">Standard models</a></li>
+</ul>
+</nav>
+</div>
+</div>
+<button @click="showSidebar = false" class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100" type="button">
+<svg class="h-4 w-4" fill="currentColor" height="24" stroke="none" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"></path>
+</svg>
+</button>
+</aside>
+<main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs" class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+<a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground" href="../index.html">
+<span class="hidden md:inline">PyNN 0.12.3 documentation</span>
+<svg aria-label="Home" class="md:hidden" fill="currentColor" height="18" stroke="none" viewbox="0 96 960 960" width="18" xmlns="http://www.w3.org/2000/svg">
+<path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z"></path>
+</svg>
+</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="../api_reference.html">API reference</a>
+<div class="mr-1">/</div><span aria-current="page" class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">Projections</span>
+</nav>
+<div id="content" role="main">
+<section id="projections">
+<h1>Projections<a class="headerlink" href="#projections" title="Link to this heading"><span>¶</span></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Projection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">presynaptic_population</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postsynaptic_population</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">synapse_type=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">receptor_type=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space=&lt;pyNN.space.Space</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/neuron/projections.html#Projection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Projection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">presynaptic_population</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postsynaptic_population</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">synapse_type=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">receptor_type=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space=&lt;pyNN.space.Space</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/neuron/projections.html#Projection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection'"><span>¶</span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code></p>
 <p>A container for all the connections of a given type (same synapse type and
 plasticity mechanisms) between two populations, together with methods to
@@ -80,94 +178,80 @@ mechanisms to use.</p>
 </dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.pre">
-<span class="sig-name descname"><span class="pre">pre</span></span><a class="headerlink" href="#pyNN.neuron.Projection.pre" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">pre</span></span><a class="headerlink" href="#pyNN.neuron.Projection.pre" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.pre'"><span>¶</span></a></dt>
 <dd><p>The pre-synaptic Population, PopulationView or Assembly.</p>
 </dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.post">
-<span class="sig-name descname"><span class="pre">post</span></span><a class="headerlink" href="#pyNN.neuron.Projection.post" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">post</span></span><a class="headerlink" href="#pyNN.neuron.Projection.post" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.post'"><span>¶</span></a></dt>
 <dd><p>The post-synaptic Population, PopulationView or Assembly.</p>
 </dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.source">
-<span class="sig-name descname"><span class="pre">source</span></span><a class="headerlink" href="#pyNN.neuron.Projection.source" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">source</span></span><a class="headerlink" href="#pyNN.neuron.Projection.source" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.source'"><span>¶</span></a></dt>
 <dd><p>A string specifying which attribute of the presynaptic cell signals
 action potentials.</p>
 </dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.target">
-<span class="sig-name descname"><span class="pre">target</span></span><a class="headerlink" href="#pyNN.neuron.Projection.target" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">target</span></span><a class="headerlink" href="#pyNN.neuron.Projection.target" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.target'"><span>¶</span></a></dt>
 <dd><p>Name of the postsynaptic mechanism type (e.g. ‘excitatory’, ‘NMDA’).</p>
 </dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.label">
-<span class="sig-name descname"><span class="pre">label</span></span><a class="headerlink" href="#pyNN.neuron.Projection.label" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">label</span></span><a class="headerlink" href="#pyNN.neuron.Projection.label" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.label'"><span>¶</span></a></dt>
 <dd><p>A label for the Projection.</p>
 </dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.rng">
-<span class="sig-name descname"><span class="pre">rng</span></span><a class="headerlink" href="#pyNN.neuron.Projection.rng" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">rng</span></span><a class="headerlink" href="#pyNN.neuron.Projection.rng" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.rng'"><span>¶</span></a></dt>
 <dd><p>The RNG object that was used by the Connector.</p>
 </dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.synapse_dynamics">
-<span class="sig-name descname"><span class="pre">synapse_dynamics</span></span><a class="headerlink" href="#pyNN.neuron.Projection.synapse_dynamics" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">synapse_dynamics</span></span><a class="headerlink" href="#pyNN.neuron.Projection.synapse_dynamics" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.synapse_dynamics'"><span>¶</span></a></dt>
 <dd><p>The SynapseDynamics object that was used to specify the synaptic
 plasticity mechanism, or <cite>None</cite> if the synapses are static.</p>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.__len__">
-<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/neuron/projections.html#Projection.__len__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.__len__" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/neuron/projections.html#Projection.__len__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.__len__" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.__len__'"><span>¶</span></a></dt>
 <dd><p>Return the number of connections on the local MPI node.</p>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.__getitem__">
-<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/neuron/projections.html#Projection.__getitem__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.__getitem__" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/neuron/projections.html#Projection.__getitem__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.__getitem__" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.__getitem__'"><span>¶</span></a></dt>
 <dd><p>Return the /i/th connection within the Projection.</p>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.__iter__">
-<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/projections.html#Projection.__iter__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.__iter__" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/projections.html#Projection.__iter__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.__iter__" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.__iter__'"><span>¶</span></a></dt>
 <dd><p>Return an iterator over all connections on the local MPI node.</p>
 </dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.connections">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">connections</span></span><a class="headerlink" href="#pyNN.neuron.Projection.connections" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">connections</span></span><a class="headerlink" href="#pyNN.neuron.Projection.connections" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.connections'"><span>¶</span></a></dt>
 <dd></dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.MULTI_SYNAPSE_OPERATIONS">
-<span class="sig-name descname"><span class="pre">MULTI_SYNAPSE_OPERATIONS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'first':</span> <span class="pre">&lt;function</span> <span class="pre">Projection.&lt;lambda&gt;&gt;,</span> <span class="pre">'last':</span> <span class="pre">&lt;function</span> <span class="pre">Projection.&lt;lambda&gt;&gt;,</span> <span class="pre">'max':</span> <span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">max&gt;,</span> <span class="pre">'min':</span> <span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">min&gt;,</span> <span class="pre">'sum':</span> <span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">iadd&gt;}</span></em><a class="headerlink" href="#pyNN.neuron.Projection.MULTI_SYNAPSE_OPERATIONS" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">MULTI_SYNAPSE_OPERATIONS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'first':</span> <span class="pre">&lt;function</span> <span class="pre">Projection.&lt;lambda&gt;&gt;,</span> <span class="pre">'last':</span> <span class="pre">&lt;function</span> <span class="pre">Projection.&lt;lambda&gt;&gt;,</span> <span class="pre">'max':</span> <span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">max&gt;,</span> <span class="pre">'min':</span> <span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">min&gt;,</span> <span class="pre">'sum':</span> <span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">iadd&gt;}</span></em><a class="headerlink" href="#pyNN.neuron.Projection.MULTI_SYNAPSE_OPERATIONS" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.MULTI_SYNAPSE_OPERATIONS'"><span>¶</span></a></dt>
 <dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.annotate">
-<span class="sig-name descname"><span class="pre">annotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">annotations</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/projections.html#Projection.annotate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.annotate" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">annotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">annotations</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/projections.html#Projection.annotate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.annotate" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.annotate'"><span>¶</span></a></dt>
 <dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.describe">
-<span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'projection_default.txt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/projections.html#Projection.describe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.describe" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'projection_default.txt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/projections.html#Projection.describe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.describe" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.describe'"><span>¶</span></a></dt>
 <dd><p>Returns a human-readable description of the projection.</p>
 <p>The output may be customized by specifying a different template
 togther with an associated template engine (see <code class="docutils literal notranslate"><span class="pre">pyNN.descriptions</span></code>).</p>
 <p>If template is None, then a dictionary containing the template context
 will be returned.</p>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attribute_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gather</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_address</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiple_synapses</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sum'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/projections.html#Projection.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.get" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attribute_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gather</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_address</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiple_synapses</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sum'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/projections.html#Projection.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.get" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.get'"><span>¶</span></a></dt>
 <dd><p>Get the values of a given attribute (weight or delay) for all
 connections in this Projection.</p>
 <dl class="simple">
@@ -186,13 +270,13 @@ If False, all nodes get only information about local connections.</p>
 contains the indices of the pre- and post-synaptic cell followed by
 the attribute values in the order given in <cite>attribute_names</cite>.
 Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prj</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="s2">&quot;weight&quot;</span><span class="p">,</span> <span class="s2">&quot;delay&quot;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;list&quot;</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
-<span class="go">[(0.0, 0.0, 0.3401892507507171, 0.1),</span>
-<span class="go"> (0.0, 1.0, 0.7990713166233654, 0.30000000000000004),</span>
-<span class="go"> (0.0, 2.0, 0.6180841812877726, 0.5),</span>
-<span class="go"> (0.0, 3.0, 0.6758149775627305, 0.7000000000000001),</span>
-<span class="go"> (0.0, 4.0, 0.7166906726862953, 0.9)]</span>
-</pre></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">prj</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="s2">"weight"</span><span class="p">,</span> <span class="s2">"delay"</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s2">"list"</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
+</span><span id="line-2"><span class="go">[(0.0, 0.0, 0.3401892507507171, 0.1),</span>
+</span><span id="line-3"><span class="go"> (0.0, 1.0, 0.7990713166233654, 0.30000000000000004),</span>
+</span><span id="line-4"><span class="go"> (0.0, 2.0, 0.6180841812877726, 0.5),</span>
+</span><span id="line-5"><span class="go"> (0.0, 3.0, 0.6758149775627305, 0.7000000000000001),</span>
+</span><span id="line-6"><span class="go"> (0.0, 4.0, 0.7166906726862953, 0.9)]</span>
+</span></code></pre></div>
 </div>
 <p>If <cite>with_address</cite> is set to False, then the tuples will contain only the
 attribute values, not the cell indices.</p>
@@ -202,12 +286,12 @@ attribute value for the connection from the ith neuron in the pre-
 synaptic Population to the jth neuron in the post-synaptic Population,
 if a single such connection exists. If there are no such connections,
 X_ij will be NaN. Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">weights</span><span class="p">,</span> <span class="n">delays</span> <span class="o">=</span> <span class="n">prj</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="s2">&quot;weight&quot;</span><span class="p">,</span> <span class="s2">&quot;delay&quot;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;array&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">weights</span>
-<span class="go">array([[ 0.66210438,         nan,  0.10744555,  0.54557088],</span>
-<span class="go">       [ 0.3676134 ,         nan,  0.41463193,         nan],</span>
-<span class="go">       [ 0.57434871,  0.4329354 ,  0.58482943,  0.42863916]])</span>
-</pre></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">weights</span><span class="p">,</span> <span class="n">delays</span> <span class="o">=</span> <span class="n">prj</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="s2">"weight"</span><span class="p">,</span> <span class="s2">"delay"</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s2">"array"</span><span class="p">)</span>
+</span><span id="line-2"><span class="gp">&gt;&gt;&gt; </span><span class="n">weights</span>
+</span><span id="line-3"><span class="go">array([[ 0.66210438,         nan,  0.10744555,  0.54557088],</span>
+</span><span id="line-4"><span class="go">       [ 0.3676134 ,         nan,  0.41463193,         nan],</span>
+</span><span id="line-5"><span class="go">       [ 0.57434871,  0.4329354 ,  0.58482943,  0.42863916]])</span>
+</span></code></pre></div>
 </div>
 <p>If there are multiple such connections, the action to take is
 controlled by the <cite>multiple_synapses</cite> argument, which must be one of
@@ -215,28 +299,24 @@ controlled by the <cite>multiple_synapses</cite> argument, which must be one of
 <p>Values will be expressed in the standard PyNN units (i.e. millivolts,
 nanoamps, milliseconds, microsiemens, nanofarads, event per second).</p>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.getDelays">
-<span class="sig-name descname"><span class="pre">getDelays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.getDelays" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">getDelays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.getDelays" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.getDelays'"><span>¶</span></a></dt>
 <dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">get('delay',</span> <span class="pre">format,</span> <span class="pre">gather)</span></code> instead.</p>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.getSynapseDynamics">
-<span class="sig-name descname"><span class="pre">getSynapseDynamics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.getSynapseDynamics" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">getSynapseDynamics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.getSynapseDynamics" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.getSynapseDynamics'"><span>¶</span></a></dt>
 <dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">get(parameter_name,</span> <span class="pre">format,</span> <span class="pre">gather)</span></code> instead.</p>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.getWeights">
-<span class="sig-name descname"><span class="pre">getWeights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.getWeights" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">getWeights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.getWeights" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.getWeights'"><span>¶</span></a></dt>
 <dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">get('weight',</span> <span class="pre">format,</span> <span class="pre">gather)</span></code> instead.</p>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.initialize">
-<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">initial_values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/projections.html#Projection.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.initialize" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">initial_values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/projections.html#Projection.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.initialize" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.initialize'"><span>¶</span></a></dt>
 <dd><p>Set initial values of state variables of synaptic plasticity models.</p>
 <dl class="simple">
 <dt>Values passed to initialize() may be:</dt><dd><ol class="arabic simple">
@@ -252,59 +332,51 @@ distance between pre- and post-synaptic cells) and returns a single value.</p></
 <p>Values should be expressed in the standard PyNN units (i.e. millivolts,
 nanoamps, milliseconds, microsiemens, nanofarads, event per second).</p>
 <p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">prj</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">u</span><span class="o">=-</span><span class="mf">70.0</span><span class="p">)</span>
-</pre></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">prj</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">u</span><span class="o">=-</span><span class="mf">70.0</span><span class="p">)</span>
+</span></code></pre></div>
 </div>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.printDelays">
-<span class="sig-name descname"><span class="pre">printDelays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.printDelays" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">printDelays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.printDelays" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.printDelays'"><span>¶</span></a></dt>
 <dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">save('delay',</span> <span class="pre">file,</span> <span class="pre">format,</span> <span class="pre">gather)</span></code> instead.</p>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.printWeights">
-<span class="sig-name descname"><span class="pre">printWeights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.printWeights" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">printWeights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.printWeights" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.printWeights'"><span>¶</span></a></dt>
 <dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">save('weight',</span> <span class="pre">file,</span> <span class="pre">format,</span> <span class="pre">gather)</span></code> instead.</p>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.randomizeDelays">
-<span class="sig-name descname"><span class="pre">randomizeDelays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.randomizeDelays" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">randomizeDelays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.randomizeDelays" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.randomizeDelays'"><span>¶</span></a></dt>
 <dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">set(delay=rand_distr)</span></code> instead.</p>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.randomizeSynapseDynamics">
-<span class="sig-name descname"><span class="pre">randomizeSynapseDynamics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.randomizeSynapseDynamics" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">randomizeSynapseDynamics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.randomizeSynapseDynamics" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.randomizeSynapseDynamics'"><span>¶</span></a></dt>
 <dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">set(name=rand_distr)</span></code> instead.</p>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.randomizeWeights">
-<span class="sig-name descname"><span class="pre">randomizeWeights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.randomizeWeights" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">randomizeWeights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.randomizeWeights" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.randomizeWeights'"><span>¶</span></a></dt>
 <dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">set(weight=rand_distr)</span></code> instead.</p>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.save">
-<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attribute_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'list'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gather</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_address</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/projections.html#Projection.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.save" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attribute_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'list'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gather</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_address</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/projections.html#Projection.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.save" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.save'"><span>¶</span></a></dt>
 <dd><p>Print synaptic attributes (weights, delays, etc.) to file. In the array
 format, zeros are printed for non-existent connections.</p>
 <p>Values will be expressed in the standard PyNN units (i.e. millivolts,
 nanoamps, milliseconds, microsiemens, nanofarads, event per second).</p>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.saveConnections">
-<span class="sig-name descname"><span class="pre">saveConnections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.saveConnections" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">saveConnections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.saveConnections" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.saveConnections'"><span>¶</span></a></dt>
 <dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">save('all',</span> <span class="pre">file,</span> <span class="pre">format='list',</span> <span class="pre">gather=gather)</span></code> instead.</p>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.set">
-<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/projections.html#Projection.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.set" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/projections.html#Projection.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.set" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.set'"><span>¶</span></a></dt>
 <dd><p>Set connection attributes for all connections on the local MPI node.</p>
 <p>Attribute names may be ‘weight’, ‘delay’, or the name of any parameter
 of a synapse dynamics model (e.g. ‘U’ for TsodyksMarkramSynapse).</p>
@@ -324,33 +396,28 @@ synapses. Delays should be in milliseconds.</p>
 <p>Note that where a projection contains multiple connections between a given pair
 of neurons, all these connections will be set to the same value.</p>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.setDelays">
-<span class="sig-name descname"><span class="pre">setDelays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.setDelays" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">setDelays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.setDelays" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.setDelays'"><span>¶</span></a></dt>
 <dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">set(delay=d)</span></code> instead.</p>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.setSynapseDynamics">
-<span class="sig-name descname"><span class="pre">setSynapseDynamics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.setSynapseDynamics" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">setSynapseDynamics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.setSynapseDynamics" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.setSynapseDynamics'"><span>¶</span></a></dt>
 <dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">set(parameter_name=value)</span></code> instead.</p>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.setWeights">
-<span class="sig-name descname"><span class="pre">setWeights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.setWeights" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">setWeights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.setWeights" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.setWeights'"><span>¶</span></a></dt>
 <dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">set(weight=w)</span></code> instead.</p>
 </dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.shape">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shape</span></span><a class="headerlink" href="#pyNN.neuron.Projection.shape" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shape</span></span><a class="headerlink" href="#pyNN.neuron.Projection.shape" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.shape'"><span>¶</span></a></dt>
 <dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.size">
-<span class="sig-name descname"><span class="pre">size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gather</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/projections.html#Projection.size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.size" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gather</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyNN/common/projections.html#Projection.size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyNN.neuron.Projection.size" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.size'"><span>¶</span></a></dt>
 <dd><dl class="simple">
 <dt>Return the total number of connections.</dt><dd><ul class="simple">
 <li><p>only local connections, if gather is False,</p></li>
@@ -359,133 +426,74 @@ of neurons, all these connections will be set to the same value.</p>
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pyNN.neuron.Projection.weightHistogram">
-<span class="sig-name descname"><span class="pre">weightHistogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.weightHistogram" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">weightHistogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.Projection.weightHistogram" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.Projection.weightHistogram'"><span>¶</span></a></dt>
 <dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">np.histogram()</span></code> instead.</p>
 </dd></dl>
-
 </dd></dl>
-
 <dl class="py function">
 <dt class="sig sig-object py" id="pyNN.neuron.connect">
-<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.connect" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyNN.neuron.connect" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pyNN.neuron.connect'"><span>¶</span></a></dt>
 <dd><p><em>Deprecated</em>. Use <code class="docutils literal notranslate"><span class="pre">Projection()</span></code> instead.</p>
 </dd></dl>
-
 </section>
-
-
-            <div class="clearer"></div>
-          </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-            <p class="logo"><a href="../index.html">
-              <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
-            </a></p>
-  <div>
-    <h3><a href="../index.html">Table of Contents</a></h3>
-    <ul>
-<li><a class="reference internal" href="#">Projections</a><ul>
-<li><a class="reference internal" href="#pyNN.neuron.Projection"><code class="docutils literal notranslate"><span class="pre">Projection</span></code></a><ul>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.pre"><code class="docutils literal notranslate"><span class="pre">Projection.pre</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.post"><code class="docutils literal notranslate"><span class="pre">Projection.post</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.source"><code class="docutils literal notranslate"><span class="pre">Projection.source</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.target"><code class="docutils literal notranslate"><span class="pre">Projection.target</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.label"><code class="docutils literal notranslate"><span class="pre">Projection.label</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.rng"><code class="docutils literal notranslate"><span class="pre">Projection.rng</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.synapse_dynamics"><code class="docutils literal notranslate"><span class="pre">Projection.synapse_dynamics</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.__len__"><code class="docutils literal notranslate"><span class="pre">Projection.__len__()</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.__getitem__"><code class="docutils literal notranslate"><span class="pre">Projection.__getitem__()</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.__iter__"><code class="docutils literal notranslate"><span class="pre">Projection.__iter__()</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.connections"><code class="docutils literal notranslate"><span class="pre">Projection.connections</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.MULTI_SYNAPSE_OPERATIONS"><code class="docutils literal notranslate"><span class="pre">Projection.MULTI_SYNAPSE_OPERATIONS</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.annotate"><code class="docutils literal notranslate"><span class="pre">Projection.annotate()</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.describe"><code class="docutils literal notranslate"><span class="pre">Projection.describe()</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.get"><code class="docutils literal notranslate"><span class="pre">Projection.get()</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.getDelays"><code class="docutils literal notranslate"><span class="pre">Projection.getDelays()</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.getSynapseDynamics"><code class="docutils literal notranslate"><span class="pre">Projection.getSynapseDynamics()</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.getWeights"><code class="docutils literal notranslate"><span class="pre">Projection.getWeights()</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.initialize"><code class="docutils literal notranslate"><span class="pre">Projection.initialize()</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.printDelays"><code class="docutils literal notranslate"><span class="pre">Projection.printDelays()</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.printWeights"><code class="docutils literal notranslate"><span class="pre">Projection.printWeights()</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.randomizeDelays"><code class="docutils literal notranslate"><span class="pre">Projection.randomizeDelays()</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.randomizeSynapseDynamics"><code class="docutils literal notranslate"><span class="pre">Projection.randomizeSynapseDynamics()</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.randomizeWeights"><code class="docutils literal notranslate"><span class="pre">Projection.randomizeWeights()</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.save"><code class="docutils literal notranslate"><span class="pre">Projection.save()</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.saveConnections"><code class="docutils literal notranslate"><span class="pre">Projection.saveConnections()</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.set"><code class="docutils literal notranslate"><span class="pre">Projection.set()</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.setDelays"><code class="docutils literal notranslate"><span class="pre">Projection.setDelays()</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.setSynapseDynamics"><code class="docutils literal notranslate"><span class="pre">Projection.setSynapseDynamics()</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.setWeights"><code class="docutils literal notranslate"><span class="pre">Projection.setWeights()</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.shape"><code class="docutils literal notranslate"><span class="pre">Projection.shape</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.size"><code class="docutils literal notranslate"><span class="pre">Projection.size()</span></code></a></li>
-<li><a class="reference internal" href="#pyNN.neuron.Projection.weightHistogram"><code class="docutils literal notranslate"><span class="pre">Projection.weightHistogram()</span></code></a></li>
+</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
+<div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
+<ul>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection'" class="reference internal" href="#pyNN.neuron.Projection"><code class="docutils literal notranslate"><span class="pre">Projection</span></code></a><ul>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.pre'" class="reference internal" href="#pyNN.neuron.Projection.pre"><code class="docutils literal notranslate"><span class="pre">Projection.pre</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.post'" class="reference internal" href="#pyNN.neuron.Projection.post"><code class="docutils literal notranslate"><span class="pre">Projection.post</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.source'" class="reference internal" href="#pyNN.neuron.Projection.source"><code class="docutils literal notranslate"><span class="pre">Projection.source</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.target'" class="reference internal" href="#pyNN.neuron.Projection.target"><code class="docutils literal notranslate"><span class="pre">Projection.target</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.label'" class="reference internal" href="#pyNN.neuron.Projection.label"><code class="docutils literal notranslate"><span class="pre">Projection.label</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.rng'" class="reference internal" href="#pyNN.neuron.Projection.rng"><code class="docutils literal notranslate"><span class="pre">Projection.rng</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.synapse_dynamics'" class="reference internal" href="#pyNN.neuron.Projection.synapse_dynamics"><code class="docutils literal notranslate"><span class="pre">Projection.synapse_dynamics</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.__len__'" class="reference internal" href="#pyNN.neuron.Projection.__len__"><code class="docutils literal notranslate"><span class="pre">Projection.__len__()</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.__getitem__'" class="reference internal" href="#pyNN.neuron.Projection.__getitem__"><code class="docutils literal notranslate"><span class="pre">Projection.__getitem__()</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.__iter__'" class="reference internal" href="#pyNN.neuron.Projection.__iter__"><code class="docutils literal notranslate"><span class="pre">Projection.__iter__()</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.connections'" class="reference internal" href="#pyNN.neuron.Projection.connections"><code class="docutils literal notranslate"><span class="pre">Projection.connections</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.MULTI_SYNAPSE_OPERATIONS'" class="reference internal" href="#pyNN.neuron.Projection.MULTI_SYNAPSE_OPERATIONS"><code class="docutils literal notranslate"><span class="pre">Projection.MULTI_SYNAPSE_OPERATIONS</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.annotate'" class="reference internal" href="#pyNN.neuron.Projection.annotate"><code class="docutils literal notranslate"><span class="pre">Projection.annotate()</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.describe'" class="reference internal" href="#pyNN.neuron.Projection.describe"><code class="docutils literal notranslate"><span class="pre">Projection.describe()</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.get'" class="reference internal" href="#pyNN.neuron.Projection.get"><code class="docutils literal notranslate"><span class="pre">Projection.get()</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.getDelays'" class="reference internal" href="#pyNN.neuron.Projection.getDelays"><code class="docutils literal notranslate"><span class="pre">Projection.getDelays()</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.getSynapseDynamics'" class="reference internal" href="#pyNN.neuron.Projection.getSynapseDynamics"><code class="docutils literal notranslate"><span class="pre">Projection.getSynapseDynamics()</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.getWeights'" class="reference internal" href="#pyNN.neuron.Projection.getWeights"><code class="docutils literal notranslate"><span class="pre">Projection.getWeights()</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.initialize'" class="reference internal" href="#pyNN.neuron.Projection.initialize"><code class="docutils literal notranslate"><span class="pre">Projection.initialize()</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.printDelays'" class="reference internal" href="#pyNN.neuron.Projection.printDelays"><code class="docutils literal notranslate"><span class="pre">Projection.printDelays()</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.printWeights'" class="reference internal" href="#pyNN.neuron.Projection.printWeights"><code class="docutils literal notranslate"><span class="pre">Projection.printWeights()</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.randomizeDelays'" class="reference internal" href="#pyNN.neuron.Projection.randomizeDelays"><code class="docutils literal notranslate"><span class="pre">Projection.randomizeDelays()</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.randomizeSynapseDynamics'" class="reference internal" href="#pyNN.neuron.Projection.randomizeSynapseDynamics"><code class="docutils literal notranslate"><span class="pre">Projection.randomizeSynapseDynamics()</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.randomizeWeights'" class="reference internal" href="#pyNN.neuron.Projection.randomizeWeights"><code class="docutils literal notranslate"><span class="pre">Projection.randomizeWeights()</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.save'" class="reference internal" href="#pyNN.neuron.Projection.save"><code class="docutils literal notranslate"><span class="pre">Projection.save()</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.saveConnections'" class="reference internal" href="#pyNN.neuron.Projection.saveConnections"><code class="docutils literal notranslate"><span class="pre">Projection.saveConnections()</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.set'" class="reference internal" href="#pyNN.neuron.Projection.set"><code class="docutils literal notranslate"><span class="pre">Projection.set()</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.setDelays'" class="reference internal" href="#pyNN.neuron.Projection.setDelays"><code class="docutils literal notranslate"><span class="pre">Projection.setDelays()</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.setSynapseDynamics'" class="reference internal" href="#pyNN.neuron.Projection.setSynapseDynamics"><code class="docutils literal notranslate"><span class="pre">Projection.setSynapseDynamics()</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.setWeights'" class="reference internal" href="#pyNN.neuron.Projection.setWeights"><code class="docutils literal notranslate"><span class="pre">Projection.setWeights()</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.shape'" class="reference internal" href="#pyNN.neuron.Projection.shape"><code class="docutils literal notranslate"><span class="pre">Projection.shape</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.size'" class="reference internal" href="#pyNN.neuron.Projection.size"><code class="docutils literal notranslate"><span class="pre">Projection.size()</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.Projection.weightHistogram'" class="reference internal" href="#pyNN.neuron.Projection.weightHistogram"><code class="docutils literal notranslate"><span class="pre">Projection.weightHistogram()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#pyNN.neuron.connect"><code class="docutils literal notranslate"><span class="pre">connect()</span></code></a></li>
+<li><a :data-current="activeSection === '#pyNN.neuron.connect'" class="reference internal" href="#pyNN.neuron.connect"><code class="docutils literal notranslate"><span class="pre">connect()</span></code></a></li>
 </ul>
-</li>
-</ul>
-
-  </div>
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="connectors.html"
-                          title="previous chapter">Connectors</a></p>
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="neuronmodels.html"
-                          title="next chapter">Neuron models</a></p>
-  </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/reference/projections.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<search id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</search>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="neuronmodels.html" title="Neuron models"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="connectors.html" title="Connectors"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../api_reference.html" >API reference</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Projections</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-    &#169; Copyright 2006-2024, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
-    </div>
-  </body>
+</div>
+</aside>
+</main>
+</div>
+</div><footer class="py-6 border-t border-border md:py-0">
+<div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+<div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+<p class="text-sm leading-loose text-center text-muted-foreground md:text-left">© 2006-2024, the PyNN community Built with <a class="font-medium underline underline-offset-4" href="https://www.sphinx-doc.org" rel="noreferrer">Sphinx 8.2.3</a></p>
+</div>
+</div>
+</footer>
+</div>
+<script src="../_static/documentation_options.js?v=56343b9b"></script>
+<script src="../_static/doctools.js?v=9bcbadda"></script>
+<script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script defer="defer" src="../_static/theme.js?v=073f68d9"></script>
+</body>
 </html>

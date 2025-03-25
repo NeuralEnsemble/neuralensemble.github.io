@@ -1,72 +1,200 @@
 <!DOCTYPE html>
+<html lang="en"
+      data-content_root="./"
+      x-data="{ darkMode: localStorage.getItem('darkMode') || localStorage.setItem('darkMode', 'system'), activeSection: '' }"
+      x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
+      class="scroll-smooth"
+      :class="{'dark': darkMode === 'dark' || (darkMode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)}"
+>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="white" />
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="black" />
+  
+    <title>Index | PyNN 0.12.3 documentation</title>
+    <meta property="og:title" content="Index | PyNN 0.12.3 documentation" />
+    <meta name="twitter:title" content="Index | PyNN 0.12.3 documentation" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/theme.css?v=42baaae4" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=14d0ad6c" />
+      <link rel="icon" href="_static/pyNN_icon.ico" />
+        <link rel="search" title="Search" href="search.html" />
+        <link rel="index" title="Index" href="#" />
 
-<html lang="en" data-content_root="./">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Index &#8212; PyNN 0.12.3 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="_static/nature.css?v=0f882399" />
-    <script src="_static/documentation_options.js?v=56343b9b"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <link rel="icon" href="_static/pyNN_icon.ico"/>
-    <link rel="index" title="Index" href="#" />
-    <link rel="search" title="Search" href="search.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="#" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.3 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Index</a></li> 
-      </ul>
-    </div>  
+    <script>
+    <!-- Prevent Flash of wrong theme -->
+      const userPreference = localStorage.getItem('darkMode');
+      let mode;
+      if (userPreference === 'dark' || window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        mode = 'dark';
+        document.documentElement.classList.add('dark');
+      } else {
+        mode = 'light';
+      }
+      if (!userPreference) {localStorage.setItem('darkMode', mode)}
+    </script>
+</head>
+  <body x-data="{ showSidebar: false, showScrollTop: false }" class="min-h-screen font-sans antialiased bg-background text-foreground" :class="{ 'overflow-hidden': showSidebar }">
+    <div x-cloak x-show="showSidebar" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" @click.self="showSidebar = false"></div><div id="page" class="relative flex flex-col min-h-screen"><a href="#content" class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100">
+      Skip to content
+    </a><header
+  class="sticky top-0 z-40 w-full border-b shadow-sm border-border supports-backdrop-blur:bg-background/60 bg-background/95 backdrop-blur"><div class="container flex items-center h-14">
+    <div class="hidden mr-4 md:flex">
+      <a href="index.html" class="flex items-center mr-6">
+          <img height="24" width="24" class="mr-2 dark:invert" src="_static/pyNN_logo.png" alt="Logo" /><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">PyNN 0.12.3 documentation</span>
+      </a></div><button
+      class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden"
+      type="button" @click="showSidebar = true">
+      <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 96 960 960" aria-hidden="true"
+        fill="currentColor">
+        <path
+          d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z" />
+      </svg>
+      <span class="sr-only">Toggle navigation menu</span>
+    </button>
+    <div class="flex items-center justify-between flex-1 space-x-2 sm:space-x-4 md:justify-end">
+      <div class="flex-1 w-full md:w-auto md:flex-none"><form id="searchbox"
+      action="search.html"
+      method="get"
+      class="relative flex items-center group"
+      @keydown.k.window.meta="$refs.search.focus()">
+  <input x-ref="search"
+          name="q"
+          id="search-input"
+          type="search"
+          aria-label="Search the docs"
+          placeholder="Search ..."
+          class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" />
+  <kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+    <span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+      </div>
+      <nav class="flex items-center space-x-1">
+        <button @click="darkMode = darkMode === 'light' ? 'dark' : 'light'"
+          class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9"
+          type="button"
+          aria-label="Color theme switcher">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 96 960 960" fill="currentColor"
+            class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0">
+            <path
+              d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 96 960 960" fill="currentColor"
+            class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100">
+            <path
+              d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z" />
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </div>
+</header>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
+    <div class="flex-1"><div class="container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside id="left-sidebar"
+  class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full shrink-0 overflow-y-auto border-r border-border md:sticky"
+  :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }">
 
-<h1 id="index">Index</h1>
+    <a href="index.html" class="!justify-start text-sm md:!hidden bg-background">
+        <img height="16" width="16" class="mr-2 dark:invert" src="_static/pyNN_logo.png" alt="Logo" /><span class="font-bold text-clip whitespace-nowrap">PyNN 0.12.3 documentation</span>
+    </a>
 
-<div class="genindex-jumpbox">
- <a href="#_"><strong>_</strong></a>
- | <a href="#A"><strong>A</strong></a>
- | <a href="#B"><strong>B</strong></a>
- | <a href="#C"><strong>C</strong></a>
- | <a href="#D"><strong>D</strong></a>
- | <a href="#E"><strong>E</strong></a>
- | <a href="#F"><strong>F</strong></a>
- | <a href="#G"><strong>G</strong></a>
- | <a href="#H"><strong>H</strong></a>
- | <a href="#I"><strong>I</strong></a>
- | <a href="#K"><strong>K</strong></a>
- | <a href="#L"><strong>L</strong></a>
- | <a href="#M"><strong>M</strong></a>
- | <a href="#N"><strong>N</strong></a>
- | <a href="#O"><strong>O</strong></a>
- | <a href="#P"><strong>P</strong></a>
- | <a href="#R"><strong>R</strong></a>
- | <a href="#S"><strong>S</strong></a>
- | <a href="#T"><strong>T</strong></a>
- | <a href="#U"><strong>U</strong></a>
- | <a href="#V"><strong>V</strong></a>
- | <a href="#W"><strong>W</strong></a>
- 
-</div>
-<h2 id="_">_</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+    <div class="relative overflow-hidden md:overflow-auto my-4 md:my-0 h-[calc(100vh-8rem)] md:h-auto">
+      <div class="overflow-y-auto h-full w-full relative pr-6"><nav class="table w-full min-w-full my-6 lg:my-8">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building_networks.html">Building networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="injecting_current.html">Injecting current</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recording.html">Recording spikes and state variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_handling.html">Data handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simulation_control.html">Simulation control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parameters.html">Model parameters and initial values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="random_numbers.html">Random numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mc_api.html">Multicompartmental modelling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends.html">Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parallel.html">Running parallel simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="units.html">Units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="import_export.html">Importing from and exporting to other formats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="publications.html">Publications about, relating to or using PyNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributors.html">Contributors, licence and funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release notes</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="developers_guide.html">Developers’ guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developers/bug_reports.html">Bug reports and feature requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developers/contributing.html">Contributing to PyNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developers/governance.html">Governance</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/populations.html">Populations, Views and Assemblies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/connectors.html">Connectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/projections.html">Projections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/neuronmodels.html">Neuron models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/plasticitymodels.html">Synapse models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/electrodes.html">Current sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/simulationcontrol.html">Simulation control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/random.html">Random numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/parameters.html">Parameter handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/space.html">Spatial structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/utility.html">Utility classes and functions</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="standardmodels.html">Standard models</a></li>
+</ul>
+
+</nav>
+      </div>
+    </div>
+    <button type="button" @click="showSidebar = false"
+      class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100">
+      <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 96 960 960" fill="currentColor"
+        stroke="none" class="h-4 w-4">
+        <path
+          d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z" />
+      </svg>
+    </button>
+  </aside>
+        <main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs"
+     class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+  <a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground"
+     href="index.html">
+    <span class="hidden md:inline">PyNN 0.12.3 documentation</span>
+    <svg xmlns="http://www.w3.org/2000/svg"
+         height="18"
+         width="18"
+         viewBox="0 96 960 960"
+         aria-label="Home"
+         fill="currentColor"
+         stroke="none"
+         class="md:hidden">
+      <path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z" />
+    </svg>
+  </a>
+  
+<div class="mr-1">/</div><span aria-current="page"
+        class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">Index</span>
+</nav>
+
+<div id="content" role="main">
+
+  <h1 id="index">Index</h1>
+  <h2 id="_">_</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.__add__">__add__() (Assembly method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.Population.__add__">(Population method)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.__add__">(PopulationView method)</a>
@@ -76,7 +204,7 @@
 </li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.__getitem__">__getitem__() (Assembly method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/parameters.html#pyNN.parameters.LazyArray.__getitem__">(LazyArray method)</a>
 </li>
         <li><a href="reference/parameters.html#pyNN.parameters.ParameterSpace.__getitem__">(ParameterSpace method)</a>
@@ -89,12 +217,12 @@
 </li>
       </ul></li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.__iadd__">__iadd__() (Assembly method)</a>
 </li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.__iter__">__iter__() (Assembly method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/parameters.html#pyNN.parameters.ParameterSpace.__iter__">(ParameterSpace method)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.Population.__iter__">(Population method)</a>
@@ -106,7 +234,7 @@
       </ul></li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.__len__">__len__() (Assembly method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.Population.__len__">(Population method)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.__len__">(PopulationView method)</a>
@@ -117,11 +245,12 @@
       <li><a href="reference/parameters.html#pyNN.parameters.Sequence.__mul__">__mul__() (Sequence method)</a>
 </li>
   </ul></td>
-</tr></table>
-
-<h2 id="A">A</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  </tr>
+      </table>
+  
+  <h2 id="A">A</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.ACSource">ACSource (class in pyNN.neuron.standardmodels.electrodes)</a>
 </li>
       <li><a href="reference/plasticitymodels.html#pyNN.standardmodels.synapses.AdditivePotentiationMultiplicativeDepression">AdditivePotentiationMultiplicativeDepression (class in pyNN.standardmodels.synapses)</a>
@@ -132,7 +261,7 @@
 </li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.all">all() (Assembly method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.Population.all">(Population method)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.all">(PopulationView method)</a>
@@ -140,19 +269,19 @@
       </ul></li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.all_cells">all_cells (Assembly property)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.Population.all_cells">(Population attribute)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.all_cells">(PopulationView attribute)</a>
 </li>
       </ul></li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/connectors.html#pyNN.connectors.AllToAllConnector">AllToAllConnector (class in pyNN.connectors)</a>
 </li>
       <li><a href="reference/populations.html#pyNN.neuron.Population.annotate">annotate() (Population method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.annotate">(PopulationView method)</a>
 </li>
         <li><a href="reference/projections.html#pyNN.neuron.Projection.annotate">(Projection method)</a>
@@ -169,38 +298,40 @@
       <li><a href="reference/space.html#pyNN.space.Space.AXES">AXES (Space attribute)</a>
 </li>
   </ul></td>
-</tr></table>
-
-<h2 id="B">B</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  </tr>
+      </table>
+  
+  <h2 id="B">B</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/space.html#pyNN.space.BaseStructure">BaseStructure (class in pyNN.space)</a>
 </li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/parameters.html#pyNN.parameters.LazyArray.by_column">by_column() (LazyArray method)</a>
 </li>
   </ul></td>
-</tr></table>
-
-<h2 id="C">C</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  </tr>
+      </table>
+  
+  <h2 id="C">C</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/space.html#pyNN.space.Grid2D.calculate_size">calculate_size() (Grid2D method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/space.html#pyNN.space.Grid3D.calculate_size">(Grid3D method)</a>
 </li>
       </ul></li>
       <li><a href="reference/populations.html#pyNN.neuron.Population.can_record">can_record() (Population method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.can_record">(PopulationView method)</a>
 </li>
       </ul></li>
       <li><a href="reference/populations.html#pyNN.neuron.Population.celltype">celltype (Population attribute)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.celltype">(PopulationView attribute)</a>
 </li>
       </ul></li>
@@ -210,9 +341,11 @@
 </li>
       <li><a href="reference/parameters.html#pyNN.parameters.ParameterSpace.columns">columns() (ParameterSpace method)</a>
 </li>
+      <li><a href="reference/utility.html#pyNN.utility.plotting.comparison_plot">comparison_plot() (in module pyNN.utility.plotting)</a>
+</li>
       <li><a href="reference/neuronmodels.html#pyNN.standardmodels.cells.PointNeuron.computed_parameters">computed_parameters() (PointNeuron method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/neuronmodels.html#pyNN.standardmodels.StandardCellType.computed_parameters">(StandardCellType method)</a>
 </li>
         <li><a href="reference/plasticitymodels.html#pyNN.standardmodels.StandardSynapseType.computed_parameters">(StandardSynapseType method)</a>
@@ -220,7 +353,7 @@
       </ul></li>
       <li><a href="reference/neuronmodels.html#pyNN.standardmodels.cells.PointNeuron.computed_parameters_include">computed_parameters_include() (PointNeuron method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/plasticitymodels.html#pyNN.standardmodels.StandardSynapseType.computed_parameters_include">(StandardSynapseType method)</a>
 </li>
       </ul></li>
@@ -232,7 +365,7 @@
 </li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.conductance_based">conductance_based (Assembly property)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/neuronmodels.html#pyNN.standardmodels.receptors.CondAlphaPostSynapticResponse.conductance_based">(CondAlphaPostSynapticResponse attribute)</a>
 </li>
         <li><a href="reference/neuronmodels.html#pyNN.standardmodels.receptors.CondBetaPostSynapticResponse.conductance_based">(CondBetaPostSynapticResponse attribute)</a>
@@ -273,10 +406,10 @@
 </li>
       </ul></li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/connectors.html#pyNN.connectors.Connector.connect">connect() (Connector method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/projections.html#pyNN.neuron.connect">(in module pyNN.neuron)</a>
 </li>
       </ul></li>
@@ -295,16 +428,17 @@
       <li><a href="reference/neuronmodels.html#pyNN.standardmodels.receptors.CurrExpPostSynapticResponse">CurrExpPostSynapticResponse (class in pyNN.standardmodels.receptors)</a>
 </li>
   </ul></td>
-</tr></table>
-
-<h2 id="D">D</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  </tr>
+      </table>
+  
+  <h2 id="D">D</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.DCSource">DCSource (class in pyNN.neuron.standardmodels.electrodes)</a>
 </li>
       <li><a href="reference/neuronmodels.html#pyNN.standardmodels.cells.AdExp.default_initial_values">default_initial_values (AdExp attribute)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/neuronmodels.html#pyNN.standardmodels.receptors.CondAlphaPostSynapticResponse.default_initial_values">(CondAlphaPostSynapticResponse attribute)</a>
 </li>
         <li><a href="reference/neuronmodels.html#pyNN.standardmodels.receptors.CondBetaPostSynapticResponse.default_initial_values">(CondBetaPostSynapticResponse attribute)</a>
@@ -340,7 +474,7 @@
       </ul></li>
       <li><a href="reference/plasticitymodels.html#pyNN.standardmodels.synapses.AdditivePotentiationMultiplicativeDepression.default_parameters">default_parameters (AdditivePotentiationMultiplicativeDepression attribute)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/plasticitymodels.html#pyNN.standardmodels.synapses.AdditiveWeightDependence.default_parameters">(AdditiveWeightDependence attribute)</a>
 </li>
         <li><a href="reference/neuronmodels.html#pyNN.standardmodels.cells.AdExp.default_parameters">(AdExp attribute)</a>
@@ -391,10 +525,10 @@
 </li>
       </ul></li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.describe">describe() (Assembly method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/space.html#pyNN.space.BaseStructure.describe">(BaseStructure method)</a>
 </li>
         <li><a href="reference/connectors.html#pyNN.connectors.Connector.describe">(Connector method)</a>
@@ -431,11 +565,12 @@
       <li><a href="reference/space.html#pyNN.space.Space.distances">distances() (Space method)</a>
 </li>
   </ul></td>
-</tr></table>
-
-<h2 id="E">E</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  </tr>
+      </table>
+  
+  <h2 id="E">E</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/neuronmodels.html#pyNN.standardmodels.cells.EIF_cond_alpha_isfa_ista">EIF_cond_alpha_isfa_ista (class in pyNN.standardmodels.cells)</a>
 </li>
       <li><a href="reference/neuronmodels.html#pyNN.standardmodels.cells.EIF_cond_exp_isfa_ista">EIF_cond_exp_isfa_ista (class in pyNN.standardmodels.cells)</a>
@@ -447,17 +582,17 @@
       <li><a href="reference/simulationcontrol.html#pyNN.neuron.end">end() (in module pyNN.neuron)</a>
 </li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li>
     environment variable
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="developers/contributing.html#index-0">PYTHONPATH</a>, <a href="developers/contributing.html#index-1">[1]</a>
 </li>
       </ul></li>
       <li><a href="reference/parameters.html#pyNN.parameters.LazyArray.evaluate">evaluate() (LazyArray method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/parameters.html#pyNN.parameters.ParameterSpace.evaluate">(ParameterSpace method)</a>
 </li>
       </ul></li>
@@ -466,14 +601,17 @@
       <li><a href="reference/plasticitymodels.html#pyNN.standardmodels.StandardSynapseType.extra_parameters">extra_parameters (StandardSynapseType attribute)</a>
 </li>
   </ul></td>
-</tr></table>
-
-<h2 id="F">F</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  </tr>
+      </table>
+  
+  <h2 id="F">F</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="reference/utility.html#pyNN.utility.plotting.Figure">Figure (class in pyNN.utility.plotting)</a>
+</li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.find_units">find_units() (Assembly method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.Population.find_units">(Population method)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.find_units">(PopulationView method)</a>
@@ -484,7 +622,7 @@
       <li><a href="reference/connectors.html#pyNN.connectors.FixedNumberPostConnector">FixedNumberPostConnector (class in pyNN.connectors)</a>
 </li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/connectors.html#pyNN.connectors.FixedNumberPreConnector">FixedNumberPreConnector (class in pyNN.connectors)</a>
 </li>
       <li><a href="reference/connectors.html#pyNN.connectors.FixedProbabilityConnector">FixedProbabilityConnector (class in pyNN.connectors)</a>
@@ -498,16 +636,17 @@
       <li><a href="reference/connectors.html#pyNN.connectors.FromListConnector">FromListConnector (class in pyNN.connectors)</a>
 </li>
   </ul></td>
-</tr></table>
-
-<h2 id="G">G</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  </tr>
+      </table>
+  
+  <h2 id="G">G</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/random.html#pyNN.random.GSLRNG.gamma">gamma() (GSLRNG method)</a>
 </li>
       <li><a href="reference/space.html#pyNN.space.BaseStructure.generate_positions">generate_positions() (BaseStructure method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/space.html#pyNN.space.Grid2D.generate_positions">(Grid2D method)</a>
 </li>
         <li><a href="reference/space.html#pyNN.space.Grid3D.generate_positions">(Grid3D method)</a>
@@ -519,7 +658,7 @@
       </ul></li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.get">get() (Assembly method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.Population.get">(Population method)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.get">(PopulationView method)</a>
@@ -533,7 +672,7 @@
 </li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.get_data">get_data() (Assembly method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.Population.get_data">(Population method)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.get_data">(PopulationView method)</a>
@@ -541,7 +680,7 @@
       </ul></li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.get_gsyn">get_gsyn() (Assembly method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.Population.get_gsyn">(Population method)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.get_gsyn">(PopulationView method)</a>
@@ -553,13 +692,13 @@
 </li>
       <li><a href="reference/neuronmodels.html#pyNN.standardmodels.StandardCellType.get_native_names">get_native_names() (StandardCellType method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/plasticitymodels.html#pyNN.standardmodels.StandardSynapseType.get_native_names">(StandardSynapseType method)</a>
 </li>
       </ul></li>
       <li><a href="reference/neuronmodels.html#pyNN.standardmodels.StandardCellType.get_parameter_names">get_parameter_names() (StandardCellType class method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/plasticitymodels.html#pyNN.standardmodels.StandardSynapseType.get_parameter_names">(StandardSynapseType class method)</a>
 </li>
         <li><a href="reference/plasticitymodels.html#pyNN.standardmodels.synapses.STDPMechanism.get_parameter_names">(STDPMechanism method)</a>
@@ -567,7 +706,7 @@
       </ul></li>
       <li><a href="reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.ACSource.get_parameters">get_parameters() (ACSource method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/space.html#pyNN.space.BaseStructure.get_parameters">(BaseStructure method)</a>
 </li>
         <li><a href="reference/connectors.html#pyNN.connectors.Connector.get_parameters">(Connector method)</a>
@@ -580,12 +719,12 @@
 </li>
       </ul></li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.get_population">get_population() (Assembly method)</a>
 </li>
       <li><a href="reference/neuronmodels.html#pyNN.standardmodels.StandardCellType.get_schema">get_schema() (StandardCellType method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/plasticitymodels.html#pyNN.standardmodels.StandardSynapseType.get_schema">(StandardSynapseType method)</a>
 </li>
         <li><a href="reference/plasticitymodels.html#pyNN.standardmodels.synapses.STDPMechanism.get_schema">(STDPMechanism method)</a>
@@ -595,7 +734,7 @@
 </li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.get_spike_counts">get_spike_counts() (Assembly method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.Population.get_spike_counts">(Population method)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.get_spike_counts">(PopulationView method)</a>
@@ -605,7 +744,7 @@
 </li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.get_v">get_v() (Assembly method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.Population.get_v">(Population method)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.get_v">(PopulationView method)</a>
@@ -615,7 +754,7 @@
 </li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.getSpikes">getSpikes() (Assembly method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.Population.getSpikes">(Population method)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.getSpikes">(PopulationView method)</a>
@@ -636,34 +775,36 @@
       <li><a href="reference/plasticitymodels.html#pyNN.standardmodels.synapses.GutigWeightDependence">GutigWeightDependence (class in pyNN.standardmodels.synapses)</a>
 </li>
   </ul></td>
-</tr></table>
-
-<h2 id="H">H</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  </tr>
+      </table>
+  
+  <h2 id="H">H</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/parameters.html#pyNN.parameters.ParameterSpace.has_native_rngs">has_native_rngs (ParameterSpace property)</a>
 </li>
       <li><a href="reference/neuronmodels.html#pyNN.standardmodels.StandardCellType.has_parameter">has_parameter() (StandardCellType class method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/plasticitymodels.html#pyNN.standardmodels.StandardSynapseType.has_parameter">(StandardSynapseType class method)</a>
 </li>
         <li><a href="reference/plasticitymodels.html#pyNN.standardmodels.synapses.STDPMechanism.has_parameter">(STDPMechanism method)</a>
 </li>
       </ul></li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/plasticitymodels.html#pyNN.standardmodels.StandardSynapseType.has_presynaptic_components">has_presynaptic_components (StandardSynapseType attribute)</a>
 </li>
   </ul></td>
-</tr></table>
-
-<h2 id="I">I</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  </tr>
+      </table>
+  
+  <h2 id="I">I</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.id_to_index">id_to_index() (Assembly method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.Population.id_to_index">(Population method)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.id_to_index">(PopulationView method)</a>
@@ -691,7 +832,7 @@
 </li>
       <li><a href="reference/populations.html#pyNN.neuron.Population.initial_values">initial_values (Population attribute)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.initial_values">(PopulationView attribute)</a>
 </li>
         <li><a href="reference/populations.html#id0">(PopulationView property)</a>
@@ -699,7 +840,7 @@
       </ul></li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.initialize">initialize() (Assembly method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/simulationcontrol.html#pyNN.neuron.initialize">(in module pyNN.neuron)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.Population.initialize">(Population method)</a>
@@ -711,7 +852,7 @@
       </ul></li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.inject">inject() (Assembly method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.Population.inject">(Population method)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.inject">(PopulationView method)</a>
@@ -719,7 +860,7 @@
       </ul></li>
       <li><a href="reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.ACSource.inject_into">inject_into() (ACSource method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.DCSource.inject_into">(DCSource method)</a>
 </li>
         <li><a href="reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.NoisyCurrentSource.inject_into">(NoisyCurrentSource method)</a>
@@ -728,10 +869,10 @@
 </li>
       </ul></li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/neuronmodels.html#pyNN.standardmodels.cells.AdExp.injectable">injectable (AdExp attribute)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.Assembly.injectable">(Assembly property)</a>
 </li>
         <li><a href="reference/neuronmodels.html#pyNN.standardmodels.cells.EIF_cond_alpha_isfa_ista.injectable">(EIF_cond_alpha_isfa_ista attribute)</a>
@@ -767,13 +908,13 @@
       </ul></li>
       <li><a href="reference/parameters.html#pyNN.parameters.LazyArray.is_homogeneous">is_homogeneous (LazyArray property)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/parameters.html#pyNN.parameters.ParameterSpace.is_homogeneous">(ParameterSpace property)</a>
 </li>
       </ul></li>
       <li><a href="reference/populations.html#pyNN.neuron.Population.is_local">is_local() (Population method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.is_local">(PopulationView method)</a>
 </li>
       </ul></li>
@@ -782,22 +923,24 @@
       <li><a href="reference/neuronmodels.html#pyNN.standardmodels.cells.Izhikevich">Izhikevich (class in pyNN.standardmodels.cells)</a>
 </li>
   </ul></td>
-</tr></table>
-
-<h2 id="K">K</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  </tr>
+      </table>
+  
+  <h2 id="K">K</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/parameters.html#pyNN.parameters.ParameterSpace.keys">keys() (ParameterSpace method)</a>
 </li>
   </ul></td>
-</tr></table>
-
-<h2 id="L">L</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  </tr>
+      </table>
+  
+  <h2 id="L">L</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/populations.html#pyNN.neuron.Population.label">label (Population attribute)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.label">(PopulationView attribute)</a>
 </li>
         <li><a href="reference/projections.html#pyNN.neuron.Projection.label">(Projection attribute)</a>
@@ -812,7 +955,7 @@
       <li><a href="reference/neuronmodels.html#pyNN.standardmodels.cells.LIF">LIF (class in pyNN.standardmodels.cells)</a>
 </li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/space.html#pyNN.space.Line">Line (class in pyNN.space)</a>
 </li>
       <li><a href="reference/neuronmodels.html#pyNN.neuron.list_standard_models">list_standard_models() (in module pyNN.neuron)</a>
@@ -821,7 +964,7 @@
 </li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.local_cells">local_cells (Assembly property)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.Population.local_cells">(Population property)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.local_cells">(PopulationView attribute)</a>
@@ -829,23 +972,24 @@
       </ul></li>
       <li><a href="reference/populations.html#pyNN.neuron.Population.local_size">local_size (Population property)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.local_size">(PopulationView property)</a>
 </li>
       </ul></li>
   </ul></td>
-</tr></table>
-
-<h2 id="M">M</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  </tr>
+      </table>
+  
+  <h2 id="M">M</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/utility.html#pyNN.utility.Timer.mark">mark() (Timer method)</a>
 </li>
       <li><a href="reference/populations.html#pyNN.neuron.PopulationView.mask">mask (PopulationView attribute)</a>
 </li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.mean_spike_count">mean_spike_count() (Assembly method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.Population.mean_spike_count">(Population method)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.mean_spike_count">(PopulationView method)</a>
@@ -853,18 +997,18 @@
       </ul></li>
       <li><a href="reference/populations.html#pyNN.neuron.Population.meanSpikeCount">meanSpikeCount() (Population method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.meanSpikeCount">(PopulationView method)</a>
 </li>
       </ul></li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/plasticitymodels.html#pyNN.standardmodels.synapses.STDPMechanism.model">model (STDPMechanism property)</a>
 </li>
       <li>
     module
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/connectors.html#module-pyNN.connectors">pyNN.connectors</a>
 </li>
         <li><a href="reference/parameters.html#module-pyNN.parameters">pyNN.parameters</a>
@@ -879,14 +1023,15 @@
       <li><a href="reference/plasticitymodels.html#pyNN.standardmodels.synapses.MultiplicativeWeightDependence">MultiplicativeWeightDependence (class in pyNN.standardmodels.synapses)</a>
 </li>
   </ul></td>
-</tr></table>
-
-<h2 id="N">N</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  </tr>
+      </table>
+  
+  <h2 id="N">N</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/plasticitymodels.html#pyNN.standardmodels.StandardSynapseType.native_parameters">native_parameters (StandardSynapseType property)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/plasticitymodels.html#pyNN.standardmodels.synapses.STDPMechanism.native_parameters">(STDPMechanism property)</a>
 </li>
       </ul></li>
@@ -896,13 +1041,13 @@
 </li>
       <li><a href="reference/populations.html#pyNN.neuron.Population.nearest">nearest() (Population method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.nearest">(PopulationView method)</a>
 </li>
       </ul></li>
       <li><a href="reference/random.html#pyNN.random.GSLRNG.next">next() (GSLRNG method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/random.html#pyNN.random.NativeRNG.next">(NativeRNG method)</a>
 </li>
         <li><a href="reference/random.html#pyNN.random.NumpyRNG.next">(NumpyRNG method)</a>
@@ -911,14 +1056,14 @@
 </li>
       </ul></li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.NoisyCurrentSource">NoisyCurrentSource (class in pyNN.neuron.standardmodels.electrodes)</a>
 </li>
       <li><a href="reference/random.html#pyNN.random.GSLRNG.normal">normal() (GSLRNG method)</a>
 </li>
       <li><a href="reference/random.html#pyNN.random.GSLRNG.normal_clipped">normal_clipped() (GSLRNG method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/random.html#pyNN.random.NumpyRNG.normal_clipped">(NumpyRNG method)</a>
 </li>
       </ul></li>
@@ -933,26 +1078,30 @@
       <li><a href="reference/random.html#pyNN.random.NumpyRNG">NumpyRNG (class in pyNN.random)</a>
 </li>
   </ul></td>
-</tr></table>
-
-<h2 id="O">O</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  </tr>
+      </table>
+  
+  <h2 id="O">O</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/connectors.html#pyNN.connectors.OneToOneConnector">OneToOneConnector (class in pyNN.connectors)</a>
 </li>
   </ul></td>
-</tr></table>
-
-<h2 id="P">P</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  </tr>
+      </table>
+  
+  <h2 id="P">P</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="reference/utility.html#pyNN.utility.plotting.Panel">Panel (class in pyNN.utility.plotting)</a>
+</li>
       <li><a href="reference/parameters.html#pyNN.parameters.ParameterSpace.parallel_safe">parallel_safe (ParameterSpace property)</a>
 </li>
       <li><a href="reference/plasticitymodels.html#pyNN.standardmodels.StandardSynapseType.parameter_checks">parameter_checks (StandardSynapseType attribute)</a>
 </li>
       <li><a href="reference/space.html#pyNN.space.Grid2D.parameter_names">parameter_names (Grid2D attribute)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/space.html#pyNN.space.Grid3D.parameter_names">(Grid3D attribute)</a>
 </li>
         <li><a href="reference/space.html#pyNN.space.Line.parameter_names">(Line attribute)</a>
@@ -966,6 +1115,8 @@
 </li>
       <li><a href="reference/populations.html#pyNN.neuron.PopulationView.parent">parent (PopulationView attribute)</a>
 </li>
+      <li><a href="reference/utility.html#pyNN.utility.plotting.Panel.plot">plot() (Panel method)</a>
+</li>
       <li><a href="reference/neuronmodels.html#pyNN.standardmodels.cells.PointNeuron">PointNeuron (class in pyNN.standardmodels.cells)</a>
 </li>
       <li><a href="reference/parameters.html#pyNN.parameters.ParameterSpace.pop">pop() (ParameterSpace method)</a>
@@ -976,7 +1127,7 @@
 </li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.position_generator">position_generator (Assembly property)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.Population.position_generator">(Population property)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.position_generator">(PopulationView property)</a>
@@ -984,7 +1135,7 @@
       </ul></li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.positions">positions (Assembly property)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.Population.positions">(Population property)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.positions">(PopulationView property)</a>
@@ -994,13 +1145,13 @@
 </li>
       <li><a href="reference/projections.html#pyNN.neuron.Projection.post">post (Projection attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/projections.html#pyNN.neuron.Projection.pre">pre (Projection attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.print_gsyn">print_gsyn() (Assembly method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.Population.print_gsyn">(Population method)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.print_gsyn">(PopulationView method)</a>
@@ -1008,7 +1159,7 @@
       </ul></li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.print_v">print_v() (Assembly method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.Population.print_v">(Population method)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.print_v">(PopulationView method)</a>
@@ -1018,7 +1169,7 @@
 </li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.printSpikes">printSpikes() (Assembly method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.Population.printSpikes">(Population method)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.printSpikes">(PopulationView method)</a>
@@ -1033,39 +1184,40 @@
       <li>
     pyNN.connectors
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/connectors.html#module-pyNN.connectors">module</a>
 </li>
       </ul></li>
       <li>
     pyNN.parameters
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/parameters.html#module-pyNN.parameters">module</a>
 </li>
       </ul></li>
       <li>
     pyNN.random
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/random.html#module-pyNN.random">module</a>
 </li>
       </ul></li>
       <li>
     pyNN.space
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/space.html#module-pyNN.space">module</a>
 </li>
       </ul></li>
       <li><a href="developers/contributing.html#index-0">PYTHONPATH</a>, <a href="developers/contributing.html#index-1">[1]</a>
 </li>
   </ul></td>
-</tr></table>
-
-<h2 id="R">R</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  </tr>
+      </table>
+  
+  <h2 id="R">R</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/random.html#pyNN.random.RandomDistribution">RandomDistribution (class in pyNN.random)</a>
 </li>
       <li><a href="reference/projections.html#pyNN.neuron.Projection.randomizeDelays">randomizeDelays() (Projection method)</a>
@@ -1080,7 +1232,7 @@
 </li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.receptor_types">receptor_types (Assembly property)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/neuronmodels.html#pyNN.standardmodels.cells.PointNeuron.receptor_types">(PointNeuron property)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.Population.receptor_types">(Population property)</a>
@@ -1096,7 +1248,7 @@
       </ul></li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.record">record() (Assembly method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/simulationcontrol.html#pyNN.neuron.record">(in module pyNN.neuron)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.Population.record">(Population method)</a>
@@ -1106,7 +1258,7 @@
       </ul></li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.record_gsyn">record_gsyn() (Assembly method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.Population.record_gsyn">(Population method)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.record_gsyn">(PopulationView method)</a>
@@ -1114,17 +1266,17 @@
       </ul></li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.record_v">record_v() (Assembly method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.Population.record_v">(Population method)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.record_v">(PopulationView method)</a>
 </li>
       </ul></li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/neuronmodels.html#pyNN.standardmodels.cells.AdExp.recordable">recordable (AdExp attribute)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/neuronmodels.html#pyNN.standardmodels.cells.EIF_cond_alpha_isfa_ista.recordable">(EIF_cond_alpha_isfa_ista attribute)</a>
 </li>
         <li><a href="reference/neuronmodels.html#pyNN.standardmodels.cells.EIF_cond_exp_isfa_ista.recordable">(EIF_cond_exp_isfa_ista attribute)</a>
@@ -1154,13 +1306,13 @@
       </ul></li>
       <li><a href="reference/simulationcontrol.html#pyNN.neuron.reset">reset() (in module pyNN.neuron)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/utility.html#pyNN.utility.Timer.reset">(Timer method)</a>
 </li>
       </ul></li>
       <li><a href="reference/neuronmodels.html#pyNN.standardmodels.StandardCellType.reverse_translate">reverse_translate() (StandardCellType method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/plasticitymodels.html#pyNN.standardmodels.StandardSynapseType.reverse_translate">(StandardSynapseType method)</a>
 </li>
       </ul></li>
@@ -1168,7 +1320,7 @@
 </li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.rset">rset() (Assembly method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.Population.rset">(Population method)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.rset">(PopulationView method)</a>
@@ -1179,14 +1331,15 @@
       <li><a href="reference/simulationcontrol.html#pyNN.neuron.run_until">run_until() (in module pyNN.neuron)</a>
 </li>
   </ul></td>
-</tr></table>
-
-<h2 id="S">S</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  </tr>
+      </table>
+  
+  <h2 id="S">S</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.sample">sample() (Assembly method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/space.html#pyNN.space.Cuboid.sample">(Cuboid method)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.Population.sample">(Population method)</a>
@@ -1196,13 +1349,17 @@
         <li><a href="reference/space.html#pyNN.space.Sphere.sample">(Sphere method)</a>
 </li>
       </ul></li>
-      <li><a href="reference/projections.html#pyNN.neuron.Projection.save">save() (Projection method)</a>
+      <li><a href="reference/utility.html#pyNN.utility.plotting.Figure.save">save() (Figure method)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="reference/projections.html#pyNN.neuron.Projection.save">(Projection method)</a>
 </li>
+      </ul></li>
       <li><a href="reference/utility.html#pyNN.utility.save_population">save_population() (in module pyNN.utility)</a>
 </li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.save_positions">save_positions() (Assembly method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.Population.save_positions">(Population method)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.save_positions">(PopulationView method)</a>
@@ -1214,7 +1371,7 @@
 </li>
       <li><a href="reference/neuronmodels.html#pyNN.standardmodels.cells.PointNeuron.scaled_parameters">scaled_parameters() (PointNeuron method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/neuronmodels.html#pyNN.standardmodels.StandardCellType.scaled_parameters">(StandardCellType method)</a>
 </li>
         <li><a href="reference/plasticitymodels.html#pyNN.standardmodels.StandardSynapseType.scaled_parameters">(StandardSynapseType method)</a>
@@ -1224,7 +1381,7 @@
 </li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.set">set() (Assembly method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/simulationcontrol.html#pyNN.neuron.set">(in module pyNN.neuron)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.Population.set">(Population method)</a>
@@ -1238,7 +1395,7 @@
 </li>
       <li><a href="reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.ACSource.set_parameters">set_parameters() (ACSource method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.DCSource.set_parameters">(DCSource method)</a>
 </li>
         <li><a href="reference/electrodes.html#pyNN.neuron.standardmodels.electrodes.NoisyCurrentSource.set_parameters">(NoisyCurrentSource method)</a>
@@ -1255,18 +1412,20 @@
       <li><a href="reference/projections.html#pyNN.neuron.Projection.setWeights">setWeights() (Projection method)</a>
 </li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/parameters.html#pyNN.parameters.LazyArray.shape">shape (LazyArray property)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/parameters.html#pyNN.parameters.ParameterSpace.shape">(ParameterSpace property)</a>
 </li>
         <li><a href="reference/projections.html#pyNN.neuron.Projection.shape">(Projection property)</a>
 </li>
       </ul></li>
+      <li><a href="reference/utility.html#pyNN.utility.plotting.Figure.show">show() (Figure method)</a>
+</li>
       <li><a href="reference/neuronmodels.html#pyNN.standardmodels.cells.PointNeuron.simple_parameters">simple_parameters() (PointNeuron method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/neuronmodels.html#pyNN.standardmodels.StandardCellType.simple_parameters">(StandardCellType method)</a>
 </li>
         <li><a href="reference/plasticitymodels.html#pyNN.standardmodels.StandardSynapseType.simple_parameters">(StandardSynapseType method)</a>
@@ -1274,7 +1433,7 @@
       </ul></li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.size">size (Assembly property)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/parameters.html#pyNN.parameters.LazyArray.size">(LazyArray property)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.Population.size">(Population attribute)</a>
@@ -1318,18 +1477,19 @@
 </li>
       <li><a href="reference/populations.html#pyNN.neuron.Population.structure">structure (Population property)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.structure">(PopulationView property)</a>
 </li>
       </ul></li>
       <li><a href="reference/projections.html#pyNN.neuron.Projection.synapse_dynamics">synapse_dynamics (Projection attribute)</a>
 </li>
   </ul></td>
-</tr></table>
-
-<h2 id="T">T</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  </tr>
+      </table>
+  
+  <h2 id="T">T</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/projections.html#pyNN.neuron.Projection.target">target (Projection attribute)</a>
 </li>
       <li><a href="reference/utility.html#pyNN.utility.Timer.time_in_words">time_in_words() (Timer static method)</a>
@@ -1338,15 +1498,15 @@
 </li>
       <li><a href="reference/neuronmodels.html#pyNN.standardmodels.StandardCellType.translate">translate() (StandardCellType method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/plasticitymodels.html#pyNN.standardmodels.StandardSynapseType.translate">(StandardSynapseType method)</a>
 </li>
       </ul></li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/random.html#pyNN.random.GSLRNG.translations">translations (GSLRNG attribute)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/random.html#pyNN.random.NumpyRNG.translations">(NumpyRNG attribute)</a>
 </li>
         <li><a href="reference/plasticitymodels.html#pyNN.standardmodels.StandardSynapseType.translations">(StandardSynapseType attribute)</a>
@@ -1354,23 +1514,24 @@
       </ul></li>
       <li><a href="reference/populations.html#pyNN.neuron.Population.tset">tset() (Population method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.tset">(PopulationView method)</a>
 </li>
       </ul></li>
       <li><a href="reference/plasticitymodels.html#pyNN.standardmodels.synapses.TsodyksMarkramSynapse">TsodyksMarkramSynapse (class in pyNN.standardmodels.synapses)</a>
 </li>
   </ul></td>
-</tr></table>
-
-<h2 id="U">U</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  </tr>
+      </table>
+  
+  <h2 id="U">U</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/random.html#pyNN.random.GSLRNG.uniform_int">uniform_int() (GSLRNG method)</a>
 </li>
       <li><a href="reference/neuronmodels.html#pyNN.standardmodels.cells.AdExp.units">units (AdExp attribute)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/neuronmodels.html#pyNN.standardmodels.receptors.CondAlphaPostSynapticResponse.units">(CondAlphaPostSynapticResponse attribute)</a>
 </li>
         <li><a href="reference/neuronmodels.html#pyNN.standardmodels.receptors.CondBetaPostSynapticResponse.units">(CondBetaPostSynapticResponse attribute)</a>
@@ -1407,77 +1568,63 @@
 </li>
       </ul></li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/parameters.html#pyNN.parameters.ParameterSpace.update">update() (ParameterSpace method)</a>
 </li>
   </ul></td>
-</tr></table>
-
-<h2 id="V">V</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  </tr>
+      </table>
+  
+  <h2 id="V">V</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/neuronmodels.html#pyNN.standardmodels.cells.Izhikevich.voltage_based_synapses">voltage_based_synapses (Izhikevich attribute)</a>
 </li>
   </ul></td>
-</tr></table>
-
-<h2 id="W">W</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  </tr>
+      </table>
+  
+  <h2 id="W">W</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="reference/projections.html#pyNN.neuron.Projection.weightHistogram">weightHistogram() (Projection method)</a>
 </li>
       <li><a href="reference/populations.html#pyNN.neuron.Assembly.write_data">write_data() (Assembly method)</a>
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="reference/populations.html#pyNN.neuron.Population.write_data">(Population method)</a>
 </li>
         <li><a href="reference/populations.html#pyNN.neuron.PopulationView.write_data">(PopulationView method)</a>
 </li>
       </ul></li>
   </ul></td>
-</tr></table>
+  </tr>
+      </table>
+  
 
-
-
-            <div class="clearer"></div>
-          </div>
-        </div>
+</div></div>
+<aside id="right-sidebar" class="hidden text-sm xl:block">
+<div class="sticky top-16 -mt-10 max-h-[calc(var(--vh)-4rem)] overflow-y-auto pt-6 space-y-2">
+<a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#_">_</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#A">A</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#B">B</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#C">C</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#D">D</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#E">E</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#F">F</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#G">G</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#H">H</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#I">I</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#K">K</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#L">L</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#M">M</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#N">N</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#O">O</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#P">P</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#R">R</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#S">S</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#T">T</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#U">U</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#V">V</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#W">W</a>
+</div>
+</aside>
+        </main>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-            <p class="logo"><a href="index.html">
-              <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
-            </a></p>
-<search id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</search>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="#" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.3 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Index</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-    &#169; Copyright 2006-2024, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
-    </div>
-  </body>
+    </div><footer class="py-6 border-t border-border md:py-0">
+    <div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+      <div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+        <p class="text-sm leading-loose text-center text-muted-foreground md:text-left">© 2006-2024, the PyNN community&nbsp;Built with <a class="font-medium underline underline-offset-4"
+    href="https://www.sphinx-doc.org"
+    rel="noreferrer">Sphinx 8.2.3</a></p>
+</div>
+</div>
+</footer>
+  </div>
+  
+    <script src="_static/documentation_options.js?v=56343b9b"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script defer="defer" src="_static/theme.js?v=073f68d9"></script>
+  
+</body>
 </html>

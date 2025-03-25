@@ -1,50 +1,148 @@
 <!DOCTYPE html>
 
-<html lang="en" data-content_root="./">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <title>Building networks: connections &#8212; PyNN 0.12.3 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="_static/nature.css?v=0f882399" />
-    <script src="_static/documentation_options.js?v=56343b9b"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <link rel="icon" href="_static/pyNN_icon.ico"/>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Representing spatial structure and calculating distances" href="space.html" />
-    <link rel="prev" title="Building networks: neurons" href="neurons.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="space.html" title="Representing spatial structure and calculating distances"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="neurons.html" title="Building networks: neurons"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.3 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="building_networks.html" accesskey="U">Building networks</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Building networks: connections</a></li> 
-      </ul>
-    </div>  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <section id="building-networks-connections">
-<h1>Building networks: connections<a class="headerlink" href="#building-networks-connections" title="Link to this heading">¶</a></h1>
+<html :class="{'dark': darkMode === 'dark' || (darkMode === 'system' &amp;&amp; window.matchMedia('(prefers-color-scheme: dark)').matches)}" class="scroll-smooth" data-content_root="./" lang="en" x-data="{ darkMode: localStorage.getItem('darkMode') || localStorage.setItem('darkMode', 'system'), activeSection: '' }" x-init="$watch('darkMode', val =&gt; localStorage.setItem('darkMode', val))">
+<head>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="white" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="black" media="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Building networks: connections | PyNN 0.12.3 documentation</title>
+<meta content="Building networks: connections | PyNN 0.12.3 documentation" property="og:title"/>
+<meta content="Building networks: connections | PyNN 0.12.3 documentation" name="twitter:title"/>
+<link href="_static/pygments.css?v=fa44fd50" rel="stylesheet" type="text/css"/>
+<link href="_static/theme.css?v=42baaae4" rel="stylesheet" type="text/css"/>
+<link href="_static/custom.css?v=14d0ad6c" rel="stylesheet" type="text/css"/>
+<link href="_static/pyNN_icon.ico" rel="icon"/>
+<link href="search.html" rel="search" title="Search"/>
+<link href="genindex.html" rel="index" title="Index"/>
+<link href="space.html" rel="next" title="Representing spatial structure and calculating distances"/>
+<link href="neurons.html" rel="prev" title="Building networks: neurons"/>
+<script>
+    <!-- Prevent Flash of wrong theme -->
+      const userPreference = localStorage.getItem('darkMode');
+      let mode;
+      if (userPreference === 'dark' || window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        mode = 'dark';
+        document.documentElement.classList.add('dark');
+      } else {
+        mode = 'light';
+      }
+      if (!userPreference) {localStorage.setItem('darkMode', mode)}
+    </script>
+</head>
+<body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false, showScrollTop: false }">
+<div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-sm border-border supports-backdrop-blur:bg-background/60 bg-background/95 backdrop-blur"><div class="container flex items-center h-14">
+<div class="hidden mr-4 md:flex">
+<a class="flex items-center mr-6" href="index.html">
+<img alt="Logo" class="mr-2 dark:invert" height="24" src="_static/pyNN_logo.png" width="24"/><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">PyNN 0.12.3 documentation</span>
+</a></div><button @click="showSidebar = true" class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden" type="button">
+<svg aria-hidden="true" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z"></path>
+</svg>
+<span class="sr-only">Toggle navigation menu</span>
+</button>
+<div class="flex items-center justify-between flex-1 space-x-2 sm:space-x-4 md:justify-end">
+<div class="flex-1 w-full md:w-auto md:flex-none"><form @keydown.k.window.meta="$refs.search.focus()" action="search.html" class="relative flex items-center group" id="searchbox" method="get">
+<input aria-label="Search the docs" class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" id="search-input" name="q" placeholder="Search ..." type="search" x-ref="search"/>
+<kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+<span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+</div>
+<nav class="flex items-center space-x-1">
+<button @click="darkMode = darkMode === 'light' ? 'dark' : 'light'" aria-label="Color theme switcher" class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9" type="button">
+<svg class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z"></path>
+</svg>
+<svg class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z"></path>
+</svg>
+</button>
+</nav>
+</div>
+</div>
+</header>
+<div class="flex-1"><div class="container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }" class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full shrink-0 overflow-y-auto border-r border-border md:sticky" id="left-sidebar">
+<a class="!justify-start text-sm md:!hidden bg-background" href="index.html">
+<img alt="Logo" class="mr-2 dark:invert" height="16" src="_static/pyNN_logo.png" width="16"/><span class="font-bold text-clip whitespace-nowrap">PyNN 0.12.3 documentation</span>
+</a>
+<div class="relative overflow-hidden md:overflow-auto my-4 md:my-0 h-[calc(100vh-8rem)] md:h-auto">
+<div class="overflow-y-auto h-full w-full relative pr-6"><nav class="table w-full min-w-full my-6 lg:my-8">
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="building_networks.html">Building networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="injecting_current.html">Injecting current</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recording.html">Recording spikes and state variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_handling.html">Data handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simulation_control.html">Simulation control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parameters.html">Model parameters and initial values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="random_numbers.html">Random numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mc_api.html">Multicompartmental modelling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends.html">Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parallel.html">Running parallel simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="units.html">Units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="import_export.html">Importing from and exporting to other formats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="publications.html">Publications about, relating to or using PyNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributors.html">Contributors, licence and funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release notes</a></li>
+</ul>
+<ul>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="developers_guide.html">Developers’ guide<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="developers/bug_reports.html">Bug reports and feature requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developers/contributing.html">Contributing to PyNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developers/governance.html">Governance</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="api_reference.html">API reference<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="reference/populations.html">Populations, Views and Assemblies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/connectors.html">Connectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/projections.html">Projections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/neuronmodels.html">Neuron models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/plasticitymodels.html">Synapse models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/electrodes.html">Current sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/simulationcontrol.html">Simulation control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/random.html">Random numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/parameters.html">Parameter handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/space.html">Spatial structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/utility.html">Utility classes and functions</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="standardmodels.html">Standard models</a></li>
+</ul>
+</nav>
+</div>
+</div>
+<button @click="showSidebar = false" class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100" type="button">
+<svg class="h-4 w-4" fill="currentColor" height="24" stroke="none" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"></path>
+</svg>
+</button>
+</aside>
+<main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs" class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+<a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground" href="index.html">
+<span class="hidden md:inline">PyNN 0.12.3 documentation</span>
+<svg aria-label="Home" class="md:hidden" fill="currentColor" height="18" stroke="none" viewbox="0 96 960 960" width="18" xmlns="http://www.w3.org/2000/svg">
+<path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z"></path>
+</svg>
+</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="building_networks.html">Building networks</a>
+<div class="mr-1">/</div><span aria-current="page" class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">Building networks: connections</span>
+</nav>
+<div id="content" role="main">
+<section id="building-networks-connections">
+<h1>Building networks: connections<a class="headerlink" href="#building-networks-connections" title="Link to this heading"><span>¶</span></a></h1>
 <p>Conceptually, a synapse consists of a pre-synaptic structure, the synaptic
 cleft, and a post-synaptic structure. In PyNN, the temporal dynamics of the
 post-synaptic response are handled by the post-synaptic neuron model
@@ -76,16 +174,16 @@ like to have support for this, or any other feature, please
 <a class="reference external" href="https://github.com/NeuralEnsemble/PyNN/issues/new">make a feature request</a>.</p>
 </div>
 <section id="synapse-types">
-<h2>Synapse types<a class="headerlink" href="#synapse-types" title="Link to this heading">¶</a></h2>
+<h2>Synapse types<a class="headerlink" href="#synapse-types" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#synapse-types'"><span>¶</span></a></h2>
 <p>Analogously to neuron models, the system of equations that defines a synapse
 model is encapsulated in a <code class="xref py py-class docutils literal notranslate"><span class="pre">SynapseType</span></code> class. PyNN provides a library
 of “standard” synapse types (see <a class="reference internal" href="standardmodels.html"><span class="doc">Standard models</span></a>) which work the same
 across all backend simulators.</p>
 <section id="fixed-synaptic-weight">
-<h3>Fixed synaptic weight<a class="headerlink" href="#fixed-synaptic-weight" title="Link to this heading">¶</a></h3>
+<h3>Fixed synaptic weight<a class="headerlink" href="#fixed-synaptic-weight" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#fixed-synaptic-weight'"><span>¶</span></a></h3>
 <p>The simplest, and default synapse type in PyNN has constant synaptic weight:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">syn</span> <span class="o">=</span> <span class="n">StaticSynapse</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-</pre></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">syn</span> <span class="o">=</span> <span class="n">StaticSynapse</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+</span></code></pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -99,48 +197,48 @@ it is the reversal potential which makes it inhibitory.</p>
 </div>
 <p>It is also possible to add variability to synaptic weights and delays by
 specifying a <code class="xref py py-class docutils literal notranslate"><span class="pre">RandomDistribution</span></code> object as the parameter value:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">w</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;gamma&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.004</span><span class="p">],</span> <span class="n">rng</span><span class="o">=</span><span class="n">NumpyRNG</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">4242</span><span class="p">))</span>
-<span class="n">syn</span> <span class="o">=</span> <span class="n">StaticSynapse</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-</pre></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">w</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">'gamma'</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.004</span><span class="p">],</span> <span class="n">rng</span><span class="o">=</span><span class="n">NumpyRNG</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">4242</span><span class="p">))</span>
+</span><span id="line-2"><span class="n">syn</span> <span class="o">=</span> <span class="n">StaticSynapse</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+</span></code></pre></div>
 </div>
 <p>It is also possible to specify parameters as a function of the distance
 (typically in microns, but different scales are possible - see <a class="reference internal" href="space.html"><span class="doc">Representing spatial structure and calculating distances</span></a>)
 between pre- and post-synaptic neurons:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">syn</span> <span class="o">=</span> <span class="n">StaticSynapse</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="s2">&quot;0.2 + 0.01*d&quot;</span><span class="p">)</span>
-</pre></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">syn</span> <span class="o">=</span> <span class="n">StaticSynapse</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="s2">"0.2 + 0.01*d"</span><span class="p">)</span>
+</span></code></pre></div>
 </div>
 </section>
 <section id="short-term-synaptic-plasticity">
-<h3>Short-term synaptic plasticity<a class="headerlink" href="#short-term-synaptic-plasticity" title="Link to this heading">¶</a></h3>
+<h3>Short-term synaptic plasticity<a class="headerlink" href="#short-term-synaptic-plasticity" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#short-term-synaptic-plasticity'"><span>¶</span></a></h3>
 <p>PyNN currently provides one standard model for short-term synaptic plasticity
 (facilitation and depression):</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">depressing_synapse</span> <span class="o">=</span> <span class="n">TsodyksMarkramSynapse</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">U</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-                                           <span class="n">tau_rec</span><span class="o">=</span><span class="mf">800.0</span><span class="p">,</span> <span class="n">tau_facil</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
-<span class="n">tau_rec</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;normal&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mf">100.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">])</span>
-<span class="n">facilitating_synapse</span> <span class="o">=</span> <span class="n">TsodyksMarkramSynapse</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">U</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span>
-                                             <span class="n">tau_rec</span><span class="o">=</span><span class="n">tau_rec</span><span class="p">)</span>
-</pre></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">depressing_synapse</span> <span class="o">=</span> <span class="n">TsodyksMarkramSynapse</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">U</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+</span><span id="line-2">                                           <span class="n">tau_rec</span><span class="o">=</span><span class="mf">800.0</span><span class="p">,</span> <span class="n">tau_facil</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+</span><span id="line-3"><span class="n">tau_rec</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">'normal'</span><span class="p">,</span> <span class="p">[</span><span class="mf">100.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">])</span>
+</span><span id="line-4"><span class="n">facilitating_synapse</span> <span class="o">=</span> <span class="n">TsodyksMarkramSynapse</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">U</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span>
+</span><span id="line-5">                                             <span class="n">tau_rec</span><span class="o">=</span><span class="n">tau_rec</span><span class="p">)</span>
+</span></code></pre></div>
 </div>
 </section>
 <section id="spike-timing-dependent-plasticity">
-<h3>Spike-timing-dependent plasticity<a class="headerlink" href="#spike-timing-dependent-plasticity" title="Link to this heading">¶</a></h3>
+<h3>Spike-timing-dependent plasticity<a class="headerlink" href="#spike-timing-dependent-plasticity" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#spike-timing-dependent-plasticity'"><span>¶</span></a></h3>
 <p>STDP models are specified in a slightly different way than other standard models:
 an STDP synapse type is constructed from separate weight-dependence and
 timing-dependence components, e.g.:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">stdp</span> <span class="o">=</span> <span class="n">STDPMechanism</span><span class="p">(</span>
-          <span class="n">weight</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span>  <span class="c1"># this is the initial value of the weight</span>
-          <span class="n">delay</span><span class="o">=</span><span class="s2">&quot;0.2 + 0.01*d&quot;</span><span class="p">,</span>
-          <span class="n">timing_dependence</span><span class="o">=</span><span class="n">SpikePairRule</span><span class="p">(</span><span class="n">tau_plus</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">tau_minus</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span>
-                                          <span class="n">A_plus</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">A_minus</span><span class="o">=</span><span class="mf">0.012</span><span class="p">),</span>
-          <span class="n">weight_dependence</span><span class="o">=</span><span class="n">AdditiveWeightDependence</span><span class="p">(</span><span class="n">w_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">w_max</span><span class="o">=</span><span class="mf">0.04</span><span class="p">))</span>
-</pre></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">stdp</span> <span class="o">=</span> <span class="n">STDPMechanism</span><span class="p">(</span>
+</span><span id="line-2">          <span class="n">weight</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span>  <span class="c1"># this is the initial value of the weight</span>
+</span><span id="line-3">          <span class="n">delay</span><span class="o">=</span><span class="s2">"0.2 + 0.01*d"</span><span class="p">,</span>
+</span><span id="line-4">          <span class="n">timing_dependence</span><span class="o">=</span><span class="n">SpikePairRule</span><span class="p">(</span><span class="n">tau_plus</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">tau_minus</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span>
+</span><span id="line-5">                                          <span class="n">A_plus</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">A_minus</span><span class="o">=</span><span class="mf">0.012</span><span class="p">),</span>
+</span><span id="line-6">          <span class="n">weight_dependence</span><span class="o">=</span><span class="n">AdditiveWeightDependence</span><span class="p">(</span><span class="n">w_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">w_max</span><span class="o">=</span><span class="mf">0.04</span><span class="p">))</span>
+</span></code></pre></div>
 </div>
 <p>Note that not all simulators will support all possible combinations of synaptic
 plasticity components.</p>
 </section>
 </section>
 <section id="connection-algorithms">
-<h2>Connection algorithms<a class="headerlink" href="#connection-algorithms" title="Link to this heading">¶</a></h2>
+<h2>Connection algorithms<a class="headerlink" href="#connection-algorithms" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#connection-algorithms'"><span>¶</span></a></h2>
 <p>In PyNN, each different algorithm that can be used to determine which
 pre-synaptic neurons are connected to which post-synaptic neurons (also called
 a “connection method” or “wiring method”) is encapsulated in a separate class.</p>
@@ -154,7 +252,7 @@ implement a <code class="xref py py-meth docutils literal notranslate"><span cla
 (see below) as its single argument.</p>
 <p>PyNN’s library of connection algorithms currently contains the following classes:</p>
 <section id="all-to-all-connections">
-<h3>All-to-all connections<a class="headerlink" href="#all-to-all-connections" title="Link to this heading">¶</a></h3>
+<h3>All-to-all connections<a class="headerlink" href="#all-to-all-connections" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#all-to-all-connections'"><span>¶</span></a></h3>
 <p>Each neuron in the pre-synaptic population is connected to every neuron in the
 post-synaptic population. (In this section, the term “population” should be
 understood as referring to any of the following: a <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>,
@@ -163,32 +261,32 @@ a <code class="xref py py-class docutils literal notranslate"><span class="pre">
 optional argument, <code class="docutils literal notranslate"><span class="pre">allow_self_connections</span></code>, for use when connecting a
 population to itself. By default it is <code class="docutils literal notranslate"><span class="pre">True</span></code>, but if a neuron should
 not connect to itself, set it to <code class="docutils literal notranslate"><span class="pre">False</span></code>, e.g.:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">connector</span> <span class="o">=</span> <span class="n">AllToAllConnector</span><span class="p">(</span><span class="n">allow_self_connections</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># no autapses</span>
-</pre></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">connector</span> <span class="o">=</span> <span class="n">AllToAllConnector</span><span class="p">(</span><span class="n">allow_self_connections</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># no autapses</span>
+</span></code></pre></div>
 </div>
 </section>
 <section id="one-to-one-connections">
-<h3>One-to-one connections<a class="headerlink" href="#one-to-one-connections" title="Link to this heading">¶</a></h3>
+<h3>One-to-one connections<a class="headerlink" href="#one-to-one-connections" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#one-to-one-connections'"><span>¶</span></a></h3>
 <p>Use of the <a class="reference internal" href="reference/connectors.html#pyNN.connectors.OneToOneConnector" title="pyNN.connectors.OneToOneConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">OneToOneConnector</span></code></a> requires that the pre- and post-synaptic
 populations have the same size. The neuron with index <em>i</em> in the pre-synaptic
 population is then connected to the neuron with index <em>i</em> in the post-synaptic
 population.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">connector</span> <span class="o">=</span> <span class="n">OneToOneConnector</span><span class="p">()</span>
-</pre></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">connector</span> <span class="o">=</span> <span class="n">OneToOneConnector</span><span class="p">()</span>
+</span></code></pre></div>
 </div>
 <p>Trying to connect two populations with different sizes will raise an Exception.</p>
 </section>
 <section id="connecting-neurons-with-a-fixed-probability">
-<h3>Connecting neurons with a fixed probability<a class="headerlink" href="#connecting-neurons-with-a-fixed-probability" title="Link to this heading">¶</a></h3>
+<h3>Connecting neurons with a fixed probability<a class="headerlink" href="#connecting-neurons-with-a-fixed-probability" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#connecting-neurons-with-a-fixed-probability'"><span>¶</span></a></h3>
 <p>With the <a class="reference internal" href="reference/connectors.html#pyNN.connectors.FixedProbabilityConnector" title="pyNN.connectors.FixedProbabilityConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">FixedProbabilityConnector</span></code></a> method, each possible connection
 between all pre-synaptic neurons and all post-synaptic neurons is created with
 probability <code class="docutils literal notranslate"><span class="pre">p_connect</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">connector</span> <span class="o">=</span> <span class="n">FixedProbabilityConnector</span><span class="p">(</span><span class="n">p_connect</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
-</pre></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">connector</span> <span class="o">=</span> <span class="n">FixedProbabilityConnector</span><span class="p">(</span><span class="n">p_connect</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+</span></code></pre></div>
 </div>
 </section>
 <section id="connecting-neurons-with-a-position-dependent-probability">
-<h3>Connecting neurons with a position-dependent probability<a class="headerlink" href="#connecting-neurons-with-a-position-dependent-probability" title="Link to this heading">¶</a></h3>
+<h3>Connecting neurons with a position-dependent probability<a class="headerlink" href="#connecting-neurons-with-a-position-dependent-probability" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#connecting-neurons-with-a-position-dependent-probability'"><span>¶</span></a></h3>
 <p>The connection probability can also depend on the positions of the pre- and
 post-synaptic neurons.</p>
 <p>With the <a class="reference internal" href="reference/connectors.html#pyNN.connectors.DistanceDependentProbabilityConnector" title="pyNN.connectors.DistanceDependentProbabilityConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">DistanceDependentProbabilityConnector</span></code></a>, the connection
@@ -196,10 +294,10 @@ probability depends on the distance between the two neurons.</p>
 <p>The constructor requires a string <code class="docutils literal notranslate"><span class="pre">d_expression</span></code>, which should be a distance
 expression, as described above for delays, but returning a probability (a value
 between 0 and 1):</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">DDPC</span> <span class="o">=</span> <span class="n">DistanceDependentProbabilityConnector</span>
-<span class="n">connector</span> <span class="o">=</span> <span class="n">DDPC</span><span class="p">(</span><span class="s2">&quot;exp(-d)&quot;</span><span class="p">)</span>
-<span class="n">connector</span> <span class="o">=</span> <span class="n">DDPC</span><span class="p">(</span><span class="s2">&quot;d&lt;3&quot;</span><span class="p">)</span>
-</pre></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">DDPC</span> <span class="o">=</span> <span class="n">DistanceDependentProbabilityConnector</span>
+</span><span id="line-2"><span class="n">connector</span> <span class="o">=</span> <span class="n">DDPC</span><span class="p">(</span><span class="s2">"exp(-d)"</span><span class="p">)</span>
+</span><span id="line-3"><span class="n">connector</span> <span class="o">=</span> <span class="n">DDPC</span><span class="p">(</span><span class="s2">"d&lt;3"</span><span class="p">)</span>
+</span></code></pre></div>
 </div>
 <p>The first example connects neurons with an exponentially-decaying probability.
 The second example connects each neuron to all its neighbours within a range of
@@ -214,11 +312,11 @@ passed to the <code class="xref py py-class docutils literal notranslate"><span 
 return the probability of creating that connection.</p>
 </section>
 <section id="divergent-fan-out-connections">
-<h3>Divergent/fan-out connections<a class="headerlink" href="#divergent-fan-out-connections" title="Link to this heading">¶</a></h3>
+<h3>Divergent/fan-out connections<a class="headerlink" href="#divergent-fan-out-connections" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#divergent-fan-out-connections'"><span>¶</span></a></h3>
 <p>The <a class="reference internal" href="reference/connectors.html#pyNN.connectors.FixedNumberPostConnector" title="pyNN.connectors.FixedNumberPostConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">FixedNumberPostConnector</span></code></a> connects each pre-synaptic neuron to
 exactly <code class="docutils literal notranslate"><span class="pre">n</span></code> post-synaptic neurons chosen at random:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">connector</span> <span class="o">=</span> <span class="n">FixedNumberPostConnector</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
-</pre></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">connector</span> <span class="o">=</span> <span class="n">FixedNumberPostConnector</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+</span></code></pre></div>
 </div>
 <p>If <code class="docutils literal notranslate"><span class="pre">n</span></code> is less than the size of the post-synaptic population, there are no
 multiple connections, i.e., no instances of the same pair of neurons being
@@ -227,41 +325,41 @@ population, all possible single connections are made before starting to add
 duplicate connections.</p>
 <p>The number of post-synaptic neurons <code class="docutils literal notranslate"><span class="pre">n</span></code> can be fixed, or can be chosen at
 random from a <code class="xref py py-class docutils literal notranslate"><span class="pre">RandomDistribution</span></code> object, e.g.:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">distr_npost</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="n">distribution</span><span class="o">=</span><span class="s1">&#39;binomial&#39;</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
-<span class="n">connector</span> <span class="o">=</span> <span class="n">FixedNumberPostConnector</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">distr_npost</span><span class="p">)</span>
-</pre></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">distr_npost</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="n">distribution</span><span class="o">=</span><span class="s1">'binomial'</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+</span><span id="line-2"><span class="n">connector</span> <span class="o">=</span> <span class="n">FixedNumberPostConnector</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">distr_npost</span><span class="p">)</span>
+</span></code></pre></div>
 </div>
 </section>
 <section id="convergent-fan-in-connections">
-<h3>Convergent/fan-in connections<a class="headerlink" href="#convergent-fan-in-connections" title="Link to this heading">¶</a></h3>
+<h3>Convergent/fan-in connections<a class="headerlink" href="#convergent-fan-in-connections" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#convergent-fan-in-connections'"><span>¶</span></a></h3>
 <p>The <a class="reference internal" href="reference/connectors.html#pyNN.connectors.FixedNumberPreConnector" title="pyNN.connectors.FixedNumberPreConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">FixedNumberPreConnector</span></code></a> has the same arguments as
 <a class="reference internal" href="reference/connectors.html#pyNN.connectors.FixedNumberPostConnector" title="pyNN.connectors.FixedNumberPostConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">FixedNumberPostConnector</span></code></a>, but of course it connects each
 <em>post</em>-synaptic neuron to <code class="docutils literal notranslate"><span class="pre">n</span></code> <em>pre</em>-synaptic neurons, e.g.:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">connector</span> <span class="o">=</span> <span class="n">FixedNumberPreConnector</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-<span class="n">distr_npre</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="n">distribution</span><span class="o">=</span><span class="s1">&#39;poisson&#39;</span><span class="p">,</span> <span class="n">lambda_</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-<span class="n">connector</span> <span class="o">=</span> <span class="n">FixedNumberPreConnector</span><span class="p">(</span><span class="n">distr_npre</span><span class="p">)</span>
-</pre></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">connector</span> <span class="o">=</span> <span class="n">FixedNumberPreConnector</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</span><span id="line-2"><span class="n">distr_npre</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="n">distribution</span><span class="o">=</span><span class="s1">'poisson'</span><span class="p">,</span> <span class="n">lambda_</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span><span id="line-3"><span class="n">connector</span> <span class="o">=</span> <span class="n">FixedNumberPreConnector</span><span class="p">(</span><span class="n">distr_npre</span><span class="p">)</span>
+</span></code></pre></div>
 </div>
 </section>
 <section id="creating-a-small-world-network">
-<h3>Creating a small-world network<a class="headerlink" href="#creating-a-small-world-network" title="Link to this heading">¶</a></h3>
+<h3>Creating a small-world network<a class="headerlink" href="#creating-a-small-world-network" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#creating-a-small-world-network'"><span>¶</span></a></h3>
 <div class="admonition-todo admonition" id="id1">
 <p class="admonition-title">Todo</p>
 <p>Pierre to write this bit?</p>
 </div>
 </section>
 <section id="using-the-connection-set-algebra">
-<h3>Using the Connection Set Algebra<a class="headerlink" href="#using-the-connection-set-algebra" title="Link to this heading">¶</a></h3>
+<h3>Using the Connection Set Algebra<a class="headerlink" href="#using-the-connection-set-algebra" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#using-the-connection-set-algebra'"><span>¶</span></a></h3>
 <p>The Connection Set Algebra (<a class="reference external" href="http://software.incf.org/software/csa/">Djurfeldt, 2012</a>) is a sophisticated system that
 allows elaborate connectivity patterns to be constructed using a concise syntax.
 Using the CSA requires the Python <code class="xref py py-mod docutils literal notranslate"><span class="pre">csa</span></code> module to be installed
 (see <a class="reference internal" href="installation.html"><span class="doc">Installation</span></a>).</p>
 <p>The details of constructing a connection set are beyond the scope of this manual.
 We give here a simple example.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">csa</span>
-<span class="n">cset</span> <span class="o">=</span> <span class="n">csa</span><span class="o">.</span><span class="n">full</span> <span class="o">-</span> <span class="n">csa</span><span class="o">.</span><span class="n">oneToOne</span>
-<span class="n">connector</span> <span class="o">=</span> <span class="n">CSAConnector</span><span class="p">(</span><span class="n">cset</span><span class="p">)</span>
-</pre></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="kn">import</span> <span class="nn">csa</span>
+</span><span id="line-2"><span class="n">cset</span> <span class="o">=</span> <span class="n">csa</span><span class="o">.</span><span class="n">full</span> <span class="o">-</span> <span class="n">csa</span><span class="o">.</span><span class="n">oneToOne</span>
+</span><span id="line-3"><span class="n">connector</span> <span class="o">=</span> <span class="n">CSAConnector</span><span class="p">(</span><span class="n">cset</span><span class="p">)</span>
+</span></code></pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">csa.full</span></code> represents all-to-all connections, while <code class="docutils literal notranslate"><span class="pre">csa.oneToOne</span></code>
 represents the connection of pre-synaptic neuron <em>i</em> to post-synaptic neuron <em>i</em>.
@@ -276,134 +374,138 @@ connection set or within the synapse type.</p>
 </div>
 </section>
 <section id="specifying-a-list-of-connections">
-<h3>Specifying a list of connections<a class="headerlink" href="#specifying-a-list-of-connections" title="Link to this heading">¶</a></h3>
+<h3>Specifying a list of connections<a class="headerlink" href="#specifying-a-list-of-connections" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#specifying-a-list-of-connections'"><span>¶</span></a></h3>
 <p>Specific connection patterns not covered by the methods above can be obtained by
 specifying an explicit list of pre-synaptic and post-synaptic neuron indices.
 Optionally, the list can contain synaptic properties such as weights, delays,
 or the parameters for plasticity rules. Example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">connections</span> <span class="o">=</span> <span class="p">[</span>
-  <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
-  <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
-  <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
-  <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
-<span class="p">]</span>
-<span class="n">connector</span> <span class="o">=</span> <span class="n">FromListConnector</span><span class="p">(</span><span class="n">connections</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;weight&quot;</span><span class="p">,</span> <span class="s2">&quot;delay&quot;</span><span class="p">])</span>
-</pre></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">connections</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="line-2">  <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
+</span><span id="line-3">  <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
+</span><span id="line-4">  <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
+</span><span id="line-5">  <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+</span><span id="line-6"><span class="p">]</span>
+</span><span id="line-7"><span class="n">connector</span> <span class="o">=</span> <span class="n">FromListConnector</span><span class="p">(</span><span class="n">connections</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="p">[</span><span class="s2">"weight"</span><span class="p">,</span> <span class="s2">"delay"</span><span class="p">])</span>
+</span></code></pre></div>
 </div>
 <p>Any synaptic parameters not given in the list are determined from the synapse
 type. Parameters given in the list always override the values from the synapse
 type.</p>
 </section>
 <section id="reading-connection-patterns-to-from-a-file">
-<h3>Reading connection patterns to/from a file<a class="headerlink" href="#reading-connection-patterns-to-from-a-file" title="Link to this heading">¶</a></h3>
+<h3>Reading connection patterns to/from a file<a class="headerlink" href="#reading-connection-patterns-to-from-a-file" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#reading-connection-patterns-to-from-a-file'"><span>¶</span></a></h3>
 <p>Connection patterns can be read in from a text file. The file should contain
 a header specifying which parameter is in which column, e.g.:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># columns = [&quot;i&quot;, &quot;j&quot;, &quot;weight&quot;, &quot;delay&quot;, &quot;U&quot;, &quot;tau_rec&quot;]</span>
-</pre></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="c1"># columns = ["i", "j", "weight", "delay", "U", "tau_rec"]</span>
+</span></code></pre></div>
 </div>
 <p>and then the connection data should be in columns separated by spaces. The
 connections are read using:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">connector</span> <span class="o">=</span> <span class="n">FromFileConnector</span><span class="p">(</span><span class="s2">&quot;connections.txt&quot;</span><span class="p">)</span>
-</pre></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">connector</span> <span class="o">=</span> <span class="n">FromFileConnector</span><span class="p">(</span><span class="s2">"connections.txt"</span><span class="p">)</span>
+</span></code></pre></div>
 </div>
 </section>
 <section id="specifying-an-explicit-connection-matrix">
-<h3>Specifying an explicit connection matrix<a class="headerlink" href="#specifying-an-explicit-connection-matrix" title="Link to this heading">¶</a></h3>
+<h3>Specifying an explicit connection matrix<a class="headerlink" href="#specifying-an-explicit-connection-matrix" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#specifying-an-explicit-connection-matrix'"><span>¶</span></a></h3>
 <p>The connectivity can be specified as a boolean array, where each row represents
 the existence of connections from a given pre-synaptic neuron to the
 post-synaptic neurons. For example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">connections</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-                           <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-                           <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span>
-                          <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
-<span class="n">connector</span> <span class="o">=</span> <span class="n">ArrayConnector</span><span class="p">(</span><span class="n">connections</span><span class="p">)</span>
-</pre></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">connections</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+</span><span id="line-2">                           <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+</span><span id="line-3">                           <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span>
+</span><span id="line-4">                          <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+</span><span id="line-5"><span class="n">connector</span> <span class="o">=</span> <span class="n">ArrayConnector</span><span class="p">(</span><span class="n">connections</span><span class="p">)</span>
+</span></code></pre></div>
 </div>
 </section>
 <section id="user-defined-connection-algorithms">
-<h3>User-defined connection algorithms<a class="headerlink" href="#user-defined-connection-algorithms" title="Link to this heading">¶</a></h3>
+<h3>User-defined connection algorithms<a class="headerlink" href="#user-defined-connection-algorithms" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#user-defined-connection-algorithms'"><span>¶</span></a></h3>
 <p>If you wish to use a specific connection/wiring algorithm not covered by the
 PyNN built-in ones, the options include:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>constructing a list or array of connections and using the
-<a class="reference internal" href="reference/connectors.html#pyNN.connectors.FromListConnector" title="pyNN.connectors.FromListConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">FromListConnector</span></code></a> or <a class="reference internal" href="reference/connectors.html#pyNN.connectors.ArrayConnector" title="pyNN.connectors.ArrayConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArrayConnector</span></code></a> class;</p></li>
+<ul class="simple">
+<li><dl class="simple">
+<dt>constructing a list or array of connections and using the</dt><dd><p><a class="reference internal" href="reference/connectors.html#pyNN.connectors.FromListConnector" title="pyNN.connectors.FromListConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">FromListConnector</span></code></a> or <a class="reference internal" href="reference/connectors.html#pyNN.connectors.ArrayConnector" title="pyNN.connectors.ArrayConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArrayConnector</span></code></a> class;</p>
+</dd>
+</dl>
+</li>
 <li><p>using the Connection Set Algebra and the <a class="reference internal" href="reference/connectors.html#pyNN.connectors.CSAConnector" title="pyNN.connectors.CSAConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">CSAConnector</span></code></a> class;</p></li>
-<li><p>writing your own <a class="reference internal" href="reference/connectors.html#pyNN.connectors.Connector" title="pyNN.connectors.Connector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Connector</span></code></a> class - see the
-<a class="reference internal" href="developers_guide.html"><span class="doc">Developers’ guide</span></a> for guidance on this.</p></li>
+<li><dl class="simple">
+<dt>writing your own <a class="reference internal" href="reference/connectors.html#pyNN.connectors.Connector" title="pyNN.connectors.Connector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Connector</span></code></a> class - see the</dt><dd><p><a class="reference internal" href="developers_guide.html"><span class="doc">Developers’ guide</span></a> for guidance on this.</p>
+</dd>
+</dl>
+</li>
 </ul>
-</div></blockquote>
 </section>
 </section>
 <section id="projections">
-<h2>Projections<a class="headerlink" href="#projections" title="Link to this heading">¶</a></h2>
+<h2>Projections<a class="headerlink" href="#projections" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#projections'"><span>¶</span></a></h2>
 <p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code> is a container for a set of connections between two
 populations of neurons, where by population we mean one of:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>a <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code> object - a group of neurons all of the same type;</p></li>
 <li><p>a <code class="xref py py-class docutils literal notranslate"><span class="pre">PopulationView</span></code> object - part of a <code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code>;</p></li>
 <li><p>a <code class="xref py py-class docutils literal notranslate"><span class="pre">Assembly</span></code> - a heterogeneous group of neurons, which may be of different types.</p></li>
 </ul>
-</div></blockquote>
 <p>Creating a <code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code> in PyNN also creates the connections at the
 level of the simulator. To create a <code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code> we must specify:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>the pre-synaptic population;</p></li>
 <li><p>the post-synaptic population;</p></li>
 <li><p>a connection/wiring method;</p></li>
 <li><p>a synapse type</p></li>
 </ul>
-</div></blockquote>
 <p>Optionally, we can also specify:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>the name of the post-synaptic mechanism (e.g. ‘excitatory’, ‘NMDA’)
-(if not specified, PyNN picks a default depending on the weight
-parameter of the synapse type);</p></li>
+<ul class="simple">
+<li><dl class="simple">
+<dt>the name of the post-synaptic mechanism (e.g. ‘excitatory’, ‘NMDA’)</dt><dd><p>(if not specified, PyNN picks a default depending on the weight
+parameter of the synapse type);</p>
+</dd>
+</dl>
+</li>
 <li><p>a label (autogenerated if not specified);</p></li>
-<li><p>a <code class="xref py py-class docutils literal notranslate"><span class="pre">Space</span></code> object, which determines how distances should be
-calculated for distance-dependent wiring schemes or parameter values.</p></li>
+<li><dl class="simple">
+<dt>a <code class="xref py py-class docutils literal notranslate"><span class="pre">Space</span></code> object, which determines how distances should be</dt><dd><p>calculated for distance-dependent wiring schemes or parameter values.</p>
+</dd>
+</dl>
+</li>
 </ul>
-</div></blockquote>
 <p>Here is a minimal example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">excitatory_connections</span> <span class="o">=</span> <span class="n">Projection</span><span class="p">(</span><span class="n">pre</span><span class="p">,</span> <span class="n">post</span><span class="p">,</span> <span class="n">AllToAllConnector</span><span class="p">(),</span>
-                                    <span class="n">StaticSynapse</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mf">0.123</span><span class="p">))</span>
-</pre></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">excitatory_connections</span> <span class="o">=</span> <span class="n">Projection</span><span class="p">(</span><span class="n">pre</span><span class="p">,</span> <span class="n">post</span><span class="p">,</span> <span class="n">AllToAllConnector</span><span class="p">(),</span>
+</span><span id="line-2">                                    <span class="n">StaticSynapse</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mf">0.123</span><span class="p">))</span>
+</span></code></pre></div>
 </div>
 <p>and here is a full example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">NumpyRNG</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">64754</span><span class="p">)</span>
-<span class="n">sparse_connectivity</span> <span class="o">=</span> <span class="n">FixedProbabilityConnector</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
-<span class="n">weight_distr</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;normal&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">],</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
-<span class="n">facilitating</span> <span class="o">=</span> <span class="n">TsodyksMarkramSynapse</span><span class="p">(</span><span class="n">U</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">tau_rec</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">tau_facil</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span>
-                                     <span class="n">weight</span><span class="o">=</span><span class="n">weight_distr</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="mf">0.1</span><span class="o">+</span><span class="n">d</span><span class="o">/</span><span class="mf">100.0</span><span class="p">)</span>
-<span class="n">space</span> <span class="o">=</span> <span class="n">Space</span><span class="p">(</span><span class="n">axes</span><span class="o">=</span><span class="s1">&#39;xy&#39;</span><span class="p">)</span>
-<span class="n">inhibitory_connections</span> <span class="o">=</span> <span class="n">Projection</span><span class="p">(</span><span class="n">pre</span><span class="p">,</span> <span class="n">post</span><span class="p">,</span>
-                                    <span class="n">connector</span><span class="o">=</span><span class="n">sparse_connectivity</span><span class="p">,</span>
-                                    <span class="n">synapse_type</span><span class="o">=</span><span class="n">facilitating</span><span class="p">,</span>
-                                    <span class="n">receptor_type</span><span class="o">=</span><span class="s1">&#39;inhibitory&#39;</span><span class="p">,</span>
-                                    <span class="n">space</span><span class="o">=</span><span class="n">space</span><span class="p">,</span>
-                                    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;inhibitory connections&quot;</span><span class="p">)</span>
-</pre></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">rng</span> <span class="o">=</span> <span class="n">NumpyRNG</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">64754</span><span class="p">)</span>
+</span><span id="line-2"><span class="n">sparse_connectivity</span> <span class="o">=</span> <span class="n">FixedProbabilityConnector</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+</span><span id="line-3"><span class="n">weight_distr</span> <span class="o">=</span> <span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">'normal'</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">],</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+</span><span id="line-4"><span class="n">facilitating</span> <span class="o">=</span> <span class="n">TsodyksMarkramSynapse</span><span class="p">(</span><span class="n">U</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">tau_rec</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">tau_facil</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span>
+</span><span id="line-5">                                     <span class="n">weight</span><span class="o">=</span><span class="n">weight_distr</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="mf">0.1</span><span class="o">+</span><span class="n">d</span><span class="o">/</span><span class="mf">100.0</span><span class="p">)</span>
+</span><span id="line-6"><span class="n">space</span> <span class="o">=</span> <span class="n">Space</span><span class="p">(</span><span class="n">axes</span><span class="o">=</span><span class="s1">'xy'</span><span class="p">)</span>
+</span><span id="line-7"><span class="n">inhibitory_connections</span> <span class="o">=</span> <span class="n">Projection</span><span class="p">(</span><span class="n">pre</span><span class="p">,</span> <span class="n">post</span><span class="p">,</span>
+</span><span id="line-8">                                    <span class="n">connector</span><span class="o">=</span><span class="n">sparse_connectivity</span><span class="p">,</span>
+</span><span id="line-9">                                    <span class="n">synapse_type</span><span class="o">=</span><span class="n">facilitating</span><span class="p">,</span>
+</span><span id="line-10">                                    <span class="n">receptor_type</span><span class="o">=</span><span class="s1">'inhibitory'</span><span class="p">,</span>
+</span><span id="line-11">                                    <span class="n">space</span><span class="o">=</span><span class="n">space</span><span class="p">,</span>
+</span><span id="line-12">                                    <span class="n">label</span><span class="o">=</span><span class="s2">"inhibitory connections"</span><span class="p">)</span>
+</span></code></pre></div>
 </div>
 <p>Note that the attribute <code class="xref py py-attr docutils literal notranslate"><span class="pre">receptor_types</span></code> of all <a class="reference internal" href="neurons.html#section-cell-types"><span class="std std-ref">cell type</span></a>
 classes contains a list of the possible values of <code class="docutils literal notranslate"><span class="pre">receptor_type</span></code> for that cell type:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">post</span>
-<span class="go">Population(10, IF_cond_exp(&lt;parameters&gt;), structure=Line(y=0.0, x0=0.0, z=0.0, dx=1.0), label=&#39;population1&#39;)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">post</span><span class="o">.</span><span class="n">celltype</span>
-<span class="go">IF_cond_exp(&lt;parameters&gt;)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">post</span><span class="o">.</span><span class="n">celltype</span><span class="o">.</span><span class="n">receptor_types</span>
-<span class="go">(&#39;excitatory&#39;, &#39;inhibitory&#39;)</span>
-</pre></div>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">post</span>
+</span><span id="line-2"><span class="go">Population(10, IF_cond_exp(&lt;parameters&gt;), structure=Line(y=0.0, x0=0.0, z=0.0, dx=1.0), label='population1')</span>
+</span><span id="line-3"><span class="gp">&gt;&gt;&gt; </span><span class="n">post</span><span class="o">.</span><span class="n">celltype</span>
+</span><span id="line-4"><span class="go">IF_cond_exp(&lt;parameters&gt;)</span>
+</span><span id="line-5"><span class="gp">&gt;&gt;&gt; </span><span class="n">post</span><span class="o">.</span><span class="n">celltype</span><span class="o">.</span><span class="n">receptor_types</span>
+</span><span id="line-6"><span class="go">('excitatory', 'inhibitory')</span>
+</span></code></pre></div>
 </div>
 <p>The <code class="xref py py-attr docutils literal notranslate"><span class="pre">space</span></code> argument is used to specify how to calculate distances, since
 we have used a distance expression to specify the connection delay, modelling a
 constant axonal propagation speed.</p>
 <p>By default, the 3D distance between cell positions is used, but the
 <code class="docutils literal notranslate"><span class="pre">axes</span></code> argument may be used to change this, i.e.:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">space</span> <span class="o">=</span> <span class="n">Space</span><span class="p">(</span><span class="n">axes</span><span class="o">=</span><span class="s1">&#39;xy&#39;</span><span class="p">)</span>
-</pre></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">space</span> <span class="o">=</span> <span class="n">Space</span><span class="p">(</span><span class="n">axes</span><span class="o">=</span><span class="s1">'xy'</span><span class="p">)</span>
+</span></code></pre></div>
 </div>
 <p>will ignore the z-coordinate when calculating distance. Similarly, the origins
 of the coordinate systems of the two populations and the relative scale of the
@@ -413,59 +515,59 @@ when connecting brain regions that have very different sizes but that have a
 topographic mapping between them, e.g. retina to LGN to V1.</p>
 <p>In more abstract models, it is often useful to be able to avoid edge effects by
 specifying periodic boundary conditions, e.g.:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">space</span> <span class="o">=</span> <span class="n">Space</span><span class="p">(</span><span class="n">periodic_boundaries</span><span class="o">=</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">500</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">500</span><span class="p">),</span> <span class="kc">None</span><span class="p">))</span>
-</pre></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">space</span> <span class="o">=</span> <span class="n">Space</span><span class="p">(</span><span class="n">periodic_boundaries</span><span class="o">=</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">500</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">500</span><span class="p">),</span> <span class="kc">None</span><span class="p">))</span>
+</span></code></pre></div>
 </div>
 <p>calculates distance on the surface of a torus of circumference 500 µm
 (wrap-around in the x- and y-dimensions but not z). For more information, see
 <a class="reference internal" href="space.html"><span class="doc">Representing spatial structure and calculating distances</span></a>.</p>
 <section id="accessing-weights-and-delays">
-<h3>Accessing weights and delays<a class="headerlink" href="#accessing-weights-and-delays" title="Link to this heading">¶</a></h3>
+<h3>Accessing weights and delays<a class="headerlink" href="#accessing-weights-and-delays" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#accessing-weights-and-delays'"><span>¶</span></a></h3>
 <p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">Projection.get()</span></code> method allows the retrieval of connection attributes,
 such as weights and delays. Two formats are available. <code class="docutils literal notranslate"><span class="pre">'list'</span></code> returns a list
 of length equal to the number of connections in the projection, <code class="docutils literal notranslate"><span class="pre">'array'</span></code>
 returns a 2D weight array (with NaN for non-existent connections):</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">excitatory_connections</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;weight&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">)[</span><span class="mi">3</span><span class="p">:</span><span class="mi">7</span><span class="p">]</span>
-<span class="go">[(3, 0, 0.123), (4, 0, 0.123), (5, 0, 0.123), (6, 0, 0.123)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">inhibitory_connections</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;delay&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">)[:</span><span class="mi">3</span><span class="p">,:</span><span class="mi">5</span><span class="p">]</span>
-<span class="go">array([[  nan,   nan,   nan,   nan,  0.14],</span>
-<span class="go">       [  nan,   nan,   nan,  0.12,  0.13],</span>
-<span class="go">       [ 0.12,   nan,   nan,   nan,   nan]])</span>
-</pre></div>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">excitatory_connections</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'weight'</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">'list'</span><span class="p">)[</span><span class="mi">3</span><span class="p">:</span><span class="mi">7</span><span class="p">]</span>
+</span><span id="line-2"><span class="go">[(3, 0, 0.123), (4, 0, 0.123), (5, 0, 0.123), (6, 0, 0.123)]</span>
+</span><span id="line-3"><span class="gp">&gt;&gt;&gt; </span><span class="n">inhibitory_connections</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'delay'</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">'array'</span><span class="p">)[:</span><span class="mi">3</span><span class="p">,:</span><span class="mi">5</span><span class="p">]</span>
+</span><span id="line-4"><span class="go">array([[  nan,   nan,   nan,   nan,  0.14],</span>
+</span><span id="line-5"><span class="go">       [  nan,   nan,   nan,  0.12,  0.13],</span>
+</span><span id="line-6"><span class="go">       [ 0.12,   nan,   nan,   nan,   nan]])</span>
+</span></code></pre></div>
 </div>
 <p>To suppress the coordinates of the connection in <code class="docutils literal notranslate"><span class="pre">'list'</span></code>, view, set the
 <em>with_address</em> option to <code class="docutils literal notranslate"><span class="pre">False</span></code>:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">excitatory_connections</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;weight&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="n">with_address</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="mi">3</span><span class="p">:</span><span class="mi">7</span><span class="p">]</span>
-<span class="go">[0.123, 0.123, 0.123, 0.123]</span>
-</pre></div>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">excitatory_connections</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'weight'</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">'list'</span><span class="p">,</span> <span class="n">with_address</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="mi">3</span><span class="p">:</span><span class="mi">7</span><span class="p">]</span>
+</span><span id="line-2"><span class="go">[0.123, 0.123, 0.123, 0.123]</span>
+</span></code></pre></div>
 </div>
 <p>As well as weight and delay, <code class="xref py py-meth docutils literal notranslate"><span class="pre">Projection.get()</span></code> can also retrieve any other
 parameters of synapse models:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">inhibitory_connections</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;U&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
-<span class="go">[(2, 0, 0.04), (6, 1, 0.04), (8, 1, 0.04), (9, 2, 0.04)]</span>
-</pre></div>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">inhibitory_connections</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'U'</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">'list'</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+</span><span id="line-2"><span class="go">[(2, 0, 0.04), (6, 1, 0.04), (8, 1, 0.04), (9, 2, 0.04)]</span>
+</span></code></pre></div>
 </div>
 <p>It is also possible to retrieve the values of multiple attributes at once, as
 either a list of tuples or a tuple of arrays:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">connection_data</span> <span class="o">=</span> <span class="n">inhibitory_connections</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="s1">&#39;weight&#39;</span><span class="p">,</span> <span class="s1">&#39;delay&#39;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">connection</span> <span class="ow">in</span> <span class="n">connection_data</span><span class="p">[:</span><span class="mi">5</span><span class="p">]:</span>
-<span class="gp">... </span>   <span class="n">src</span><span class="p">,</span> <span class="n">tgt</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">connection</span>
-<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;weight = </span><span class="si">%.4f</span><span class="s2">  delay = </span><span class="si">%4.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
-<span class="go">weight = 0.0094  delay = 0.12</span>
-<span class="go">weight = 0.0113  delay = 0.15</span>
-<span class="go">weight = 0.0102  delay = 0.17</span>
-<span class="go">weight = 0.0097  delay = 0.17</span>
-<span class="go">weight = 0.0127  delay = 0.12</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">weights</span><span class="p">,</span> <span class="n">delays</span> <span class="o">=</span> <span class="n">inhibitory_connections</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="s1">&#39;weight&#39;</span><span class="p">,</span> <span class="s1">&#39;delay&#39;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">exists</span> <span class="o">=</span> <span class="o">~</span><span class="n">numpy</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">w</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="n">exists</span><span class="p">]</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span> <span class="n">delays</span><span class="p">[</span><span class="n">exists</span><span class="p">]</span><span class="o">.</span><span class="n">flat</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]:</span>
-<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;weight = </span><span class="si">%.4f</span><span class="s2">  delay = </span><span class="si">%4.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
-<span class="go">weight = 0.0097  delay = 0.14</span>
-<span class="go">weight = 0.0127  delay = 0.12</span>
-<span class="go">weight = 0.0097  delay = 0.13</span>
-<span class="go">weight = 0.0094  delay = 0.18</span>
-<span class="go">weight = 0.0094  delay = 0.12</span>
-</pre></div>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">connection_data</span> <span class="o">=</span> <span class="n">inhibitory_connections</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="s1">'weight'</span><span class="p">,</span> <span class="s1">'delay'</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">'list'</span><span class="p">)</span>
+</span><span id="line-2"><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">connection</span> <span class="ow">in</span> <span class="n">connection_data</span><span class="p">[:</span><span class="mi">5</span><span class="p">]:</span>
+</span><span id="line-3"><span class="gp">... </span>   <span class="n">src</span><span class="p">,</span> <span class="n">tgt</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">connection</span>
+</span><span id="line-4"><span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="s2">"weight = </span><span class="si">%.4f</span><span class="s2">  delay = </span><span class="si">%4.2f</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+</span><span id="line-5"><span class="go">weight = 0.0094  delay = 0.12</span>
+</span><span id="line-6"><span class="go">weight = 0.0113  delay = 0.15</span>
+</span><span id="line-7"><span class="go">weight = 0.0102  delay = 0.17</span>
+</span><span id="line-8"><span class="go">weight = 0.0097  delay = 0.17</span>
+</span><span id="line-9"><span class="go">weight = 0.0127  delay = 0.12</span>
+</span><span id="line-10"><span class="gp">&gt;&gt;&gt; </span><span class="n">weights</span><span class="p">,</span> <span class="n">delays</span> <span class="o">=</span> <span class="n">inhibitory_connections</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="s1">'weight'</span><span class="p">,</span> <span class="s1">'delay'</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">'array'</span><span class="p">)</span>
+</span><span id="line-11"><span class="gp">&gt;&gt;&gt; </span><span class="n">exists</span> <span class="o">=</span> <span class="o">~</span><span class="n">numpy</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+</span><span id="line-12"><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">w</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="n">exists</span><span class="p">]</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span> <span class="n">delays</span><span class="p">[</span><span class="n">exists</span><span class="p">]</span><span class="o">.</span><span class="n">flat</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]:</span>
+</span><span id="line-13"><span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="s2">"weight = </span><span class="si">%.4f</span><span class="s2">  delay = </span><span class="si">%4.2f</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+</span><span id="line-14"><span class="go">weight = 0.0097  delay = 0.14</span>
+</span><span id="line-15"><span class="go">weight = 0.0127  delay = 0.12</span>
+</span><span id="line-16"><span class="go">weight = 0.0097  delay = 0.13</span>
+</span><span id="line-17"><span class="go">weight = 0.0094  delay = 0.18</span>
+</span><span id="line-18"><span class="go">weight = 0.0094  delay = 0.12</span>
+</span></code></pre></div>
 </div>
 <p>Note that in this last example we have filtered out the non-existent connections using <code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.isnan()</span></code>.</p>
 <p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">Projection.save()</span></code> method saves connection attributes to disk.</p>
@@ -476,160 +578,109 @@ need to think about formats. Text, HDF5, …</p>
 </div>
 <p>Access to the weights and delays of individual connections is by the
 <code class="xref py py-attr docutils literal notranslate"><span class="pre">connections</span></code> attribute, e.g.:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">inhibitory_connections</span><span class="o">.</span><span class="n">connections</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">weight</span>
-<span class="go">0.0094460775218037779</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">inhibitory_connections</span><span class="o">.</span><span class="n">connections</span><span class="p">)[</span><span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">weight</span>
-<span class="go">0.0086313719119562281</span>
-</pre></div>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">inhibitory_connections</span><span class="o">.</span><span class="n">connections</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">weight</span>
+</span><span id="line-2"><span class="go">0.0094460775218037779</span>
+</span><span id="line-3"><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">inhibitory_connections</span><span class="o">.</span><span class="n">connections</span><span class="p">)[</span><span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">weight</span>
+</span><span id="line-4"><span class="go">0.0086313719119562281</span>
+</span></code></pre></div>
 </div>
 </section>
 <section id="modifying-weights-and-delays">
-<h3>Modifying weights and delays<a class="headerlink" href="#modifying-weights-and-delays" title="Link to this heading">¶</a></h3>
+<h3>Modifying weights and delays<a class="headerlink" href="#modifying-weights-and-delays" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#modifying-weights-and-delays'"><span>¶</span></a></h3>
 <p>As noted above, weights, delays and other connection attributes can be
 specified on creation of a <code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code>, and this is generally the most
 efficient time to specify them. It is also possible, however, to modify these
 attributes after creation, using the <code class="xref py py-meth docutils literal notranslate"><span class="pre">set()</span></code> method.</p>
 <p><code class="xref py py-meth docutils literal notranslate"><span class="pre">set()</span></code> accepts any number of keyword arguments, where the key is the
 attribute name, and the value is either:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>a numeric value (all connections will be set to the same value);</p></li>
 <li><dl class="simple">
 <dt>a <a class="reference internal" href="reference/random.html#pyNN.random.RandomDistribution" title="pyNN.random.RandomDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">RandomDistribution</span></code></a> object (each connection will be</dt><dd><p>set to a different value, drawn from the distribution);</p>
 </dd>
 </dl>
 </li>
-<li><p>a list or NumPy array of the same length as the number of connections in
-the <code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code>;</p></li>
+<li><dl class="simple">
+<dt>a list or NumPy array of the same length as the number of connections in</dt><dd><p>the <code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code>;</p>
+</dd>
+</dl>
+</li>
 <li><p>a generator;</p></li>
-<li><p>a string expressing a function of the distance between pre- and post-synaptic
-neurons.</p></li>
+<li><dl class="simple">
+<dt>a string expressing a function of the distance between pre- and post-synaptic</dt><dd><p>neurons.</p>
+</dd>
+</dl>
+</li>
 </ul>
-</div></blockquote>
 <div class="admonition-todo admonition" id="id4">
 <p class="admonition-title">Todo</p>
 <p>clarify whether this is the number of <em>local</em> connections or the total
 number of connections.</p>
 </div>
 <p>Some examples:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">excitatory_connections</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mf">0.02</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">excitatory_connections</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">&#39;gamma&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]),</span>
-<span class="gp">... </span>                           <span class="n">delay</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">inhibitory_connections</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">U</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">inhibitory_connections</span><span class="p">)),</span>
-<span class="gp">... </span>                           <span class="n">tau_rec</span><span class="o">=</span><span class="mf">500.0</span><span class="p">,</span>
-<span class="gp">... </span>                           <span class="n">tau_facil</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
-</pre></div>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">excitatory_connections</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mf">0.02</span><span class="p">)</span>
+</span><span id="line-2"><span class="gp">&gt;&gt;&gt; </span><span class="n">excitatory_connections</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="n">RandomDistribution</span><span class="p">(</span><span class="s1">'gamma'</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]),</span>
+</span><span id="line-3"><span class="gp">... </span>                           <span class="n">delay</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+</span><span id="line-4"><span class="gp">&gt;&gt;&gt; </span><span class="n">inhibitory_connections</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">U</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">inhibitory_connections</span><span class="p">)),</span>
+</span><span id="line-5"><span class="gp">... </span>                           <span class="n">tau_rec</span><span class="o">=</span><span class="mf">500.0</span><span class="p">,</span>
+</span><span id="line-6"><span class="gp">... </span>                           <span class="n">tau_facil</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+</span></code></pre></div>
 </div>
 <p>It is also possible to access the attributes of individual connections using the
 <code class="docutils literal notranslate"><span class="pre">connections</span></code> attribute of a <code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code>:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">inhibitory_connections</span><span class="o">.</span><span class="n">connections</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]:</span>
-<span class="gp">... </span>  <span class="n">c</span><span class="o">.</span><span class="n">weight</span> <span class="o">*=</span> <span class="mi">2</span>
-</pre></div>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">inhibitory_connections</span><span class="o">.</span><span class="n">connections</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]:</span>
+</span><span id="line-2"><span class="gp">... </span>  <span class="n">c</span><span class="o">.</span><span class="n">weight</span> <span class="o">*=</span> <span class="mi">2</span>
+</span></code></pre></div>
 </div>
 <p>although this is almost always less efficient than using list- or array-based access.</p>
 </section>
 </section>
 </section>
-
-
-            <div class="clearer"></div>
-          </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-            <p class="logo"><a href="index.html">
-              <img class="logo" src="_static/pyNN_logo.png" alt="Logo"/>
-            </a></p>
-  <div>
-    <h3><a href="index.html">Table of Contents</a></h3>
-    <ul>
-<li><a class="reference internal" href="#">Building networks: connections</a><ul>
-<li><a class="reference internal" href="#synapse-types">Synapse types</a><ul>
-<li><a class="reference internal" href="#fixed-synaptic-weight">Fixed synaptic weight</a></li>
-<li><a class="reference internal" href="#short-term-synaptic-plasticity">Short-term synaptic plasticity</a></li>
-<li><a class="reference internal" href="#spike-timing-dependent-plasticity">Spike-timing-dependent plasticity</a></li>
+</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
+<div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
+<ul>
+<li><a :data-current="activeSection === '#synapse-types'" class="reference internal" href="#synapse-types">Synapse types</a><ul>
+<li><a :data-current="activeSection === '#fixed-synaptic-weight'" class="reference internal" href="#fixed-synaptic-weight">Fixed synaptic weight</a></li>
+<li><a :data-current="activeSection === '#short-term-synaptic-plasticity'" class="reference internal" href="#short-term-synaptic-plasticity">Short-term synaptic plasticity</a></li>
+<li><a :data-current="activeSection === '#spike-timing-dependent-plasticity'" class="reference internal" href="#spike-timing-dependent-plasticity">Spike-timing-dependent plasticity</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#connection-algorithms">Connection algorithms</a><ul>
-<li><a class="reference internal" href="#all-to-all-connections">All-to-all connections</a></li>
-<li><a class="reference internal" href="#one-to-one-connections">One-to-one connections</a></li>
-<li><a class="reference internal" href="#connecting-neurons-with-a-fixed-probability">Connecting neurons with a fixed probability</a></li>
-<li><a class="reference internal" href="#connecting-neurons-with-a-position-dependent-probability">Connecting neurons with a position-dependent probability</a></li>
-<li><a class="reference internal" href="#divergent-fan-out-connections">Divergent/fan-out connections</a></li>
-<li><a class="reference internal" href="#convergent-fan-in-connections">Convergent/fan-in connections</a></li>
-<li><a class="reference internal" href="#creating-a-small-world-network">Creating a small-world network</a></li>
-<li><a class="reference internal" href="#using-the-connection-set-algebra">Using the Connection Set Algebra</a></li>
-<li><a class="reference internal" href="#specifying-a-list-of-connections">Specifying a list of connections</a></li>
-<li><a class="reference internal" href="#reading-connection-patterns-to-from-a-file">Reading connection patterns to/from a file</a></li>
-<li><a class="reference internal" href="#specifying-an-explicit-connection-matrix">Specifying an explicit connection matrix</a></li>
-<li><a class="reference internal" href="#user-defined-connection-algorithms">User-defined connection algorithms</a></li>
+<li><a :data-current="activeSection === '#connection-algorithms'" class="reference internal" href="#connection-algorithms">Connection algorithms</a><ul>
+<li><a :data-current="activeSection === '#all-to-all-connections'" class="reference internal" href="#all-to-all-connections">All-to-all connections</a></li>
+<li><a :data-current="activeSection === '#one-to-one-connections'" class="reference internal" href="#one-to-one-connections">One-to-one connections</a></li>
+<li><a :data-current="activeSection === '#connecting-neurons-with-a-fixed-probability'" class="reference internal" href="#connecting-neurons-with-a-fixed-probability">Connecting neurons with a fixed probability</a></li>
+<li><a :data-current="activeSection === '#connecting-neurons-with-a-position-dependent-probability'" class="reference internal" href="#connecting-neurons-with-a-position-dependent-probability">Connecting neurons with a position-dependent probability</a></li>
+<li><a :data-current="activeSection === '#divergent-fan-out-connections'" class="reference internal" href="#divergent-fan-out-connections">Divergent/fan-out connections</a></li>
+<li><a :data-current="activeSection === '#convergent-fan-in-connections'" class="reference internal" href="#convergent-fan-in-connections">Convergent/fan-in connections</a></li>
+<li><a :data-current="activeSection === '#creating-a-small-world-network'" class="reference internal" href="#creating-a-small-world-network">Creating a small-world network</a></li>
+<li><a :data-current="activeSection === '#using-the-connection-set-algebra'" class="reference internal" href="#using-the-connection-set-algebra">Using the Connection Set Algebra</a></li>
+<li><a :data-current="activeSection === '#specifying-a-list-of-connections'" class="reference internal" href="#specifying-a-list-of-connections">Specifying a list of connections</a></li>
+<li><a :data-current="activeSection === '#reading-connection-patterns-to-from-a-file'" class="reference internal" href="#reading-connection-patterns-to-from-a-file">Reading connection patterns to/from a file</a></li>
+<li><a :data-current="activeSection === '#specifying-an-explicit-connection-matrix'" class="reference internal" href="#specifying-an-explicit-connection-matrix">Specifying an explicit connection matrix</a></li>
+<li><a :data-current="activeSection === '#user-defined-connection-algorithms'" class="reference internal" href="#user-defined-connection-algorithms">User-defined connection algorithms</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#projections">Projections</a><ul>
-<li><a class="reference internal" href="#accessing-weights-and-delays">Accessing weights and delays</a></li>
-<li><a class="reference internal" href="#modifying-weights-and-delays">Modifying weights and delays</a></li>
+<li><a :data-current="activeSection === '#projections'" class="reference internal" href="#projections">Projections</a><ul>
+<li><a :data-current="activeSection === '#accessing-weights-and-delays'" class="reference internal" href="#accessing-weights-and-delays">Accessing weights and delays</a></li>
+<li><a :data-current="activeSection === '#modifying-weights-and-delays'" class="reference internal" href="#modifying-weights-and-delays">Modifying weights and delays</a></li>
 </ul>
 </li>
 </ul>
-</li>
-</ul>
-
-  </div>
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="neurons.html"
-                          title="previous chapter">Building networks: neurons</a></p>
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="space.html"
-                          title="next chapter">Representing spatial structure and calculating distances</a></p>
-  </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/connections.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<search id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</search>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="space.html" title="Representing spatial structure and calculating distances"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="neurons.html" title="Building networks: neurons"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">PyNN 0.12.3 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="building_networks.html" >Building networks</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Building networks: connections</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-    &#169; Copyright 2006-2024, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
-    </div>
-  </body>
+</div>
+</aside>
+</main>
+</div>
+</div><footer class="py-6 border-t border-border md:py-0">
+<div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+<div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+<p class="text-sm leading-loose text-center text-muted-foreground md:text-left">© 2006-2024, the PyNN community Built with <a class="font-medium underline underline-offset-4" href="https://www.sphinx-doc.org" rel="noreferrer">Sphinx 8.2.3</a></p>
+</div>
+</div>
+</footer>
+</div>
+<script src="_static/documentation_options.js?v=56343b9b"></script>
+<script src="_static/doctools.js?v=9bcbadda"></script>
+<script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+<script defer="defer" src="_static/theme.js?v=073f68d9"></script>
+</body>
 </html>

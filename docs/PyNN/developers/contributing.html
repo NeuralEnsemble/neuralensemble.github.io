@@ -1,110 +1,205 @@
 <!DOCTYPE html>
 
-<html lang="en" data-content_root="../">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <title>Contributing to PyNN &#8212; PyNN 0.12.3 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../_static/nature.css?v=0f882399" />
-    <script src="../_static/documentation_options.js?v=56343b9b"></script>
-    <script src="../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <link rel="icon" href="../_static/pyNN_icon.ico"/>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Governance" href="governance.html" />
-    <link rel="prev" title="Bug reports and feature requests" href="bug_reports.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="governance.html" title="Governance"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="bug_reports.html" title="Bug reports and feature requests"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../developers_guide.html" accesskey="U">Developers’ guide</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Contributing to PyNN</a></li> 
-      </ul>
-    </div>  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <section id="contributing-to-pynn">
-<h1>Contributing to PyNN<a class="headerlink" href="#contributing-to-pynn" title="Link to this heading">¶</a></h1>
+<html :class="{'dark': darkMode === 'dark' || (darkMode === 'system' &amp;&amp; window.matchMedia('(prefers-color-scheme: dark)').matches)}" class="scroll-smooth" data-content_root="../" lang="en" x-data="{ darkMode: localStorage.getItem('darkMode') || localStorage.setItem('darkMode', 'system'), activeSection: '' }" x-init="$watch('darkMode', val =&gt; localStorage.setItem('darkMode', val))">
+<head>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="white" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="black" media="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Contributing to PyNN | PyNN 0.12.3 documentation</title>
+<meta content="Contributing to PyNN | PyNN 0.12.3 documentation" property="og:title"/>
+<meta content="Contributing to PyNN | PyNN 0.12.3 documentation" name="twitter:title"/>
+<link href="../_static/pygments.css?v=fa44fd50" rel="stylesheet" type="text/css"/>
+<link href="../_static/theme.css?v=42baaae4" rel="stylesheet" type="text/css"/>
+<link href="../_static/custom.css?v=14d0ad6c" rel="stylesheet" type="text/css"/>
+<link href="../_static/pyNN_icon.ico" rel="icon"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="governance.html" rel="next" title="Governance"/>
+<link href="bug_reports.html" rel="prev" title="Bug reports and feature requests"/>
+<script>
+    <!-- Prevent Flash of wrong theme -->
+      const userPreference = localStorage.getItem('darkMode');
+      let mode;
+      if (userPreference === 'dark' || window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        mode = 'dark';
+        document.documentElement.classList.add('dark');
+      } else {
+        mode = 'light';
+      }
+      if (!userPreference) {localStorage.setItem('darkMode', mode)}
+    </script>
+</head>
+<body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false, showScrollTop: false }">
+<div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-sm border-border supports-backdrop-blur:bg-background/60 bg-background/95 backdrop-blur"><div class="container flex items-center h-14">
+<div class="hidden mr-4 md:flex">
+<a class="flex items-center mr-6" href="../index.html">
+<img alt="Logo" class="mr-2 dark:invert" height="24" src="../_static/pyNN_logo.png" width="24"/><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">PyNN 0.12.3 documentation</span>
+</a></div><button @click="showSidebar = true" class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden" type="button">
+<svg aria-hidden="true" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z"></path>
+</svg>
+<span class="sr-only">Toggle navigation menu</span>
+</button>
+<div class="flex items-center justify-between flex-1 space-x-2 sm:space-x-4 md:justify-end">
+<div class="flex-1 w-full md:w-auto md:flex-none"><form @keydown.k.window.meta="$refs.search.focus()" action="../search.html" class="relative flex items-center group" id="searchbox" method="get">
+<input aria-label="Search the docs" class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" id="search-input" name="q" placeholder="Search ..." type="search" x-ref="search"/>
+<kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+<span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+</div>
+<nav class="flex items-center space-x-1">
+<button @click="darkMode = darkMode === 'light' ? 'dark' : 'light'" aria-label="Color theme switcher" class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9" type="button">
+<svg class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z"></path>
+</svg>
+<svg class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z"></path>
+</svg>
+</button>
+</nav>
+</div>
+</div>
+</header>
+<div class="flex-1"><div class="container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }" class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full shrink-0 overflow-y-auto border-r border-border md:sticky" id="left-sidebar">
+<a class="!justify-start text-sm md:!hidden bg-background" href="../index.html">
+<img alt="Logo" class="mr-2 dark:invert" height="16" src="../_static/pyNN_logo.png" width="16"/><span class="font-bold text-clip whitespace-nowrap">PyNN 0.12.3 documentation</span>
+</a>
+<div class="relative overflow-hidden md:overflow-auto my-4 md:my-0 h-[calc(100vh-8rem)] md:h-auto">
+<div class="overflow-y-auto h-full w-full relative pr-6"><nav class="table w-full min-w-full my-6 lg:my-8">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../building_networks.html">Building networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../injecting_current.html">Injecting current</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../recording.html">Recording spikes and state variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_handling.html">Data handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation_control.html">Simulation control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parameters.html">Model parameters and initial values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../random_numbers.html">Random numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mc_api.html">Multicompartmental modelling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backends.html">Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parallel.html">Running parallel simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../units.html">Units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../import_export.html">Importing from and exporting to other formats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications about, relating to or using PyNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors, licence and funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release notes</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../developers_guide.html">Developers’ guide<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="bug_reports.html">Bug reports and feature requests</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Contributing to PyNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="governance.html">Governance</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../api_reference.html">API reference<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="../reference/populations.html">Populations, Views and Assemblies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/connectors.html">Connectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/projections.html">Projections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/neuronmodels.html">Neuron models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/plasticitymodels.html">Synapse models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/electrodes.html">Current sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/simulationcontrol.html">Simulation control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/random.html">Random numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/parameters.html">Parameter handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/space.html">Spatial structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/utility.html">Utility classes and functions</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../standardmodels.html">Standard models</a></li>
+</ul>
+</nav>
+</div>
+</div>
+<button @click="showSidebar = false" class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100" type="button">
+<svg class="h-4 w-4" fill="currentColor" height="24" stroke="none" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"></path>
+</svg>
+</button>
+</aside>
+<main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs" class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+<a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground" href="../index.html">
+<span class="hidden md:inline">PyNN 0.12.3 documentation</span>
+<svg aria-label="Home" class="md:hidden" fill="currentColor" height="18" stroke="none" viewbox="0 96 960 960" width="18" xmlns="http://www.w3.org/2000/svg">
+<path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z"></path>
+</svg>
+</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="../developers_guide.html">Developers’ guide</a>
+<div class="mr-1">/</div><span aria-current="page" class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">Contributing to PyNN</span>
+</nav>
+<div id="content" role="main">
+<section id="contributing-to-pynn">
+<h1>Contributing to PyNN<a class="headerlink" href="#contributing-to-pynn" title="Link to this heading"><span>¶</span></a></h1>
 <section id="mailing-list">
-<h2>Mailing list<a class="headerlink" href="#mailing-list" title="Link to this heading">¶</a></h2>
+<h2>Mailing list<a class="headerlink" href="#mailing-list" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#mailing-list'"><span>¶</span></a></h2>
 <p>Discussions about PyNN take place in the <a class="reference external" href="http://groups.google.com/group/neuralensemble">NeuralEnsemble Google Group</a>.</p>
 </section>
 <section id="setting-up-a-development-environment">
-<h2>Setting up a development environment<a class="headerlink" href="#setting-up-a-development-environment" title="Link to this heading">¶</a></h2>
+<h2>Setting up a development environment<a class="headerlink" href="#setting-up-a-development-environment" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#setting-up-a-development-environment'"><span>¶</span></a></h2>
 <p>We strongly suggest you work in a virtual environment, e.g. using <a class="reference external" href="http://www.virtualenv.org/">virtualenv</a> or Anaconda.</p>
 <section id="requirements">
-<h3>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">¶</a></h3>
+<h3>Requirements<a class="headerlink" href="#requirements" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#requirements'"><span>¶</span></a></h3>
 <p>In addition to the requirements listed in <a class="reference internal" href="../installation.html"><span class="doc">Installation</span></a>, you will need to
 install:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p><a class="reference external" href="https://docs.pytest.org">pytest</a></p></li>
 <li><p><a class="reference external" href="http://nedbatchelder.com/code/coverage/">coverage</a></p></li>
 </ul>
-</div></blockquote>
 <p>to run tests, and:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p><a class="reference external" href="http://sphinx-doc.org/">Sphinx</a></p></li>
 <li><p>matplotlib</p></li>
 </ul>
-</div></blockquote>
 <p>to build the documentation.</p>
 </section>
 <section id="code-checkout">
-<h3>Code checkout<a class="headerlink" href="#code-checkout" title="Link to this heading">¶</a></h3>
+<h3>Code checkout<a class="headerlink" href="#code-checkout" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#code-checkout'"><span>¶</span></a></h3>
 <p>PyNN development is based around GitHub. Once you have a GitHub account, you
 should <a class="reference external" href="https://github.com/NeuralEnsemble/PyNN/fork">fork</a> the official <a class="reference external" href="https://github.com/NeuralEnsemble/PyNN/">PyNN repository</a>, and then clone your fork to your
 local machine:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/&lt;username&gt;/PyNN.git pyNN_dev
-</pre></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">$ git clone https://github.com/&lt;username&gt;/PyNN.git pyNN_dev
+</span></code></pre></div>
 </div>
 <p>To work on the development version:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git checkout master
-</pre></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">$ git checkout master
+</span></code></pre></div>
 </div>
 <p>To keep your PyNN repository up-to-date with respect to the official
 repository, add it as a remote:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git remote add upstream https://github.com/NeuralEnsemble/PyNN.git
-</pre></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">$ git remote add upstream https://github.com/NeuralEnsemble/PyNN.git
+</span></code></pre></div>
 </div>
 <p>and then you can pull in any upstream changes:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git pull upstream master
-</pre></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">$ git pull upstream master
+</span></code></pre></div>
 </div>
 <p>To get PyNN onto your <span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">PYTHONPATH</span></code> there are many options, such as:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>pip editable mode (<cite>pip install -e /path/to/PyNN</cite>)</p></li>
-<li><p>creating a symbolic link named <code class="file docutils literal notranslate"><span class="pre">pyNN</span></code> from somewhere that is already
-on your <span class="target" id="index-1"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">PYTHONPATH</span></code>, such as the <code class="file docutils literal notranslate"><span class="pre">site-packages</span></code> directory,
-to the <code class="file docutils literal notranslate"><span class="pre">pyNN_dev/pyNN</span></code> directory.</p></li>
+<li><dl class="simple">
+<dt>creating a symbolic link named <code class="file docutils literal notranslate"><span class="pre">pyNN</span></code> from somewhere that is already</dt><dd><p>on your <span class="target" id="index-1"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">PYTHONPATH</span></code>, such as the <code class="file docutils literal notranslate"><span class="pre">site-packages</span></code> directory,
+to the <code class="file docutils literal notranslate"><span class="pre">pyNN_dev/pyNN</span></code> directory.</p>
+</dd>
+</dl>
+</li>
 </ul>
-</div></blockquote>
 </section>
 </section>
 <section id="coding-style">
-<h2>Coding style<a class="headerlink" href="#coding-style" title="Link to this heading">¶</a></h2>
+<h2>Coding style<a class="headerlink" href="#coding-style" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#coding-style'"><span>¶</span></a></h2>
 <p>We try to stay fairly close to <a class="reference external" href="http://www.python.org/dev/peps/pep-0008/">PEP8</a>. Please note in particular:</p>
 <blockquote>
 <div><ul class="simple">
@@ -119,15 +214,15 @@ Any new functions or methods should use the latter.</p></li>
 </div></blockquote>
 </section>
 <section id="testing">
-<h2>Testing<a class="headerlink" href="#testing" title="Link to this heading">¶</a></h2>
+<h2>Testing<a class="headerlink" href="#testing" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#testing'"><span>¶</span></a></h2>
 <p>Running the PyNN test suite requires the <em>pytest_</em> package,
 and optionally the <em>pytest-cov</em> package. To run the entire test suite:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pytest
-</pre></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">$ pytest
+</span></code></pre></div>
 </div>
 <p>To see how well the codebase is covered by the tests, run:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pytest --cov=pyNN --cov-report term --cov-report html
-</pre></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">$ pytest --cov=pyNN --cov-report term --cov-report html
+</span></code></pre></div>
 </div>
 <p>There are currently two sorts of tests, unit tests, which aim to exercise
 small pieces of code such as individual functions and methods, and system tests,
@@ -143,203 +238,161 @@ run without a simulator installed.</p>
 The suggested way to do this is to write test functions
 that take a simulator module as an argument, and then wrap these functions
 with the following decorator:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">&quot;sim&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">pyNN</span><span class="o">.</span><span class="n">nest</span><span class="p">,</span> <span class="n">pyNN</span><span class="o">.</span><span class="n">neuron</span><span class="p">,</span> <span class="n">pyNN</span><span class="o">.</span><span class="n">brian2</span><span class="p">))</span>
-</pre></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">"sim"</span><span class="p">,</span> <span class="p">(</span><span class="n">pyNN</span><span class="o">.</span><span class="n">nest</span><span class="p">,</span> <span class="n">pyNN</span><span class="o">.</span><span class="n">neuron</span><span class="p">,</span> <span class="n">pyNN</span><span class="o">.</span><span class="n">brian2</span><span class="p">))</span>
+</span></code></pre></div>
 </div>
 <p>To run only the tests within a file
 named ‘test_electrodes’ located inside system/scenarios, use:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pytest test/system/scenarios/test_electrodes.py
-</pre></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">$ pytest test/system/scenarios/test_electrodes.py
+</span></code></pre></div>
 </div>
 <p>To run a single specific test named ‘test_changing_electrode’ located within
 some file (and added to registry) inside system/scenarios, use:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pytest test/system/scenarios/test_electrodes.py::test_changing_electrode
-</pre></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">$ pytest test/system/scenarios/test_electrodes.py::test_changing_electrode
+</span></code></pre></div>
 </div>
 </section>
 <section id="submitting-code">
-<h2>Submitting code<a class="headerlink" href="#submitting-code" title="Link to this heading">¶</a></h2>
+<h2>Submitting code<a class="headerlink" href="#submitting-code" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#submitting-code'"><span>¶</span></a></h2>
 <p>The best way to get started with contributing code to PyNN is to fix a small
 bug (<a class="reference external" href="https://github.com/NeuralEnsemble/PyNN/issues?labels=minor&amp;state=open">bugs marked “minor” in the bug tracker</a>) in your checkout of
 the code. Once you are happy with your changes, <strong>run the test suite again to check
 that you have not introduced any new bugs</strong>. If this is your first contribution
 to the project, please add your name and affiliation/employer to <code class="file docutils literal notranslate"><span class="pre">AUTHORS</span></code>.</p>
 <p>After committing the changes to your local repository:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git commit -m &#39;informative commit message&#39;
-</pre></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">$ git commit -m 'informative commit message'
+</span></code></pre></div>
 </div>
 <p>first pull in any changes from the upstream repository:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git pull upstream master
-</pre></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">$ git pull upstream master
+</span></code></pre></div>
 </div>
 <p>then push to your own account on GitHub:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git push
-</pre></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">$ git push
+</span></code></pre></div>
 </div>
 <p>Now, via the GitHub web interface, open a pull request.</p>
 </section>
 <section id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">¶</a></h2>
+<h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#documentation'"><span>¶</span></a></h2>
 <p>PyNN documentation is generated using <a class="reference external" href="http://sphinx-doc.org/">Sphinx</a>.</p>
 <p>To build the documentation in HTML format, run:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ make html
-</pre></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">$ make html
+</span></code></pre></div>
 </div>
 <p>in the <code class="docutils literal notranslate"><span class="pre">doc</span></code> subdirectory of the source tree. Many of the files contain
 examples of interactive Python sessions. The validity of this code can be tested
 by running:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ make doctest
-</pre></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">$ make doctest
+</span></code></pre></div>
 </div>
 <p>PyNN documentation is hosted at <a class="reference external" href="http://neuralensemble.org/docs/PyNN">http://neuralensemble.org/docs/PyNN</a></p>
 </section>
 <section id="making-a-release">
-<h2>Making a release<a class="headerlink" href="#making-a-release" title="Link to this heading">¶</a></h2>
+<h2>Making a release<a class="headerlink" href="#making-a-release" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#making-a-release'"><span>¶</span></a></h2>
 <p>To make a release of PyNN requires you to have permissions to upload PyNN
 packages to the <a class="reference external" href="http://pypi.python.org/">Python Package Index</a>, and to
 upload documentation to the neuralensemble.org server. If you are interested
 in becoming release manager for PyNN, please contact us via the <a class="reference external" href="http://groups.google.com/group/neuralensemble">mailing list</a>.</p>
 <p>When you think a release is ready, run through the following checklist one
 last time:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>do all the tests pass? This means running <strong class="command">pytest</strong> in
-<code class="file docutils literal notranslate"><span class="pre">test/unittests</span></code> and <code class="file docutils literal notranslate"><span class="pre">test/system</span></code> and running <strong class="command">make doctest</strong> in
+<ul class="simple">
+<li><dl class="simple">
+<dt>do all the tests pass? This means running <strong class="command">pytest</strong> in</dt><dd><p><code class="file docutils literal notranslate"><span class="pre">test/unittests</span></code> and <code class="file docutils literal notranslate"><span class="pre">test/system</span></code> and running <strong class="command">make doctest</strong> in
 <code class="file docutils literal notranslate"><span class="pre">doc</span></code>. You should do this on at least two Linux systems – one a very
 recent version and one at least a year old, and on at least one version of
-Mac OS X. You should also do this with multiple Python versions (3.7+).</p></li>
-<li><p>do all the example scripts generate the correct output? Run the
-<code class="file docutils literal notranslate"><span class="pre">run_all_examples.py</span></code> script in <code class="file docutils literal notranslate"><span class="pre">examples/tools</span></code> and then visually
+Mac OS X. You should also do this with multiple Python versions (3.7+).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>do all the example scripts generate the correct output? Run the</dt><dd><p><code class="file docutils literal notranslate"><span class="pre">run_all_examples.py</span></code> script in <code class="file docutils literal notranslate"><span class="pre">examples/tools</span></code> and then visually
 check the <code class="file docutils literal notranslate"><span class="pre">.png</span></code> files generated in <code class="file docutils literal notranslate"><span class="pre">examples/tools/Results</span></code>. Again,
-you should do this on at least two Linux systems and one Mac OS X system.</p></li>
-<li><p>does the documentation build without errors? You should then at least skim
-the generated HTML pages to check for obvious problems.</p></li>
-<li><p>have you updated the version numbers in <code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code>, <code class="file docutils literal notranslate"><span class="pre">pyNN/__init__.py</span></code>,
-<code class="file docutils literal notranslate"><span class="pre">doc/conf.py</span></code> and <code class="file docutils literal notranslate"><span class="pre">doc/installation.txt</span></code>?</p></li>
+you should do this on at least two Linux systems and one Mac OS X system.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>does the documentation build without errors? You should then at least skim</dt><dd><p>the generated HTML pages to check for obvious problems.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>have you updated the version numbers in <code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code>, <code class="file docutils literal notranslate"><span class="pre">pyNN/__init__.py</span></code>,</dt><dd><p><code class="file docutils literal notranslate"><span class="pre">doc/conf.py</span></code> and <code class="file docutils literal notranslate"><span class="pre">doc/installation.txt</span></code>?</p>
+</dd>
+</dl>
+</li>
 <li><p>have you updated the changelog?</p></li>
 </ul>
-</div></blockquote>
 <p>Once you’ve confirmed all the above, create source and wheel packages using:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python -m build
-</pre></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">$ python -m build
+</span></code></pre></div>
 </div>
 <p>and check that they install properly (you will find them in the <code class="file docutils literal notranslate"><span class="pre">dist</span></code>
 subdirectory).</p>
 <p>Now you should commit any changes, then tag with the release number as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git tag x.y.z
-</pre></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">$ git tag x.y.z
+</span></code></pre></div>
 </div>
 <p>where <code class="docutils literal notranslate"><span class="pre">x.y.z</span></code> is the release number. You should now upload the documentation
 to <a class="reference external" href="http://neuralensemble.org/docs/PyNN/">http://neuralensemble.org/docs/PyNN/</a> by updating the <cite>neuralensemble.github.io</cite>
 repository (in the <code class="file docutils literal notranslate"><span class="pre">docs/PyNN</span></code> directory).</p>
 <p>If this is a final release, there are a few more steps:</p>
-<blockquote>
-<div><ul>
-<li><p>if it is a major release (i.e. an <code class="docutils literal notranslate"><span class="pre">x.y.0</span></code> release), create a new bug-fix
-branch:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git branch x.y
-</pre></div>
+<ul>
+<li><dl>
+<dt>if it is a major release (i.e. an <code class="docutils literal notranslate"><span class="pre">x.y.0</span></code> release), create a new bug-fix</dt><dd><p>branch:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">$ git branch x.y
+</span></code></pre></div>
 </div>
+</dd>
+</dl>
 </li>
 <li><p>upload the packages to PyPI (Do <strong>not</strong> upload development releases to PyPI):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ twine upload dist/PyNN-x.y.z*
-</pre></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">$ twine upload dist/PyNN-x.y.z*
+</span></code></pre></div>
 </div>
 </li>
 <li><p>update the <code class="file docutils literal notranslate"><span class="pre">codemeta.json</span></code> file</p></li>
 <li><p>make an announcement on the <a class="reference external" href="http://groups.google.com/group/neuralensemble">mailing list</a></p></li>
-<li><p>if it is a major release, write a blog post about it with a focus on the
-new features and major changes</p></li>
+<li><dl class="simple">
+<dt>if it is a major release, write a blog post about it with a focus on the</dt><dd><p>new features and major changes</p>
+</dd>
+</dl>
+</li>
 <li><p>go home, take a headache pill and lie down for a while in a darkened room (-;</p></li>
 </ul>
-</div></blockquote>
 </section>
 </section>
-
-
-            <div class="clearer"></div>
-          </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-            <p class="logo"><a href="../index.html">
-              <img class="logo" src="../_static/pyNN_logo.png" alt="Logo"/>
-            </a></p>
-  <div>
-    <h3><a href="../index.html">Table of Contents</a></h3>
-    <ul>
-<li><a class="reference internal" href="#">Contributing to PyNN</a><ul>
-<li><a class="reference internal" href="#mailing-list">Mailing list</a></li>
-<li><a class="reference internal" href="#setting-up-a-development-environment">Setting up a development environment</a><ul>
-<li><a class="reference internal" href="#requirements">Requirements</a></li>
-<li><a class="reference internal" href="#code-checkout">Code checkout</a></li>
+</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
+<div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
+<ul>
+<li><a :data-current="activeSection === '#mailing-list'" class="reference internal" href="#mailing-list">Mailing list</a></li>
+<li><a :data-current="activeSection === '#setting-up-a-development-environment'" class="reference internal" href="#setting-up-a-development-environment">Setting up a development environment</a><ul>
+<li><a :data-current="activeSection === '#requirements'" class="reference internal" href="#requirements">Requirements</a></li>
+<li><a :data-current="activeSection === '#code-checkout'" class="reference internal" href="#code-checkout">Code checkout</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#coding-style">Coding style</a></li>
-<li><a class="reference internal" href="#testing">Testing</a></li>
-<li><a class="reference internal" href="#submitting-code">Submitting code</a></li>
-<li><a class="reference internal" href="#documentation">Documentation</a></li>
-<li><a class="reference internal" href="#making-a-release">Making a release</a></li>
+<li><a :data-current="activeSection === '#coding-style'" class="reference internal" href="#coding-style">Coding style</a></li>
+<li><a :data-current="activeSection === '#testing'" class="reference internal" href="#testing">Testing</a></li>
+<li><a :data-current="activeSection === '#submitting-code'" class="reference internal" href="#submitting-code">Submitting code</a></li>
+<li><a :data-current="activeSection === '#documentation'" class="reference internal" href="#documentation">Documentation</a></li>
+<li><a :data-current="activeSection === '#making-a-release'" class="reference internal" href="#making-a-release">Making a release</a></li>
 </ul>
-</li>
-</ul>
-
-  </div>
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="bug_reports.html"
-                          title="previous chapter">Bug reports and feature requests</a></p>
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="governance.html"
-                          title="next chapter">Governance</a></p>
-  </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/developers/contributing.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<search id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</search>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="governance.html" title="Governance"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="bug_reports.html" title="Bug reports and feature requests"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">PyNN 0.12.3 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../developers_guide.html" >Developers’ guide</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Contributing to PyNN</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-    &#169; Copyright 2006-2024, the PyNN community.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
-    </div>
-  </body>
+</div>
+</aside>
+</main>
+</div>
+</div><footer class="py-6 border-t border-border md:py-0">
+<div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+<div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+<p class="text-sm leading-loose text-center text-muted-foreground md:text-left">© 2006-2024, the PyNN community Built with <a class="font-medium underline underline-offset-4" href="https://www.sphinx-doc.org" rel="noreferrer">Sphinx 8.2.3</a></p>
+</div>
+</div>
+</footer>
+</div>
+<script src="../_static/documentation_options.js?v=56343b9b"></script>
+<script src="../_static/doctools.js?v=9bcbadda"></script>
+<script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script defer="defer" src="../_static/theme.js?v=073f68d9"></script>
+</body>
 </html>
